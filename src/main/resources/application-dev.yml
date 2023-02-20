@@ -19,6 +19,10 @@ spring:
         hbm2ddl:
           auto: create
     show-sql: true
+  data:
+    redis:
+      host: localhost
+      port: 6379
 
 springdoc:
   use-fqn: true # 정규화된 스키마명 사용 설정
