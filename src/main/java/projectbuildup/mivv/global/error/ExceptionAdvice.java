@@ -33,8 +33,8 @@ public class ExceptionAdvice {
 
     // Custom Exception
 
-    @ExceptionHandler(CMemberNotFoundException.class)
-    protected ResponseEntity<ErrorResponseDto> handle(CMemberNotFoundException e){
+    @ExceptionHandler(CUserNotFoundException.class)
+    protected ResponseEntity<ErrorResponseDto> handle(CUserNotFoundException e){
         ErrorCode errorCode = e.getErrorCode();
         e.printStackTrace();
         return new ResponseEntity<>(new ErrorResponseDto(errorCode), errorCode.getStatusCode());
@@ -105,6 +105,12 @@ public class ExceptionAdvice {
     }
     @ExceptionHandler(CWrongPasswordException.class)
     protected ResponseEntity<ErrorResponseDto> handle(CWrongPasswordException e){
+        ErrorCode errorCode = e.getErrorCode();
+        e.printStackTrace();
+        return new ResponseEntity<>(new ErrorResponseDto(errorCode), errorCode.getStatusCode());
+    }
+    @ExceptionHandler(CVerificationNotFoundException.class)
+    protected ResponseEntity<ErrorResponseDto> handle(CVerificationNotFoundException e){
         ErrorCode errorCode = e.getErrorCode();
         e.printStackTrace();
         return new ResponseEntity<>(new ErrorResponseDto(errorCode), errorCode.getStatusCode());

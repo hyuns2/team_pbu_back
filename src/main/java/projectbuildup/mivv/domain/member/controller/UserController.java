@@ -10,6 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "[2-1.Member]", description = "회원과 관련된 API입니다.")
 @RequestMapping("/api")
 @RequiredArgsConstructor
-public class MemberController {
+public class UserController {
     
 }

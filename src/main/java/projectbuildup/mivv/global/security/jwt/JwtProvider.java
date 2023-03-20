@@ -14,7 +14,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
-import projectbuildup.mivv.domain.member.entity.Member;
+import projectbuildup.mivv.domain.member.entity.User;
 import projectbuildup.mivv.global.constant.JwtExpiration;
 
 import java.nio.charset.StandardCharsets;
@@ -39,19 +39,19 @@ public class JwtProvider {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public TokenForm generateToken(Member member) {
+    public TokenDto generateToken(User user) {
 
-        String accessToken = createToken(member, 1000 * JwtExpiration.ACCESS_TOKEN.getTime());
-        String refreshToken = createToken(member, 1000 * JwtExpiration.REFRESH_TOKEN.getTime());
+        String accessToken = createToken(user, 1000 * JwtExpiration.ACCESS_TOKEN.getTime());
+        String refreshToken = createToken(user, 1000 * JwtExpiration.REFRESH_TOKEN.getTime());
 
-        return TokenForm.builder()
+        return TokenDto.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
     }
 
-    private String createToken(Member member, Long expireTime) {
-        Claims claims = injectValues(member, expireTime);
+    private String createToken(User user, Long expireTime) {
+        Claims claims = injectValues(user, expireTime);
 
         return Jwts.builder()
                 .setHeaderParam("type", "jwt")
@@ -60,14 +60,14 @@ public class JwtProvider {
                 .compact();
     }
 
-    private Claims injectValues(Member member, Long expireTime) {
+    private Claims injectValues(User user, Long expireTime) {
         long now = (new Date()).getTime();
-        String authorities = member.getAuthorities().stream()
+        String authorities = user.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
         Claims claims = Jwts.claims();
-        claims.setSubject(String.valueOf(member.getId()));
+        claims.setSubject(String.valueOf(user.getId()));
         claims.setIssuedAt(new Date());
         claims.setExpiration(new Date(now + expireTime));
         claims.setId(UUID.randomUUID().toString());

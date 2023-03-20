@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.MediaType;
 import org.springframework.web.filter.OncePerRequestFilter;
 import projectbuildup.mivv.global.error.ErrorCode;
-import projectbuildup.mivv.global.error.exception.CMemberNotFoundException;
+import projectbuildup.mivv.global.error.exception.CUserNotFoundException;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -21,7 +21,7 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
             filterChain.doFilter(request, response);
-        } catch (JwtException | CMemberNotFoundException e) {
+        } catch (JwtException | CUserNotFoundException e) {
             setErrorResponse(response, e);
         }
     }
@@ -41,8 +41,8 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
     }
 
     private ErrorCode extractErrorCode(Throwable e) {
-        if (e instanceof CMemberNotFoundException) {
-            return ((CMemberNotFoundException) e).getErrorCode();
+        if (e instanceof CUserNotFoundException) {
+            return ((CUserNotFoundException) e).getErrorCode();
         }
         return ErrorCode.findByName(e.getMessage());
     }

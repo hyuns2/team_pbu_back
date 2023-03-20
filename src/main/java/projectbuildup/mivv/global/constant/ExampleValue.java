@@ -57,7 +57,7 @@ public class ExampleValue {
         public final static String REFRESH = "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiIxIiwiaWF0IjoxNjc1MzAwMTIxLCJleHAiOjE3MDY4MzYxMjEsImp0aSI6ImU4YTY4MzMzLWE2ZWYtNDQwOC1hYjNkLWE1MWJiNjEyZTdkOCIsImF1dGhvcml0aWVzIjoiUk9MRV9VU0VSIn0.Rw3hOW6ldyV8uJbIMdv2w6buulSAPoh4a9KZaJ2gexg";
     }
 
-    public static class Member{
+    public static class User {
         public final static String ACCOUNT = "admin@naver.com";
         public final static String PASSWORD = "Abc1234!";
         public static final String NAME = "심재헌";

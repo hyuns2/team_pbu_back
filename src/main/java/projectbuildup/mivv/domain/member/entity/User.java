@@ -20,12 +20,17 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @Builder
 @Entity
-public class Member extends BaseTimeEntity implements UserDetails {
+public class User extends BaseTimeEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    String account;
+    String nickname;
+    String profileImage;
+    String email;
     String password;
+    boolean agreement;
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    IdentityVerification identityVerification;
 
     @ElementCollection(fetch = FetchType.LAZY)
     @Builder.Default

@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 @Repository
 @RequiredArgsConstructor
-public class TokenRedisRepository {
+public class TokenRepository {
     private final StringRedisTemplate redisTemplate;
 
     private final static String PREFIX_REFRESH = "REFRESH:";
@@ -23,14 +23,23 @@ public class TokenRedisRepository {
      * 회원의 아이디넘버를 value로 설정합니다.
      *
      * @param refreshToken 리프레시토큰
-     * @param memberId      회원 아이디넘버
+     * @param object      value
      */
-    public void saveRefreshToken(String refreshToken, String memberId) {
+    public void saveRefreshToken(String refreshToken, Object object) {
+        String value = convertToString(object);
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
         String key = PREFIX_REFRESH + refreshToken;
-        valueOperations.set(key, memberId);
+        valueOperations.set(key, value);
         redisTemplate.expire(key, JwtExpiration.REFRESH_TOKEN.getTime(), TimeUnit.SECONDS);
     }
+
+    private String convertToString(Object value){
+        if (value.getClass().equals(String.class)){
+            return (String) value;
+        }
+        return String.valueOf(value);
+    }
+
 
     /**
      * Block된 어세스토큰을 저장합니다.
