@@ -32,7 +32,11 @@ public class AuthService {
      */
     public void signup(AuthDto.SignupRequest requestDto) {
         String encodedPassword = passwordEncoder.encode(requestDto.getPassword());
-        User user = requestDto.toEntity(encodedPassword);
+        IdentityVerification identityVerification = identityVerificationRepository.findByCode(requestDto.getVerificationCode()).orElseThrow(CVerificationNotFoundException::new);
+        if (identityVerification.getUser() != null){
+            throw new CUserExistException();
+        }
+        User user = User.of(requestDto, encodedPassword, identityVerification);
         userRepository.save(user);
     }
 

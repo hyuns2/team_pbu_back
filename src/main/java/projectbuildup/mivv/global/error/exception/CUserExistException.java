@@ -4,10 +4,10 @@ import lombok.Getter;
 import projectbuildup.mivv.global.error.ErrorCode;
 
 @Getter
-public class CMemberExistException extends RuntimeException{
+public class CUserExistException extends RuntimeException{
     private final ErrorCode errorCode;
 
-    public CMemberExistException(){
+    public CUserExistException(){
         super();
         errorCode = ErrorCode.MEMBER_EXIST_ERROR;
     }

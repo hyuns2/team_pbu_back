@@ -8,10 +8,12 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import projectbuildup.mivv.domain.auth.dto.AuthDto;
 import projectbuildup.mivv.global.common.BaseTimeEntity;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,8 +31,20 @@ public class User extends BaseTimeEntity implements UserDetails {
     String email;
     String password;
     boolean agreement;
-    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne
+    @JoinColumn
     IdentityVerification identityVerification;
+
+    public static User of (AuthDto.SignupRequest requestDto, String encodedPassword, IdentityVerification identityVerification){
+        return User.builder()
+                .email(requestDto.getEmail())
+                .agreement(requestDto.getAgreement())
+                .nickname(requestDto.getNickname())
+                .password(encodedPassword)
+                .identityVerification(identityVerification)
+                .roles(Collections.singletonList("ROLE_USER"))
+                .build();
+    }
 
     @ElementCollection(fetch = FetchType.LAZY)
     @Builder.Default

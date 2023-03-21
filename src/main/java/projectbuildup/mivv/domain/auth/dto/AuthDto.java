@@ -18,7 +18,7 @@ public class AuthDto {
     @NoArgsConstructor
     public static class SignupRequest{
         @NotBlank
-        @Schema(description = "본인인증 코드", example = "random_string")
+        @Schema(description = "본인인증 코드")
         String verificationCode;
         @Email
         @Schema(description = "이메일", example = ExampleValue.User.EMAIL)
@@ -50,10 +50,19 @@ public class AuthDto {
     @Getter
     @NoArgsConstructor
     public static class LoginRequest {
-        @Schema(description = "본인인증 식별자", example = "random_string")
+        @NotBlank
+        @Schema(description = "본인인증 식별자")
         String verificationCode;
         @Length()
         @Schema(description = "비밀번호", example = ExampleValue.User.PASSWORD)
         String password;
+    }
+
+    @Getter
+    @NoArgsConstructor
+    public static class CertifyRequest {
+        @NotBlank
+        @Schema(description = "본인인증 API 호출 키")
+        String key;
     }
 }

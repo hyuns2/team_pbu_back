@@ -54,8 +54,8 @@ public class ExceptionAdvice {
         return new ResponseEntity<>(new ErrorResponseDto(errorCode), errorCode.getStatusCode());
     }
 
-    @ExceptionHandler(CMemberExistException.class)
-    protected ResponseEntity<ErrorResponseDto> handle(CMemberExistException e){
+    @ExceptionHandler(CUserExistException.class)
+    protected ResponseEntity<ErrorResponseDto> handle(CUserExistException e){
         ErrorCode errorCode = e.getErrorCode();
         e.printStackTrace();
         return new ResponseEntity<>(new ErrorResponseDto(errorCode), errorCode.getStatusCode());
