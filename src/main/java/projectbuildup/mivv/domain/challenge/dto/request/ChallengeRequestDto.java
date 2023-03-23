@@ -27,6 +27,9 @@ public class ChallengeRequestDto {
         }
 
     }
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class UpdateRequest {
 
         int id;
@@ -36,11 +39,16 @@ public class ChallengeRequestDto {
         String imageUrl;
 
     }
-
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class ReadRequest {
         int id;
 
     }
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class DeleteRequest{
         int id;
 
