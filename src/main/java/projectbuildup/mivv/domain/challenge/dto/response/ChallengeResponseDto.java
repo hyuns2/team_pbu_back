@@ -6,7 +6,7 @@ import java.util.List;
 
 public class ChallengeResponseDto {
 
-    public static class ReadResponse {
+    public static class ReadSimpleResponse {
         String mainTitle;
         String subTitle;
 
@@ -14,7 +14,7 @@ public class ChallengeResponseDto {
 
         String imageUrl;
 
-        public ReadResponse(Challenge challenge){
+        public ReadSimpleResponse(Challenge challenge){
             this.mainTitle = challenge.getMainTitle();
             this.subTitle = challenge.getSubTitle();
             this.content = challenge.getContent();
