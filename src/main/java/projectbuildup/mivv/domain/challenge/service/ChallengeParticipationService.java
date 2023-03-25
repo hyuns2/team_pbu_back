@@ -9,6 +9,9 @@ import projectbuildup.mivv.domain.challenge.repository.ChallengeRepository;
 public class ChallengeParticipationService {
     private final ChallengeRepository challengeRepository;
 
+    /**
+     * user 필요한 서비스 모아놓기
+     */
     public void participateChallenge(){
 
     }
