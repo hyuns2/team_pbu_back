@@ -13,6 +13,13 @@ import java.util.Optional;
 public class ChallengeValidationService {
 
     private final ChallengeRepository challengeRepository;
+
+    public boolean isExistChallenge(int challengeId){
+        if(challengeRepository.findById(challengeId).isPresent())
+            return true;
+        else
+            return false;
+    }
     public boolean isJoinableDateChallenge(int challengeId){
 
         Optional<Challenge> challenge = challengeRepository.findById(challengeId);
@@ -22,7 +29,6 @@ public class ChallengeValidationService {
             return true;
         else
             return false;
-
 
     }
 }
