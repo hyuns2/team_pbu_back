@@ -13,7 +13,7 @@ public class ChallengeRequestDto {
     public static class CreationRequest{
         String mainTitle;
         String subTitle;
-        List<String> Content;
+        List<String> content;
         String imageUrl;
 
 
@@ -21,7 +21,7 @@ public class ChallengeRequestDto {
             return Challenge.builder()
                     .mainTitle(mainTitle)
                     .subTitle(subTitle)
-                    .Content(Content)
+                    .content(content)
                     .imageUrl(imageUrl)
                     .build();
         }

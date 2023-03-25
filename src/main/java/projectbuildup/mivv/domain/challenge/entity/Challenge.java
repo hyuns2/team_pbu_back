@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
+import projectbuildup.mivv.domain.challenge.dto.request.ChallengeRequestDto;
 import projectbuildup.mivv.domain.member.entity.Member;
 import projectbuildup.mivv.global.common.BaseTimeEntity;
 
@@ -31,7 +32,7 @@ public class Challenge extends BaseTimeEntity {
     private LocalDate endDate;
     @NonNull
     @Setter
-    private List<String> Content;
+    private List<String> content;
     @NonNull
     private int remittanceOnceLimit;
     @NonNull
@@ -39,6 +40,12 @@ public class Challenge extends BaseTimeEntity {
     @NonNull
     private String imageUrl;
 
+    public void updateChallenge(ChallengeRequestDto.UpdateRequest updateRequestDto){
+        this.mainTitle = updateRequestDto.getMainTitle();
+        this.subTitle = updateRequestDto.getSubTitle();
+        this.content = updateRequestDto.getContent();
+        this.imageUrl = updateRequestDto.getImageUrl();
+    }
 
 
 }
