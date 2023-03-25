@@ -28,4 +28,12 @@ public class ChallengeService {
         challengeRepository.save(challenge);
     }
 
+    public void deleteChallenge(ChallengeRequestDto.DeleteRequest challengeRequestDto){
+        try{
+            challengeRepository.deleteById(challengeRequestDto.getId());
+        } catch (IllegalArgumentException e){
+            //throw new CResourceNotFoundException();
+        }
+    }
+
 }
