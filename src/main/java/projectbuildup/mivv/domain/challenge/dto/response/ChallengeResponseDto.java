@@ -8,7 +8,7 @@ import java.util.List;
 
 public class ChallengeResponseDto {
 
-    public static class ReadSimpleResponse {
+    public static class ReadSummaryResponse {
         String mainTitle;
         String subTitle;
 
@@ -16,7 +16,7 @@ public class ChallengeResponseDto {
 
         String imageUrl;
 
-        public ReadSimpleResponse(Challenge challenge){
+        public void readSummaryResponse(Challenge challenge){
             this.mainTitle = challenge.getMainTitle();
             this.subTitle = challenge.getSubTitle();
             this.content = challenge.getContent();
@@ -37,7 +37,7 @@ public class ChallengeResponseDto {
         int remittanceOnceLimit;
         int remittanceAvailableCount;
 
-        public ReadSpecificResponse(Challenge challenge){
+        public void readSpecificResponse(Challenge challenge){
             this.mainTitle = challenge.getMainTitle();
             this.subTitle = challenge.getSubTitle();
             this.content = challenge.getContent();

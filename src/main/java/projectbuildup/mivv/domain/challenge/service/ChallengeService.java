@@ -13,13 +13,14 @@ import projectbuildup.mivv.domain.challenge.repository.ChallengeRepository;
 public class ChallengeService {
 
     private final ChallengeRepository challengeRepository;
-    /**
-    * R :
-    * D :
-    **/
+
     public void createChallenge(ChallengeRequestDto.CreationRequest challengeRequestDto){
         Challenge challenge = challengeRequestDto.toEntity();
         challengeRepository.save(challenge);
+    }
+    public ChallengeResponseDto getSummaryChallenge(ChallengeRequestDto.ReadRequest challengeRequestDto){
+        Challenge challenge = challengeRepository.findById(challengeRequestDto.getId()).orElseThrow();
+        return ChallengeResponseDto.ReadSummaryResponse.readSummaryResponse(challenge);
     }
 
     public void updateChallenge(ChallengeRequestDto.UpdateRequest challengeRequestDto){

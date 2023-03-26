@@ -20,10 +20,8 @@ public class Challenge extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Setter
     @NonNull
     private String mainTitle;
-    @Setter
     @NonNull
     private String subTitle;
     @NonNull
@@ -31,7 +29,6 @@ public class Challenge extends BaseTimeEntity {
     @NonNull
     private LocalDate endDate;
     @NonNull
-    @Setter
     private List<String> content;
     @NonNull
     private int remittanceOnceLimit;
