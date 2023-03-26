@@ -1,6 +1,8 @@
 package projectbuildup.mivv.domain.challenge.dto.response;
 
-import lombok.NonNull;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import projectbuildup.mivv.domain.challenge.entity.Challenge;
 
 import java.time.LocalDate;
@@ -8,6 +10,9 @@ import java.util.List;
 
 public class ChallengeResponseDto {
 
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class ReadSummaryResponse {
         String mainTitle;
         String subTitle;
@@ -16,7 +21,7 @@ public class ChallengeResponseDto {
 
         String imageUrl;
 
-        public void readSummaryResponse(Challenge challenge){
+        public ReadSummaryResponse(Challenge challenge){
             this.mainTitle = challenge.getMainTitle();
             this.subTitle = challenge.getSubTitle();
             this.content = challenge.getContent();

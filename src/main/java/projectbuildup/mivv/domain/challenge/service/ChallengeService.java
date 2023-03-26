@@ -18,9 +18,9 @@ public class ChallengeService {
         Challenge challenge = challengeRequestDto.toEntity();
         challengeRepository.save(challenge);
     }
-    public ChallengeResponseDto getSummaryChallenge(ChallengeRequestDto.ReadRequest challengeRequestDto){
+    public ChallengeResponseDto.ReadSummaryResponse getChallengeSummaryOne(ChallengeRequestDto.ReadRequest challengeRequestDto) {
         Challenge challenge = challengeRepository.findById(challengeRequestDto.getId()).orElseThrow();
-        return ChallengeResponseDto.ReadSummaryResponse.readSummaryResponse(challenge);
+        return new ChallengeResponseDto.ReadSummaryResponse(challenge);
     }
 
     public void updateChallenge(ChallengeRequestDto.UpdateRequest challengeRequestDto){
