@@ -31,7 +31,7 @@ public class User extends BaseTimeEntity implements UserDetails {
     String email;
     String password;
     boolean agreement;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn
     IdentityVerification identityVerification;
 

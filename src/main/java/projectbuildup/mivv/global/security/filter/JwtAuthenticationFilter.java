@@ -1,5 +1,6 @@
 package projectbuildup.mivv.global.security.filter;
 
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 import projectbuildup.mivv.global.constant.Header;
 import projectbuildup.mivv.global.security.jwt.JwtProvider;
+import projectbuildup.mivv.global.security.jwt.JwtValidator;
 
 import java.io.IOException;
 
@@ -19,12 +21,14 @@ import java.io.IOException;
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtProvider jwtProvider;
+    private final JwtValidator jwtValidator;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String jwt = resolveToken(request);
         if (StringUtils.isNotEmpty(jwt)) {
-            Authentication authentication = jwtProvider.getAuthentication(jwt);
+            Claims claims = jwtValidator.validateAccessToken(jwt);
+            Authentication authentication = jwtProvider.getAuthentication(claims);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
 

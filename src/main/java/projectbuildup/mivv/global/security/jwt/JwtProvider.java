@@ -28,11 +28,11 @@ import java.util.stream.Collectors;
 @Component
 public class JwtProvider {
 
+    public static final String AUTHORITIES = "authorities";
+
     @Value("${spring.jwt.secret}")
     private String secretKey;
     private final UserDetailsService userDetailsService;
-
-    private final JwtValidator jwtValidator;
 
     private Key getSigningKey(String secretKey) {
         byte[] keyBytes = secretKey.getBytes(StandardCharsets.UTF_8);
@@ -40,10 +40,8 @@ public class JwtProvider {
     }
 
     public TokenDto generateToken(User user) {
-
         String accessToken = createToken(user, 1000 * JwtExpiration.ACCESS_TOKEN.getTime());
         String refreshToken = createToken(user, 1000 * JwtExpiration.REFRESH_TOKEN.getTime());
-
         return TokenDto.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
@@ -52,7 +50,6 @@ public class JwtProvider {
 
     private String createToken(User user, Long expireTime) {
         Claims claims = injectValues(user, expireTime);
-
         return Jwts.builder()
                 .setHeaderParam("type", "jwt")
                 .setClaims(claims)
@@ -65,28 +62,18 @@ public class JwtProvider {
         String authorities = user.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
-
         Claims claims = Jwts.claims();
         claims.setSubject(String.valueOf(user.getId()));
         claims.setIssuedAt(new Date());
         claims.setExpiration(new Date(now + expireTime));
         claims.setId(UUID.randomUUID().toString());
-        claims.put("authorities", authorities);
+        claims.put(AUTHORITIES, authorities);
 
         return claims;
     }
 
-    public Authentication getAuthentication(String token) {
-        Claims claims = jwtValidator.validateAccessToken(token);
-        if (claims.get("authorities") == null) {
-            throw new AccessDeniedException("권한이 없습니다.");
-        }
-        UserDetails userDetails = userDetailsService.loadUserByUsername(claims.getSubject());
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
-    }
-
     public Authentication getAuthentication(Claims claims) {
-        if (claims.get("authorities") == null) {
+        if (claims.get(AUTHORITIES) == null) {
             throw new AccessDeniedException("권한이 없습니다.");
         }
         UserDetails userDetails = userDetailsService.loadUserByUsername(claims.getSubject());

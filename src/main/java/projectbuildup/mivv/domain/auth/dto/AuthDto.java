@@ -4,8 +4,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.global.constant.ExampleValue;
@@ -64,5 +66,26 @@ public class AuthDto {
         @NotBlank
         @Schema(description = "본인인증 API 호출 키")
         String key;
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    public static class UnlinkRequestDto {
+        Long userId;
+        String accessToken;
+        String refreshToken;
+    }
+
+    @Getter
+    @NoArgsConstructor
+    public static class ReissueRequest {
+        @Schema(description = "액세스 토큰", example = ExampleValue.JWT.ACCESS)
+        @NotBlank
+        String accessToken;
+
+        @Schema(description = "리프레시 토큰", example = ExampleValue.JWT.REFRESH)
+        @NotBlank
+        String refreshToken;
     }
 }

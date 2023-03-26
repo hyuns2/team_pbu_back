@@ -1,6 +1,7 @@
 -- <IdentityVerification> --
 insert into identity_verification (id, birth_date, code, mobile, name)
-values (1, '19990101', 'abcdefghijklmnopqrstuvwxyz', '01012345678', '김철수');
+values (1, '19990101', 'abcdefghijklmnopqrstuvwxyz', '01012345678', '김철수'),
+        (2, '19990101', 'sadfsadfsadfsadfsdaf', '01012345678', '김철수');
 
 -- <User> --
 insert into user (id, created_time, modified_time, agreement, email, nickname, password, profile_image, identity_verification_id)
