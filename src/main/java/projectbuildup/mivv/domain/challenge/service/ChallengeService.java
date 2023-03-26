@@ -35,6 +35,12 @@ public class ChallengeService {
                 .map(ChallengeResponseDto.ReadSummaryResponse::new)
                 .toList();
     }
+    public List<ChallengeResponseDto.ReadSpecificResponse> getChallengeSpecificAll(){
+        List<Challenge> challenges = challengeRepository.findAll();
+        return challenges.stream()
+                .map(ChallengeResponseDto.ReadSpecificResponse::new)
+                .toList();
+    }
     public void updateChallenge(ChallengeRequestDto.UpdateRequest challengeRequestDto){
         Challenge challenge = challengeRepository.findById(challengeRequestDto.getId()).orElseThrow();
         challenge.updateChallenge(challengeRequestDto);
