@@ -1,4 +1,4 @@
-package projectbuildup.mivv.domain.member.entity;
+package projectbuildup.mivv.domain.user.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

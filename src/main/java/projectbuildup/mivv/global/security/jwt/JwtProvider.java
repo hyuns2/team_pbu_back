@@ -14,7 +14,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
-import projectbuildup.mivv.domain.member.entity.User;
+import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.global.constant.JwtExpiration;
 
 import java.nio.charset.StandardCharsets;

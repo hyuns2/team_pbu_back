@@ -2,9 +2,7 @@ package projectbuildup.mivv.domain.auth.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import projectbuildup.mivv.domain.auth.repository.IdentityVerificationRepository;
-import projectbuildup.mivv.domain.member.entity.IdentityVerification;
-import projectbuildup.mivv.global.error.exception.CInternalServerException;
+import projectbuildup.mivv.domain.user.entity.IdentityVerification;
 
 @Component
 @RequiredArgsConstructor

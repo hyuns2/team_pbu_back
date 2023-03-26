@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import projectbuildup.mivv.domain.auth.dto.AuthDto;
 import projectbuildup.mivv.domain.auth.service.AuthService;
 import projectbuildup.mivv.domain.auth.service.IdentityVerificationService;
-import projectbuildup.mivv.domain.member.entity.IdentityVerification;
 import projectbuildup.mivv.global.security.jwt.TokenDto;
 
 @Tag(name = "[1-1.Authentication]", description = "인증과 관련된 API입니다.")
