@@ -22,6 +22,10 @@ public class ChallengeService {
         Challenge challenge = challengeRepository.findById(challengeRequestDto.getId()).orElseThrow();
         return new ChallengeResponseDto.ReadSummaryResponse(challenge);
     }
+    public ChallengeResponseDto.ReadSpecificResponse getChallengeSpecificOne(ChallengeRequestDto.ReadRequest challengeRequestDto){
+        Challenge challenge = challengeRepository.findById(challengeRequestDto.getId()).orElseThrow();
+        return new ChallengeResponseDto.ReadSpecificResponse(challenge);
+    }
 
     public void updateChallenge(ChallengeRequestDto.UpdateRequest challengeRequestDto){
         Challenge challenge = challengeRepository.findById(challengeRequestDto.getId()).orElseThrow();

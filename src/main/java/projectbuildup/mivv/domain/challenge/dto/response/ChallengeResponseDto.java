@@ -28,6 +28,9 @@ public class ChallengeResponseDto {
             this.imageUrl = challenge.getImageUrl();
         }
     }
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class ReadSpecificResponse {
         String mainTitle;
         String subTitle;
@@ -42,7 +45,7 @@ public class ChallengeResponseDto {
         int remittanceOnceLimit;
         int remittanceAvailableCount;
 
-        public void readSpecificResponse(Challenge challenge){
+        public ReadSpecificResponse(Challenge challenge){
             this.mainTitle = challenge.getMainTitle();
             this.subTitle = challenge.getSubTitle();
             this.content = challenge.getContent();
