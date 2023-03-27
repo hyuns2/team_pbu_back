@@ -44,6 +44,7 @@ public class ChallengeRequestDto {
     @NoArgsConstructor
     public static class ReadRequest {
         int id;
+        int status;
 
     }
     @Getter

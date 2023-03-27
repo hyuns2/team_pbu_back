@@ -26,4 +26,8 @@ public class ChallengeController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    public ResponseEntity<HttpStatus> getChallenge(ChallengeRequestDto.ReadRequest challengeRequestDto){
+
+    }
+
 }
