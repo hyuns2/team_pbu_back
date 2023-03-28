@@ -1,13 +1,11 @@
 package projectbuildup.mivv.domain.challenge.controller;
 
+import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import projectbuildup.mivv.domain.challenge.dto.request.ChallengeRequestDto;
 import projectbuildup.mivv.domain.challenge.service.ChallengeService;
 import projectbuildup.mivv.domain.challenge.service.ChallengeValidationService;
@@ -25,8 +23,14 @@ public class ChallengeController {
         challengeService.createChallenge(challengeRequestDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
+    @GetMapping("/specific")
+    public ResponseEntity<HttpStatus> getAllChallenges(){
+        challengeService.getChallengeSpecificAll();
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @GetMapping("/{ challengeId }")
+    public ResponseEntity<HttpStatus> getChallenge(ChallengeRequestDto.ReadRequest challengeRequestDto, int challengeId){
 
-    public ResponseEntity<HttpStatus> getChallenge(ChallengeRequestDto.ReadRequest challengeRequestDto){
 
     }
 
