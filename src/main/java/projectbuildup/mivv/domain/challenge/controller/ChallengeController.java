@@ -28,6 +28,11 @@ public class ChallengeController {
         challengeService.getChallengeSpecificAll();
         return new ResponseEntity<>(HttpStatus.OK);
     }
+    @GetMapping("/summary")
+    public ResponseEntity<HttpStatus> getAllChallengesSummaryInfo(){
+        challengeService.getChallengeSummaryAll();
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
     @GetMapping("/{ challengeId }")
     public ResponseEntity<HttpStatus> getChallenge(ChallengeRequestDto.ReadRequest challengeRequestDto, int challengeId){
 
