@@ -24,7 +24,7 @@ public class ChallengeController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
     @GetMapping("/specific")
-    public ResponseEntity<HttpStatus> getAllChallenges(){
+    public ResponseEntity<HttpStatus> getAllChallengesSpecificInfo(){
         challengeService.getChallengeSpecificAll();
         return new ResponseEntity<>(HttpStatus.OK);
     }
