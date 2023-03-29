@@ -18,7 +18,9 @@ import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.global.constant.ExampleValue;
 import projectbuildup.mivv.global.constant.Header;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -45,7 +47,7 @@ public class InquiryController {
     //어드민 권한 설정 필요, hasRole('USER')로 테스트함
     @Operation(summary = "답변 등록", description = "관리자가 답변을 등록합니다.")
     @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER')")
     @PostMapping("/answer-register")
     public ResponseEntity<?> answerRegister(@AuthenticationPrincipal User user, @RequestBody InquiryDto.AnswerRequestDto dto) {
         InquiryEntity entity = InquiryDto.AnswerRequestDto.toEntity(dto);
@@ -54,6 +56,21 @@ public class InquiryController {
         service.answerRegister(entity);
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Operation(summary = "사용자 문의 조회", description = "사용자가 본인의 문의를 조회합니다.")
+    @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/retrieve-user")
+    public ResponseEntity<?> retrieveForUser(@AuthenticationPrincipal User user) {
+        InquiryEntity entity = new InquiryEntity();
+        entity.setUser(user);
+
+        List<InquiryEntity> resultEntity = service.retrieve(entity);
+
+        List<InquiryDto.InquiryResponseDto> resultDto = resultEntity.stream().map(InquiryDto.InquiryResponseDto::new).collect(Collectors.toList());
+
+        return ResponseEntity.ok().body(resultDto);
     }
 
 }

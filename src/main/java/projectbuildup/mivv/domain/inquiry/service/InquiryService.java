@@ -29,7 +29,7 @@ public class InquiryService {
         validate(entity);
 
         //사용자가 문의가능한 상태인지 확인(최대 2개)
-        if (repo.countByUser_id(entity.getUser().getId()) > 1) {
+        if (repo.countByUser_idAndAnswer(entity.getUser().getId(), entity.getAnswer()) > 1) {
             throw new CInquiryOverException();
         }
 
@@ -47,6 +47,12 @@ public class InquiryService {
         final InquiryEntity result = target.get();
         result.setAnswer(entity.getAnswer());
         repo.save(result);
+    }
+
+    public List<InquiryEntity> retrieve(final InquiryEntity entity) {
+        validate(entity);
+
+        return repo.findByUser_id(entity.getUser().getId());
     }
 
 }

@@ -11,8 +11,9 @@ import java.util.Optional;
 @Repository
 public interface InquiryRepository extends JpaRepository<InquiryEntity, Long> {
 
-    int countByUser_id(Long user_id);
+    int countByUser_idAndAnswer(Long user_id, String answer);
 
     Optional<InquiryEntity> findById(Long id);
 
+    List<InquiryEntity> findByUser_id(Long user_id);
 }
