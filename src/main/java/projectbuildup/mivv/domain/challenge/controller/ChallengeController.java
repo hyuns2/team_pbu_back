@@ -54,5 +54,11 @@ public class ChallengeController {
         challengeService.updateChallenge(challengeRequestDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+    @DeleteMapping("/{challengeId}")
+    public ResponseEntity<HttpStatus> deleteChallenge(@PathVariable int challengeId){
+        challengeValidationService.isExistChallenge(challengeId);
+        challengeService.deleteChallenge(new ChallengeRequestDto.DeleteRequest(challengeId));
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
 }
