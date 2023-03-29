@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import projectbuildup.mivv.domain.challenge.dto.request.ChallengeRequestDto;
+import projectbuildup.mivv.domain.challenge.dto.response.ChallengeResponseDto;
 import projectbuildup.mivv.domain.challenge.service.ChallengeService;
 import projectbuildup.mivv.domain.challenge.service.ChallengeValidationService;
 
@@ -33,10 +34,12 @@ public class ChallengeController {
         challengeService.getChallengeSummaryAll();
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    @GetMapping("/{ challengeId }")
-    public ResponseEntity<HttpStatus> getChallenge(ChallengeRequestDto.ReadRequest challengeRequestDto, int challengeId){
-
-
+    @GetMapping("/{challengeId}/specific")
+    public ResponseEntity<ChallengeResponseDto.ReadSpecificResponse> getOneChallengeSpecificInfo(@PathVariable int challengeId){
+        challengeValidationService.isExistChallenge(challengeId);
+        ChallengeRequestDto.ReadRequest challengeRequestDto =  new ChallengeRequestDto.ReadRequest(challengeId);
+        ChallengeResponseDto.ReadSpecificResponse challengeResponseDto = challengeService.getChallengeSpecificOne(challengeRequestDto);
+        return new ResponseEntity<>(challengeResponseDto, HttpStatus.OK);
     }
 
 }
