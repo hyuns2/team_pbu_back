@@ -58,7 +58,7 @@ public class InquiryController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @Operation(summary = "사용자 문의 조회", description = "사용자가 본인의 문의를 조회합니다.")
+    @Operation(summary = "사용자 문의 전체 조회", description = "사용자가 본인의 문의 전체를 조회합니다.")
     @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/retrieve-user")
@@ -66,7 +66,21 @@ public class InquiryController {
         InquiryEntity entity = new InquiryEntity();
         entity.setUser(user);
 
-        List<InquiryEntity> resultEntity = service.retrieve(entity);
+        List<InquiryEntity> resultEntity = service.retrieveForUser(entity);
+
+        List<InquiryDto.InquiryResponseDto> resultDto = resultEntity.stream().map(InquiryDto.InquiryResponseDto::new).collect(Collectors.toList());
+
+        return ResponseEntity.ok().body(resultDto);
+    }
+
+    //어드민 권한 설정 필요, hasRole('USER')로 테스트함
+    @Operation(summary = "관리자 문의 전체 조회", description = "관리자가 시간순으로 문의를 전체 조회합니다.")
+    @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/retrieve-admin")
+    public ResponseEntity<?> retrieveForAdmin(@AuthenticationPrincipal User user) {
+
+        List<InquiryEntity> resultEntity = service.retrieveForAdmin();
 
         List<InquiryDto.InquiryResponseDto> resultDto = resultEntity.stream().map(InquiryDto.InquiryResponseDto::new).collect(Collectors.toList());
 

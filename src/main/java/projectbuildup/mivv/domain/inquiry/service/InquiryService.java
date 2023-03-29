@@ -49,10 +49,14 @@ public class InquiryService {
         repo.save(result);
     }
 
-    public List<InquiryEntity> retrieve(final InquiryEntity entity) {
+    public List<InquiryEntity> retrieveForUser(final InquiryEntity entity) {
         validate(entity);
 
         return repo.findByUser_id(entity.getUser().getId());
+    }
+
+    public List<InquiryEntity> retrieveForAdmin() {
+        return repo.findAllByOrderByTimeStamp();
     }
 
 }
