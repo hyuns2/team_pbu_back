@@ -11,6 +11,8 @@ import projectbuildup.mivv.domain.challenge.dto.response.ChallengeResponseDto;
 import projectbuildup.mivv.domain.challenge.service.ChallengeService;
 import projectbuildup.mivv.domain.challenge.service.ChallengeValidationService;
 
+import java.util.List;
+
 @Slf4j
 @RequestMapping("/api/challenges")
 @RequiredArgsConstructor
@@ -25,14 +27,14 @@ public class ChallengeController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
     @GetMapping("/specific")
-    public ResponseEntity<HttpStatus> getAllChallengesSpecificInfo(){
-        challengeService.getChallengeSpecificAll();
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<List<ChallengeResponseDto.ReadSpecificResponse>> getAllChallengesSpecificInfo(){
+        List<ChallengeResponseDto.ReadSpecificResponse> allChallengesSpecificInfoDto = challengeService.getChallengeSpecificAll();
+        return new ResponseEntity<>(allChallengesSpecificInfoDto, HttpStatus.OK);
     }
     @GetMapping("/summary")
-    public ResponseEntity<HttpStatus> getAllChallengesSummaryInfo(){
-        challengeService.getChallengeSummaryAll();
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<List<ChallengeResponseDto.ReadSummaryResponse>> getAllChallengesSummaryInfo(){
+        List<ChallengeResponseDto.ReadSummaryResponse> allChallengesSummaryInfoDto = challengeService.getChallengeSummaryAll();
+        return new ResponseEntity<>(allChallengesSummaryInfoDto, HttpStatus.OK);
     }
     @GetMapping("/{challengeId}/specific")
     public ResponseEntity<ChallengeResponseDto.ReadSpecificResponse> getOneChallengeSpecificInfo(@PathVariable int challengeId){

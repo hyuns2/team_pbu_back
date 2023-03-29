@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
+import org.springframework.lang.Nullable;
 import projectbuildup.mivv.domain.challenge.dto.request.ChallengeRequestDto;
 import projectbuildup.mivv.domain.member.entity.Member;
 import projectbuildup.mivv.global.common.BaseTimeEntity;
@@ -24,15 +25,19 @@ public class Challenge extends BaseTimeEntity {
     private String mainTitle;
     @NonNull
     private String subTitle;
-    @NonNull
+    //@NonNull
+    @Nullable
     private LocalDate startDate;
-    @NonNull
+    //@NonNull
+    @Nullable
     private LocalDate endDate;
     @NonNull
     private List<String> content;
-    @NonNull
+    //@NonNull
+    @Nullable
     private int remittanceOnceLimit;
-    @NonNull
+    //@NonNull
+    @Nullable
     private int remittanceAvailableCount;
     @NonNull
     private String imageUrl;
