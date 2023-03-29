@@ -41,5 +41,12 @@ public class ChallengeController {
         ChallengeResponseDto.ReadSpecificResponse challengeResponseDto = challengeService.getChallengeSpecificOne(challengeRequestDto);
         return new ResponseEntity<>(challengeResponseDto, HttpStatus.OK);
     }
+    @GetMapping("/{challengeId}/summary")
+    public ResponseEntity<ChallengeResponseDto.ReadSummaryResponse> getOneChallengeSummaryInfo(@PathVariable int challengeId){
+        challengeValidationService.isExistChallenge(challengeId);
+        ChallengeRequestDto.ReadRequest challengeRequestDto =  new ChallengeRequestDto.ReadRequest(challengeId);
+        ChallengeResponseDto.ReadSummaryResponse challengeResponseDto = challengeService.getChallengeSummaryOne(challengeRequestDto);
+        return new ResponseEntity<>(challengeResponseDto, HttpStatus.OK);
+    }
 
 }
