@@ -20,7 +20,7 @@ public class ChallengeController {
     private final ChallengeService challengeService;
     private final ChallengeValidationService challengeValidationService;
     @PostMapping("/create")
-    public ResponseEntity<HttpStatus> createChallenge(ChallengeRequestDto.CreationRequest challengeRequestDto){
+    public ResponseEntity<HttpStatus> createChallenge(@RequestBody ChallengeRequestDto.CreationRequest challengeRequestDto){
         challengeService.createChallenge(challengeRequestDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -47,6 +47,12 @@ public class ChallengeController {
         ChallengeRequestDto.ReadRequest challengeRequestDto =  new ChallengeRequestDto.ReadRequest(challengeId);
         ChallengeResponseDto.ReadSummaryResponse challengeResponseDto = challengeService.getChallengeSummaryOne(challengeRequestDto);
         return new ResponseEntity<>(challengeResponseDto, HttpStatus.OK);
+    }
+    @PutMapping("/{challengeId}")
+    public ResponseEntity<HttpStatus> updateChallenge(@PathVariable int challengeId, @RequestBody ChallengeRequestDto.UpdateRequest challengeRequestDto){
+        challengeValidationService.isExistChallenge(challengeId);
+        challengeService.updateChallenge(challengeRequestDto);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
