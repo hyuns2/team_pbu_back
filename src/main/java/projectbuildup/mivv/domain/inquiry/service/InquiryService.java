@@ -25,7 +25,7 @@ public class InquiryService {
         }
     }
 
-    public void inquiryRegister(final InquiryEntity entity) {
+    public void registerInquiry(final InquiryEntity entity) {
         validate(entity);
 
         //사용자가 문의가능한 상태인지 확인(최대 2개)
@@ -36,7 +36,7 @@ public class InquiryService {
         repo.save(entity);
     }
 
-    public void answerRegister(final InquiryEntity entity) {
+    public void registerAnswer(final InquiryEntity entity) {
         validate(entity);
 
         Optional<InquiryEntity> target = repo.findById(entity.getId());
@@ -56,7 +56,40 @@ public class InquiryService {
     }
 
     public List<InquiryEntity> retrieveForAdmin() {
-        return repo.findAllByOrderByTimeStamp();
+        return repo.findAllByOrderByTimeStampDesc();
+    }
+
+    public InquiryEntity retrieveDetailsForUser(final InquiryEntity entity) {
+        validate(entity);
+
+        List<InquiryEntity> result = repo.findByUser_idAndTitleAndContent(entity.getUser().getId(), entity.getTitle(), entity.getContent());
+        if (result.size() != 1) {
+            throw new CInquiryNotFoundException();
+        }
+
+        return result.get(0);
+    }
+
+    public InquiryEntity retrieveDetailsForAdmin(final InquiryEntity entity) {
+        validate(entity);
+
+        Optional<InquiryEntity> result= repo.findById(entity.getId());
+        if (result.isEmpty()) {
+            throw new CInquiryNotFoundException();
+        }
+
+        return result.get();
+    }
+
+    public void deleteInquiry(final InquiryEntity entity) {
+        validate(entity);
+
+        List<InquiryEntity> result = repo.findByUser_idAndTitleAndContent(entity.getUser().getId(), entity.getTitle(), entity.getContent());
+        if (result.size() != 1) {
+            throw new CInquiryNotFoundException();
+        }
+
+        repo.deleteById(result.get(0).getId());
     }
 
 }

@@ -19,7 +19,7 @@ public class InquiryDto {
     @Builder
     @AllArgsConstructor
     @Data
-    public static class InquiryRegisterDto {
+    public static class InquiryRequestDto {
         @Length(min = 2, max = 30)
         @Schema(description = "문의 제목")
         private String title;
@@ -28,7 +28,7 @@ public class InquiryDto {
         @Schema(description = "문의 내용")
         private String content;
 
-        public static InquiryEntity toEntity(final InquiryRegisterDto irDto) {
+        public static InquiryEntity toEntity(final InquiryRequestDto irDto) {
             LocalDateTime localDateTime = LocalDateTime.now();
 
             return InquiryEntity.builder().
@@ -56,6 +56,22 @@ public class InquiryDto {
             return InquiryEntity.builder().
                     id(arDto.getId()).
                     answer(arDto.getAnswer()).build();
+
+        }
+    }
+
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Data
+    public static class SimpleRequestDto {
+        @NotBlank
+        @Schema(description = "문의 고유번호")
+        private Long id;
+
+        public static InquiryEntity toEntity(final SimpleRequestDto srDto) {
+            return InquiryEntity.builder().
+                    id(srDto.getId()).build();
 
         }
     }
