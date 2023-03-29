@@ -32,6 +32,7 @@ public class InquiryEntity {
     @Column(nullable = false, length = 1000)
     private String content;
 
+    @Column(length = 1000)
     private String answer;
 
     @Column(nullable = false)

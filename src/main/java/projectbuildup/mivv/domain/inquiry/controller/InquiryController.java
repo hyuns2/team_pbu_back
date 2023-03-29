@@ -32,12 +32,26 @@ public class InquiryController {
     @Operation(summary = "문의 등록", description = "사용자가 문의를 등록합니다.")
     @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('USER')")
-    @PostMapping("/register")
+    @PostMapping("/inquiry-register")
     public ResponseEntity<?> inquiryRegister(@AuthenticationPrincipal User user, @RequestBody InquiryDto.InquiryRegisterDto dto) {
         InquiryEntity entity = InquiryDto.InquiryRegisterDto.toEntity(dto);
         entity.setUser(user);
 
-        service.register(entity);
+        service.inquiryRegister(entity);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    //어드민 권한 설정 필요, hasRole('USER')로 테스트함
+    @Operation(summary = "답변 등록", description = "관리자가 답변을 등록합니다.")
+    @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/answer-register")
+    public ResponseEntity<?> answerRegister(@AuthenticationPrincipal User user, @RequestBody InquiryDto.AnswerRequestDto dto) {
+        InquiryEntity entity = InquiryDto.AnswerRequestDto.toEntity(dto);
+        entity.setUser(user);
+
+        service.answerRegister(entity);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

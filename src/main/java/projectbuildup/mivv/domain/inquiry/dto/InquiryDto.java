@@ -43,8 +43,19 @@ public class InquiryDto {
     @Data
     public static class AnswerRequestDto {
         @NotBlank
+        @Schema(description = "문의 고유번호")
         private Long id;
+        @Length(min = 2, max = 1000)
+        @Schema(description = "답변 내용")
         private String answer;
+
+        public static InquiryEntity toEntity(final AnswerRequestDto arDto) {
+
+            return InquiryEntity.builder().
+                    id(arDto.getId()).
+                    answer(arDto.getAnswer()).build();
+
+        }
     }
 
 }
