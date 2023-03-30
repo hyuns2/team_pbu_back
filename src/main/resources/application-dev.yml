@@ -8,6 +8,8 @@ spring:
     hikari:
       connection-test-query: select 1 from dual
   jpa:  # jpa 사용시 추가
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL8Dialect
     properties:
       hibernate:
         jdbc:
