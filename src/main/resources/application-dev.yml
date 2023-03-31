@@ -1,7 +1,7 @@
 
 spring:
   datasource:  # mysql 사용
-    url: jdbc:mariadb://localhost:3306/mivv_new_dev?validationQuery="select 1"&useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=UTF-8&serverTimezone=UTC&useLegacyDatetimeCode=false
+    url: jdbc:mysql://localhost:3306/mivv_new_dev?validationQuery="select 1"&useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=UTF-8&serverTimezone=UTC&useLegacyDatetimeCode=false
     username: root
     password: pbuback!
     driver-class-name: com.mysql.cj.jdbc.Driver
