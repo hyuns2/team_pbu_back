@@ -7,7 +7,6 @@ import jakarta.persistence.Id;
 import lombok.*;
 import org.springframework.lang.Nullable;
 import projectbuildup.mivv.domain.challenge.dto.request.ChallengeRequestDto;
-import projectbuildup.mivv.domain.member.entity.Member;
 import projectbuildup.mivv.global.common.BaseTimeEntity;
 
 import java.time.LocalDate;
