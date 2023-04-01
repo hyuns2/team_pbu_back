@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import projectbuildup.mivv.domain.auth.repository.TokenRedisRepository;
+import projectbuildup.mivv.domain.auth.repository.TokenRepository;
 import projectbuildup.mivv.global.error.ErrorCode;
 import projectbuildup.mivv.global.error.exception.CRefreshTokenExpiredException;
 import projectbuildup.mivv.global.error.exception.CReissueFailedException;
@@ -21,7 +21,7 @@ public class JwtValidator {
     @Value("${spring.jwt.secret}")
     private String secretKey;
 
-    private final TokenRedisRepository tokenRedisRepository;
+    private final TokenRepository tokenRepository;
 
     private Key getSigningKey(String secretKey) {
         byte[] keyBytes = secretKey.getBytes(StandardCharsets.UTF_8);
@@ -30,7 +30,7 @@ public class JwtValidator {
 
     public Claims validateAccessToken(String accessToken) {
         try {
-            if (tokenRedisRepository.doesTokenBlocked(accessToken)) {
+            if (tokenRepository.doesTokenBlocked(accessToken)) {
                 log.error("사용 중지된 토큰");
                 throw new JwtException(ErrorCode.JWT_BLOCKED.name());
             }
@@ -59,7 +59,7 @@ public class JwtValidator {
 
     public Claims validateAccessTokenForReissue(String accessToken) {
         try {
-            if (tokenRedisRepository.doesTokenBlocked(accessToken)) {
+            if (tokenRepository.doesTokenBlocked(accessToken)) {
                 log.error("사용 중지된 토큰");
                 throw new CReissueFailedException();
             }

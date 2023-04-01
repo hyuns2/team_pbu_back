@@ -6,8 +6,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import projectbuildup.mivv.domain.member.repository.MemberJpaRepository;
-import projectbuildup.mivv.global.error.exception.CMemberNotFoundException;
+import projectbuildup.mivv.domain.member.repository.UserRepository;
+import projectbuildup.mivv.global.error.exception.CUserNotFoundException;
 
 
 @Service
@@ -15,10 +15,10 @@ import projectbuildup.mivv.global.error.exception.CMemberNotFoundException;
 @RequiredArgsConstructor
 public class CustomUserDetailService implements UserDetailsService {
 
-    private final MemberJpaRepository memberRepository;
+    private final UserRepository memberRepository;
 
     @Override
     public UserDetails loadUserByUsername(String memberId) throws UsernameNotFoundException {
-        return memberRepository.findById(Long.parseLong(memberId)).orElseThrow(CMemberNotFoundException::new);
+        return memberRepository.findById(Long.parseLong(memberId)).orElseThrow(CUserNotFoundException::new);
     }
 }

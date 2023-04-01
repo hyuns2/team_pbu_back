@@ -18,11 +18,17 @@ spring:
         format_sql: true
         hbm2ddl:
           auto: create
+    defer-datasource-initialization: true #더미데이터 용
     show-sql: true
   data:
     redis:
       host: localhost
       port: 6379
+  sql: #더미데이터 용
+    init:
+      mode: always
+      data-locations: classpath:data.sql
+      encoding: UTF-8
 
 springdoc:
   use-fqn: true # 정규화된 스키마명 사용 설정

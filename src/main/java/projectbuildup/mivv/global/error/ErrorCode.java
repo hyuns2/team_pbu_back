@@ -1,5 +1,6 @@
 package projectbuildup.mivv.global.error;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
@@ -15,12 +16,13 @@ public enum ErrorCode {
 
     // 6000 ~ : 권한, 인증 에러
     LOGIN_FAILED(-6001, "로그인에 실패했습니다.", HttpStatus.UNAUTHORIZED),
-    MEMBER_EXIST_ERROR(-6002, "해당 계정이 이미 존재합니다.", HttpStatus.UNAUTHORIZED),
+    MEMBER_EXIST_ERROR(-6002, "이미 가입된 사용자입니다.", HttpStatus.UNAUTHORIZED),
     ACCESS_DENIED(-6005, "접근 권한이 없습니다.", HttpStatus.FORBIDDEN),
     REFRESH_TOKEN_EXPIRED(-6006, "리프레시 토큰이 만료되었습니다. 다시 로그인해주세요.", HttpStatus.FORBIDDEN),
     REISSUE_FAILED(-6007, "토큰 재발급에 실패했습니다.", HttpStatus.BAD_REQUEST),
     MEMBER_NOT_FOUND(-6008, "회원을 조회할 수 없습니다.", HttpStatus.UNAUTHORIZED),
     WRONG_PASSWORD(-6009, "잘못된 비밀번호입니다.", HttpStatus.UNAUTHORIZED),
+    VERIFICATION_NOT_FOUND(-6010, "본인인증 정보가 없습니다.", HttpStatus.NOT_FOUND),
 
 
     // 7000 ~ : 시큐리티 에러
