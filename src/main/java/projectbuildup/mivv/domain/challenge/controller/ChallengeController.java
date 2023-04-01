@@ -1,5 +1,6 @@
 package projectbuildup.mivv.domain.challenge.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ import java.util.List;
 @RequestMapping("/api/challenges")
 @RequiredArgsConstructor
 @RestController
+@Tag(name = "[Challenge]", description = "챌린지 관련 API입니다.")
 public class ChallengeController {
 
     private final ChallengeService challengeService;
@@ -36,14 +38,14 @@ public class ChallengeController {
         List<ChallengeResponseDto.ReadSummaryResponse> allChallengesSummaryInfoDto = challengeService.getChallengeSummaryAll();
         return new ResponseEntity<>(allChallengesSummaryInfoDto, HttpStatus.OK);
     }
-    @GetMapping("/{challengeId}/specific")
+    @GetMapping("/specific/{challengeId}")
     public ResponseEntity<ChallengeResponseDto.ReadSpecificResponse> getOneChallengeSpecificInfo(@PathVariable int challengeId){
         challengeValidationService.isExistChallenge(challengeId);
         ChallengeRequestDto.ReadRequest challengeRequestDto =  new ChallengeRequestDto.ReadRequest(challengeId);
         ChallengeResponseDto.ReadSpecificResponse challengeResponseDto = challengeService.getChallengeSpecificOne(challengeRequestDto);
         return new ResponseEntity<>(challengeResponseDto, HttpStatus.OK);
     }
-    @GetMapping("/{challengeId}/summary")
+    @GetMapping("/summary/{challengeId}")
     public ResponseEntity<ChallengeResponseDto.ReadSummaryResponse> getOneChallengeSummaryInfo(@PathVariable int challengeId){
         challengeValidationService.isExistChallenge(challengeId);
         ChallengeRequestDto.ReadRequest challengeRequestDto =  new ChallengeRequestDto.ReadRequest(challengeId);
