@@ -13,7 +13,7 @@ public class CouponRequestDto {
     @NoArgsConstructor
     @Builder
     @Getter
-    public static class creationRequest{
+    public static class CreationRequest{
         String title;
         String content;
         String imageUrl;
@@ -38,13 +38,13 @@ public class CouponRequestDto {
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
-    public static class readRequest{
+    public static class ReadRequest{
         Long id;
     }
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
-    public static class updateContentRequest{
+    public static class UpdateContentRequest{
         String title;
         String content;
         String imageUrl;
@@ -53,14 +53,14 @@ public class CouponRequestDto {
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
-    public static class updatePriceRequest{
+    public static class UpdatePriceRequest{
         int originalPrice;
         int salePrice;
     }
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
-    public static class deleteRequest{
+    public static class DeleteRequest{
         Long id;
     }
 }
