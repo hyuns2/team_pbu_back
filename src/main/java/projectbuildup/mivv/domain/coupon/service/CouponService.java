@@ -29,4 +29,9 @@ public class CouponService {
         coupon.updatePrice(couponRequestDto);
         couponRepository.save(coupon);
     }
+    public void deleteCoupon(CouponRequestDto.DeleteRequest couponRequestDto){
+        couponRepository.deleteById(couponRequestDto.getId());
+        //Coupon coupon = couponRepository.findById(couponRequestDto.getId()).orElseThrow();
+        //couponRepository.delete(coupon);
+    }
 }
