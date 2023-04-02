@@ -12,6 +12,6 @@ public class CouponService {
 
     public void createCoupon(CouponRequestDto.CreationRequest couponRequestDto){
         Coupon coupon = couponRequestDto.toEntity();
-
+        couponRepository.save(coupon);
     }
 }
