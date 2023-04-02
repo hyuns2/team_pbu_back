@@ -3,6 +3,7 @@ package projectbuildup.mivv.domain.coupon.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import projectbuildup.mivv.domain.coupon.dto.request.CouponRequestDto;
+import projectbuildup.mivv.domain.coupon.dto.response.CouponResponseDto;
 import projectbuildup.mivv.domain.coupon.entity.Coupon;
 import projectbuildup.mivv.domain.coupon.repository.CouponRepository;
 @RequiredArgsConstructor
@@ -13,5 +14,9 @@ public class CouponService {
     public void createCoupon(CouponRequestDto.CreationRequest couponRequestDto){
         Coupon coupon = couponRequestDto.toEntity();
         couponRepository.save(coupon);
+    }
+    public CouponResponseDto.ReadResponse readCoupon(CouponRequestDto.ReadRequest couponRequestDto){
+        Coupon coupon = couponRepository.findById(couponRequestDto.getId()).orElseThrow();
+        return new CouponResponseDto.ReadResponse(coupon);
     }
 }
