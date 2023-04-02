@@ -1,12 +1,16 @@
 package projectbuildup.mivv.domain.coupon.dto.request;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import projectbuildup.mivv.domain.coupon.entity.Coupon;
 
 import java.time.LocalDate;
 
 public class CouponRequestDto {
+    @AllArgsConstructor
+    @NoArgsConstructor
     @Builder
     @Getter
     public static class creationRequest{
@@ -30,5 +34,17 @@ public class CouponRequestDto {
                     .build();
         }
 
+    }
+
+    public static class updateContentRequest{
+        String title;
+        String content;
+        String imageUrl;
+
+    }
+
+    public static class updatePriceRequest{
+        int originalPrice;
+        int salePrice;
     }
 }
