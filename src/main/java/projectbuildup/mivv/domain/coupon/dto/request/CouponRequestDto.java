@@ -38,6 +38,12 @@ public class CouponRequestDto {
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
+    public static class readRequest{
+        Long id;
+    }
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
     public static class updateContentRequest{
         String title;
         String content;
