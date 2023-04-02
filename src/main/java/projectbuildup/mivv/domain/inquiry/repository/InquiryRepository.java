@@ -1,10 +1,10 @@
 package projectbuildup.mivv.domain.inquiry.repository;
 
-import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import org.w3c.dom.stylesheets.LinkStyle;
+import org.springframework.transaction.annotation.Transactional;
 import projectbuildup.mivv.domain.inquiry.entity.InquiryEntity;
 
 import java.util.List;
@@ -21,7 +21,10 @@ public interface InquiryRepository extends JpaRepository<InquiryEntity, Long> {
 
     List<InquiryEntity> findAllByOrderByTimeStampDesc();
 
-    List<InquiryEntity> findByUser_idAndTitleAndContent(Long user_id, String title, String content);
-
     void deleteById(Long id);
+
+    @Modifying(clearAutomatically = true)
+    @Transactional
+    @Query("update InquiryEntity i set i.answer=?1 where i.id=?2")
+    void updateAnswer(String answer, Long id);
 }

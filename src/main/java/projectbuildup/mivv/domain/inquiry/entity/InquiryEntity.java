@@ -1,11 +1,7 @@
 package projectbuildup.mivv.domain.inquiry.entity;
 
-
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import projectbuildup.mivv.domain.user.entity.User;
 
 import java.time.LocalDateTime;
@@ -13,7 +9,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
 @Entity
 @Table(name="INQUIRY")
 public class InquiryEntity {

@@ -1,16 +1,13 @@
 package projectbuildup.mivv.domain.inquiry.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 import projectbuildup.mivv.domain.inquiry.entity.InquiryEntity;
 import projectbuildup.mivv.domain.user.entity.User;
-import projectbuildup.mivv.global.constant.ExampleValue;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Builder
 @NoArgsConstructor
@@ -28,10 +25,11 @@ public class InquiryDto {
         @Schema(description = "문의 내용")
         private String content;
 
-        public static InquiryEntity toEntity(final InquiryRequestDto irDto) {
+        public static InquiryEntity toEntity(final InquiryRequestDto irDto, final User user) {
             LocalDateTime localDateTime = LocalDateTime.now();
 
             return InquiryEntity.builder().
+                    user(user).
                     title(irDto.getTitle()).
                     content(irDto.getContent()).
                     answer(null).
