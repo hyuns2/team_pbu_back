@@ -45,6 +45,7 @@ public class CouponRequestDto {
     @NoArgsConstructor
     @Getter
     public static class UpdateContentRequest{
+        Long id;
         String title;
         String content;
         String imageUrl;
@@ -54,6 +55,7 @@ public class CouponRequestDto {
     @NoArgsConstructor
     @Getter
     public static class UpdatePriceRequest{
+        Long id;
         int originalPrice;
         int salePrice;
     }

@@ -19,4 +19,14 @@ public class CouponService {
         Coupon coupon = couponRepository.findById(couponRequestDto.getId()).orElseThrow();
         return new CouponResponseDto.ReadResponse(coupon);
     }
+    public void updateCouponContent(CouponRequestDto.UpdateContentRequest couponRequestDto){
+        Coupon coupon = couponRepository.findById(couponRequestDto.getId()).orElseThrow();
+        coupon.updateContent(couponRequestDto);
+        couponRepository.save(coupon);
+    }
+    public void updateCouponPrice(CouponRequestDto.UpdatePriceRequest couponRequestDto){
+        Coupon coupon = couponRepository.findById(couponRequestDto.getId()).orElseThrow();
+        coupon.updatePrice(couponRequestDto);
+        couponRepository.save(coupon);
+    }
 }
