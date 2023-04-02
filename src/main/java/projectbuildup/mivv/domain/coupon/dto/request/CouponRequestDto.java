@@ -35,16 +35,26 @@ public class CouponRequestDto {
         }
 
     }
-
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
     public static class updateContentRequest{
         String title;
         String content;
         String imageUrl;
 
     }
-
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
     public static class updatePriceRequest{
         int originalPrice;
         int salePrice;
+    }
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    public static class deleteRequest{
+        Long id;
     }
 }
