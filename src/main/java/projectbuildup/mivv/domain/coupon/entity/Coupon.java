@@ -2,13 +2,11 @@ package projectbuildup.mivv.domain.coupon.entity;
 
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Null;
 import lombok.*;
 import projectbuildup.mivv.domain.coupon.dto.request.CouponRequestDto;
+import projectbuildup.mivv.domain.member.entity.User;
 import projectbuildup.mivv.global.common.BaseTimeEntity;
 
 import java.time.LocalDate;
@@ -20,25 +18,27 @@ import java.time.LocalDate;
 public class Coupon extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
-    @Nullable
-    Long valueId;
+    private Long id;
     @Nonnull
-    String title;
+    private Long valueId;
+    @OneToMany
+    private User user;
     @Nonnull
-    String content;
+    private String title;
     @Nonnull
-    String imageUrl;
+    private String content;
     @Nonnull
-    int pin;
+    private String imageUrl;
+    @Nonnull
+    private int pin;
     @Setter
-    Boolean use = false;
+    private Boolean use;
     @Nonnull
-    LocalDate limitDate;
+    private LocalDate limitDate;
     @Nonnull
-    int originalPrice;
+    private int originalPrice;
     @Nonnull
-    int salePrice;
+    private int salePrice;
 
     public boolean isUsed(){
         return use;

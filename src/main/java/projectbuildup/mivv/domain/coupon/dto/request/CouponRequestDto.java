@@ -14,6 +14,7 @@ public class CouponRequestDto {
     @Builder
     @Getter
     public static class CreationRequest{
+        Long valueId;
         String title;
         String content;
         String imageUrl;
@@ -24,6 +25,7 @@ public class CouponRequestDto {
 
         public Coupon toEntity(){
             return Coupon.builder()
+                    .valueId(valueId)
                     .title(title)
                     .content(content)
                     .imageUrl(imageUrl)
