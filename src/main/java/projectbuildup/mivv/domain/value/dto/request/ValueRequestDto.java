@@ -16,7 +16,6 @@ public class ValueRequestDto {
         List<String> hashtags;
         int maxParticipants;
         ValueUrl valueUrl;
-
         int originalPrice;
         int salePrice;
         List<String> whyRecommendation;
@@ -48,6 +47,12 @@ public class ValueRequestDto {
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
+    public static class ReadBasicRequest extends ValueRequestDto.IdRequest{
+
+    }
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class ReadSummaryRequest extends ValueRequestDto.IdRequest{
 
     }
@@ -55,6 +60,7 @@ public class ValueRequestDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class ReadDetailRequest extends ValueRequestDto.IdRequest{
+
     }
     @Data
     @AllArgsConstructor
@@ -82,7 +88,7 @@ public class ValueRequestDto {
     public class UpdatePriceRequest extends ValueRequestDto.IdRequest{
         int originalPrice;
         int salePrice;
-        private String priceTag;
+        String priceTag;
 
     }
     @Data

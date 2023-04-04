@@ -28,28 +28,38 @@ public class ValueController {
         ValueResponseDto.ReadSummaryResponse valueResponseDto = valueService.readSummaryValue(valueRequestDto);
         return new ResponseEntity<>(valueResponseDto, HttpStatus.OK);
     }
-    @GetMapping("/{valueId}")//다른 스타일로 짜보려고 노력함
+    @GetMapping("/{valueId}/basic")//다른 스타일로 짜보려고 노력함
     public ResponseEntity<ValueResponseDto.ReadBasicResponse> getValueBasic(@PathVariable(name = "valueId") ValueRequestDto.IdRequest valueRequestDto){
         ValueResponseDto.ReadBasicResponse valueResponseDto = valueService.readBasicValue(valueRequestDto);
         return new ResponseEntity<>(valueResponseDto, HttpStatus.OK);
     }
-
-
-//    @GetMapping("/{valueId}/summary")
-//    public ResponseEntity<ValueResponseDto.ReadSummaryResponse> getValueSummary(@PathVariable(name = "valueId") Long valueId){
-//        ValueRequestDto.ReadSummaryRequest valueRequestDto = new ValueRequestDto. new ValueRequestDto.ReadSummaryRequest(valueId);
-//        ValueResponseDto.ReadSummaryResponse valueResponseDto = valueService.readSummaryValue(valueRequestDto);
-//        return new ResponseEntity<>(valueResponseDto, HttpStatus.OK);
-//    }
     @GetMapping("/{valueId}/detail")//다른 스타일로 짜보려고 노력함
     public ResponseEntity<ValueResponseDto.ReadDetailResponse> getValueDetail(@PathVariable(name = "valueId") ValueRequestDto.IdRequest valueRequestDto){
         ValueResponseDto.ReadDetailResponse valueResponseDto = valueService.readDetailValue(valueRequestDto);
         return new ResponseEntity<>(valueResponseDto, HttpStatus.OK);
     }
-//    @GetMapping("/{valueId}/detail")
-//    public ResponseEntity<ValueResponseDto.ReadDetailResponse> getValueDetail(@PathVariable(name = "valueId") Long valueId){
-//        ValueRequestDto.ReadDetailRequest valueRequestDto = new ValueRequestDto.ReadDetailRequest(valueId);
-//        ValueResponseDto.ReadDetailResponse valueResponseDto = valueService.readDetailValue(valueRequestDto);
+    @GetMapping("/{valueId}/basic")//다른 스타일로 짜보려고 노력함
+    public ResponseEntity<ValueResponseDto.ReadSummaryResponse> getValueSummary(@PathVariable(name = "valueId") Long valueId){
+        ValueRequestDto.ReadSummaryRequest valueRequestDto = (ValueRequestDto.ReadSummaryRequest) new ValueRequestDto.IdRequest(valueId);
+        ValueResponseDto.ReadSummaryResponse valueResponseDto = valueService.readSummaryValue(valueRequestDto);
+        return new ResponseEntity<>(valueResponseDto, HttpStatus.OK);
+    }
+    @GetMapping("/{valueId}/basic")//다른 스타일로 짜보려고 노력함
+    public ResponseEntity<ValueResponseDto.ReadBasicResponse> getValueBasic(@PathVariable(name = "valueId") Long valueId){
+        ValueRequestDto.ReadBasicRequest valueRequestDto = (ValueRequestDto.ReadBasicRequest) new ValueRequestDto.IdRequest(valueId);
+        ValueResponseDto.ReadBasicResponse valueResponseDto = valueService.readBasicValue(valueRequestDto);
+        return new ResponseEntity<>(valueResponseDto, HttpStatus.OK);
+    }
+    @GetMapping("/{valueId}/detail")//다른 스타일로 짜보려고 노력함
+    public ResponseEntity<ValueResponseDto.ReadDetailResponse> getValueDetail(@PathVariable(name = "valueId") Long valueId){
+        ValueRequestDto.ReadDetailRequest valueRequestDto = (ValueRequestDto.ReadDetailRequest) new ValueRequestDto.IdRequest(valueId);
+        ValueResponseDto.ReadDetailResponse valueResponseDto = valueService.readDetailValue(valueRequestDto);
+        return new ResponseEntity<>(valueResponseDto, HttpStatus.OK);
+    }
+//    @GetMapping("/{valueId}/summary")
+//    public ResponseEntity<ValueResponseDto.ReadSummaryResponse> getValueSummary(@PathVariable(name = "valueId") Long valueId){
+//        ValueRequestDto.ReadSummaryRequest valueRequestDto = new ValueRequestDto. new ValueRequestDto.ReadSummaryRequest(valueId);
+//        ValueResponseDto.ReadSummaryResponse valueResponseDto = valueService.readSummaryValue(valueRequestDto);
 //        return new ResponseEntity<>(valueResponseDto, HttpStatus.OK);
 //    }
     @PutMapping("/{valueId}")
