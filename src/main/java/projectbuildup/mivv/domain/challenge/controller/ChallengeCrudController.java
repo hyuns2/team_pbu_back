@@ -3,6 +3,7 @@ package projectbuildup.mivv.domain.challenge.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.annotations.ParameterObject;
@@ -19,10 +20,11 @@ import projectbuildup.mivv.global.constant.ExampleValue;
 import projectbuildup.mivv.global.constant.Header;
 
 @Slf4j
+@Tag(name = "[1-1.Challenge CRUD]", description = "챌린지 CRUD 관련 API입니다.")
 @RequestMapping("/api")
 @RequiredArgsConstructor
 @RestController
-public class ChallengeController {
+public class ChallengeCrudController {
 
     private final ChallengeService challengeService;
 
