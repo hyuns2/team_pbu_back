@@ -2,9 +2,10 @@ package projectbuildup.mivv.domain.value.dto.request;
 
 import lombok.*;
 import projectbuildup.mivv.domain.value.entity.Value;
+import projectbuildup.mivv.domain.value.entity.ValueUrl;
 
 import java.util.List;
-
+@Data
 public class ValueRequestDto {
     @Builder
     @Getter
@@ -14,15 +15,12 @@ public class ValueRequestDto {
         String title;
         List<String> hashtags;
         int maxParticipants;
-        String videoUrl;
-        String imageUrl;
-        String detailImageUrl;
-        String detailBackgroundImageUrl;
+        ValueUrl valueUrl;
+
         int originalPrice;
         int salePrice;
         List<String> whyRecommendation;
         String priceTag;
-        String placeImageUrl;
         String placeTag;
         List<String> summary;
 
@@ -31,37 +29,37 @@ public class ValueRequestDto {
                     .title(title)
                     .hashtags(hashtags)
                     .maxParticipants(maxParticipants)
-                    .videoUrl(videoUrl)
-                    .imageUrl(imageUrl)
-                    .detailImageUrl(detailImageUrl)
-                    .detailBackgroundImageUrl(detailBackgroundImageUrl)
+                    .valueUrl(valueUrl)
                     .originalPrice(originalPrice)
                     .salePrice(salePrice)
                     .whyRecommendation(whyRecommendation)
                     .priceTag(priceTag)
-                    .placeImageUrl(placeImageUrl)
                     .placeTag(placeTag)
                     .summary(summary)
                     .build();
         }
     }
-    @Getter
+    @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    public class ReadSummaryRequest {
+    public static class IdRequest {
         Long id;
     }
-    @Getter
+    @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    public class ReadDetailRequest {
-        Long id;
+    public static class ReadSummaryRequest extends ValueRequestDto.IdRequest{
+
     }
-    @Getter
+    @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    public class UpdateContentRequest{
-        Long id;
+    public static class ReadDetailRequest extends ValueRequestDto.IdRequest{
+    }
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public class UpdateContentRequest extends ValueRequestDto.IdRequest{
         String title;
         List<String> hashtags;
         int maxParticipants;
@@ -71,37 +69,33 @@ public class ValueRequestDto {
     @Getter
     @AllArgsConstructor
     @NoArgsConstructor
-    public class UpdateUrlRequest{
-        Long id;
+    public class UpdateUrlRequest extends ValueRequestDto.IdRequest {
         String videoUrl;
         String imageUrl;
         String detailImageUrl;
         String detailBackgroundImageUrl;
+        String placeImageUrl;
     }
     @Getter
     @AllArgsConstructor
     @NoArgsConstructor
-    public class UpdatePriceRequest{
-        Long id;
+    public class UpdatePriceRequest extends ValueRequestDto.IdRequest{
         int originalPrice;
         int salePrice;
         private String priceTag;
 
     }
-    @Getter
+    @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    public class UpdatePlaceRequest{
-        Long id;
-        String placeImageUrl;
+    public class UpdatePlaceRequest extends ValueRequestDto.IdRequest{
         String placeTag;
 
     }
-    @Getter
+    @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    public class DeleteRequest{
-        Long id;
+    public static class DeleteRequest extends ValueRequestDto.IdRequest{
 
     }
 

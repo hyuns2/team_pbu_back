@@ -1,9 +1,6 @@
 package projectbuildup.mivv.domain.value.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 import projectbuildup.mivv.domain.value.dto.request.ValueRequestDto;
 import projectbuildup.mivv.global.common.BaseTimeEntity;
@@ -24,17 +21,14 @@ public class Value extends BaseTimeEntity {
     private List<String> hashtags;
     @NonNull
     private int maxParticipants;
-    private String videoUrl;
-    private String imageUrl;
-    private String detailImageUrl;
-    private String detailBackgroundImageUrl;
     private int originalPrice;
     private int salePrice;
     private List<String> whyRecommendation;
     private String priceTag;
-    private String placeImageUrl;
     private String placeTag;
     private List<String> summary;
+    @OneToOne(mappedBy = "Value")
+    private ValueUrl valueUrl;
 
     public void updateContent(ValueRequestDto.UpdateContentRequest requestValueDto){
         this.title = requestValueDto.getTitle();
@@ -43,19 +37,13 @@ public class Value extends BaseTimeEntity {
         this.whyRecommendation = requestValueDto.getWhyRecommendation();
         this.summary = requestValueDto.getSummary();
     }
-    public void updateUrl(ValueRequestDto.UpdateUrlRequest requestValueDto){
-        this.videoUrl = requestValueDto.getVideoUrl();
-        this.imageUrl = requestValueDto.getImageUrl();
-        this.detailImageUrl = requestValueDto.getDetailImageUrl();
-        this.detailBackgroundImageUrl = requestValueDto.getDetailBackgroundImageUrl();
-    }
+
     public void updatePrice(ValueRequestDto.UpdatePriceRequest requestValueDto){
         this.originalPrice = requestValueDto.getOriginalPrice();
         this.salePrice = requestValueDto.getSalePrice();
         this.priceTag = requestValueDto.getPriceTag();
     }
     public void updatePlace(ValueRequestDto.UpdatePlaceRequest requestValueDto){
-        this.placeImageUrl = requestValueDto.getPlaceImageUrl();
         this.placeTag = requestValueDto.getPlaceTag();
     }
 
