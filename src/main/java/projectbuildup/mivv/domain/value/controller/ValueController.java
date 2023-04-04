@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import projectbuildup.mivv.domain.value.dto.request.ValueRequestDto;
 import projectbuildup.mivv.domain.value.dto.response.ValueResponseDto;
-import projectbuildup.mivv.domain.value.entity.Value;
 import projectbuildup.mivv.domain.value.service.ValueService;
 
 @Slf4j

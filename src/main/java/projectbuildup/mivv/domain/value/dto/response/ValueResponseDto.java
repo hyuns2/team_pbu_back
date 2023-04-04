@@ -1,6 +1,7 @@
 package projectbuildup.mivv.domain.value.dto.response;
 
 import lombok.*;
+import projectbuildup.mivv.domain.value.dto.request.ValueRequestDto;
 import projectbuildup.mivv.domain.value.entity.Value;
 
 import java.util.List;
