@@ -28,7 +28,6 @@ public class CouponService {
     }
     public void updateCouponPrice(CouponRequestDto.UpdatePriceRequest couponRequestDto){
         Coupon coupon = couponRepository.findById(couponRequestDto.getId()).orElseThrow();
-        coupon.updatePrice(couponRequestDto);
         couponRepository.save(coupon);
     }
     public void deleteCoupon(CouponRequestDto.DeleteRequest couponRequestDto){

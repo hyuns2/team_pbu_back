@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import projectbuildup.mivv.domain.coupon.entity.Coupon;
+import projectbuildup.mivv.domain.value.entity.Value;
 
 import java.time.LocalDate;
 
@@ -14,25 +15,18 @@ public class CouponRequestDto {
     @Builder
     @Getter
     public static class CreationRequest{
-        Long valueId;
         String title;
-        String content;
         String imageUrl;
         int pin;
-        LocalDate limitDate;
-        int originalPrice;
-        int salePrice;
-
+        LocalDate limitStartDate;
+        LocalDate limitEndDate;
         public Coupon toEntity(){
             return Coupon.builder()
-                    .valueId(valueId)
                     .title(title)
-                    .content(content)
                     .imageUrl(imageUrl)
                     .pin(pin)
-                    .limitDate(limitDate)
-                    .originalPrice(originalPrice)
-                    .salePrice(salePrice)
+                    .limitStartDate(limitStartDate)
+                    .limitEndDate(limitEndDate)
                     .build();
         }
 

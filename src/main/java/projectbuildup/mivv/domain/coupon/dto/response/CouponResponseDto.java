@@ -16,16 +16,13 @@ public class CouponResponseDto {
         String title;
         String content;
         String imageUrl;
-        LocalDate limitDate;
-        int originalPrice;
-        int salePrice;
+        LocalDate limitStartDate;
+        LocalDate limitEndDate;
         public ReadResponse(Coupon coupon){
             this.title = coupon.getTitle();
-            this.content = coupon.getContent();
             this.imageUrl = coupon.getImageUrl();
-            this.limitDate = coupon.getLimitDate();
-            this.originalPrice = coupon.getOriginalPrice();
-            this.salePrice = coupon.getSalePrice();
+            this.limitStartDate = coupon.getLimitStartDate();
+            this.limitEndDate = coupon.getLimitEndDate();
         }
     }
 }

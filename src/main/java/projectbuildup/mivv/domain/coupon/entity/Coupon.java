@@ -19,14 +19,12 @@ public class Coupon extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Nonnull
-    private Long valueId;
+    @OneToOne(mappedBy = "value")
+    private Value value;
     @OneToMany
     private User user;
     @Nonnull
     private String title;
-    @Nonnull
-    private String content;
     @Nonnull
     private String imageUrl;
     @Nonnull
@@ -34,23 +32,12 @@ public class Coupon extends BaseTimeEntity {
     @Setter
     private Boolean use;
     @Nonnull
-    private LocalDate limitDate;
+    private LocalDate limitStartDate;
     @Nonnull
-    private int originalPrice;
-    @Nonnull
-    private int salePrice;
-
-    public boolean isUsed(){
-        return use;
-    }
+    private LocalDate limitEndDate;
     public void updateContent(CouponRequestDto.UpdateContentRequest requestRequest){
         this.title = requestRequest.getTitle();
-        this.content = requestRequest.getContent();
         this.imageUrl = requestRequest.getImageUrl();
-    }
-    public void updatePrice(CouponRequestDto.UpdatePriceRequest requestRequest){
-        this.originalPrice = requestRequest.getOriginalPrice();
-        this.salePrice = requestRequest.getSalePrice();
     }
 
 
