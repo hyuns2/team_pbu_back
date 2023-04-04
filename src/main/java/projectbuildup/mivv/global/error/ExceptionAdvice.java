@@ -115,4 +115,18 @@ public class ExceptionAdvice {
         e.printStackTrace();
         return new ResponseEntity<>(new ErrorResponseDto(errorCode), errorCode.getStatusCode());
     }
+
+    @ExceptionHandler(CInquiryOverException.class)
+    protected ResponseEntity<ErrorResponseDto> handle(CInquiryOverException e){
+        ErrorCode errorCode = e.getErrorCode();
+        e.printStackTrace();
+        return new ResponseEntity<>(new ErrorResponseDto(errorCode), errorCode.getStatusCode());
+    }
+
+    @ExceptionHandler(CInquiryNotFoundException.class)
+    protected ResponseEntity<ErrorResponseDto> handle(CInquiryNotFoundException e){
+        ErrorCode errorCode = e.getErrorCode();
+        e.printStackTrace();
+        return new ResponseEntity<>(new ErrorResponseDto(errorCode), errorCode.getStatusCode());
+    }
 }
