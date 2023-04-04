@@ -17,13 +17,13 @@ public class ValueService {
         Value value = valueRequestDto.toEntity();
         valueRepository.save(value);
     }
-    public ValueResponseDto.ReadResponse readValue(ValueRequestDto.IdRequest valueRequestDto){
-        Value value = valueRepository.findById(valueRequestDto.getId()).orElseThrow();
-        return new ValueResponseDto.ReadResponse(value);
-    }
     public ValueResponseDto.ReadSummaryResponse readSummaryValue(ValueRequestDto.IdRequest valueRequestDto){
         Value value = valueRepository.findById(valueRequestDto.getId()).orElseThrow();
         return new ValueResponseDto.ReadSummaryResponse(value);
+    }
+    public ValueResponseDto.ReadBasicResponse readBasicValue(ValueRequestDto.IdRequest valueRequestDto){
+        Value value = valueRepository.findById(valueRequestDto.getId()).orElseThrow();
+        return new ValueResponseDto.ReadBasicResponse(value);
     }
     public ValueResponseDto.ReadDetailResponse readDetailValue(ValueRequestDto.IdRequest valueRequestDto){
         Value value = valueRepository.findById(valueRequestDto.getId()).orElseThrow();

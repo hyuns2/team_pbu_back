@@ -24,16 +24,17 @@ public class ValueController {
             return new ResponseEntity<>(HttpStatus.CREATED);
     }
     @GetMapping("/{valueId}")//다른 스타일로 짜보려고 노력함
-    public ResponseEntity<ValueResponseDto.ReadResponse> getValueSummary(@PathVariable(name = "valueId") ValueRequestDto.IdRequest valueRequestDto){
-        ValueResponseDto.ReadResponse valueResponseDto = valueService.readValue(valueRequestDto);
-        return new ResponseEntity<>(valueResponseDto, HttpStatus.OK);
-    }
-
-    @GetMapping("/{valueId}/summary")//다른 스타일로 짜보려고 노력함
     public ResponseEntity<ValueResponseDto.ReadSummaryResponse> getValueSummary(@PathVariable(name = "valueId") ValueRequestDto.IdRequest valueRequestDto){
         ValueResponseDto.ReadSummaryResponse valueResponseDto = valueService.readSummaryValue(valueRequestDto);
         return new ResponseEntity<>(valueResponseDto, HttpStatus.OK);
     }
+    @GetMapping("/{valueId}")//다른 스타일로 짜보려고 노력함
+    public ResponseEntity<ValueResponseDto.ReadBasicResponse> getValueBasic(@PathVariable(name = "valueId") ValueRequestDto.IdRequest valueRequestDto){
+        ValueResponseDto.ReadBasicResponse valueResponseDto = valueService.readBasicValue(valueRequestDto);
+        return new ResponseEntity<>(valueResponseDto, HttpStatus.OK);
+    }
+
+
 //    @GetMapping("/{valueId}/summary")
 //    public ResponseEntity<ValueResponseDto.ReadSummaryResponse> getValueSummary(@PathVariable(name = "valueId") Long valueId){
 //        ValueRequestDto.ReadSummaryRequest valueRequestDto = new ValueRequestDto. new ValueRequestDto.ReadSummaryRequest(valueId);
