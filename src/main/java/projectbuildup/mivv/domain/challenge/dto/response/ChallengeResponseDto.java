@@ -24,7 +24,7 @@ public class ChallengeResponseDto {
         public ReadSummaryResponse(Challenge challenge){
             this.mainTitle = challenge.getMainTitle();
             this.subTitle = challenge.getSubTitle();
-            this.content = challenge.getContent();
+            this.content = challenge.getDescription();
             this.imageUrl = challenge.getImageUrl();
         }
     }
@@ -48,7 +48,7 @@ public class ChallengeResponseDto {
         public ReadSpecificResponse(Challenge challenge){
             this.mainTitle = challenge.getMainTitle();
             this.subTitle = challenge.getSubTitle();
-            this.content = challenge.getContent();
+            this.content = challenge.getDescription();
             this.imageUrl = challenge.getImageUrl();
             this.startDate = challenge.getStartDate();
             this.endDate = challenge.getEndDate();

@@ -22,7 +22,7 @@ public class Challenge extends BaseTimeEntity {
     private LocalDate startDate;
     private LocalDate endDate;
     @ElementCollection
-    private List<String> content = new ArrayList<>();
+    private List<String> description = new ArrayList<>();
 
     private int remittanceOnceLimit;
     private int remittanceAvailableCount;
@@ -31,7 +31,7 @@ public class Challenge extends BaseTimeEntity {
     public void updateChallenge(ChallengeRequestDto.UpdateRequest updateRequestDto){
         this.mainTitle = updateRequestDto.getMainTitle();
         this.subTitle = updateRequestDto.getSubTitle();
-        this.content = updateRequestDto.getContent();
+        this.description = updateRequestDto.getContent();
         this.imageUrl = updateRequestDto.getImageUrl();
     }
 
