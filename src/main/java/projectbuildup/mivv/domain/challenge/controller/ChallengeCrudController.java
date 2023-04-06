@@ -39,7 +39,7 @@ public class ChallengeCrudController {
 
     @Operation(summary = "챌린지 전체 조회", description = "")
     @PreAuthorize("permitAll()")
-    @GetMapping("/challenges/{challengeId}")
+    @GetMapping("/challenges")
     public ResponseEntity<PagingDto<ChallengeDto.Response>> getChallenges(@ParameterObject @PageableDefault(sort = "createdTime") Pageable pageable) {
         PagingDto<ChallengeDto.Response> responseDto = challengeService.getChallenges(pageable);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
