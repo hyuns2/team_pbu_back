@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import projectbuildup.mivv.domain.account.entity.Account;
 import projectbuildup.mivv.domain.auth.dto.AuthDto;
 import projectbuildup.mivv.global.common.BaseTimeEntity;
 
@@ -34,6 +35,10 @@ public class User extends BaseTimeEntity implements UserDetails {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn
     IdentityVerification identityVerification;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn
+    Account account;
 
     public static User of (AuthDto.SignupRequest requestDto, String encodedPassword, IdentityVerification identityVerification){
         return User.builder()
@@ -84,5 +89,9 @@ public class User extends BaseTimeEntity implements UserDetails {
 
     public void changePassword(String password) {
         this.password = password;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
     }
 }
