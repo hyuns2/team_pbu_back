@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import projectbuildup.mivv.domain.coupon.entity.Coupon;
-import projectbuildup.mivv.domain.value.entity.Value;
 
 import java.time.LocalDate;
 
