@@ -1,20 +1,16 @@
 package projectbuildup.mivv.domain.worthyConsumption.entity;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.*;
+import projectbuildup.mivv.domain.coupon.entity.Coupon;
 import projectbuildup.mivv.domain.worthyConsumption.dto.request.WorthyConsumptionRequestDto;
 import projectbuildup.mivv.global.common.BaseTimeEntity;
 
 import java.util.List;
-@Entity
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Builder
+@Entity @Table(name = "WorthyConsumption")
+@NoArgsConstructor @AllArgsConstructor
+@Getter @Builder
 public class WorthyConsumption extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,8 +33,12 @@ public class WorthyConsumption extends BaseTimeEntity {
     private String placeTag;
     @NonNull
     private List<String> summary;
-    @OneToOne(mappedBy = "WorthyConsumption")
+    @Nullable
+    @OneToOne(mappedBy = "worthyConsumption", fetch = FetchType.LAZY, cascade =  CascadeType.ALL)
+    @Setter
     private WorthyConsumptionUrl worthyConsumptionUrl;
+    @OneToMany(mappedBy = "worthyConsumption", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Coupon> coupons;
 
     public void updateContent(WorthyConsumptionRequestDto.UpdateContentRequest requestWorthyConsumptionDto){
         this.title = requestWorthyConsumptionDto.getTitle();

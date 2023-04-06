@@ -24,7 +24,7 @@ public class WorthyConsumptionValidationService {
             throw new CUserNotFoundException();
     }
     public void isRealWorthyConsumptionId(Long worthyConsumptionId){
-        if(worthyConsumptionRepository.findById(worthyConsumptionId)==null)
+        if(worthyConsumptionRepository.findById(worthyConsumptionId).isEmpty())
             throw new CUserNotFoundException();
     }
 
