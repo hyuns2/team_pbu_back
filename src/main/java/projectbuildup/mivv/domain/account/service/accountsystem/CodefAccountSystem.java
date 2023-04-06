@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import projectbuildup.mivv.domain.account.dto.AccountRegisterDto;
 import projectbuildup.mivv.domain.account.entity.Account;
 import projectbuildup.mivv.domain.account.entity.BankType;
+import projectbuildup.mivv.domain.account.entity.OpenBanking;
 import projectbuildup.mivv.domain.account.entity.OwnAccounts;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.global.error.exception.CInternalServerException;
@@ -35,6 +36,8 @@ public class CodefAccountSystem implements AccountSystem {
         return Account.builder()
                 .accountNumbers(accountDto.getAccountNumbers())
                 .bankType(accountDto.getBankType())
+                .platform(OpenBanking.CODEF)
+                .connectionId(connectedId)
                 .build();
     }
 
