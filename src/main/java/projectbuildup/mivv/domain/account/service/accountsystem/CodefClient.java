@@ -38,6 +38,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Component
 @Slf4j
@@ -140,7 +141,7 @@ public class CodefClient {
      * @param startDate   조회 시작 날짜
      * @return (거래 일자, 거래시간, 거래 금액) 리스트
      */
-    public List<HashMap<String, String>> getHistory(String connectedId, String bankCode, String accountNumbers, LocalDate startDate) {
+    public Map<String, Object> getHistory(String connectedId, String bankCode, String accountNumbers, LocalDate startDate) {
         LocalDate endDate = startDate.plusDays(1);
         String startDateStr = startDate.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         String endDateStr = endDate.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
@@ -156,22 +157,7 @@ public class CodefClient {
         String productUrl = "/v1/kr/bank/p/account/transaction-list";
         try {
             String result = codef.requestProduct(productUrl, EasyCodefServiceType.SANDBOX, parameterMap);
-            HashMap<String, Object> responseMap = new ObjectMapper().readValue(result, HashMap.class);
-            HashMap<String, Object> dataMap = (HashMap<String, Object>) responseMap.get("data");
-            List<HashMap<String, Object>> listMap = (List<HashMap<String, Object>>) dataMap.get("resTrHistoryList");
-            List<HashMap<String, String>> returnList = new ArrayList<>();
-            for (HashMap<String, Object> stringObjectHashMap : listMap) {
-                HashMap<String, String> returnMap = new HashMap<>();
-                String resAccountIn = (String) stringObjectHashMap.get("resAccountIn");
-                if (resAccountIn.equals("0")) {
-                    continue;
-                }
-                returnMap.put("resAccountIn", resAccountIn);
-                returnMap.put("resAccountTrDate", (String) stringObjectHashMap.get("resAccountTrDate"));
-                returnMap.put("resAccountTrTime", (String) stringObjectHashMap.get("resAccountTrTime"));
-                returnList.add(returnMap);
-            }
-            return returnList;
+            return new ObjectMapper().readValue(result, HashMap.class);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
