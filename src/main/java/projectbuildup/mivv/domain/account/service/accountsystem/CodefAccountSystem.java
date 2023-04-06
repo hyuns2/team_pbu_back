@@ -2,19 +2,15 @@ package projectbuildup.mivv.domain.account.service.accountsystem;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.codef.api.EasyCodef;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 import projectbuildup.mivv.domain.account.dto.AccountRegisterDto;
-import projectbuildup.mivv.domain.account.dto.IdPasswordBasedRegisterDto;
 import projectbuildup.mivv.domain.account.entity.Account;
 import projectbuildup.mivv.domain.account.entity.BankType;
 import projectbuildup.mivv.domain.account.entity.OwnAccounts;
 import projectbuildup.mivv.domain.user.entity.User;
-import projectbuildup.mivv.global.error.exception.CBadRequestException;
-import projectbuildup.mivv.global.error.exception.CIllegalArgumentException;
 import projectbuildup.mivv.global.error.exception.CInternalServerException;
 import projectbuildup.mivv.global.error.exception.CResourceNotFoundException;
 
