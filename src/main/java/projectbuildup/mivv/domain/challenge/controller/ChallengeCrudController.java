@@ -20,7 +20,7 @@ import projectbuildup.mivv.global.constant.ExampleValue;
 import projectbuildup.mivv.global.constant.Header;
 
 @Slf4j
-@Tag(name = "[1-1.Challenge CRUD]", description = "챌린지 CRUD 관련 API입니다.")
+@Tag(name = "[3.Challenge]", description = "챌린지 관련 API입니다.")
 @RequestMapping("/api")
 @RequiredArgsConstructor
 @RestController
