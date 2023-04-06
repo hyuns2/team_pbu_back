@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.context.ActiveProfiles;
 import projectbuildup.mivv.domain.account.repository.AccountRepository;
 import projectbuildup.mivv.global.config.JpaAuditingConfig;
 import projectbuildup.mivv.global.error.exception.CInternalServerException;
@@ -19,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @DataJpaTest
 @Import(JpaAuditingConfig.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class AccountTest {
+class AccountRepositoryTest {
     @Autowired
     AccountRepository accountRepository;
 

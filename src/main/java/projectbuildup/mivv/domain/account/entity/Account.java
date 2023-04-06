@@ -20,6 +20,7 @@ public class Account {
     @Enumerated(value = EnumType.STRING)
     BankType bankType;
     @ElementCollection
+    @MapKeyEnumerated(EnumType.STRING)
     Map<OpenBanking, String> connectionMap = new HashMap<>();
 
     @Builder

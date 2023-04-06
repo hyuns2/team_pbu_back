@@ -7,13 +7,12 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Getter
-@Builder
-@AllArgsConstructor
+
 public class RemittanceDto {
 
     @Getter
     @NoArgsConstructor
+    @AllArgsConstructor
     public static class RemitRequest{
         @Schema(hidden = true)
         private Long userId;

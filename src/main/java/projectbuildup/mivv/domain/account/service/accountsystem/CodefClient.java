@@ -145,8 +145,6 @@ public class CodefClient {
         LocalDate endDate = startDate.plusDays(1);
         String startDateStr = startDate.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         String endDateStr = endDate.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-        log.info(startDateStr);
-        log.info(endDateStr);
         HashMap<String, Object> parameterMap = new HashMap<>();
         parameterMap.put("organization", bankCode);
         parameterMap.put("connectedId", connectedId);

@@ -19,7 +19,7 @@ public class RemittanceController {
     public ResponseEntity<Void> remit(@PathVariable Long challengeId, @RequestBody RemittanceDto.RemitRequest requestDto, @AuthenticationPrincipal User user) {
         requestDto.setUserId(user.getId());
         requestDto.setChallengeId(challengeId);
-        remittanceService.remit(requestDto);
+        remittanceService.remit(requestDto, null);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
