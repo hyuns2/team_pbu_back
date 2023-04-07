@@ -85,7 +85,8 @@ public class WorthyConsumptionRequestDto {
     @NoArgsConstructor
     @Getter
     @Setter
-    public class UpdateContentRequest extends WorthyConsumptionRequestDto.IdRequest{
+    @Builder
+    public static class UpdateContentRequest extends WorthyConsumptionRequestDto.IdRequest{
         String title;
         List<String> hashtags;
         int maxParticipants;
@@ -96,7 +97,8 @@ public class WorthyConsumptionRequestDto {
     @Getter
     @Setter
     @AllArgsConstructor
-    public class UpdateUrlRequest extends WorthyConsumptionRequestDto.IdRequest {
+    @Builder
+    public static class UpdateUrlRequest extends WorthyConsumptionRequestDto.IdRequest {
         String videoUrl;
         String imageUrl;
         String detailImageUrl;
@@ -107,7 +109,8 @@ public class WorthyConsumptionRequestDto {
     @Getter
     @Setter
     @AllArgsConstructor
-    public class UpdatePriceRequest extends WorthyConsumptionRequestDto.IdRequest{
+    @Builder
+    public static class UpdatePriceRequest extends WorthyConsumptionRequestDto.IdRequest{
         int originalPrice;
         int salePrice;
         String priceTag;
@@ -117,7 +120,8 @@ public class WorthyConsumptionRequestDto {
     @AllArgsConstructor
     @Getter
     @Setter
-    public class UpdatePlaceRequest extends WorthyConsumptionRequestDto.IdRequest{
+    @Builder
+    public static class UpdatePlaceRequest extends WorthyConsumptionRequestDto.IdRequest{
         String placeTag;
 
     }

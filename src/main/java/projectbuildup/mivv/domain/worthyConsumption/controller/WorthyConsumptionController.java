@@ -25,7 +25,7 @@ public class WorthyConsumptionController {
             log.info("worthyConsumptionRequestDto = {}",worthyConsumptionRequestDto);
             return new ResponseEntity<>(HttpStatus.CREATED);
     }
-    @GetMapping("/{worthyConsumptionId}/summary")//다른 스타일로 짜보려고 노력함
+    /*@GetMapping("/{worthyConsumptionId}/summary")//다른 스타일로 짜보려고 노력함
     public ResponseEntity<WorthyConsumptionResponseDto.ReadSummaryResponse> getWorthyConsumptionSummary(@PathVariable(name = "worthyConsumptionId") WorthyConsumptionRequestDto.IdRequest worthyConsumptionRequestDto){
         WorthyConsumptionResponseDto.ReadSummaryResponse worthyConsumptionResponseDto = worthyConsumptionService.readSummaryWorthyConsumption(worthyConsumptionRequestDto);
         return new ResponseEntity<>(worthyConsumptionResponseDto, HttpStatus.OK);
@@ -39,7 +39,7 @@ public class WorthyConsumptionController {
     public ResponseEntity<WorthyConsumptionResponseDto.ReadDetailResponse> getWorthyConsumptionDetail(@PathVariable(name = "worthyConsumptionId") WorthyConsumptionRequestDto.IdRequest worthyConsumptionRequestDto){
         WorthyConsumptionResponseDto.ReadDetailResponse worthyConsumptionResponseDto = worthyConsumptionService.readDetailWorthyConsumption(worthyConsumptionRequestDto);
         return new ResponseEntity<>(worthyConsumptionResponseDto, HttpStatus.OK);
-    }
+    }*/
     @GetMapping("/{worthyConsumptionId}/summary/with_id")//다른 스타일로 짜보려고 노력함
     public ResponseEntity<WorthyConsumptionResponseDto.ReadSummaryResponse> getWorthyConsumptionSummary(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId){
         //WorthyConsumptionRequestDto.ReadSummaryRequest WorthyConsumptionRequestDto = (WorthyConsumptionRequestDto.ReadSummaryRequest) new WorthyConsumptionRequestDto.IdRequest(worthyConsumptionId);
@@ -76,6 +76,7 @@ public class WorthyConsumptionController {
     @PutMapping("/{worthyConsumptionId}/update/content")
     public ResponseEntity<HttpStatus> updateWorthyConsumptionContent(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId, @RequestBody WorthyConsumptionRequestDto.UpdateContentRequest worthyConsumptionRequestDto){
         //pathVariable과 dto의 id값이 동일한가 valid 검사 해야 함
+
         worthyConsumptionService.updateContentWorthyConsumption(worthyConsumptionRequestDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }

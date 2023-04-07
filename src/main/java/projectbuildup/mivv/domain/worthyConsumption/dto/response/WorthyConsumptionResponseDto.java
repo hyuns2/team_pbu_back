@@ -36,6 +36,7 @@ public class WorthyConsumptionResponseDto {
         private String imageUrl;
 
         public ReadBasicResponse(WorthyConsumption worthyConsumption) {
+            super(worthyConsumption);
             this.hashtags = worthyConsumption.getHashtags();
             this.videoUrl = worthyConsumption.getWorthyConsumptionUrl().getVideoUrl();
             this.imageUrl = worthyConsumption.getWorthyConsumptionUrl().getImageUrl();
@@ -56,6 +57,7 @@ public class WorthyConsumptionResponseDto {
         private String placeTag;
 
         public ReadDetailResponse(WorthyConsumption worthyConsumption) {
+            super(worthyConsumption);
             this.maxParticipants = worthyConsumption.getMaxParticipants();
             this.detailImageUrl = worthyConsumption.getWorthyConsumptionUrl().getDetailImageUrl();
             this.detailBackgroundImageUrl = worthyConsumption.getWorthyConsumptionUrl().getDetailBackgroundImageUrl();
@@ -63,6 +65,7 @@ public class WorthyConsumptionResponseDto {
             this.placeImageUrl = worthyConsumption.getWorthyConsumptionUrl().getPlaceImageUrl();
             this.placeTag = worthyConsumption.getPlaceTag();
         }
+
 
     }
 }
