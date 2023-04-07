@@ -32,9 +32,14 @@ public class Coupon extends BaseTimeEntity {
     private LocalDate limitStartDate;
     @Nonnull
     private LocalDate limitEndDate;
-    public void updateContent(CouponRequestDto.UpdateContentRequest requestRequest){
-        this.title = requestRequest.getTitle();
-        this.imageUrl = requestRequest.getImageUrl();
+    public void updateContent(CouponRequestDto.UpdateContentRequest couponRequestDto){
+        this.title = couponRequestDto.getTitle();
+        this.imageUrl = couponRequestDto.getImageUrl();
+    }
+    public void updateDate(CouponRequestDto.UpdateDateRequest couponRequestDto){
+        this.limitStartDate = couponRequestDto.getLimitStartDate();
+        this.limitEndDate = couponRequestDto.getLimitEndDate();
+
     }
 
 

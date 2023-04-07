@@ -42,17 +42,16 @@ public class CouponRequestDto {
     public static class UpdateContentRequest{
         Long id;
         String title;
-        String content;
         String imageUrl;
 
     }
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
-    public static class UpdatePriceRequest{
+    public static class UpdateDateRequest{
         Long id;
-        int originalPrice;
-        int salePrice;
+        LocalDate limitStartDate;
+        LocalDate limitEndDate;
     }
     @AllArgsConstructor
     @NoArgsConstructor

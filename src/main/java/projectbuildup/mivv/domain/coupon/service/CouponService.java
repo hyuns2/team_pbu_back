@@ -17,8 +17,8 @@ public class CouponService {
         Coupon coupon = couponRequestDto.toEntity();
         couponRepository.save(coupon);
     }
-    public CouponResponseDto.ReadResponse readCoupon(CouponRequestDto.ReadRequest couponRequestDto){
-        Coupon coupon = couponRepository.findById(couponRequestDto.getId()).orElseThrow();
+    public CouponResponseDto.ReadResponse readCoupon(Long couponId){
+        Coupon coupon = couponRepository.findById(couponId).orElseThrow();
         return new CouponResponseDto.ReadResponse(coupon);
     }
     public void updateCouponContent(CouponRequestDto.UpdateContentRequest couponRequestDto){
@@ -26,13 +26,14 @@ public class CouponService {
         coupon.updateContent(couponRequestDto);
         couponRepository.save(coupon);
     }
-    public void updateCouponPrice(CouponRequestDto.UpdatePriceRequest couponRequestDto){
+    public void updateCouponDate(CouponRequestDto.UpdateDateRequest couponRequestDto){
         Coupon coupon = couponRepository.findById(couponRequestDto.getId()).orElseThrow();
+        coupon.updateDate(couponRequestDto);
         couponRepository.save(coupon);
     }
-    public void deleteCoupon(CouponRequestDto.DeleteRequest couponRequestDto){
-        couponRepository.deleteById(couponRequestDto.getId());
-        //Coupon coupon = couponRepository.findById(couponRequestDto.getId()).orElseThrow();
-        //couponRepository.delete(coupon); validationService에서 예외처리 코드 만들 것.
+    public void deleteCoupon(Long couponId){
+        //couponRepository.deleteById(couponRequestDto.getId());
+        Coupon coupon = couponRepository.findById(couponId).orElseThrow();
+        couponRepository.delete(coupon);
     }
 }
