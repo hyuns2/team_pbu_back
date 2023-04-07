@@ -34,7 +34,8 @@ public class WorthyConsumption extends BaseTimeEntity {
     @NonNull
     private List<String> summary;
     @Nullable
-    @OneToOne(mappedBy = "worthyConsumption", fetch = FetchType.LAZY, cascade =  CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, cascade =  CascadeType.ALL)
+    @JoinColumn(name = "worthyConsumptionUrl_id")
     @Setter
     private WorthyConsumptionUrl worthyConsumptionUrl;
     @OneToMany(mappedBy = "worthyConsumption", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

@@ -22,6 +22,7 @@ public class WorthyConsumptionController {
     @PostMapping("/create")
     public ResponseEntity<HttpStatus> createWorthyConsumption(@RequestBody WorthyConsumptionRequestDto.CreationRequest worthyConsumptionRequestDto){
             worthyConsumptionService.createWorthyConsumption(worthyConsumptionRequestDto);
+            log.info("worthyConsumptionRequestDto = {}",worthyConsumptionRequestDto);
             return new ResponseEntity<>(HttpStatus.CREATED);
     }
     @GetMapping("/{worthyConsumptionId}/summary")//다른 스타일로 짜보려고 노력함
@@ -45,19 +46,25 @@ public class WorthyConsumptionController {
         WorthyConsumptionRequestDto.ReadSummaryRequest worthyConsumptionRequestDto = new WorthyConsumptionRequestDto.ReadSummaryRequest();
         worthyConsumptionRequestDto.setId(worthyConsumptionId);
 
-        WorthyConsumptionResponseDto.ReadSummaryResponse WorthyConsumptionResponseDto = worthyConsumptionService.readSummaryWorthyConsumption(WorthyConsumptionRequestDto);
-        return new ResponseEntity<>(WorthyConsumptionResponseDto, HttpStatus.OK);
+        WorthyConsumptionResponseDto.ReadSummaryResponse worthyConsumptionResponseDto = worthyConsumptionService.readSummaryWorthyConsumption(worthyConsumptionRequestDto);
+        return new ResponseEntity<>(worthyConsumptionResponseDto, HttpStatus.OK);
     }
     @GetMapping("/{worthyConsumptionId}/basic/with_id")//다른 스타일로 짜보려고 노력함
     public ResponseEntity<WorthyConsumptionResponseDto.ReadBasicResponse> getWorthyConsumptionBasic(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId){
-        WorthyConsumptionRequestDto.ReadBasicRequest WorthyConsumptionRequestDto = (WorthyConsumptionRequestDto.ReadBasicRequest) new WorthyConsumptionRequestDto.IdRequest(worthyConsumptionId);
-        WorthyConsumptionResponseDto.ReadBasicResponse WorthyConsumptionResponseDto = worthyConsumptionService.readBasicWorthyConsumption(WorthyConsumptionRequestDto);
+        //WorthyConsumptionRequestDto.ReadBasicRequest WorthyConsumptionRequestDto = (WorthyConsumptionRequestDto.ReadBasicRequest) new WorthyConsumptionRequestDto.IdRequest(worthyConsumptionId);
+        WorthyConsumptionRequestDto.ReadBasicRequest worthyConsumptionRequestDto = new WorthyConsumptionRequestDto.ReadBasicRequest();
+        worthyConsumptionRequestDto.setId(worthyConsumptionId);
+
+        WorthyConsumptionResponseDto.ReadBasicResponse WorthyConsumptionResponseDto = worthyConsumptionService.readBasicWorthyConsumption(worthyConsumptionRequestDto);
         return new ResponseEntity<>(WorthyConsumptionResponseDto, HttpStatus.OK);
     }
     @GetMapping("/{worthyConsumptionId}/detail/with_id")//다른 스타일로 짜보려고 노력함
     public ResponseEntity<WorthyConsumptionResponseDto.ReadDetailResponse> getWorthyConsumptionDetail(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId){
-        WorthyConsumptionRequestDto.ReadDetailRequest WorthyConsumptionRequestDto = (WorthyConsumptionRequestDto.ReadDetailRequest) new WorthyConsumptionRequestDto.IdRequest(worthyConsumptionId);
-        WorthyConsumptionResponseDto.ReadDetailResponse WorthyConsumptionResponseDto = worthyConsumptionService.readDetailWorthyConsumption(WorthyConsumptionRequestDto);
+        //WorthyConsumptionRequestDto.ReadDetailRequest WorthyConsumptionRequestDto = (WorthyConsumptionRequestDto.ReadDetailRequest) new WorthyConsumptionRequestDto.IdRequest(worthyConsumptionId);
+        WorthyConsumptionRequestDto.ReadDetailRequest worthyConsumptionRequestDto = new WorthyConsumptionRequestDto.ReadDetailRequest();
+        worthyConsumptionRequestDto.setId(worthyConsumptionId);
+
+        WorthyConsumptionResponseDto.ReadDetailResponse WorthyConsumptionResponseDto = worthyConsumptionService.readDetailWorthyConsumption(worthyConsumptionRequestDto);
         return new ResponseEntity<>(WorthyConsumptionResponseDto, HttpStatus.OK);
     }
 //    @GetMapping("/{WorthyConsumptionId}/summary")
@@ -93,7 +100,9 @@ public class WorthyConsumptionController {
     @DeleteMapping("/{worthyConsumptionId}")
     public ResponseEntity<HttpStatus> deleteWorthyConsumption(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId){
         //pathVariable과 dto의 id값이 동일한가 valid 검사 해야 함
-        WorthyConsumptionRequestDto.DeleteRequest worthyConsumptionRequestDto = (WorthyConsumptionRequestDto.DeleteRequest) new WorthyConsumptionRequestDto.IdRequest(worthyConsumptionId);
+        WorthyConsumptionRequestDto.DeleteRequest worthyConsumptionRequestDto = new WorthyConsumptionRequestDto.DeleteRequest();
+        worthyConsumptionRequestDto.setId(worthyConsumptionId);
+
         worthyConsumptionService.deleteWorthyConsumption(worthyConsumptionRequestDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }

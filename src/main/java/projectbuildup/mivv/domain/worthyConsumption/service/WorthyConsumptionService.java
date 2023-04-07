@@ -23,8 +23,8 @@ public class WorthyConsumptionService {
 //        worthyConsumptionUrlRepository.save(worthyConsumptionUrl);
 //        worthyConsumptionRepository.save(worthyConsumption);
         WorthyConsumptionUrl worthyConsumptionUrl = new WorthyConsumptionUrl(worthyConsumptionRequestDto.getWorthyConsumptionUrlRequest());
-        WorthyConsumption worthyConsumption = worthyConsumptionRequestDto.toEntity();
-        worthyConsumption.setWorthyConsumptionUrl(worthyConsumptionUrl);
+        WorthyConsumption worthyConsumption = worthyConsumptionRequestDto.toEntity(worthyConsumptionUrl);
+        //worthyConsumption.setWorthyConsumptionUrl(worthyConsumptionUrl);
         worthyConsumptionRepository.save(worthyConsumption);
     }
     public WorthyConsumptionResponseDto.ReadSummaryResponse readSummaryWorthyConsumption(WorthyConsumptionRequestDto.IdRequest worthyConsumptionRequestDto){

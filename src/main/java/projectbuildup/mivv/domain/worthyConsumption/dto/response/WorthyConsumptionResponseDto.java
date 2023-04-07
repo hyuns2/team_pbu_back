@@ -46,6 +46,7 @@ public class WorthyConsumptionResponseDto {
     @AllArgsConstructor
     @Getter
     @Setter
+    @Builder
     public static class ReadDetailResponse extends ReadBasicResponse{
         private int maxParticipants;
         private String detailImageUrl;

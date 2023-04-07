@@ -25,7 +25,7 @@ public class WorthyConsumptionRequestDto {
         List<String> summary;
         WorthyConsumptionUrlRequestDto.CreationRequest worthyConsumptionUrlRequest;
 
-        public WorthyConsumption toEntity(){
+        /*public WorthyConsumption toEntity(){
             return WorthyConsumption.builder()
                     .title(title)
                     .hashtags(hashtags)
@@ -37,8 +37,8 @@ public class WorthyConsumptionRequestDto {
                     .placeTag(placeTag)
                     .summary(summary)
                     .build();
-        }
-        /*public WorthyConsumption toEntity(WorthyConsumptionUrl worthyConsumptionUrl){
+        }*/
+        public WorthyConsumption toEntity(WorthyConsumptionUrl worthyConsumptionUrl){
             return WorthyConsumption.builder()
                     .title(title)
                     .hashtags(hashtags)
@@ -51,7 +51,7 @@ public class WorthyConsumptionRequestDto {
                     .placeTag(placeTag)
                     .summary(summary)
                     .build();
-        }*/
+        }
     }
     @NoArgsConstructor
     @Getter
