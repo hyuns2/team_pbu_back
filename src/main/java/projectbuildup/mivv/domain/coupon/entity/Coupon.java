@@ -8,7 +8,8 @@ import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumption;
 import projectbuildup.mivv.global.common.BaseTimeEntity;
 
 import java.time.LocalDate;
-@Entity @Table(name = "Coupon")
+@Entity
+@Table
 @Getter
 @AllArgsConstructor @NoArgsConstructor
 @Builder
@@ -17,7 +18,7 @@ public class Coupon extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "worthyconsumptionId")
+    @JoinColumn(name = "worthyConsumptionId")
     private WorthyConsumption worthyConsumption;
     @Nonnull
     private String title;
@@ -26,7 +27,7 @@ public class Coupon extends BaseTimeEntity {
     @Nonnull
     private int pin;
     @Setter
-    private Boolean use;
+    private Boolean isUsed;
     @Nonnull
     private LocalDate limitStartDate;
     @Nonnull

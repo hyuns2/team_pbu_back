@@ -8,7 +8,7 @@ import projectbuildup.mivv.domain.worthyConsumption.dto.request.WorthyConsumptio
 import projectbuildup.mivv.global.common.BaseTimeEntity;
 
 import java.util.List;
-@Entity @Table(name = "WorthyConsumption")
+@Entity @Table
 @NoArgsConstructor @AllArgsConstructor
 @Getter @Builder
 public class WorthyConsumption extends BaseTimeEntity {
