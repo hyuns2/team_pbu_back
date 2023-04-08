@@ -1,6 +1,7 @@
 package projectbuildup.mivv.domain.coupon.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -17,7 +18,7 @@ import projectbuildup.mivv.domain.coupon.service.CouponService;
 public class CouponController {
     private final CouponService couponService;
     @PostMapping("/create")
-    public ResponseEntity<HttpStatus> createCoupon(@RequestBody CouponRequestDto.CreationRequest couponRequestDto){
+    public ResponseEntity<HttpStatus> createCoupon(@Valid @RequestBody CouponRequestDto.CreationRequest couponRequestDto){
         couponService.createCoupon(couponRequestDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -27,12 +28,12 @@ public class CouponController {
         return new ResponseEntity<>(couponResponseDto, HttpStatus.OK);
     }
     @PutMapping("/{couponId}/content")
-    public ResponseEntity<HttpStatus> updateCouponContent(@PathVariable(name = "couponId") Long couponId, @RequestBody CouponRequestDto.UpdateContentRequest couponRequestDto){
+    public ResponseEntity<HttpStatus> updateCouponContent(@PathVariable(name = "couponId") Long couponId, @Valid @RequestBody CouponRequestDto.UpdateContentRequest couponRequestDto){
         couponService.updateCouponContent(couponRequestDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
     @PutMapping("/{couponId}/date")
-    public ResponseEntity<HttpStatus> updateCouponDate(@PathVariable(name = "couponId") Long couponId, @RequestBody CouponRequestDto.UpdateDateRequest couponRequestDto){
+    public ResponseEntity<HttpStatus> updateCouponDate(@PathVariable(name = "couponId") Long couponId, @Valid @RequestBody CouponRequestDto.UpdateDateRequest couponRequestDto){
         couponService.updateCouponDate(couponRequestDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }

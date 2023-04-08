@@ -16,7 +16,7 @@ import projectbuildup.mivv.domain.worthyConsumption.repository.WorthyConsumption
 @RequiredArgsConstructor
 public class WorthyConsumptionService {
     private final WorthyConsumptionRepository worthyConsumptionRepository;
-    private final WorthyConsumptionUrlRepository worthyConsumptionUrlRepository;
+    //private final WorthyConsumptionUrlRepository worthyConsumptionUrlRepository;
     public void createWorthyConsumption(WorthyConsumptionRequestDto.CreationRequest worthyConsumptionRequestDto){
 //        WorthyConsumptionUrl worthyConsumptionUrl = worthyConsumptionRequestDto.getWorthyConsumptionUrlRequest().toEntity();
 //        WorthyConsumption worthyConsumption = worthyConsumptionRequestDto.toEntity(worthyConsumptionUrl);

@@ -22,9 +22,9 @@ public class WorthyConsumptionRequestDto {
         List<String> hashtags;
         @Positive
         int maxParticipants;
-        @NotBlank(message = "가치소비의 원래 가격을 입력해주세요") @Positive
+        @NotNull(message = "가치소비의 원래 가격을 입력해주세요") @Positive
         int originalPrice;
-        @NotBlank(message = "가치소비의 할인 가격을 입력해주세요") @Positive
+        @NotNull(message = "가치소비의 할인 가격을 입력해주세요") @Positive
         int salePrice;
         @NotNull
         List<String> whyRecommendation;
@@ -60,6 +60,7 @@ public class WorthyConsumptionRequestDto {
     @Getter @Setter
     @Builder
     public static class UpdateContentRequest extends WorthyConsumptionRequestDto.IdRequest{
+        @NotBlank(message = "가치소비의 이름을 입력해주세요")
         String title;
         List<String> hashtags;
         int maxParticipants;
@@ -71,10 +72,15 @@ public class WorthyConsumptionRequestDto {
     @AllArgsConstructor
     @Builder
     public static class UpdateUrlRequest extends WorthyConsumptionRequestDto.IdRequest {
+        @NotNull
         String videoUrl;
+        @NotNull
         String imageUrl;
+        @NotNull
         String detailImageUrl;
+        @NotNull
         String detailBackgroundImageUrl;
+        @NotNull
         String placeImageUrl;
     }
     @NoArgsConstructor
@@ -82,7 +88,9 @@ public class WorthyConsumptionRequestDto {
     @AllArgsConstructor
     @Builder
     public static class UpdatePriceRequest extends WorthyConsumptionRequestDto.IdRequest{
+        @NotNull(message = "가치소비의 원래 가격을 입력해주세요") @Positive
         int originalPrice;
+        @NotNull(message = "가치소비의 할인 가격을 입력해주세요") @Positive
         int salePrice;
         String priceTag;
 
@@ -91,6 +99,7 @@ public class WorthyConsumptionRequestDto {
     @Getter @Setter
     @Builder
     public static class UpdatePlaceRequest extends WorthyConsumptionRequestDto.IdRequest{
+        @NotBlank(message = "가치소비의 위치 태그를 입력해주세요")
         String placeTag;
 
     }
