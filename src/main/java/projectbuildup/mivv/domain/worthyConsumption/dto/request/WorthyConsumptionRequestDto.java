@@ -24,20 +24,6 @@ public class WorthyConsumptionRequestDto {
         String placeTag;
         List<String> summary;
         WorthyConsumptionUrlRequestDto.CreationRequest worthyConsumptionUrlRequest;
-
-        /*public WorthyConsumption toEntity(){
-            return WorthyConsumption.builder()
-                    .title(title)
-                    .hashtags(hashtags)
-                    .maxParticipants(maxParticipants)
-                    .originalPrice(originalPrice)
-                    .salePrice(salePrice)
-                    .whyRecommendation(whyRecommendation)
-                    .priceTag(priceTag)
-                    .placeTag(placeTag)
-                    .summary(summary)
-                    .build();
-        }*/
         public WorthyConsumption toEntity(WorthyConsumptionUrl worthyConsumptionUrl){
             return WorthyConsumption.builder()
                     .title(title)
@@ -59,27 +45,6 @@ public class WorthyConsumptionRequestDto {
     @AllArgsConstructor
     public static class IdRequest {
         Long id;
-    }
-    @AllArgsConstructor
-    //@NoArgsConstructor
-    @Getter
-    @Setter
-    public static class ReadBasicRequest extends WorthyConsumptionRequestDto.IdRequest{
-
-    }
-    @AllArgsConstructor
-    //@NoArgsConstructor
-    @Getter
-    @Setter
-    public static class ReadSummaryRequest extends WorthyConsumptionRequestDto.IdRequest{
-
-    }
-    @AllArgsConstructor
-    //@NoArgsConstructor
-    @Getter
-    @Setter
-    public static class ReadDetailRequest extends WorthyConsumptionRequestDto.IdRequest{
-
     }
     @AllArgsConstructor
     @NoArgsConstructor

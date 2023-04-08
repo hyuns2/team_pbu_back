@@ -62,10 +62,7 @@ public class WorthyConsumptionController {
     }
     @DeleteMapping("/{worthyConsumptionId}")
     public ResponseEntity<HttpStatus> deleteWorthyConsumption(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId){
-        WorthyConsumptionRequestDto.DeleteRequest worthyConsumptionRequestDto = new WorthyConsumptionRequestDto.DeleteRequest();
-        worthyConsumptionRequestDto.setId(worthyConsumptionId);
-
-        worthyConsumptionService.deleteWorthyConsumption(worthyConsumptionRequestDto);
+        worthyConsumptionService.deleteWorthyConsumption(worthyConsumptionId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

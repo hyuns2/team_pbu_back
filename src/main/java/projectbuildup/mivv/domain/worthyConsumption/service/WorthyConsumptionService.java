@@ -59,8 +59,8 @@ public class WorthyConsumptionService {
         worthyConsumption.updatePlace(worthyConsumptionRequestDto);
         worthyConsumptionRepository.save(worthyConsumption);
     }
-    public void deleteWorthyConsumption(WorthyConsumptionRequestDto.DeleteRequest worthyConsumptionRequestDto){
-        WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionRequestDto.getId()).orElseThrow();
+    public void deleteWorthyConsumption(Long worthyConsumptionId){
+        WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionId).orElseThrow();
         worthyConsumptionRepository.delete(worthyConsumption);
     }
 }
