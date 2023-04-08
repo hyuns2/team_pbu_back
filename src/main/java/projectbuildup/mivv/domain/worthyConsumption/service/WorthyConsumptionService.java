@@ -24,7 +24,6 @@ public class WorthyConsumptionService {
 //        worthyConsumptionRepository.save(worthyConsumption);
         WorthyConsumptionUrl worthyConsumptionUrl = new WorthyConsumptionUrl(worthyConsumptionRequestDto.getWorthyConsumptionUrlRequest());
         WorthyConsumption worthyConsumption = worthyConsumptionRequestDto.toEntity(worthyConsumptionUrl);
-        //worthyConsumption.setWorthyConsumptionUrl(worthyConsumptionUrl);
         worthyConsumptionRepository.save(worthyConsumption);
     }
     public WorthyConsumptionResponseDto.ReadSummaryResponse readSummaryWorthyConsumption(Long worthyConsumptionId){

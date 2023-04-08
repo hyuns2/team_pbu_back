@@ -40,22 +40,22 @@ public class WorthyConsumptionController {
         WorthyConsumptionResponseDto.ReadDetailResponse WorthyConsumptionResponseDto = worthyConsumptionService.readDetailWorthyConsumption(worthyConsumptionId);
         return new ResponseEntity<>(WorthyConsumptionResponseDto, HttpStatus.OK);
     }
-    @PutMapping("/{worthyConsumptionId}/update/content")
+    @PutMapping("/{worthyConsumptionId}/content")
     public ResponseEntity<HttpStatus> updateWorthyConsumptionContent(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId, @RequestBody WorthyConsumptionRequestDto.UpdateContentRequest worthyConsumptionRequestDto){
         worthyConsumptionService.updateContentWorthyConsumption(worthyConsumptionRequestDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    @PutMapping("/{worthyConsumptionId}/update/url")
+    @PutMapping("/{worthyConsumptionId}/url")
     public ResponseEntity<HttpStatus> updateWorthyConsumptionUrl(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId, @RequestBody WorthyConsumptionRequestDto.UpdateUrlRequest worthyConsumptionRequestDto){
         worthyConsumptionService.updateUrlWorthyConsumption(worthyConsumptionRequestDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    @PutMapping("/{worthyConsumptionId}/update/price")
+    @PutMapping("/{worthyConsumptionId}/price")
     public ResponseEntity<HttpStatus> updateWorthyConsumptionPrice(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId, @RequestBody WorthyConsumptionRequestDto.UpdatePriceRequest worthyConsumptionRequestDto){
         worthyConsumptionService.updatePriceWorthyConsumption(worthyConsumptionRequestDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    @PutMapping("/{worthyConsumptionId}/update/place")
+    @PutMapping("/{worthyConsumptionId}/place")
     public ResponseEntity<HttpStatus> updateWorthyConsumptionPlace(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId, @RequestBody WorthyConsumptionRequestDto.UpdatePlaceRequest worthyConsumptionRequestDto){
         worthyConsumptionService.updatePlaceWorthyConsumption(worthyConsumptionRequestDto);
         return new ResponseEntity<>(HttpStatus.OK);

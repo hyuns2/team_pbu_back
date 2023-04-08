@@ -90,13 +90,6 @@ public class WorthyConsumptionRequestDto {
         String placeTag;
 
     }
-    //@NoArgsConstructor
-    @AllArgsConstructor
-    @Getter
-    @Setter
-    public static class DeleteRequest extends WorthyConsumptionRequestDto.IdRequest{
-
-    }
 
 
 }
