@@ -25,28 +25,19 @@ public class WorthyConsumptionController {
             log.info("worthyConsumptionRequestDto = {}",worthyConsumptionRequestDto);
             return new ResponseEntity<>(HttpStatus.CREATED);
     }
-    @GetMapping("/{worthyConsumptionId}/summary")//다른 스타일로 짜보려고 노력함
+    @GetMapping("/{worthyConsumptionId}/summary")
     public ResponseEntity<WorthyConsumptionResponseDto.ReadSummaryResponse> getWorthyConsumptionSummary(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId){
-        WorthyConsumptionRequestDto.ReadSummaryRequest worthyConsumptionRequestDto = new WorthyConsumptionRequestDto.ReadSummaryRequest();
-        worthyConsumptionRequestDto.setId(worthyConsumptionId);
-
-        WorthyConsumptionResponseDto.ReadSummaryResponse worthyConsumptionResponseDto = worthyConsumptionService.readSummaryWorthyConsumption(worthyConsumptionRequestDto);
+        WorthyConsumptionResponseDto.ReadSummaryResponse worthyConsumptionResponseDto = worthyConsumptionService.readSummaryWorthyConsumption(worthyConsumptionId);
         return new ResponseEntity<>(worthyConsumptionResponseDto, HttpStatus.OK);
     }
-    @GetMapping("/{worthyConsumptionId}/basic")//다른 스타일로 짜보려고 노력함
+    @GetMapping("/{worthyConsumptionId}/basic")
     public ResponseEntity<WorthyConsumptionResponseDto.ReadBasicResponse> getWorthyConsumptionBasic(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId){
-        WorthyConsumptionRequestDto.ReadBasicRequest worthyConsumptionRequestDto = new WorthyConsumptionRequestDto.ReadBasicRequest();
-        worthyConsumptionRequestDto.setId(worthyConsumptionId);
-
-        WorthyConsumptionResponseDto.ReadBasicResponse WorthyConsumptionResponseDto = worthyConsumptionService.readBasicWorthyConsumption(worthyConsumptionRequestDto);
+        WorthyConsumptionResponseDto.ReadBasicResponse WorthyConsumptionResponseDto = worthyConsumptionService.readBasicWorthyConsumption(worthyConsumptionId);
         return new ResponseEntity<>(WorthyConsumptionResponseDto, HttpStatus.OK);
     }
-    @GetMapping("/{worthyConsumptionId}/detail")//다른 스타일로 짜보려고 노력함
+    @GetMapping("/{worthyConsumptionId}/detail")
     public ResponseEntity<WorthyConsumptionResponseDto.ReadDetailResponse> getWorthyConsumptionDetail(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId){
-        WorthyConsumptionRequestDto.ReadDetailRequest worthyConsumptionRequestDto = new WorthyConsumptionRequestDto.ReadDetailRequest();
-        worthyConsumptionRequestDto.setId(worthyConsumptionId);
-
-        WorthyConsumptionResponseDto.ReadDetailResponse WorthyConsumptionResponseDto = worthyConsumptionService.readDetailWorthyConsumption(worthyConsumptionRequestDto);
+        WorthyConsumptionResponseDto.ReadDetailResponse WorthyConsumptionResponseDto = worthyConsumptionService.readDetailWorthyConsumption(worthyConsumptionId);
         return new ResponseEntity<>(WorthyConsumptionResponseDto, HttpStatus.OK);
     }
     @PutMapping("/{worthyConsumptionId}/update/content")

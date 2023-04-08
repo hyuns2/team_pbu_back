@@ -27,16 +27,16 @@ public class WorthyConsumptionService {
         //worthyConsumption.setWorthyConsumptionUrl(worthyConsumptionUrl);
         worthyConsumptionRepository.save(worthyConsumption);
     }
-    public WorthyConsumptionResponseDto.ReadSummaryResponse readSummaryWorthyConsumption(WorthyConsumptionRequestDto.IdRequest worthyConsumptionRequestDto){
-        WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionRequestDto.getId()).orElseThrow();
+    public WorthyConsumptionResponseDto.ReadSummaryResponse readSummaryWorthyConsumption(Long worthyConsumptionId){
+        WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionId).orElseThrow();
         return new WorthyConsumptionResponseDto.ReadSummaryResponse(worthyConsumption);
     }
-    public WorthyConsumptionResponseDto.ReadBasicResponse readBasicWorthyConsumption(WorthyConsumptionRequestDto.IdRequest worthyConsumptionRequestDto){
-        WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionRequestDto.getId()).orElseThrow();
+    public WorthyConsumptionResponseDto.ReadBasicResponse readBasicWorthyConsumption(Long worthyConsumptionId){
+        WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionId).orElseThrow();
         return new WorthyConsumptionResponseDto.ReadBasicResponse(worthyConsumption);
     }
-    public WorthyConsumptionResponseDto.ReadDetailResponse readDetailWorthyConsumption(WorthyConsumptionRequestDto.IdRequest worthyConsumptionRequestDto){
-        WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionRequestDto.getId()).orElseThrow();
+    public WorthyConsumptionResponseDto.ReadDetailResponse readDetailWorthyConsumption(Long worthyConsumptionId){
+        WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionId).orElseThrow();
         return new WorthyConsumptionResponseDto.ReadDetailResponse(worthyConsumption);
     }
     public void updateContentWorthyConsumption(WorthyConsumptionRequestDto.UpdateContentRequest worthyConsumptionRequestDto){
