@@ -26,12 +26,12 @@ public class CouponController {
         CouponResponseDto.ReadResponse couponResponseDto = couponService.readCoupon(couponId);
         return new ResponseEntity<>(couponResponseDto, HttpStatus.OK);
     }
-    @PutMapping("/{couponId}/update/content")
+    @PutMapping("/{couponId}/content")
     public ResponseEntity<HttpStatus> updateCouponContent(@PathVariable(name = "couponId") Long couponId, @RequestBody CouponRequestDto.UpdateContentRequest couponRequestDto){
         couponService.updateCouponContent(couponRequestDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    @PutMapping("/{couponId}/update/date")
+    @PutMapping("/{couponId}/date")
     public ResponseEntity<HttpStatus> updateCouponDate(@PathVariable(name = "couponId") Long couponId, @RequestBody CouponRequestDto.UpdateDateRequest couponRequestDto){
         couponService.updateCouponDate(couponRequestDto);
         return new ResponseEntity<>(HttpStatus.OK);
