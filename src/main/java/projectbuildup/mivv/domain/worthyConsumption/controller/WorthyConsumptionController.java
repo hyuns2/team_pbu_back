@@ -12,6 +12,7 @@ import projectbuildup.mivv.domain.worthyConsumption.dto.request.WorthyConsumptio
 import projectbuildup.mivv.domain.worthyConsumption.dto.request.WorthyConsumptionUrlRequestDto;
 import projectbuildup.mivv.domain.worthyConsumption.dto.response.WorthyConsumptionResponseDto;
 import projectbuildup.mivv.domain.worthyConsumption.service.WorthyConsumptionService;
+import projectbuildup.mivv.domain.worthyConsumption.service.WorthyConsumptionValidationService;
 
 @Slf4j
 @RestController
@@ -20,44 +21,51 @@ import projectbuildup.mivv.domain.worthyConsumption.service.WorthyConsumptionSer
 @Tag(name = "[WorthyConsumption]", description = "가치소비 관련 API입니다.")
 public class WorthyConsumptionController {
     private final WorthyConsumptionService worthyConsumptionService;
+    private final WorthyConsumptionValidationService worthyConsumptionValidationService;
     @PostMapping("/create")
     public ResponseEntity<HttpStatus> createWorthyConsumption(@Valid @RequestBody WorthyConsumptionRequestDto.CreationRequest worthyConsumptionRequestDto){
             worthyConsumptionService.createWorthyConsumption(worthyConsumptionRequestDto);
-            log.info("worthyConsumptionRequestDto = {}",worthyConsumptionRequestDto);
             return new ResponseEntity<>(HttpStatus.CREATED);
     }
     @GetMapping("/{worthyConsumptionId}/summary")
     public ResponseEntity<WorthyConsumptionResponseDto.ReadSummaryResponse> getWorthyConsumptionSummary(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId){
+        worthyConsumptionValidationService.isRealWorthyConsumptionId(worthyConsumptionId);
         WorthyConsumptionResponseDto.ReadSummaryResponse worthyConsumptionResponseDto = worthyConsumptionService.readSummaryWorthyConsumption(worthyConsumptionId);
         return new ResponseEntity<>(worthyConsumptionResponseDto, HttpStatus.OK);
     }
     @GetMapping("/{worthyConsumptionId}/basic")
     public ResponseEntity<WorthyConsumptionResponseDto.ReadBasicResponse> getWorthyConsumptionBasic(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId){
+        worthyConsumptionValidationService.isRealWorthyConsumptionId(worthyConsumptionId);
         WorthyConsumptionResponseDto.ReadBasicResponse WorthyConsumptionResponseDto = worthyConsumptionService.readBasicWorthyConsumption(worthyConsumptionId);
         return new ResponseEntity<>(WorthyConsumptionResponseDto, HttpStatus.OK);
     }
     @GetMapping("/{worthyConsumptionId}/detail")
     public ResponseEntity<WorthyConsumptionResponseDto.ReadDetailResponse> getWorthyConsumptionDetail(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId){
+        worthyConsumptionValidationService.isRealWorthyConsumptionId(worthyConsumptionId);
         WorthyConsumptionResponseDto.ReadDetailResponse WorthyConsumptionResponseDto = worthyConsumptionService.readDetailWorthyConsumption(worthyConsumptionId);
         return new ResponseEntity<>(WorthyConsumptionResponseDto, HttpStatus.OK);
     }
     @PutMapping("/{worthyConsumptionId}/content")
-    public ResponseEntity<HttpStatus> updateWorthyConsumptionContent(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId, @RequestBody WorthyConsumptionRequestDto.UpdateContentRequest worthyConsumptionRequestDto){
+    public ResponseEntity<HttpStatus> updateWorthyConsumptionContent(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId, @Valid @RequestBody WorthyConsumptionRequestDto.UpdateContentRequest worthyConsumptionRequestDto){
+        worthyConsumptionValidationService.isSameWorthyConsumptionId(worthyConsumptionId, worthyConsumptionRequestDto.getId());
         worthyConsumptionService.updateContentWorthyConsumption(worthyConsumptionRequestDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
     @PutMapping("/{worthyConsumptionId}/url")
-    public ResponseEntity<HttpStatus> updateWorthyConsumptionUrl(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId, @RequestBody WorthyConsumptionRequestDto.UpdateUrlRequest worthyConsumptionRequestDto){
+    public ResponseEntity<HttpStatus> updateWorthyConsumptionUrl(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId, @Valid @RequestBody WorthyConsumptionRequestDto.UpdateUrlRequest worthyConsumptionRequestDto){
+        worthyConsumptionValidationService.isSameWorthyConsumptionId(worthyConsumptionId, worthyConsumptionRequestDto.getId());
         worthyConsumptionService.updateUrlWorthyConsumption(worthyConsumptionRequestDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
     @PutMapping("/{worthyConsumptionId}/price")
-    public ResponseEntity<HttpStatus> updateWorthyConsumptionPrice(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId, @RequestBody WorthyConsumptionRequestDto.UpdatePriceRequest worthyConsumptionRequestDto){
+    public ResponseEntity<HttpStatus> updateWorthyConsumptionPrice(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId, @Valid @RequestBody WorthyConsumptionRequestDto.UpdatePriceRequest worthyConsumptionRequestDto){
+        worthyConsumptionValidationService.isSameWorthyConsumptionId(worthyConsumptionId, worthyConsumptionRequestDto.getId());
         worthyConsumptionService.updatePriceWorthyConsumption(worthyConsumptionRequestDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
     @PutMapping("/{worthyConsumptionId}/place")
-    public ResponseEntity<HttpStatus> updateWorthyConsumptionPlace(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId, @RequestBody WorthyConsumptionRequestDto.UpdatePlaceRequest worthyConsumptionRequestDto){
+    public ResponseEntity<HttpStatus> updateWorthyConsumptionPlace(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId, @Valid @RequestBody WorthyConsumptionRequestDto.UpdatePlaceRequest worthyConsumptionRequestDto){
+        worthyConsumptionValidationService.isSameWorthyConsumptionId(worthyConsumptionId, worthyConsumptionRequestDto.getId());
         worthyConsumptionService.updatePlaceWorthyConsumption(worthyConsumptionRequestDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }

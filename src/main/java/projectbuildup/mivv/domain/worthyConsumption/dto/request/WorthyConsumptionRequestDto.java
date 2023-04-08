@@ -3,6 +3,7 @@ package projectbuildup.mivv.domain.worthyConsumption.dto.request;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
 import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumption;
@@ -17,7 +18,7 @@ public class WorthyConsumptionRequestDto {
     public static class CreationRequest {
         @NotBlank(message = "가치소비의 이름을 입력해주세요")
         String title;
-        @NonNull
+        @NotNull
         List<String> hashtags;
         @Positive
         int maxParticipants;
@@ -25,13 +26,13 @@ public class WorthyConsumptionRequestDto {
         int originalPrice;
         @NotBlank(message = "가치소비의 할인 가격을 입력해주세요") @Positive
         int salePrice;
-        @NonNull
+        @NotNull
         List<String> whyRecommendation;
         String priceTag;
         String placeTag;
-        @NonNull
+        @NotNull
         List<String> summary;
-        @NonNull
+        @NotNull
         WorthyConsumptionUrlRequestDto.CreationRequest worthyConsumptionUrlRequest;
         public WorthyConsumption toEntity(WorthyConsumptionUrl worthyConsumptionUrl){
             return WorthyConsumption.builder()
@@ -52,6 +53,7 @@ public class WorthyConsumptionRequestDto {
     @Getter @Setter
     @AllArgsConstructor
     public static class IdRequest {
+        @NotNull
         Long id;
     }
     @AllArgsConstructor @NoArgsConstructor

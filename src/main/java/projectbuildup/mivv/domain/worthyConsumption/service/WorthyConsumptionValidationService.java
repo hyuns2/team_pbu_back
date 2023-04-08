@@ -23,6 +23,8 @@ public class WorthyConsumptionValidationService {
     public void isSameWorthyConsumptionId(Long worthyConsumptionId, Long worthyConsumptionIdIdDto){
         if(!ObjectUtils.equals(worthyConsumptionId, worthyConsumptionIdIdDto))
             throw new CBadRequestException("requestId와 requestDto 속 가치소비 id가 일치하지 않습니다.");
+        else
+            isRealWorthyConsumptionId(worthyConsumptionId);
     }
     public void isRealWorthyConsumptionId(Long worthyConsumptionId){
         if(worthyConsumptionRepository.findById(worthyConsumptionId).isEmpty())
