@@ -2,6 +2,7 @@ package projectbuildup.mivv.domain.worthyConsumption.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -20,7 +21,7 @@ import projectbuildup.mivv.domain.worthyConsumption.service.WorthyConsumptionSer
 public class WorthyConsumptionController {
     private final WorthyConsumptionService worthyConsumptionService;
     @PostMapping("/create")
-    public ResponseEntity<HttpStatus> createWorthyConsumption(@RequestBody WorthyConsumptionRequestDto.CreationRequest worthyConsumptionRequestDto){
+    public ResponseEntity<HttpStatus> createWorthyConsumption(@Valid @RequestBody WorthyConsumptionRequestDto.CreationRequest worthyConsumptionRequestDto){
             worthyConsumptionService.createWorthyConsumption(worthyConsumptionRequestDto);
             log.info("worthyConsumptionRequestDto = {}",worthyConsumptionRequestDto);
             return new ResponseEntity<>(HttpStatus.CREATED);

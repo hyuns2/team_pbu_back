@@ -7,10 +7,8 @@ import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumption;
 import java.util.List;
 @Schema(description = "가치소비 응답 DTO")
 public class WorthyConsumptionResponseDto {
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @Getter
-    @Setter
+    @NoArgsConstructor @AllArgsConstructor
+    @Getter @Setter
     public static class ReadSummaryResponse {
         private String title;
         private int originalPrice;
@@ -26,10 +24,8 @@ public class WorthyConsumptionResponseDto {
             this.summary = worthyConsumption.getSummary();
         }
     }
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @Getter
-    @Setter
+    @NoArgsConstructor @AllArgsConstructor
+    @Getter @Setter
     public static class ReadBasicResponse extends ReadSummaryResponse{
         private List<String> hashtags;
         private String videoUrl;
@@ -43,10 +39,8 @@ public class WorthyConsumptionResponseDto {
         }
 
     }
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @Getter
-    @Setter
+    @NoArgsConstructor @AllArgsConstructor
+    @Getter @Setter
     @Builder
     public static class ReadDetailResponse extends ReadBasicResponse{
         private int maxParticipants;

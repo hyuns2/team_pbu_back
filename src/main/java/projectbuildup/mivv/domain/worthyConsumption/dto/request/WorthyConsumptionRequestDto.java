@@ -1,6 +1,9 @@
 package projectbuildup.mivv.domain.worthyConsumption.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 import lombok.*;
 import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumption;
 import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumptionUrl;
@@ -8,21 +11,27 @@ import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumptionUrl;
 import java.util.List;
 @Schema(description = "가치소비 요청 DTO")
 public class WorthyConsumptionRequestDto {
-    @Builder
-    @Getter
-    @AllArgsConstructor
-    @NoArgsConstructor
+    @Builder @Getter
+    @AllArgsConstructor @NoArgsConstructor
     @Schema(description = "가치소비 생성 요청 DTO")
     public static class CreationRequest {
+        @NotBlank(message = "가치소비의 이름을 입력해주세요")
         String title;
+        @NonNull
         List<String> hashtags;
+        @Positive
         int maxParticipants;
+        @NotBlank(message = "가치소비의 원래 가격을 입력해주세요") @Positive
         int originalPrice;
+        @NotBlank(message = "가치소비의 할인 가격을 입력해주세요") @Positive
         int salePrice;
+        @NonNull
         List<String> whyRecommendation;
         String priceTag;
         String placeTag;
+        @NonNull
         List<String> summary;
+        @NonNull
         WorthyConsumptionUrlRequestDto.CreationRequest worthyConsumptionUrlRequest;
         public WorthyConsumption toEntity(WorthyConsumptionUrl worthyConsumptionUrl){
             return WorthyConsumption.builder()
@@ -40,16 +49,13 @@ public class WorthyConsumptionRequestDto {
         }
     }
     @NoArgsConstructor
-    @Getter
-    @Setter
+    @Getter @Setter
     @AllArgsConstructor
     public static class IdRequest {
         Long id;
     }
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Getter
-    @Setter
+    @AllArgsConstructor @NoArgsConstructor
+    @Getter @Setter
     @Builder
     public static class UpdateContentRequest extends WorthyConsumptionRequestDto.IdRequest{
         String title;
@@ -59,8 +65,7 @@ public class WorthyConsumptionRequestDto {
         List<String> summary;
     }
     @NoArgsConstructor
-    @Getter
-    @Setter
+    @Getter @Setter
     @AllArgsConstructor
     @Builder
     public static class UpdateUrlRequest extends WorthyConsumptionRequestDto.IdRequest {
@@ -71,8 +76,7 @@ public class WorthyConsumptionRequestDto {
         String placeImageUrl;
     }
     @NoArgsConstructor
-    @Getter
-    @Setter
+    @Getter @Setter
     @AllArgsConstructor
     @Builder
     public static class UpdatePriceRequest extends WorthyConsumptionRequestDto.IdRequest{
@@ -81,10 +85,8 @@ public class WorthyConsumptionRequestDto {
         String priceTag;
 
     }
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @Getter
-    @Setter
+    @NoArgsConstructor @AllArgsConstructor
+    @Getter @Setter
     @Builder
     public static class UpdatePlaceRequest extends WorthyConsumptionRequestDto.IdRequest{
         String placeTag;
