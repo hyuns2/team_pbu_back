@@ -20,7 +20,7 @@ import projectbuildup.mivv.global.constant.Header;
 
 import projectbuildup.mivv.global.security.jwt.TokenDto;
 
-@Tag(name = "[1-1.Authentication]", description = "인증과 관련된 API입니다.")
+@Tag(name = "[1.Authentication]", description = "인증과 관련된 API입니다.")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")

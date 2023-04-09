@@ -25,7 +25,7 @@ import projectbuildup.mivv.global.utils.DeviceFinder;
 
 @Slf4j
 @RestController
-@Tag(name = "[2-1.User]", description = "회원과 관련된 API입니다.")
+@Tag(name = "[2.User]", description = "회원과 관련된 API입니다.")
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class UserController {
