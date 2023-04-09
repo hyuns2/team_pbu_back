@@ -18,10 +18,8 @@ import projectbuildup.mivv.global.error.exception.CUserNotFoundException;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
@@ -96,7 +94,7 @@ public class RemittanceService {
      */
     private boolean hasRecord(Remittance remittance, User user, LocalDateTime startTime) {
         long amount = remittance.getAmount();
-        List<Map<String, String>> history = accountDetailsSystem.getHistory(user);
+        List<Map<String, String>> history = accountDetailsSystem.getDepositHistory(user);
         return history.stream()
                 .filter(map -> {
                     String date = map.get(CodefAccountDetailsSystem.DATE_FIELD);

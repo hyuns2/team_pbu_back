@@ -1,6 +1,5 @@
 package projectbuildup.mivv.domain.account.service.accountdetails;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import projectbuildup.mivv.domain.account.entity.Account;
@@ -23,7 +22,34 @@ public class CodefAccountDetailsSystem implements AccountDetailsSystem {
     public final static String TIME_FIELD = "resAccountTrTime";
 
     @Override
-    public List<Map<String, String>> getHistory(User user) {
+    public List<Map<String, String>> getDepositHistory(User user) {
+        List<Map<String, String>> returnList = new ArrayList<>();
+
+        List<Map<String, Object>> list = getList(user);
+        for (Map<String, Object> map : list) {
+            HashMap<String, String> returnMap = getReturnMap(map, "resAccountIn");
+            if (returnMap != null) {
+                returnList.add(returnMap);
+            }
+        }
+        return returnList;
+    }
+
+    @Override
+    public List<Map<String, String>> getWithdrawHistory(User user) {
+        List<Map<String, String>> returnList = new ArrayList<>();
+
+        List<Map<String, Object>> list = getList(user);
+        for (Map<String, Object> map : list) {
+            HashMap<String, String> returnMap = getReturnMap(map, "resAccountOut");
+            if (returnMap != null) {
+                returnList.add(returnMap);
+            }
+        }
+        return returnList;
+    }
+
+    private List<Map<String, Object>> getList(User user) {
         Account account = user.getAccount();
         String connectedId = account.getConnectionMap().get(OpenBanking.CODEF);
         String bankCode = account.getBankType().getCode();
@@ -31,18 +57,18 @@ public class CodefAccountDetailsSystem implements AccountDetailsSystem {
         Map<String, Object> result = codefClient.getHistory(connectedId, bankCode, accountNumbers, LocalDate.now());
         Map<String, Object> dataMap = (Map<String, Object>) result.get("data");
         List<Map<String, Object>> listMap = (List<Map<String, Object>>) dataMap.get("resTrHistoryList");
-        List<Map<String, String>> returnList = new ArrayList<>();
-        for (Map<String, Object> stringObjectHashMap : listMap) {
-            HashMap<String, String> returnMap = new HashMap<>();
-            String resAccountIn = (String) stringObjectHashMap.get("resAccountIn");
-            if (resAccountIn.equals("0")) {
-                continue;
-            }
-            returnMap.put(AMOUNT_FIELD, resAccountIn);
-            returnMap.put(DATE_FIELD, (String) stringObjectHashMap.get("resAccountTrDate"));
-            returnMap.put(TIME_FIELD, (String) stringObjectHashMap.get("resAccountTrTime"));
-            returnList.add(returnMap);
+        return listMap;
+    }
+
+    private HashMap<String, String> getReturnMap(Map<String, Object> stringObjectHashMap, String field) {
+        HashMap<String, String> returnMap = new HashMap<>();
+        String amount = (String) stringObjectHashMap.get(field);
+        if (amount.equals("0")) {
+            return null;
         }
-        return returnList;
+        returnMap.put(AMOUNT_FIELD, amount);
+        returnMap.put(DATE_FIELD, (String) stringObjectHashMap.get("resAccountTrDate"));
+        returnMap.put(TIME_FIELD, (String) stringObjectHashMap.get("resAccountTrTime"));
+        return returnMap;
     }
 }

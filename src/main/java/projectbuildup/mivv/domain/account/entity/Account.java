@@ -11,6 +11,8 @@ import java.util.Map;
 @Entity
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @ToString
 public class Account {
     @Id
@@ -23,7 +25,6 @@ public class Account {
     @MapKeyEnumerated(EnumType.STRING)
     Map<OpenBanking, String> connectionMap = new HashMap<>();
 
-    @Builder
     public Account(String accountNumbers,  BankType bankType, OpenBanking platform, String connectionId){
         if (connectionId == null || platform == null){
             throw new CInternalServerException();

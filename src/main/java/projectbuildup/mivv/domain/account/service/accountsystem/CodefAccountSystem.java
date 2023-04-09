@@ -33,12 +33,7 @@ public class CodefAccountSystem implements AccountSystem {
         if (!ownAccounts.contains(accountDto.getAccountNumbers())) {
             throw new CResourceNotFoundException();
         }
-        return Account.builder()
-                .accountNumbers(accountDto.getAccountNumbers())
-                .bankType(accountDto.getBankType())
-                .platform(OpenBanking.CODEF)
-                .connectionId(connectedId)
-                .build();
+        return new Account(accountDto.getAccountNumbers(), accountDto.getBankType(), OpenBanking.CODEF, connectedId);
     }
 
     private String issueConnectedId(AccountRegisterDto accountDto, User user) {

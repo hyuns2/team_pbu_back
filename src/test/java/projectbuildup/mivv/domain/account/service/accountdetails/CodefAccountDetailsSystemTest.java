@@ -5,14 +5,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import projectbuildup.mivv.domain.challenge.entity.Challenge;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.domain.user.repository.UserRepository;
 
 import java.util.List;
 import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 @SpringBootTest
@@ -28,7 +25,7 @@ class CodefAccountDetailsSystemTest {
         // given
         User user = userRepository.findById(1L).get();
         // when
-        List<Map<String, String>> history = codefAccountDetailsSystem.getHistory(user);
+        List<Map<String, String>> history = codefAccountDetailsSystem.getDepositHistory(user);
         log.info("{}", history);
         // then
     }

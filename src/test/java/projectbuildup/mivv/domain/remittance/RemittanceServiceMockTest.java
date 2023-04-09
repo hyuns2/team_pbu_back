@@ -1,4 +1,4 @@
-package projectbuildup.mivv.domain.remittance.service.mock;
+package projectbuildup.mivv.domain.remittance;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class)
-class RemittanceServiceTest {
+class RemittanceServiceMockTest {
 
     @Test
     @DisplayName("String -> DateTimeLocal 파싱 테스트")

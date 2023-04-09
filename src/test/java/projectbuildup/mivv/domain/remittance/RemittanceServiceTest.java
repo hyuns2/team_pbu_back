@@ -1,4 +1,4 @@
-package projectbuildup.mivv.domain.remittance.service;
+package projectbuildup.mivv.domain.remittance;
 
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
@@ -17,6 +17,7 @@ import projectbuildup.mivv.domain.challenge.repository.ChallengeRepository;
 import projectbuildup.mivv.domain.remittance.dto.RemittanceDto;
 import projectbuildup.mivv.domain.remittance.entity.Remittance;
 import projectbuildup.mivv.domain.remittance.repository.RemittanceRepository;
+import projectbuildup.mivv.domain.remittance.service.RemittanceService;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.domain.user.repository.UserRepository;
 
@@ -44,17 +45,17 @@ class RemittanceServiceTest {
 
     @Test
     @DisplayName("송금이 이루어지지 않으면 절약금이 갱신되지 않는다.")
-    void 송금이_이루어지지_않으면_절약금이_갱신되지_않는다() {
+    void 송금이_이루어지지_않으면_절약금이_갱신되지_않는다() throws InterruptedException {
         // when
+        LocalDateTime now = LocalDateTime.now();
         RemittanceDto.RemitRequest requestDto = new RemittanceDto.RemitRequest(1L, 1L, 30000L);
         remittanceService.remit(requestDto, null);
 
         // then
-        try {
-            sleep(TimeUnit.MILLISECONDS.convert(1, TimeUnit.MINUTES));
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        sleep(TimeUnit.MILLISECONDS.convert(10, TimeUnit.SECONDS));
+        List<Remittance> remittances = remittanceRepository.findAllByCreatedTimeAfter(now);
+        assertThat(remittances.size()).isEqualTo(0);
+        sleep(TimeUnit.MILLISECONDS.convert(10, TimeUnit.SECONDS));
     }
 
     @Test
@@ -68,7 +69,7 @@ class RemittanceServiceTest {
         // then
         sleep(TimeUnit.MILLISECONDS.convert(10, TimeUnit.SECONDS));
         List<Remittance> remittances = remittanceRepository.findAllByCreatedTimeAfter(now);
-        assertThat(remittances).isNotNull();
+        assertThat(remittances.size()).isEqualTo(1);
         assertThat(remittances.get(0).getAmount()).isEqualTo(300000L);
         sleep(TimeUnit.MILLISECONDS.convert(10, TimeUnit.SECONDS));
     }
