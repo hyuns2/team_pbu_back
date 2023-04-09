@@ -1,16 +1,14 @@
 package projectbuildup.mivv.domain.challenge.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
-import projectbuildup.mivv.domain.challenge.dto.request.ChallengeRequestDto;
-import projectbuildup.mivv.domain.member.entity.Member;
+import projectbuildup.mivv.domain.challenge.dto.ChallengeDto;
 import projectbuildup.mivv.global.common.BaseTimeEntity;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,30 +17,37 @@ import java.util.List;
 public class Challenge extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    @NonNull
+    private Long id;
     private String mainTitle;
-    @NonNull
     private String subTitle;
-    @NonNull
-    private LocalDate startDate;
-    @NonNull
-    private LocalDate endDate;
-    @NonNull
-    private List<String> content;
-    @NonNull
-    private int remittanceOnceLimit;
-    @NonNull
-    private int remittanceAvailableCount;
-    @NonNull
+    @ElementCollection
+    private List<String> description = new ArrayList<>();
+    private long remittanceOnceLimit;
+    private long remittanceAvailableCount;
     private String imageUrl;
 
-    public void updateChallenge(ChallengeRequestDto.UpdateRequest updateRequestDto){
-        this.mainTitle = updateRequestDto.getMainTitle();
-        this.subTitle = updateRequestDto.getSubTitle();
-        this.content = updateRequestDto.getContent();
-        this.imageUrl = updateRequestDto.getImageUrl();
+    private LocalDate startDate;
+    private LocalDate endDate;
+
+    public void update(ChallengeDto.UpdateRequest requestDto) {
+        this.mainTitle = requestDto.getMainTitle();
+        this.subTitle = requestDto.getSubTitle();
+        this.description = requestDto.getDescription();
+        this.remittanceOnceLimit = requestDto.getRemittanceOnceLimit();
+        this.remittanceAvailableCount = requestDto.getRemittanceAvailableCount();
+        this.imageUrl = requestDto.getImageUrl();
     }
 
-
+    public static Challenge of(ChallengeDto.CreationRequest requestDto) {
+        return Challenge.builder()
+                .mainTitle(requestDto.getMainTitle())
+                .subTitle(requestDto.getSubTitle())
+                .description(requestDto.getDescription())
+                .remittanceOnceLimit(requestDto.getRemittanceOnceLimit())
+                .remittanceAvailableCount(requestDto.getRemittanceAvailableCount())
+                .imageUrl(requestDto.getImageUrl())
+                .startDate(requestDto.getStartDate())
+                .endDate(requestDto.getEndDate())
+                .build();
+    }
 }
