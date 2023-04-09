@@ -1,4 +1,4 @@
-package projectbuildup.mivv.domain.challenge.controller;
+package projectbuildup.mivv.domain.participation.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -24,7 +24,7 @@ import projectbuildup.mivv.global.constant.Header;
 @Slf4j
 @RequestMapping("/api")
 @Tag(name = "[1-2.Challenge]", description = "챌린지 참여 관련 API입니다.")
-public class ChallengeParticipationController {
+public class ParticipationController {
 
     private final ParticipationService participationService;
 
