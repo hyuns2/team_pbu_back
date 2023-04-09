@@ -19,7 +19,7 @@ import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.global.constant.ExampleValue;
 import projectbuildup.mivv.global.constant.Header;
 
-@Tag(name="[1-2.Account]", description = "계좌 관련 API입니다.")
+@Tag(name = "[1.Authentication]", description = "인증과 관련된 API입니다.")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")

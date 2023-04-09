@@ -12,13 +12,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.web.format.DateTimeFormatters;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import projectbuildup.mivv.domain.account.dto.AccountRegisterDto;
 import projectbuildup.mivv.domain.account.dto.IdPasswordBasedRegisterDto;
+import projectbuildup.mivv.domain.account.entity.Account;
 import projectbuildup.mivv.domain.account.entity.BankType;
+import projectbuildup.mivv.domain.user.entity.IdentityVerification;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.global.error.exception.CInternalServerException;
 
@@ -30,9 +33,12 @@ import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Component
 @Slf4j
@@ -122,6 +128,36 @@ public class CodefClient {
         } catch (Exception e) {
             e.printStackTrace();
             throw new CInternalServerException();
+        }
+    }
+
+    /**
+     * 계좌의 입금 내역을 조회합니다.
+     * 최신순으로 정렬됩니다.
+     *
+     * @param connectedId 커넥티드 아이디
+     * @param bankCode    은행 코드
+     * @param accountNumbers    계좌 번호
+     * @param startDate   조회 시작 날짜
+     * @return (거래 일자, 거래시간, 거래 금액) 리스트
+     */
+    public Map<String, Object> getHistory(String connectedId, String bankCode, String accountNumbers, LocalDate startDate) {
+        LocalDate endDate = startDate.plusDays(1);
+        String startDateStr = startDate.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        String endDateStr = endDate.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        HashMap<String, Object> parameterMap = new HashMap<>();
+        parameterMap.put("organization", bankCode);
+        parameterMap.put("connectedId", connectedId);
+        parameterMap.put("account", accountNumbers);
+        parameterMap.put("startDate", startDateStr);
+        parameterMap.put("endDate", endDateStr);
+        parameterMap.put("orderBy", "0");
+        String productUrl = "/v1/kr/bank/p/account/transaction-list";
+        try {
+            String result = codef.requestProduct(productUrl, EasyCodefServiceType.SANDBOX, parameterMap);
+            return new ObjectMapper().readValue(result, HashMap.class);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 }
