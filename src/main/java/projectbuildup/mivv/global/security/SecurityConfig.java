@@ -14,14 +14,15 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import projectbuildup.mivv.global.security.filter.JwtAuthenticationFilter;
 import projectbuildup.mivv.global.security.filter.JwtExceptionFilter;
 import projectbuildup.mivv.global.security.jwt.JwtProvider;
+import projectbuildup.mivv.global.security.jwt.JwtValidator;
 
 @EnableMethodSecurity(securedEnabled = true) //@PreAuthorize, @Secured 사용을 위함
 @EnableWebSecurity
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
-
     private final JwtProvider jwtProvider;
+    private final JwtValidator jwtValidator;
     private final CorsConfig corsConfig;
 
     @Bean
@@ -38,7 +39,7 @@ public class SecurityConfig {
                 .accessDeniedHandler(new CustomAccessDeniedHandler())
                 .and()
                 .addFilter(corsConfig.corsFilter())
-                .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtAuthenticationFilter(jwtProvider, jwtValidator), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new JwtExceptionFilter(), JwtAuthenticationFilter.class)
                 .build();
     }

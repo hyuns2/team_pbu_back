@@ -1,4 +1,4 @@
-package projectbuildup.mivv.domain.member.entity;
+package projectbuildup.mivv.domain.user.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -31,7 +31,7 @@ public class User extends BaseTimeEntity implements UserDetails {
     String email;
     String password;
     boolean agreement;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn
     IdentityVerification identityVerification;
 
@@ -80,5 +80,9 @@ public class User extends BaseTimeEntity implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public void changePassword(String password) {
+        this.password = password;
     }
 }

@@ -3,7 +3,7 @@ package projectbuildup.mivv.domain.auth.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import projectbuildup.mivv.domain.auth.repository.IdentityVerificationRepository;
-import projectbuildup.mivv.domain.member.entity.IdentityVerification;
+import projectbuildup.mivv.domain.user.entity.IdentityVerification;
 
 @Service
 @RequiredArgsConstructor

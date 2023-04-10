@@ -1,7 +1,7 @@
 package projectbuildup.mivv.domain.auth.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import projectbuildup.mivv.domain.member.entity.IdentityVerification;
+import projectbuildup.mivv.domain.user.entity.IdentityVerification;
 
 import java.util.Optional;
 
