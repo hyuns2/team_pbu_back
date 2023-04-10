@@ -1,5 +1,6 @@
 package projectbuildup.mivv.domain.challenge.entity;
 
+
 import jakarta.persistence.*;
 import lombok.*;
 import projectbuildup.mivv.domain.challenge.dto.ChallengeDto;
@@ -17,6 +18,7 @@ import java.util.List;
 public class Challenge extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long id;
     private String mainTitle;
     private String subTitle;
@@ -50,4 +52,5 @@ public class Challenge extends BaseTimeEntity {
                 .endDate(requestDto.getEndDate())
                 .build();
     }
+
 }

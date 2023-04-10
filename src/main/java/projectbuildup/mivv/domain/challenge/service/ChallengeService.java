@@ -2,6 +2,7 @@ package projectbuildup.mivv.domain.challenge.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import java.util.List;
 public class ChallengeService {
 
     private final ChallengeRepository challengeRepository;
+
 
     /**
      * 챌린지를 생성합니다.
@@ -75,4 +77,5 @@ public class ChallengeService {
     public void deleteChallenge(Long challengeId) {
         challengeRepository.deleteById(challengeId);
     }
+
 }
