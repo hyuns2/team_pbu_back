@@ -1,8 +1,5 @@
 package projectbuildup.mivv.global.constant;
 
-import projectbuildup.mivv.domain.auth.service.BasicCertificationSystem;
-import projectbuildup.mivv.domain.member.entity.IdentityVerification;
-
 public class ExampleValue {
 
     public static class User {
@@ -27,7 +24,7 @@ public class ExampleValue {
     }
 
     public static class JWT{
-        public final static String ACCESS = "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiIxIiwiaWF0IjoxNjc1MzAwMTIxLCJleHAiOjE3MDY4MzYxMjEsImp0aSI6IjZlMTMwYmZiLTU3NDgtNDI0NS1iZjQ0LTYzMjk0MzVkOTQxYiIsImF1dGhvcml0aWVzIjoiUk9MRV9VU0VSIn0.uOgQjAj8hdt32hOUptLT8MgkJ5H9kms6Yx1WPOBL7K8";
-        public final static String REFRESH = "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiIxIiwiaWF0IjoxNjc1MzAwMTIxLCJleHAiOjE3MDY4MzYxMjEsImp0aSI6ImU4YTY4MzMzLWE2ZWYtNDQwOC1hYjNkLWE1MWJiNjEyZTdkOCIsImF1dGhvcml0aWVzIjoiUk9MRV9VU0VSIn0.Rw3hOW6ldyV8uJbIMdv2w6buulSAPoh4a9KZaJ2gexg";
+        public final static String ACCESS = "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiIxIiwiaWF0IjoxNjc5Njc0ODQwLCJleHAiOjE3MTEyMTA4NDAsImp0aSI6ImM2Y2QxNDE5LTA0OGYtNDUxOS1iZTVjLWM3YTg3YmQyMDI0YSIsImF1dGhvcml0aWVzIjoiUk9MRV9VU0VSIn0.ZFWQ7o1Hxk4NOOVMojYockl4zA96mMW-FN7qNf2IRtE";
+        public final static String REFRESH = "eyJ0eXBlIjoiand0IiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiIxIiwiaWF0IjoxNjc5Njc0ODQwLCJleHAiOjE3MTEyMTA4NDAsImp0aSI6IjAzNDg5ZjkwLTE3MmEtNDMwMC04N2MzLTNiN2Q1OWM4ZjNlYSIsImF1dGhvcml0aWVzIjoiUk9MRV9VU0VSIn0.bBWJwqB6mPp-LNAvh3sspRy30HkXwkapK1DfXSgMsMM";
     }
 }

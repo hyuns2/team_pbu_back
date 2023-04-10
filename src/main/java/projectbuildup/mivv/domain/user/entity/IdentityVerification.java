@@ -1,4 +1,4 @@
-package projectbuildup.mivv.domain.member.entity;
+package projectbuildup.mivv.domain.user.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -24,7 +24,7 @@ public class IdentityVerification {
     String birthDate;
     String mobile;
     String code;
-    @OneToOne(mappedBy = "identityVerification", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "identityVerification", fetch = FetchType.LAZY)
     User user;
 
     public static IdentityVerification generateDummyVerification(){

@@ -39,7 +39,11 @@ public enum ErrorCode {
 
     // 9000 ~ : 서버 에러
     INTERNAL_SERVER_ERROR(-9999, "서버 에러입니다.", HttpStatus.INTERNAL_SERVER_ERROR),
-    EMPTY(-11111, "없음", HttpStatus.OK);
+    EMPTY(-11111, "없음", HttpStatus.OK),
+
+    // 15000 ~ : 문의 관련 에러
+    INQUIRY_OVER_ERROR(-15000, "문의 개수 한도를 초과했습니다.", HttpStatus.BAD_REQUEST),
+    INQUIRY_NOT_FOUND(-15100, "해당하는 문의를 찾을 수 없습니다.", HttpStatus.BAD_REQUEST);
 
     final int code;
     final String message;
