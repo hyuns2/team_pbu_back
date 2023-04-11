@@ -17,11 +17,7 @@ import projectbuildup.mivv.domain.coupon.service.CouponService;
 @Tag(name = "[Coupon]", description = "쿠폰 관련 API입니다.")
 public class CouponController {
     private final CouponService couponService;
-    /*@PostMapping("/create")
-    public ResponseEntity<HttpStatus> createCoupon(@PathVariable Long worthyConsumptionId, @Valid @RequestBody CouponRequestDto.CreationRequest couponRequestDto){
-        couponService.createCoupon(worthyConsumptionId, couponRequestDto);
-        return new ResponseEntity<>(HttpStatus.CREATED);
-    }*/
+
     @GetMapping("/{couponId}")
     public ResponseEntity<CouponResponseDto.ReadResponse> readCoupon(@PathVariable(name = "couponId") Long couponId){
         CouponResponseDto.ReadResponse couponResponseDto = couponService.readCoupon(couponId);

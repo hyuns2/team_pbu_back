@@ -42,14 +42,6 @@ public class Coupon extends BaseTimeEntity {
         this.limitEndDate = couponRequestDto.getLimitEndDate();
 
     }
-    public Coupon(CouponRequestDto.CreationRequest couponRequestDto){
-        this.title = couponRequestDto.getTitle();;
-        this.imageUrl = couponRequestDto.getImageUrl();
-        this.pin = couponRequestDto.getPin();
-        this.isUsed = false;
-        this.limitStartDate = couponRequestDto.getLimitStartDate();
-        this.limitEndDate = couponRequestDto.getLimitEndDate();
-    }
 
 
 }
