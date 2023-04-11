@@ -23,11 +23,6 @@ spring:
     redis:
       host: localhost
       port: 6379
-  sql: #더미데이터 용
-  init:
-    mode: always
-    data-locations: classpath:data.sql
-    encoding: UTF-8
   mail:
     host: smtp.gmail.com # SMTP 서버 호스트
     port: 587 # SMTP 서버 포트
