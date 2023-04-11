@@ -70,5 +70,15 @@ public class ArchivingController {
         return ResponseEntity.ok().body(responseDto);
     }
 
+    //어드민 권한 설정 필요, hasRole('USER')로 테스트함
+    @Operation(summary = "카드 전체 조회", description = "관리자가 카드 전체를 조회합니다.")
+    @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/admin/cards")
+    public ResponseEntity<?> retrieveNumericalConditionCards(@AuthenticationPrincipal User user) {
+        List<ArchivingDto.NumericalConditionCardResponseDto> responseDto = service.retrieveNumericalConditionCards();
+
+        return ResponseEntity.ok().body(responseDto);
+    }
 
 }
