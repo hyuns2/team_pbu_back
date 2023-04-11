@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import projectbuildup.mivv.domain.archiving.dto.ArchivingDto;
 import projectbuildup.mivv.domain.archiving.entity.NumericalConditionCardEntity;
 import projectbuildup.mivv.domain.archiving.repository.NumericalConditionCardRepository;
-import projectbuildup.mivv.domain.inquiry.dto.InquiryDto;
 import projectbuildup.mivv.global.error.exception.CCardNotFoundException;
 
 import java.util.List;
