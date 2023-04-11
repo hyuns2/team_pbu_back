@@ -4,11 +4,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import projectbuildup.mivv.domain.archiving.entity.NumericalConditionCardEntity;
+import projectbuildup.mivv.domain.archiving.entity.UserCardEntity;
 
-@NoArgsConstructor
+import java.time.LocalDate;
+
 public class ArchivingDto {
 
     @AllArgsConstructor
@@ -157,6 +158,27 @@ public class ArchivingDto {
             this.charge = entity.getCharge();
             this.count = entity.getCount();
             this.term = entity.getTerm();
+        }
+
+    }
+
+    @AllArgsConstructor
+    @Data
+    public static class UserCardResponseDto {
+
+        @Schema(description = "UserCard Id")
+        private Long id;
+
+        @Schema(description = "카드 정보")
+        private NumericalConditionCardResponseDto numericalConditionCardResponseDto;
+
+        @Schema(description = "발급 일자")
+        private LocalDate date;
+
+        public UserCardResponseDto(final UserCardEntity entity) {
+            this.id = entity.getId();
+            this.numericalConditionCardResponseDto = new NumericalConditionCardResponseDto(entity.getNumericalConditionCardEntity());
+            this.date = entity.getDate();
         }
 
     }

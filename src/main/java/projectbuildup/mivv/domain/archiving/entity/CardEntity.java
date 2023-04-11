@@ -2,6 +2,10 @@ package projectbuildup.mivv.domain.archiving.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import projectbuildup.mivv.domain.user.entity.User;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter

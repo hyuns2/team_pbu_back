@@ -81,4 +81,24 @@ public class ArchivingController {
         return ResponseEntity.ok().body(responseDto);
     }
 
+    @Operation(summary = "사용자의 모든 카드 조회", description = "사용자가 보유한 카드 전체를 조회합니다.")
+    @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/cards")
+    public ResponseEntity<?> retrieveUserCard(@AuthenticationPrincipal User user) {
+        List<ArchivingDto.UserCardResponseDto> responseDto = service.retrieveUserCards(user);
+
+        return ResponseEntity.ok().body(responseDto);
+    }
+
+    @Operation(summary = "카드 할당", description = "사용자에게 조건에 맞는 카드를 할당합니다.")
+    @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/assign")
+    public ResponseEntity<?> assignNumericalConditionCards(@AuthenticationPrincipal User user) {
+        service.assignNumericalConditionCards(user);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }

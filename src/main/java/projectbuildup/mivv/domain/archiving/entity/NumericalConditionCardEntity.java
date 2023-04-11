@@ -1,10 +1,12 @@
 package projectbuildup.mivv.domain.archiving.entity;
 
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import projectbuildup.mivv.domain.archiving.dto.ArchivingDto;
+import projectbuildup.mivv.domain.user.entity.User;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -16,6 +18,9 @@ public class NumericalConditionCardEntity extends CardEntity {
     protected Integer charge;
     protected Integer count;
     protected Integer term;
+
+    @OneToMany(mappedBy = "numericalConditionCardEntity", cascade = CascadeType.ALL)
+    private List<UserCardEntity> userCards = new ArrayList<>();
 
     @Builder
     public NumericalConditionCardEntity(String kind, String title, String subTitle, String sentence, String image, int charge, int count, int term) {
@@ -51,5 +56,18 @@ public class NumericalConditionCardEntity extends CardEntity {
             this.term = dto.getTerm();
         }
     }
+
+    public boolean equals(NumericalConditionCardEntity numericalConditionCardEntity) {
+        return this.id.equals(numericalConditionCardEntity.getId()) &&
+                this.kind.equals(numericalConditionCardEntity.getKind()) &&
+                this.title.equals(numericalConditionCardEntity.getTitle()) &&
+                this.subTitle.equals(numericalConditionCardEntity.getSubTitle()) &&
+                this.sentence.equals(numericalConditionCardEntity.getSentence()) &&
+                this.image.equals(numericalConditionCardEntity.getImage()) &&
+                this.charge.equals(numericalConditionCardEntity.getCharge()) &&
+                this.count.equals(numericalConditionCardEntity.getCount()) &&
+                this.term.equals(numericalConditionCardEntity.getTerm());
+    }
+
 
 }
