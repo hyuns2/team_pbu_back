@@ -16,6 +16,8 @@ import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.global.constant.ExampleValue;
 import projectbuildup.mivv.global.constant.Header;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @Tag(name = "[6-1. Archiving]", description = "아카이빙과 관련된 API입니다.")
@@ -29,7 +31,7 @@ public class ArchivingController {
     @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('USER')")
     @PostMapping("/admin/card")
-    public ResponseEntity<?> createNumericalConditionCard(@AuthenticationPrincipal User user, @RequestBody ArchivingDto.NumericalConditionCardRequestDto dto) {
+    public ResponseEntity<?> createNumericalConditionCard(@AuthenticationPrincipal User user, @RequestBody ArchivingDto.createNumericalConditionCardRequestDto dto) {
         service.createNumericalConditionCard(dto);
 
         return new ResponseEntity<>(HttpStatus.OK);
@@ -40,10 +42,43 @@ public class ArchivingController {
     @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('USER')")
     @PatchMapping("/admin/card/{id}")
-    public ResponseEntity<?> updateNumericalConditionCard(@AuthenticationPrincipal User user, @PathVariable("id") Long id, @RequestBody ArchivingDto.NumericalConditionCardRequestDto dto) {
+    public ResponseEntity<?> updateNumericalConditionCard(@AuthenticationPrincipal User user, @PathVariable("id") Long id, @RequestBody ArchivingDto.updateNumericalConditionCardRequestDto dto) {
         service.updateNumericalConditionCard(id, dto);
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    //어드민 권한 설정 필요, hasRole('USER')로 테스트함
+    @Operation(summary = "카드 삭제", description = "관리자가 카드를 삭제합니다.")
+    @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
+    @PreAuthorize("hasRole('USER')")
+    @DeleteMapping("/admin/card/{id}")
+    public ResponseEntity<?> deleteNumericalConditionCard(@AuthenticationPrincipal User user, @PathVariable("id") Long id) {
+        service.deleteNumericalConditionCard(id);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    //어드민 권한 설정 필요, hasRole('USER')로 테스트함
+    @Operation(summary = "카드 단건 조회", description = "관리자가 카드 하나를 조회합니다.")
+    @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/admin/card/{id}")
+    public ResponseEntity<?> retrieveNumericalConditionCard(@AuthenticationPrincipal User user, @PathVariable("id") Long id) {
+        ArchivingDto.NumericalConditionCardResponseDto responseDto = service.retrieveNumericalConditionCard(id);
+
+        return ResponseEntity.ok().body(responseDto);
+    }
+
+    //어드민 권한 설정 필요, hasRole('USER')로 테스트함
+    @Operation(summary = "카드 전체 조회", description = "관리자가 카드 전체를 조회합니다.")
+    @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/admin/cards")
+    public ResponseEntity<?> retrieveNumericalConditionCards(@AuthenticationPrincipal User user) {
+        List<ArchivingDto.NumericalConditionCardResponseDto> responseDto = service.retrieveNumericalConditionCards();
+
+        return ResponseEntity.ok().body(responseDto);
     }
 
 }

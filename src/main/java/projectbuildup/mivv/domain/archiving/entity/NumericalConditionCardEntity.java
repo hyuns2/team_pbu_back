@@ -13,9 +13,9 @@ import projectbuildup.mivv.domain.archiving.dto.ArchivingDto;
 @Table(name = "NumericalConditionCard")
 public class NumericalConditionCardEntity extends CardEntity {
 
-    protected int charge;
-    protected int count;
-    protected int term;
+    protected Integer charge;
+    protected Integer count;
+    protected Integer term;
 
     @Builder
     public NumericalConditionCardEntity(String kind, String title, String subTitle, String sentence, String image, int charge, int count, int term) {
@@ -25,7 +25,7 @@ public class NumericalConditionCardEntity extends CardEntity {
         this.term = term;
     }
 
-    public void updateCard(ArchivingDto.NumericalConditionCardRequestDto dto) {
+    public void updateCard(ArchivingDto.updateNumericalConditionCardRequestDto dto) {
         if (dto.getKind() != null) {
             this.kind = dto.getKind();
         }
