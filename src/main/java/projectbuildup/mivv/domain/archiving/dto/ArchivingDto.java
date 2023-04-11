@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
-import projectbuildup.mivv.domain.archiving.entity.CardWithConditionEntity;
+import projectbuildup.mivv.domain.archiving.entity.NumericalConditionCardEntity;
 
 @NoArgsConstructor
 public class ArchivingDto {
@@ -15,7 +15,7 @@ public class ArchivingDto {
     @Data
     public static class NumericalConditionCardRequestDto {
 
-        @Length(min = 1, max = 10)
+        @Length(min = 1, max = 30)
         @Schema(description = "카드 종류")
         private String kind;
 
@@ -36,17 +36,17 @@ public class ArchivingDto {
         private String image;
 
         @Schema(description = "발급조건 금액")
-        private int charge;
+        private Integer charge;
 
         @Schema(description = "발급조건 횟수")
-        private int count;
+        private Integer count;
 
         @Schema(description = "발급조건 일수")
-        private int term;
+        private Integer term;
 
-        public static CardWithConditionEntity.NumericalConditionCardEntity toEntity(final ArchivingDto.NumericalConditionCardRequestDto dto) {
+        public static NumericalConditionCardEntity toEntity(final ArchivingDto.NumericalConditionCardRequestDto dto) {
 
-            return CardWithConditionEntity.NumericalConditionCardEntity.builder()
+            return NumericalConditionCardEntity.builder()
                     .kind(dto.getKind())
                     .title(dto.getTitle())
                     .subTitle(dto.getSubTitle())

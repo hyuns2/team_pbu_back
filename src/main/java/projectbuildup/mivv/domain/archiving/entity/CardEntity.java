@@ -14,7 +14,7 @@ public abstract class CardEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
 
-    @Column(nullable = false, length = 10)
+    @Column(nullable = false, length = 30)
     protected String kind;
 
     @Column(nullable = false, length = 30)

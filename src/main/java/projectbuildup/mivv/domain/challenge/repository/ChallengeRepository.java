@@ -6,4 +6,7 @@ import org.springframework.stereotype.Repository;
 import projectbuildup.mivv.domain.challenge.entity.Challenge;
 @Repository
 public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
+
+
+
 }

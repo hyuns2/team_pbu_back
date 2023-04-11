@@ -9,10 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import projectbuildup.mivv.domain.archiving.dto.ArchivingDto;
 import projectbuildup.mivv.domain.archiving.service.ArchivingService;
 import projectbuildup.mivv.domain.user.entity.User;
@@ -31,9 +28,20 @@ public class ArchivingController {
     @Operation(summary = "수치 조건의 카드 생성", description = "관리자가 수치 조건의 카드를 생성합니다.")
     @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('USER')")
-    @PostMapping()
+    @PostMapping("/admin/card")
     public ResponseEntity<?> createNumericalConditionCard(@AuthenticationPrincipal User user, @RequestBody ArchivingDto.NumericalConditionCardRequestDto dto) {
-        service.registerNumericalConditionCard(dto);
+        service.createNumericalConditionCard(dto);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    //어드민 권한 설정 필요, hasRole('USER')로 테스트함
+    @Operation(summary = "수치 조건의 카드 수정", description = "관리자가 수치 조건의 카드를 수정합니다.")
+    @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
+    @PreAuthorize("hasRole('USER')")
+    @PatchMapping("/admin/card/{id}")
+    public ResponseEntity<?> updateNumericalConditionCard(@AuthenticationPrincipal User user, @PathVariable("id") Long id, @RequestBody ArchivingDto.NumericalConditionCardRequestDto dto) {
+        service.updateNumericalConditionCard(id, dto);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
