@@ -105,7 +105,7 @@ public class ArchivingService {
             Integer count = element.getCount();
             Integer term = element.getTerm();
 
-            if (term == 0 || term == null) {
+            if (term == 0) {
                 Integer chargeSum = remittanceRepo.findChargeSum(user);
                 Integer countSum = remittanceRepo.findCountSum(user);
 
