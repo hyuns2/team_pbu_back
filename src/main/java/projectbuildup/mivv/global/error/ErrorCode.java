@@ -23,7 +23,7 @@ public enum ErrorCode {
     MEMBER_NOT_FOUND(-6008, "회원을 조회할 수 없습니다.", HttpStatus.UNAUTHORIZED),
     WRONG_PASSWORD(-6009, "잘못된 비밀번호입니다.", HttpStatus.UNAUTHORIZED),
     VERIFICATION_NOT_FOUND(-6010, "본인인증 정보가 없습니다.", HttpStatus.NOT_FOUND),
-
+    WORTHY_CONSUMPTION_NOT_FOUND(-6011, "가치소비를 조회할 수 없습니다.", HttpStatus.UNAUTHORIZED),
 
     // 7000 ~ : 시큐리티 에러
     NOT_AUTHORIZED(-7000, "해당 리소스에 접근하기 위한 권한이 없습니다. 시큐리티 권한 인증에 실패했습니다.", HttpStatus.FORBIDDEN),
