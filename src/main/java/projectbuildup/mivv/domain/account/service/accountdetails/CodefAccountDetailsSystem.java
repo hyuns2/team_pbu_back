@@ -17,9 +17,10 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class CodefAccountDetailsSystem implements AccountDetailsSystem {
     private final CodefClient codefClient;
-    public final static String AMOUNT_FIELD = "resAccountIn";
-    public final static String DATE_FIELD = "resAccountTrDate";
-    public final static String TIME_FIELD = "resAccountTrTime";
+    private final static String IN_AMOUNT_FIELD = "resAccountIn";
+    private final static String OUT_AMOUNT_FIELD = "resAccountOut";
+    private final static String DATE_FIELD = "resAccountTrDate";
+    private final static String TIME_FIELD = "resAccountTrTime";
 
     @Override
     public List<Map<String, String>> getDepositHistory(User user) {
@@ -27,7 +28,7 @@ public class CodefAccountDetailsSystem implements AccountDetailsSystem {
 
         List<Map<String, Object>> list = getList(user);
         for (Map<String, Object> map : list) {
-            HashMap<String, String> returnMap = getReturnMap(map, "resAccountIn");
+            HashMap<String, String> returnMap = getReturnMap(map, IN_AMOUNT_FIELD);
             if (returnMap != null) {
                 returnList.add(returnMap);
             }
@@ -41,7 +42,7 @@ public class CodefAccountDetailsSystem implements AccountDetailsSystem {
 
         List<Map<String, Object>> list = getList(user);
         for (Map<String, Object> map : list) {
-            HashMap<String, String> returnMap = getReturnMap(map, "resAccountOut");
+            HashMap<String, String> returnMap = getReturnMap(map, OUT_AMOUNT_FIELD);
             if (returnMap != null) {
                 returnList.add(returnMap);
             }
@@ -66,9 +67,29 @@ public class CodefAccountDetailsSystem implements AccountDetailsSystem {
         if (amount.equals("0")) {
             return null;
         }
-        returnMap.put(AMOUNT_FIELD, amount);
+        returnMap.put(field, amount);
         returnMap.put(DATE_FIELD, (String) stringObjectHashMap.get("resAccountTrDate"));
         returnMap.put(TIME_FIELD, (String) stringObjectHashMap.get("resAccountTrTime"));
         return returnMap;
+    }
+
+    @Override
+    public String getInAmountField() {
+        return IN_AMOUNT_FIELD;
+    }
+
+    @Override
+    public String getOutAmountField() {
+        return OUT_AMOUNT_FIELD;
+    }
+
+    @Override
+    public String getDateField() {
+        return DATE_FIELD;
+    }
+
+    @Override
+    public String getTimeField() {
+        return TIME_FIELD;
     }
 }
