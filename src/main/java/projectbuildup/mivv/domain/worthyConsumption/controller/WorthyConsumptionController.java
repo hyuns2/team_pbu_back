@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import projectbuildup.mivv.domain.coupon.dto.request.CouponRequestDto;
+import projectbuildup.mivv.domain.coupon.service.CouponService;
 import projectbuildup.mivv.domain.worthyConsumption.dto.request.WorthyConsumptionRequestDto;
 import projectbuildup.mivv.domain.worthyConsumption.dto.request.WorthyConsumptionUrlRequestDto;
 import projectbuildup.mivv.domain.worthyConsumption.dto.response.WorthyConsumptionResponseDto;
@@ -22,6 +24,7 @@ import projectbuildup.mivv.domain.worthyConsumption.service.WorthyConsumptionVal
 public class WorthyConsumptionController {
     private final WorthyConsumptionService worthyConsumptionService;
     private final WorthyConsumptionValidationService worthyConsumptionValidationService;
+    private final CouponService couponService;
     @PostMapping("/create")
     public ResponseEntity<HttpStatus> createWorthyConsumption(@Valid @RequestBody WorthyConsumptionRequestDto.CreationRequest worthyConsumptionRequestDto){
             worthyConsumptionService.createWorthyConsumption(worthyConsumptionRequestDto);
@@ -73,6 +76,11 @@ public class WorthyConsumptionController {
     public ResponseEntity<HttpStatus> deleteWorthyConsumption(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId){
         worthyConsumptionService.deleteWorthyConsumption(worthyConsumptionId);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @PostMapping("/{worthyConsumptionId}")
+    public ResponseEntity<HttpStatus> createCoupon(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId, @Valid @RequestBody CouponRequestDto.CreationRequest couponRequestDto){
+        couponService.createCoupon(worthyConsumptionId, couponRequestDto);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
 }

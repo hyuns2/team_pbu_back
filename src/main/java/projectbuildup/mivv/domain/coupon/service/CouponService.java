@@ -7,19 +7,30 @@ import projectbuildup.mivv.domain.coupon.dto.request.CouponRequestDto;
 import projectbuildup.mivv.domain.coupon.dto.response.CouponResponseDto;
 import projectbuildup.mivv.domain.coupon.entity.Coupon;
 import projectbuildup.mivv.domain.coupon.repository.CouponRepository;
+import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumption;
+import projectbuildup.mivv.domain.worthyConsumption.repository.WorthyConsumptionRepository;
+
 @Slf4j
 @RequiredArgsConstructor
 @Service
 public class CouponService {
     private final CouponRepository couponRepository;
+    private final WorthyConsumptionRepository worthyConsumptionRepository;
 
-    public void createCoupon(CouponRequestDto.CreationRequest couponRequestDto){
+    public void createCoupon(Long worthyConsumptionId, CouponRequestDto.CreationRequest couponRequestDto){
+        WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionId).orElseThrow();
         Coupon coupon = couponRequestDto.toEntity();
-        couponRepository.save(coupon);
+        worthyConsumption.addCoupon(coupon);
+        worthyConsumptionRepository.save(worthyConsumption);
+
     }
     public CouponResponseDto.ReadResponse readCoupon(Long couponId){
         Coupon coupon = couponRepository.findById(couponId).orElseThrow();
         return new CouponResponseDto.ReadResponse(coupon);
+    }
+    public CouponResponseDto.ReadResponseWithWorthyConsumption readCouponWithWorthyConsumption(Long couponId){
+        Coupon coupon = couponRepository.findById(couponId).orElseThrow();
+        return new CouponResponseDto.ReadResponseWithWorthyConsumption(coupon);
     }
     public void updateCouponContent(CouponRequestDto.UpdateContentRequest couponRequestDto){
         Coupon coupon = couponRepository.findById(couponRequestDto.getId()).orElseThrow();

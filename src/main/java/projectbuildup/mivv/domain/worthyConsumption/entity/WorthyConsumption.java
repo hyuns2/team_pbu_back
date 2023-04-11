@@ -57,6 +57,10 @@ public class WorthyConsumption extends BaseTimeEntity {
     public void updatePlace(WorthyConsumptionRequestDto.UpdatePlaceRequest requestWorthyConsumptionDto){
         this.placeTag = requestWorthyConsumptionDto.getPlaceTag();
     }
+    public void addCoupon(Coupon coupon){
+        coupons.add(coupon);
+        coupon.setWorthyConsumption(this);
+    }
 
 
 }

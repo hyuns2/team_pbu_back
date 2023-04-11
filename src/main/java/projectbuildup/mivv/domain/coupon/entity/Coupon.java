@@ -19,6 +19,7 @@ public class Coupon extends BaseTimeEntity {
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "worthyConsumptionId")
+    @Setter
     private WorthyConsumption worthyConsumption;
     @Nonnull
     private String title;
@@ -40,6 +41,14 @@ public class Coupon extends BaseTimeEntity {
         this.limitStartDate = couponRequestDto.getLimitStartDate();
         this.limitEndDate = couponRequestDto.getLimitEndDate();
 
+    }
+    public Coupon(CouponRequestDto.CreationRequest couponRequestDto){
+        this.title = couponRequestDto.getTitle();;
+        this.imageUrl = couponRequestDto.getImageUrl();
+        this.pin = couponRequestDto.getPin();
+        this.isUsed = false;
+        this.limitStartDate = couponRequestDto.getLimitStartDate();
+        this.limitEndDate = couponRequestDto.getLimitEndDate();
     }
 
 

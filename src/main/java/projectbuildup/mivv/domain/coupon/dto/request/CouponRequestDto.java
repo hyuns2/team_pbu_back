@@ -10,6 +10,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import projectbuildup.mivv.domain.coupon.entity.Coupon;
+import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumption;
 
 import java.time.LocalDate;
 
@@ -28,6 +29,16 @@ public class CouponRequestDto {
         LocalDate limitStartDate;
         @NotNull @Future
         LocalDate limitEndDate;
+        /*public Coupon toEntity(WorthyConsumption worthyConsumption){
+            return Coupon.builder()
+                    .title(title)
+                    .imageUrl(imageUrl)
+                    .pin(pin)
+                    .limitStartDate(limitStartDate)
+                    .limitEndDate(limitEndDate)
+                    .worthyConsumption(worthyConsumption)
+                    .build();
+        }*/
         public Coupon toEntity(){
             return Coupon.builder()
                     .title(title)
@@ -37,7 +48,6 @@ public class CouponRequestDto {
                     .limitEndDate(limitEndDate)
                     .build();
         }
-
     }
     @AllArgsConstructor @NoArgsConstructor
     @Getter
