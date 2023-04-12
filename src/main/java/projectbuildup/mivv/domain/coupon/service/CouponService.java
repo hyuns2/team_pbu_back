@@ -24,10 +24,6 @@ public class CouponService {
         worthyConsumptionRepository.save(worthyConsumption);
 
     }
-    public CouponResponseDto.ReadResponse readCoupon(Long couponId){
-        Coupon coupon = couponRepository.findById(couponId).orElseThrow();
-        return new CouponResponseDto.ReadResponse(coupon);
-    }
     public CouponResponseDto.ReadResponseWithWorthyConsumption readCouponWithWorthyConsumption(Long couponId){
         Coupon coupon = couponRepository.findById(couponId).orElseThrow();
         return new CouponResponseDto.ReadResponseWithWorthyConsumption(coupon);

@@ -25,14 +25,13 @@ public class WorthyConsumptionController {
     private final WorthyConsumptionService worthyConsumptionService;
     private final WorthyConsumptionValidationService worthyConsumptionValidationService;
     private final CouponService couponService;
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<HttpStatus> createWorthyConsumption(@Valid @RequestBody WorthyConsumptionRequestDto.CreationRequest worthyConsumptionRequestDto){
             worthyConsumptionService.createWorthyConsumption(worthyConsumptionRequestDto);
             return new ResponseEntity<>(HttpStatus.CREATED);
     }
     @GetMapping("/{worthyConsumptionId}/summary")
     public ResponseEntity<WorthyConsumptionResponseDto.ReadSummaryResponse> getWorthyConsumptionSummary(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId){
-        worthyConsumptionValidationService.isRealWorthyConsumptionId(worthyConsumptionId);
         WorthyConsumptionResponseDto.ReadSummaryResponse worthyConsumptionResponseDto = worthyConsumptionService.readSummaryWorthyConsumption(worthyConsumptionId);
         return new ResponseEntity<>(worthyConsumptionResponseDto, HttpStatus.OK);
     }

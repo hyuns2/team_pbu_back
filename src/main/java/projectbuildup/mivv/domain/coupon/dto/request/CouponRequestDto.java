@@ -29,16 +29,6 @@ public class CouponRequestDto {
         LocalDate limitStartDate;
         @NotNull @Future
         LocalDate limitEndDate;
-        /*public Coupon toEntity(WorthyConsumption worthyConsumption){
-            return Coupon.builder()
-                    .title(title)
-                    .imageUrl(imageUrl)
-                    .pin(pin)
-                    .limitStartDate(limitStartDate)
-                    .limitEndDate(limitEndDate)
-                    .worthyConsumption(worthyConsumption)
-                    .build();
-        }*/
         public Coupon toEntity(){
             return Coupon.builder()
                     .title(title)
