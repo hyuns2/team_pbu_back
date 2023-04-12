@@ -12,7 +12,7 @@ import projectbuildup.mivv.domain.worthyConsumption.dto.request.WorthyConsumptio
 public class WorthyConsumptionUrl {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "worthyConsumptionUrl_id")
+    @Column(name = "worthyConsumptionUrlId")
     private Long id;
     private String videoUrl;
     private String imageUrl;

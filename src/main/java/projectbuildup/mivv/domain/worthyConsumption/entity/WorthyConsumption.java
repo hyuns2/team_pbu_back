@@ -7,6 +7,7 @@ import projectbuildup.mivv.domain.coupon.entity.Coupon;
 import projectbuildup.mivv.domain.worthyConsumption.dto.request.WorthyConsumptionRequestDto;
 import projectbuildup.mivv.global.common.BaseTimeEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 @Entity @Table
 @NoArgsConstructor @AllArgsConstructor
@@ -17,29 +18,33 @@ public class WorthyConsumption extends BaseTimeEntity {
     private Long id;
     @NonNull
     private String title;
+    @ElementCollection
     @NonNull
-    private List<String> hashtags;
+    private List<String> hashtags = new ArrayList<>();
     @NonNull
     private int maxParticipants;
     @NonNull
     private int originalPrice;
     @NonNull
     private int salePrice;
+    @ElementCollection
     @NonNull
-    private List<String> whyRecommendation;
+    private List<String> whyRecommendation = new ArrayList<>();
     @NonNull
     private String priceTag;
     @NonNull
     private String placeTag;
+    @ElementCollection
     @NonNull
     private List<String> summary;
     @Nullable
     @OneToOne(fetch = FetchType.LAZY, cascade =  CascadeType.ALL)
-    @JoinColumn(name = "worthyConsumptionUrl_id")
+    @JoinColumn(name = "worthyConsumptionUrlId")
     @Setter
     private WorthyConsumptionUrl worthyConsumptionUrl;
+    @ElementCollection
     @OneToMany(mappedBy = "worthyConsumption", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Coupon> coupons;
+    private List<Coupon> coupons = new ArrayList<>();
 
     public void updateContent(WorthyConsumptionRequestDto.UpdateContentRequest requestWorthyConsumptionDto){
         this.title = requestWorthyConsumptionDto.getTitle();
