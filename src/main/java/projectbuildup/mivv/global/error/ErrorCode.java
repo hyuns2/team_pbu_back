@@ -46,7 +46,8 @@ public enum ErrorCode {
     INQUIRY_NOT_FOUND(-15100, "해당하는 문의를 찾을 수 없습니다.", HttpStatus.BAD_REQUEST),
 
     // 20000 ~ : 가치소비 관련 에러
-    WORTHY_CONSUMPTION_NOT_FOUND(-6011, "가치소비를 조회할 수 없습니다.", HttpStatus.UNAUTHORIZED);
+    WORTHY_CONSUMPTION_NOT_FOUND(-20000, "가치소비를 조회할 수 없습니다.", HttpStatus.NOT_FOUND),
+    COUPON_NOT_FOUND(-20001, "쿠폰을 조회할 수 없습니다.", HttpStatus.NOT_FOUND);
 
     final int code;
     final String message;
