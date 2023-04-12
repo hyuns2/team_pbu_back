@@ -39,7 +39,7 @@ public class CouponIssuanceController {
     @Operation(summary = "사용자가 사용 가능한 쿠폰을 모두 조회합니다.", description = "")
     @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('USER')")
-    @PostMapping("/issue/coupons")
+    @GetMapping("/issue/coupons")
     public ResponseEntity<?> getUsableCouponList(@AuthenticationPrincipal User user){
         List<CouponResponseDto.ReadResponseWithWorthyConsumption> usableCouponList = couponIssuanceService.getUsableCouponList(user);
         return new ResponseEntity<>(usableCouponList, HttpStatus.OK);
@@ -48,8 +48,8 @@ public class CouponIssuanceController {
     @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('USER')")
     @PutMapping("/issue/coupons/{couponId}")
-    public ResponseEntity<HttpStatus> useCoupon(@PathVariable("couponId") Long couponId,@AuthenticationPrincipal User user){
-        //List<CouponResponseDto.ReadResponseWithWorthyConsumption> usableCouponList = couponIssuanceService.getUsableCouponList(user);
+    public ResponseEntity<HttpStatus> useCoupon(@PathVariable("couponId") Long couponId, @AuthenticationPrincipal User user){
+        couponIssuanceService.useCouponByUser(couponId, user);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
