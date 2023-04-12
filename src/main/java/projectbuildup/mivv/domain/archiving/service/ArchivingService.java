@@ -1,15 +1,12 @@
 package projectbuildup.mivv.domain.archiving.service;
 
-import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import projectbuildup.mivv.domain.archiving.dto.ArchivingDto;
-import projectbuildup.mivv.domain.archiving.entity.CardEntity;
 import projectbuildup.mivv.domain.archiving.entity.NumericalConditionCardEntity;
 import projectbuildup.mivv.domain.archiving.entity.UserCardEntity;
 import projectbuildup.mivv.domain.archiving.repository.NumericalConditionCardRepository;
 import projectbuildup.mivv.domain.archiving.repository.UserCardRepository;
-import projectbuildup.mivv.domain.remittance.entity.Remittance;
 import projectbuildup.mivv.domain.remittance.repository.RemittanceRepository;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.global.error.exception.CCardNotFoundException;

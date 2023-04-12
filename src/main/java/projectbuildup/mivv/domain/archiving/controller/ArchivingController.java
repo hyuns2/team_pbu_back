@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +32,7 @@ public class ArchivingController {
     @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('USER')")
     @PostMapping("/admin/card")
-    public ResponseEntity<?> createNumericalConditionCard(@AuthenticationPrincipal User user, @RequestBody ArchivingDto.createNumericalConditionCardRequestDto dto) {
+    public ResponseEntity<?> createNumericalConditionCard(@AuthenticationPrincipal User user, @Valid @RequestBody ArchivingDto.createNumericalConditionCardRequestDto dto) {
         service.createNumericalConditionCard(dto);
 
         return new ResponseEntity<>(HttpStatus.OK);
@@ -42,7 +43,7 @@ public class ArchivingController {
     @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('USER')")
     @PatchMapping("/admin/card/{id}")
-    public ResponseEntity<?> updateNumericalConditionCard(@AuthenticationPrincipal User user, @PathVariable("id") Long id, @RequestBody ArchivingDto.updateNumericalConditionCardRequestDto dto) {
+    public ResponseEntity<?> updateNumericalConditionCard(@AuthenticationPrincipal User user, @PathVariable("id") Long id, @Valid @RequestBody ArchivingDto.updateNumericalConditionCardRequestDto dto) {
         service.updateNumericalConditionCard(id, dto);
 
         return new ResponseEntity<>(HttpStatus.OK);

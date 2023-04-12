@@ -2,6 +2,7 @@ package projectbuildup.mivv.domain.inquiry.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 import projectbuildup.mivv.domain.inquiry.entity.InquiryEntity;
@@ -42,7 +43,7 @@ public class InquiryDto {
     @Data
     public static class AnswerRequestDto {
 
-        @NotBlank
+        @NotNull
         @Schema(description = "문의 고유번호")
         private Long id;
 
