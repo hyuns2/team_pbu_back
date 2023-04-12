@@ -25,6 +25,11 @@ public class CouponIssuance extends BaseTimeEntity {
     public CouponIssuance(User user, Coupon coupon){
         this.user = user;
         this.coupon = coupon;
+        this.isCreated = true;
+        this.isUsed = false;
+    }
+    public void useCoupon(){
+        this.isUsed = true;
     }
 
 }
