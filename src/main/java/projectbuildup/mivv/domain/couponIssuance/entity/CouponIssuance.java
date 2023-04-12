@@ -3,12 +3,13 @@ package projectbuildup.mivv.domain.couponIssuance.entity;
 import jakarta.persistence.*;
 import jakarta.xml.bind.annotation.XmlID;
 import lombok.Builder;
+import lombok.Getter;
 import projectbuildup.mivv.domain.coupon.entity.Coupon;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.global.common.BaseTimeEntity;
 @Entity
 @Builder
-
+@Getter
 public class CouponIssuance extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

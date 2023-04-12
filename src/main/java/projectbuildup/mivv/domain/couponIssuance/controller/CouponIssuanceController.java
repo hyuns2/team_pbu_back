@@ -15,10 +15,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import projectbuildup.mivv.domain.coupon.dto.response.CouponResponseDto;
 import projectbuildup.mivv.domain.couponIssuance.service.CouponIssuanceService;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.global.constant.ExampleValue;
 import projectbuildup.mivv.global.constant.Header;
+
+import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -34,6 +38,14 @@ public class CouponIssuanceController {
     public ResponseEntity<HttpStatus> issueCouponToUser(@AuthenticationPrincipal User user, @PathVariable("couponId") Long couponId){
         couponIssuanceService.getCoupon(user.getId(), couponId);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @Operation(summary = "사용자가 사용 가능한 쿠폰을 모두 조회합니다.", description = "")
+    @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
+    @PreAuthorize("hasRole('USER')")
+    @PostMapping("/issue/coupons")
+    public ResponseEntity<?> getUsableCouponList(@AuthenticationPrincipal User user){
+        List<CouponResponseDto.ReadResponseWithWorthyConsumption> usableCouponList = couponIssuanceService.getUsableCouponList(user);
+        return new ResponseEntity<>(usableCouponList, HttpStatus.OK);
     }
 
 }

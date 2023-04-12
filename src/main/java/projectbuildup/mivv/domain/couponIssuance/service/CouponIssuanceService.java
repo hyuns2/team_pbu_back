@@ -2,6 +2,7 @@ package projectbuildup.mivv.domain.couponIssuance.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import projectbuildup.mivv.domain.coupon.dto.response.CouponResponseDto;
 import projectbuildup.mivv.domain.coupon.entity.Coupon;
 import projectbuildup.mivv.domain.coupon.repository.CouponRepository;
 import projectbuildup.mivv.domain.couponIssuance.entity.CouponIssuance;
@@ -11,6 +12,11 @@ import projectbuildup.mivv.domain.user.repository.UserRepository;
 import projectbuildup.mivv.global.error.exception.CBadRequestException;
 import projectbuildup.mivv.global.error.exception.CCouponNotFoundException;
 import projectbuildup.mivv.global.error.exception.CUserNotFoundException;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -34,7 +40,25 @@ public class CouponIssuanceService {
         CouponIssuance couponIssuance = new CouponIssuance(user, coupon);
         couponIssuanceRepository.save(couponIssuance);
     }
-    public void isUsable(){
+    public Boolean isUsable(CouponIssuance couponIssuance){
+        if((couponIssuance.getIsCreated()==true) && (couponIssuance.getIsUsed() == false))
+            return true;
+        else
+            return false;
 
+    }
+    public List<CouponResponseDto.ReadResponseWithWorthyConsumption> getUsableCouponList(User user){
+        List<CouponIssuance> couponIssuances = couponIssuanceRepository.findAllByUserId(user.getId()).stream().toList();
+        List<Coupon> coupons = new ArrayList<>();
+        Iterator iter = couponIssuances.iterator(); //뭔 차이지...
+
+        CouponIssuance couponIssuance;
+        while(iter.hasNext()){
+            couponIssuance = (CouponIssuance) iter.next();
+            if(isUsable(couponIssuance))
+                coupons.add(couponIssuance.getCoupon());
+        }
+
+        return coupons.stream().map(CouponResponseDto.ReadResponseWithWorthyConsumption::new).collect(Collectors.toList());
     }
 }
