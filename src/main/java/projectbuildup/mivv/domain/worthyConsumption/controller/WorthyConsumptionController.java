@@ -37,13 +37,11 @@ public class WorthyConsumptionController {
     }
     @GetMapping("/{worthyConsumptionId}/basic")
     public ResponseEntity<WorthyConsumptionResponseDto.ReadBasicResponse> getWorthyConsumptionBasic(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId){
-        worthyConsumptionValidationService.isRealWorthyConsumptionId(worthyConsumptionId);
         WorthyConsumptionResponseDto.ReadBasicResponse WorthyConsumptionResponseDto = worthyConsumptionService.readBasicWorthyConsumption(worthyConsumptionId);
         return new ResponseEntity<>(WorthyConsumptionResponseDto, HttpStatus.OK);
     }
     @GetMapping("/{worthyConsumptionId}/detail")
     public ResponseEntity<WorthyConsumptionResponseDto.ReadDetailResponse> getWorthyConsumptionDetail(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId){
-        worthyConsumptionValidationService.isRealWorthyConsumptionId(worthyConsumptionId);
         WorthyConsumptionResponseDto.ReadDetailResponse WorthyConsumptionResponseDto = worthyConsumptionService.readDetailWorthyConsumption(worthyConsumptionId);
         return new ResponseEntity<>(WorthyConsumptionResponseDto, HttpStatus.OK);
     }
