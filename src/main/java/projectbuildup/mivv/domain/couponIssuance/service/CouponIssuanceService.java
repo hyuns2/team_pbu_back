@@ -34,4 +34,7 @@ public class CouponIssuanceService {
         CouponIssuance couponIssuance = new CouponIssuance(user, coupon);
         couponIssuanceRepository.save(couponIssuance);
     }
+    public void isUsable(){
+
+    }
 }
