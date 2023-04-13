@@ -14,6 +14,10 @@ import java.util.List;
 @NoArgsConstructor @AllArgsConstructor
 @Getter @Builder
 public class WorthyConsumption extends BaseTimeEntity {
+    /*
+    전월 달성 금액, 이용 가능 기간 추가해야 됨
+    온라인인거 확인도 해야되네..
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
