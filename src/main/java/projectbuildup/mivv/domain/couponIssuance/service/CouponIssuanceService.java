@@ -32,6 +32,12 @@ public class CouponIssuanceService {
      * 2. 쿠폰이 유효한지 판단 (쿠폰이 진짜 있는지 : O, 발급 가능한 날짜인지 : O)
      * 3. 유저가 발급 받을 수 있는 조건인지 (이미 보유하고 있는 쿠폰인지 : O, 조건을 충족했는지)
      *
+     * 사용할때 고려할 사항
+     * 1. 유저가 유효한 유저인지 판단 (유저가 진짜 유저인가)
+     * 2. 유저가 보유한 쿠폰이 맞는지 판단
+     * 3. 사용가능한 쿠폰인지 판단 (발행은 했고 미사용 상태인지 확인, 날짜 확인)
+     * 4. 핀번호 확인
+     * 5. 사용시에, isUsed == true로 바꾸기
      */
 
     /**
@@ -73,9 +79,11 @@ public class CouponIssuanceService {
         couponIssuanceRepository.save(couponIssuance);
     }
 
+
     /**
      * 사용자가 보유한 쿠폰이 유효한지 검증하는 로직입니다.
      * 발급이 되었고 사용하기 전인 쿠폰인지 확인합니다.
+     * 두가지 로직으로 짜봤습니다.
      * @param couponIssuance
      * @return
      */
@@ -115,10 +123,13 @@ public class CouponIssuanceService {
     /***
      * 사용자가 쿠폰을 사용할 때 필요한 로직입니다.
      * @param couponId
-     * @param user
+     * @param userId
      */
-    public void useCouponByUser(Long couponId, User user){
-        CouponIssuance couponIssuance = couponIssuanceRepository.findByUserIdAndCouponId(user.getId(), couponId);
+    public void useCouponByUser(Long couponId, Long userId){
+        User user = userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
+        Coupon coupon = couponRepository.findById(couponId).orElseThrow(CCouponNotFoundException::new);
+
+        CouponIssuance couponIssuance = couponIssuanceRepository.findByUserIdAndCouponId(userId, couponId);
         if(isUsable(couponIssuance))
             couponIssuance.useCoupon();
 

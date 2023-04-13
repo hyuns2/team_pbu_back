@@ -51,7 +51,7 @@ public class CouponIssuanceController {
     @PreAuthorize("hasRole('USER')")
     @PutMapping("/issue/coupons/{couponId}")
     public ResponseEntity<HttpStatus> useCoupon(@PathVariable("couponId") Long couponId, @AuthenticationPrincipal User user){
-        couponIssuanceService.useCouponByUser(couponId, user);
+        couponIssuanceService.useCouponByUser(couponId, user.getId());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

@@ -7,6 +7,7 @@ import projectbuildup.mivv.domain.coupon.entity.Coupon;
 import projectbuildup.mivv.domain.worthyConsumption.dto.request.WorthyConsumptionRequestDto;
 import projectbuildup.mivv.global.common.BaseTimeEntity;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 @Entity @Table
@@ -45,6 +46,10 @@ public class WorthyConsumption extends BaseTimeEntity {
     @ElementCollection
     @OneToMany(mappedBy = "worthyConsumption", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Coupon> coupons = new ArrayList<>();
+    @Setter
+    private LocalDate issuableCouponStartDate;
+    @Setter
+    private LocalDate issuableCouponEndDate;
 
     public void updateContent(WorthyConsumptionRequestDto.UpdateContentRequest requestWorthyConsumptionDto){
         this.title = requestWorthyConsumptionDto.getTitle();
