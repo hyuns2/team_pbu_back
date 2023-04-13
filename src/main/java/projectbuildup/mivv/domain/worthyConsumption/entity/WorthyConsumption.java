@@ -47,6 +47,11 @@ public class WorthyConsumption extends BaseTimeEntity {
     @JoinColumn(name = "worthyConsumptionUrlId")
     @Setter
     private WorthyConsumptionUrl worthyConsumptionUrl;
+    @Nullable
+    @OneToOne(fetch = FetchType.LAZY, cascade =  CascadeType.ALL)
+    @JoinColumn(name = "worthyConsumptionUrlId")
+    @Setter
+    private Condition condition;
     @ElementCollection
     @OneToMany(mappedBy = "worthyConsumption", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Coupon> coupons = new ArrayList<>();
@@ -71,10 +76,7 @@ public class WorthyConsumption extends BaseTimeEntity {
     public void updatePlace(WorthyConsumptionRequestDto.UpdatePlaceRequest requestWorthyConsumptionDto){
         this.placeTag = requestWorthyConsumptionDto.getPlaceTag();
     }
-    public void updateIssuableCouponDate(WorthyConsumptionRequestDto.UpdateIssuableCouponDateRequest requestWorthyConsumptionDto){
-        this.issuableCouponStartDate = requestWorthyConsumptionDto.getIssuableCouponStartDate();
-        this.issuableCouponEndDate = requestWorthyConsumptionDto.getIssuableCouponEndDate();
-    }
+
     public void addCoupon(Coupon coupon){
         coupons.add(coupon);
         coupon.setWorthyConsumption(this);
