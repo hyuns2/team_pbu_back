@@ -13,6 +13,7 @@ import projectbuildup.mivv.global.error.exception.CBadRequestException;
 import projectbuildup.mivv.global.error.exception.CCouponNotFoundException;
 import projectbuildup.mivv.global.error.exception.CUserNotFoundException;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -25,16 +26,30 @@ public class CouponIssuanceService {
     private final UserRepository userRepository;
     private final CouponRepository couponRepository;
 
+    /*
+     * 발급받을때 고려할 사항
+     * 1. 먼저 유저가 유효한 유저인지 판단 (유저가 진짜 유저인가) : O
+     * 2. 쿠폰이 유효한지 판단 (쿠폰이 진짜 있는지 : O, 발급 가능한 날짜인지 : O)
+     * 3. 유저가 발급 받을 수 있는 조건인지 (이미 보유하고 있는 쿠폰인지 : O, 조건을 충족했는지)
+     *
+     */
+
     /**
      * 사용자가 쿠폰을 발급 받을때 필요한 로직입니다.
      * @param userId
      * @param couponId
      */
-    public void getCoupon(Long userId, Long couponId){
+    public void issueCoupon(Long userId, Long couponId){
         User user = userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
         Coupon coupon = couponRepository.findById(couponId).orElseThrow(CCouponNotFoundException::new);
+
         isIssuable(user, coupon);
+        isIssuableCouponDate(coupon);
         issue(user, coupon);
+    }
+    public void isIssuableCouponDate(Coupon coupon){//다시 확인하기
+        if(!(coupon.getLimitEndDate().isAfter(LocalDate.now())))
+            throw new CBadRequestException("발급 가능 날짜가 지난 유효하지 않은 쿠폰입니다.");
     }
 
     /**

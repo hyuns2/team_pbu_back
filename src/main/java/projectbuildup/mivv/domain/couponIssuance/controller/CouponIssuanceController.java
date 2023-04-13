@@ -28,12 +28,14 @@ import java.util.Optional;
 @Tag(name = "[Coupon Issue]", description = "사용자의 쿠폰 발급 관련 API입니다.")
 public class CouponIssuanceController {
     private final CouponIssuanceService couponIssuanceService;
+
+
     @Operation(summary = "사용자가 쿠폰을 발급 받습니다.", description = "")
     @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('USER')")
     @PostMapping("/issue/coupons/{couponId}")
     public ResponseEntity<HttpStatus> issueCouponToUser(@AuthenticationPrincipal User user, @PathVariable("couponId") Long couponId){
-        couponIssuanceService.getCoupon(user.getId(), couponId);
+        couponIssuanceService.issueCoupon(user.getId(), couponId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
     @Operation(summary = "사용자가 사용 가능한 쿠폰을 모두 조회합니다.", description = "")
