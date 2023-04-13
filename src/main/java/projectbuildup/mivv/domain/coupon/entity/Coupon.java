@@ -8,8 +8,7 @@ import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumption;
 import projectbuildup.mivv.global.common.BaseTimeEntity;
 
 import java.time.LocalDate;
-@Entity
-@Table
+@Entity @Table
 @Getter
 @AllArgsConstructor @NoArgsConstructor
 @Builder

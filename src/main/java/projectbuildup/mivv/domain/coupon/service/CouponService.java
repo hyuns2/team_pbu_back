@@ -9,6 +9,8 @@ import projectbuildup.mivv.domain.coupon.entity.Coupon;
 import projectbuildup.mivv.domain.coupon.repository.CouponRepository;
 import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumption;
 import projectbuildup.mivv.domain.worthyConsumption.repository.WorthyConsumptionRepository;
+import projectbuildup.mivv.global.error.exception.CCouponNotFoundException;
+import projectbuildup.mivv.global.error.exception.CWorthyConsumptionNotFoundException;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -18,29 +20,34 @@ public class CouponService {
     private final WorthyConsumptionRepository worthyConsumptionRepository;
 
     public void createCoupon(Long worthyConsumptionId, CouponRequestDto.CreationRequest couponRequestDto){
-        WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionId).orElseThrow();
-        Coupon coupon = couponRequestDto.toEntity();
+        WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionId).orElseThrow(CWorthyConsumptionNotFoundException::new);
+        Coupon coupon = couponRequestDto.toEntity();//주입할거가 없다면 빌더 패턴 말고 그냥 new 해야하는건가?
         worthyConsumption.addCoupon(coupon);
         worthyConsumptionRepository.save(worthyConsumption);
 
     }
+
+    /**
+     * 쿠폰 조회시, 완전한 정보 모두를 포함한 것입니다.
+     * @param couponId
+     * @return
+     */
     public CouponResponseDto.ReadResponseWithWorthyConsumption readCouponWithWorthyConsumption(Long couponId){
-        Coupon coupon = couponRepository.findById(couponId).orElseThrow();
+        Coupon coupon = couponRepository.findById(couponId).orElseThrow(CCouponNotFoundException::new);
         return new CouponResponseDto.ReadResponseWithWorthyConsumption(coupon);
     }
     public void updateCouponContent(CouponRequestDto.UpdateContentRequest couponRequestDto){
-        Coupon coupon = couponRepository.findById(couponRequestDto.getId()).orElseThrow();
+        Coupon coupon = couponRepository.findById(couponRequestDto.getId()).orElseThrow(CCouponNotFoundException::new);
         coupon.updateContent(couponRequestDto);
         couponRepository.save(coupon);
     }
     public void updateCouponDate(CouponRequestDto.UpdateDateRequest couponRequestDto){
-        Coupon coupon = couponRepository.findById(couponRequestDto.getId()).orElseThrow();
+        Coupon coupon = couponRepository.findById(couponRequestDto.getId()).orElseThrow(CCouponNotFoundException::new);
         coupon.updateDate(couponRequestDto);
         couponRepository.save(coupon);
     }
     public void deleteCoupon(Long couponId){
-        //couponRepository.deleteById(couponRequestDto.getId());
-        Coupon coupon = couponRepository.findById(couponId).orElseThrow();
+        Coupon coupon = couponRepository.findById(couponId).orElseThrow(CCouponNotFoundException::new);
         couponRepository.delete(coupon);
     }
 }
