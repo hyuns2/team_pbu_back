@@ -69,6 +69,12 @@ public class WorthyConsumptionController {
         worthyConsumptionService.updatePlaceWorthyConsumption(worthyConsumptionRequestDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+    @PutMapping("/{worthyConsumptionId}/date")
+    public ResponseEntity<HttpStatus> updateWorthyConsumptionDate(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId, @Valid @RequestBody WorthyConsumptionRequestDto.UpdateIssuableCouponDateRequest worthyConsumptionRequestDto){
+        worthyConsumptionValidationService.isSameWorthyConsumptionId(worthyConsumptionId, worthyConsumptionRequestDto.getId());
+        worthyConsumptionService.updateIssuableCouponDate(worthyConsumptionRequestDto);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
     @DeleteMapping("/{worthyConsumptionId}")
     public ResponseEntity<HttpStatus> deleteWorthyConsumption(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId){
         worthyConsumptionService.deleteWorthyConsumption(worthyConsumptionId);

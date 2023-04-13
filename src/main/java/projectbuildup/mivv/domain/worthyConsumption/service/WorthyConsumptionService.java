@@ -52,6 +52,11 @@ public class WorthyConsumptionService {
         worthyConsumption.updatePlace(worthyConsumptionRequestDto);
         worthyConsumptionRepository.save(worthyConsumption);
     }
+    public void updateIssuableCouponDate(WorthyConsumptionRequestDto.UpdateIssuableCouponDateRequest worthyConsumptionRequestDto){
+        WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionRequestDto.getId()).orElseThrow(CWorthyConsumptionNotFoundException:: new);
+        worthyConsumption.updateIssuableCouponDate(worthyConsumptionRequestDto);
+        worthyConsumptionRepository.save(worthyConsumption);
+    }
     public void deleteWorthyConsumption(Long worthyConsumptionId){
         WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionId).orElseThrow(CWorthyConsumptionNotFoundException:: new);
         worthyConsumptionRepository.delete(worthyConsumption);

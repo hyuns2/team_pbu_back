@@ -1,14 +1,17 @@
 package projectbuildup.mivv.domain.worthyConsumption.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumption;
 import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumptionUrl;
 
+import java.time.LocalDate;
 import java.util.List;
 @Schema(description = "가치소비 요청 DTO")
 public class WorthyConsumptionRequestDto {
@@ -101,6 +104,22 @@ public class WorthyConsumptionRequestDto {
     public static class UpdatePlaceRequest extends WorthyConsumptionRequestDto.IdRequest{
         @NotBlank(message = "가치소비의 위치 태그를 입력해주세요")
         String placeTag;
+
+    }
+    @NoArgsConstructor @AllArgsConstructor
+    @Getter @Setter
+    @Builder
+    public static class UpdateIssuableCouponDateRequest extends WorthyConsumptionRequestDto.IdRequest{
+        @NotNull(message = "가치소비의 쿠폰 발급 가능 시작 날짜를 입력해주세요")
+        @Schema(example = "2023-04-13")
+        @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
+        //@DateTimeFormat(pattern = "yyyy-MM-dd")
+        LocalDate issuableCouponStartDate;
+        @NotNull(message = "가치소비의 쿠폰 발급 가능 종료 날짜를 입력해주세요")
+        @Schema(example = "2023-04-13")
+        @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
+        //@DateTimeFormat(pattern = "yyyy-MM-dd")
+        LocalDate issuableCouponEndDate;
 
     }
 
