@@ -115,7 +115,7 @@ public class WorthyConsumptionController {
     @PutMapping("/{worthyConsumptionId}/condition")
     public ResponseEntity<HttpStatus> updateWorthyConsumptionCondition(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId, @Valid @RequestBody WorthyConsumptionRequestDto.UpdateConditionRequest worthyConsumptionRequestDto){
         worthyConsumptionValidationService.isSameWorthyConsumptionId(worthyConsumptionId, worthyConsumptionRequestDto.getId());
-        worthyConsumptionService.updateIssuableCouponDate(worthyConsumptionRequestDto);
+        worthyConsumptionService.updateCouponCondition(worthyConsumptionRequestDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
