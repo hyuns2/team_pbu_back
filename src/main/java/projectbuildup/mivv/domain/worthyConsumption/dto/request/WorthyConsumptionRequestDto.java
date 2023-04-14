@@ -122,6 +122,16 @@ public class WorthyConsumptionRequestDto {
         LocalDate issuableCouponEndDate;
 
     }
+    @NoArgsConstructor @AllArgsConstructor
+    @Getter @Setter
+    @Builder
+    public static class UpdateConditionRequest extends WorthyConsumptionRequestDto.IdRequest{
+        @NotNull(message = "가치소비의 쿠폰 발급 가능 인원을 입력해주세요")
+        int maxParticipants;
+        @NotNull(message = "가치소비의 쿠폰 발급 가능 전월 달성 금액을 입력해주세요")
+        int lastMonthAmount;
+
+    }
 
 
 }

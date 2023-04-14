@@ -63,6 +63,7 @@ public class WorthyConsumptionController {
         WorthyConsumptionResponseDto.ReadDetailResponse WorthyConsumptionResponseDto = worthyConsumptionService.readDetailWorthyConsumption(worthyConsumptionId);
         return new ResponseEntity<>(WorthyConsumptionResponseDto, HttpStatus.OK);
     }
+    @GetMapping
     public ResponseEntity<List<WorthyConsumptionResponseDto.ReadBasicResponse>> getAllWorthyConsumption(){
         List<WorthyConsumptionResponseDto.ReadBasicResponse> worthyConsumptionResponseDtos = worthyConsumptionService.readAllWorthyConsumption();
         return new ResponseEntity<>(worthyConsumptionResponseDtos, HttpStatus.OK);
@@ -107,6 +108,12 @@ public class WorthyConsumptionController {
     }
     @PutMapping("/{worthyConsumptionId}/date")
     public ResponseEntity<HttpStatus> updateWorthyConsumptionDate(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId, @Valid @RequestBody WorthyConsumptionRequestDto.UpdateIssuableCouponDateRequest worthyConsumptionRequestDto){
+        worthyConsumptionValidationService.isSameWorthyConsumptionId(worthyConsumptionId, worthyConsumptionRequestDto.getId());
+        worthyConsumptionService.updateIssuableCouponDate(worthyConsumptionRequestDto);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @PutMapping("/{worthyConsumptionId}/condition")
+    public ResponseEntity<HttpStatus> updateWorthyConsumptionCondition(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId, @Valid @RequestBody WorthyConsumptionRequestDto.UpdateConditionRequest worthyConsumptionRequestDto){
         worthyConsumptionValidationService.isSameWorthyConsumptionId(worthyConsumptionId, worthyConsumptionRequestDto.getId());
         worthyConsumptionService.updateIssuableCouponDate(worthyConsumptionRequestDto);
         return new ResponseEntity<>(HttpStatus.OK);

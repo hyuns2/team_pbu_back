@@ -19,12 +19,14 @@ public class Condition {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Setter
     private LocalDate issuableCouponEndDate;
+    @NonNull
     private int lastMonthAmount;
     @OneToOne(mappedBy = "worthyConsumptionUrl", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private WorthyConsumption worthyConsumption;
 
-    public void updateCondition(){
-
+    public void updateCondition(WorthyConsumptionRequestDto.UpdateConditionRequest worthyConsumptionRequestDto){
+        this.maxParticipants = worthyConsumptionRequestDto.getMaxParticipants();
+        this.lastMonthAmount = worthyConsumptionRequestDto.getLastMonthAmount();
     }
     public void updateIssuableCouponDate(WorthyConsumptionRequestDto.UpdateIssuableCouponDateRequest requestWorthyConsumptionDto){
         this.issuableCouponStartDate = requestWorthyConsumptionDto.getIssuableCouponStartDate();
