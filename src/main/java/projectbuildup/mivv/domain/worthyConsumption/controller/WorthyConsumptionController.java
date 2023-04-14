@@ -42,6 +42,7 @@ public class WorthyConsumptionController {
      * summary는 내가 찜한 가치소비 페이지에 들어갈 정보입니다.
      * basic은 소비추천화면입니다. (SCR_Value)에 해당하는 정보입니다.
      * detail은 소비추천화면에서 더 알아보기를 눌렀을 경우 가치소비에 대한 상세 정보를 담았습니다.
+     *
      * @param worthyConsumptionId
      * @return
      */
@@ -66,7 +67,7 @@ public class WorthyConsumptionController {
      * 가치소비의 여러 정보 수정 로직들 입니다.
      * content는 제목, 내용, 태그 등
      * url은 가치소비의 이미지나 영상의 url
-     * price는 가치소비의 가격
+     * price는 가치소비의 가격, 가격태그
      * place는 가치소비의 위치
      * date는 가치소비의 날짜에 해당합니다.
      *
