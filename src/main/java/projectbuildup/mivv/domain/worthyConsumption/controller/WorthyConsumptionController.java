@@ -16,6 +16,8 @@ import projectbuildup.mivv.domain.worthyConsumption.dto.response.WorthyConsumpti
 import projectbuildup.mivv.domain.worthyConsumption.service.WorthyConsumptionService;
 import projectbuildup.mivv.domain.worthyConsumption.service.WorthyConsumptionValidationService;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -60,6 +62,10 @@ public class WorthyConsumptionController {
     public ResponseEntity<WorthyConsumptionResponseDto.ReadDetailResponse> getWorthyConsumptionDetail(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId){
         WorthyConsumptionResponseDto.ReadDetailResponse WorthyConsumptionResponseDto = worthyConsumptionService.readDetailWorthyConsumption(worthyConsumptionId);
         return new ResponseEntity<>(WorthyConsumptionResponseDto, HttpStatus.OK);
+    }
+    public ResponseEntity<List<WorthyConsumptionResponseDto.ReadBasicResponse>> getAllWorthyConsumption(){
+        List<WorthyConsumptionResponseDto.ReadBasicResponse> worthyConsumptionResponseDtos = worthyConsumptionService.readAllWorthyConsumption();
+        return new ResponseEntity<>(worthyConsumptionResponseDtos, HttpStatus.OK);
     }
 
     /**
