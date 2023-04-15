@@ -1,6 +1,5 @@
 package projectbuildup.mivv.domain.worthyConsumption.controller;
 
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import projectbuildup.mivv.domain.coupon.dto.request.CouponRequestDto;
 import projectbuildup.mivv.domain.coupon.service.CouponService;
 import projectbuildup.mivv.domain.worthyConsumption.dto.request.WorthyConsumptionRequestDto;
-import projectbuildup.mivv.domain.worthyConsumption.dto.request.WorthyConsumptionUrlRequestDto;
 import projectbuildup.mivv.domain.worthyConsumption.dto.response.WorthyConsumptionResponseDto;
 import projectbuildup.mivv.domain.worthyConsumption.service.WorthyConsumptionService;
 import projectbuildup.mivv.domain.worthyConsumption.service.WorthyConsumptionValidationService;

@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import projectbuildup.mivv.domain.worthyConsumption.dto.request.WorthyConsumptionRequestDto;
 import projectbuildup.mivv.domain.worthyConsumption.dto.response.WorthyConsumptionResponseDto;
+import projectbuildup.mivv.domain.worthyConsumption.entity.Condition;
 import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumption;
 import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumptionUrl;
 import projectbuildup.mivv.domain.worthyConsumption.repository.WorthyConsumptionRepository;
@@ -20,7 +21,8 @@ public class WorthyConsumptionService {
     private final WorthyConsumptionRepository worthyConsumptionRepository;
     public void createWorthyConsumption(WorthyConsumptionRequestDto.CreationRequest worthyConsumptionRequestDto){
         WorthyConsumptionUrl worthyConsumptionUrl = new WorthyConsumptionUrl(worthyConsumptionRequestDto.getWorthyConsumptionUrlRequest());
-        WorthyConsumption worthyConsumption = worthyConsumptionRequestDto.toEntity(worthyConsumptionUrl);
+        Condition condition = new Condition(worthyConsumptionRequestDto.getWorthyConsumptionConditionDto());
+        WorthyConsumption worthyConsumption = worthyConsumptionRequestDto.toEntity(worthyConsumptionUrl, condition);
         worthyConsumptionRepository.save(worthyConsumption);
     }
     public WorthyConsumptionResponseDto.ReadSummaryResponse readSummaryWorthyConsumption(Long worthyConsumptionId){

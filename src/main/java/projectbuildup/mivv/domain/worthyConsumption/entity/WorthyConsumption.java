@@ -27,8 +27,6 @@ public class WorthyConsumption extends BaseTimeEntity {
     @NonNull
     private List<String> hashtags = new ArrayList<>();
     @NonNull
-    private int maxParticipants;
-    @NonNull
     private int originalPrice;
     @NonNull
     private int salePrice;
@@ -63,7 +61,6 @@ public class WorthyConsumption extends BaseTimeEntity {
     public void updateContent(WorthyConsumptionRequestDto.UpdateContentRequest requestWorthyConsumptionDto){
         this.title = requestWorthyConsumptionDto.getTitle();
         this.hashtags = requestWorthyConsumptionDto.getHashtags();
-        this.maxParticipants = requestWorthyConsumptionDto.getMaxParticipants();
         this.whyRecommendation = requestWorthyConsumptionDto.getWhyRecommendation();
         this.summary = requestWorthyConsumptionDto.getSummary();
     }

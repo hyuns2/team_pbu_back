@@ -1,16 +1,19 @@
 package projectbuildup.mivv.domain.worthyConsumption.entity;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.OneToOne;
-import lombok.NonNull;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
+import projectbuildup.mivv.domain.worthyConsumption.dto.WorthyConsumptionConditionDto;
 import projectbuildup.mivv.domain.worthyConsumption.dto.request.WorthyConsumptionRequestDto;
+import projectbuildup.mivv.global.error.exception.CBadRequestException;
 
 import java.time.LocalDate;
-
+@Entity @Table(name = "WorthyConsumption_URL")
+@AllArgsConstructor @NoArgsConstructor(force = true)
+@Getter @Builder
 public class Condition {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id;
     @NonNull
     private int maxParticipants;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -31,5 +34,11 @@ public class Condition {
     public void updateIssuableCouponDate(WorthyConsumptionRequestDto.UpdateIssuableCouponDateRequest requestWorthyConsumptionDto){
         this.issuableCouponStartDate = requestWorthyConsumptionDto.getIssuableCouponStartDate();
         this.issuableCouponEndDate = requestWorthyConsumptionDto.getIssuableCouponEndDate();
+    }
+    public Condition(WorthyConsumptionConditionDto conditionDto){
+        this.maxParticipants= conditionDto.getMaxParticipants();
+        this.lastMonthAmount = conditionDto.getLastMonthAmount();
+        this.issuableCouponStartDate = conditionDto.getIssuableCouponStartDate();
+        this.issuableCouponEndDate = conditionDto.getIssuableCouponEndDate();
     }
 }
