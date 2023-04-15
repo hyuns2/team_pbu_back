@@ -1,10 +1,7 @@
 package projectbuildup.mivv.domain.user.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,6 +10,8 @@ import projectbuildup.mivv.domain.archiving.entity.CardEntity;
 import projectbuildup.mivv.domain.archiving.entity.NumericalConditionCardEntity;
 import projectbuildup.mivv.domain.archiving.entity.UserCardEntity;
 import projectbuildup.mivv.domain.auth.dto.AuthDto;
+import projectbuildup.mivv.domain.participation.entity.Participation;
+import projectbuildup.mivv.domain.saving_count.entity.SavingCount;
 import projectbuildup.mivv.global.common.BaseTimeEntity;
 
 import java.util.ArrayList;
@@ -26,6 +25,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @Builder
 @Entity
+@ToString
 public class User extends BaseTimeEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,7 +38,6 @@ public class User extends BaseTimeEntity implements UserDetails {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn
     IdentityVerification identityVerification;
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn
     Account account;

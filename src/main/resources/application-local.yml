@@ -3,7 +3,7 @@ spring:
   datasource:  # mysql 사용
     url: jdbc:mysql://localhost:3306/mivv_new_local?validationQuery="select 1"&useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=UTF-8&serverTimezone=UTC&useLegacyDatetimeCode=false
     username: root
-    password: gusthdl
+    password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       connection-test-query: select 1 from dual
@@ -24,11 +24,6 @@ spring:
     redis:
       host: localhost
       port: 6379
-  sql: #더미데이터 용
-    init:
-      mode: always
-      data-locations: classpath:data.sql
-      encoding: UTF-8
   mail:
     host: smtp.gmail.com # SMTP 서버 호스트
     port: 587 # SMTP 서버 포트
