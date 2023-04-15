@@ -21,16 +21,16 @@ public class UserCardEntity {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "numericalConditionCardId")
-    private NumericalConditionCardEntity numericalConditionCardEntity;
+    @JoinColumn(name = "cardId")
+    private CardEntity cardEntity;
 
     @Column(nullable = false)
     @Temporal(value = TemporalType.DATE)
     private LocalDate date;
 
-    public UserCardEntity(User user, NumericalConditionCardEntity numericalConditionCardEntity, LocalDate date) {
+    public UserCardEntity(User user, CardEntity cardEntity, LocalDate date) {
         this.user = user;
-        this.numericalConditionCardEntity = numericalConditionCardEntity;
+        this.cardEntity = cardEntity;
         this.date = date;
     }
 

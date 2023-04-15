@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
+import projectbuildup.mivv.domain.archiving.entity.CardEntity;
 import projectbuildup.mivv.domain.archiving.entity.NumericalConditionCardEntity;
 import projectbuildup.mivv.domain.archiving.entity.UserCardEntity;
 
@@ -115,6 +116,7 @@ public class ArchivingDto {
         }
     }
 
+    /*
     @AllArgsConstructor
     @Data
     public static class NumericalConditionCardResponseDto {
@@ -161,6 +163,42 @@ public class ArchivingDto {
         }
 
     }
+    */
+
+    @AllArgsConstructor
+    @Data
+    public static class CardResponseDto {
+
+        @Schema(description = "카드 Id")
+        private Long id;
+
+        @Schema(description = "카드 종류")
+        private String kind;
+
+        @Schema(description = "카드 제목")
+        private String title;
+
+        @Schema(description = "카드 부제목")
+        private String subTitle;
+
+        @Length(min = 2, max = 30)
+        @Schema(description = "카드 명언")
+        private String sentence;
+
+        @Length(min = 2, max = 5000)
+        @Schema(description = "카드 이미지 URL")
+        private String image;
+
+        public CardResponseDto(final CardEntity entity) {
+            this.id = entity.getId();
+            this.kind = entity.getKind();
+            this.title = entity.getTitle();
+            this.subTitle = entity.getSubTitle();
+            this.sentence = entity.getSentence();
+            this.image = entity.getImage();
+        }
+
+    }
 
     @AllArgsConstructor
     @Data
@@ -170,14 +208,14 @@ public class ArchivingDto {
         private Long id;
 
         @Schema(description = "카드 정보")
-        private NumericalConditionCardResponseDto numericalConditionCardResponseDto;
+        private CardResponseDto cardResponseDto;
 
         @Schema(description = "발급 일자")
         private LocalDate date;
 
         public UserCardResponseDto(final UserCardEntity entity) {
             this.id = entity.getId();
-            this.numericalConditionCardResponseDto = new NumericalConditionCardResponseDto(entity.getNumericalConditionCardEntity());
+            this.cardResponseDto = new CardResponseDto(entity.getCardEntity());
             this.date = entity.getDate();
         }
 

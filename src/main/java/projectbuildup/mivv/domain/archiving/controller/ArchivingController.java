@@ -55,29 +55,29 @@ public class ArchivingController {
     @PreAuthorize("hasRole('USER')")
     @DeleteMapping("/admin/card/{id}")
     public ResponseEntity<?> deleteNumericalConditionCard(@AuthenticationPrincipal User user, @PathVariable("id") Long id) {
-        service.deleteNumericalConditionCard(id);
+        service.deleteCard(id);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     //어드민 권한 설정 필요, hasRole('USER')로 테스트함
-    @Operation(summary = "카드 단건 조회", description = "관리자가 카드 하나를 조회합니다.")
+    @Operation(summary = "전체 카드 단건 조회", description = "관리자가 전체 카드 중 하나를 조회합니다.")
     @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/admin/card/{id}")
-    public ResponseEntity<?> retrieveNumericalConditionCard(@AuthenticationPrincipal User user, @PathVariable("id") Long id) {
-        ArchivingDto.NumericalConditionCardResponseDto responseDto = service.retrieveNumericalConditionCard(id);
+    public ResponseEntity<?> retrieveCard(@AuthenticationPrincipal User user, @PathVariable("id") Long id) {
+        ArchivingDto.CardResponseDto responseDto = service.retrieveCard(id);
 
         return ResponseEntity.ok().body(responseDto);
     }
 
     //어드민 권한 설정 필요, hasRole('USER')로 테스트함
-    @Operation(summary = "카드 전체 조회", description = "관리자가 카드 전체를 조회합니다.")
+    @Operation(summary = "전체 카드 전체 조회", description = "관리자가 조건 상관없이 카드 전체를 조회합니다.")
     @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/admin/cards")
-    public ResponseEntity<?> retrieveNumericalConditionCards(@AuthenticationPrincipal User user) {
-        List<ArchivingDto.NumericalConditionCardResponseDto> responseDto = service.retrieveNumericalConditionCards();
+    public ResponseEntity<?> retrieveCards(@AuthenticationPrincipal User user) {
+        List<ArchivingDto.CardResponseDto> responseDto = service.retrieveCards();
 
         return ResponseEntity.ok().body(responseDto);
     }
@@ -92,10 +92,10 @@ public class ArchivingController {
         return ResponseEntity.ok().body(responseDto);
     }
 
-    @Operation(summary = "카드 할당", description = "사용자에게 조건에 맞는 카드를 할당합니다.")
+    @Operation(summary = "수치 조건의 카드 할당", description = "사용자에게 수치 조건에 맞는 카드를 할당합니다.")
     @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('USER')")
-    @GetMapping("/assign")
+    @GetMapping("/assign/numericalCards")
     public ResponseEntity<?> assignNumericalConditionCards(@AuthenticationPrincipal User user) {
         service.assignNumericalConditionCards(user);
 

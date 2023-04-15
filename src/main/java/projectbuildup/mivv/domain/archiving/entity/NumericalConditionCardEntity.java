@@ -18,9 +18,6 @@ public class NumericalConditionCardEntity extends CardEntity {
     protected Integer count;
     protected Integer term;
 
-    @OneToMany(mappedBy = "numericalConditionCardEntity", cascade = CascadeType.ALL)
-    private List<UserCardEntity> userCards = new ArrayList<>();
-
     @Builder
     public NumericalConditionCardEntity(String kind, String title, String subTitle, String sentence, String image, int charge, int count, int term) {
         super(kind, title, subTitle, sentence, image);

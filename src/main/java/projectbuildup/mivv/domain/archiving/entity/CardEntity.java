@@ -3,13 +3,16 @@ package projectbuildup.mivv.domain.archiving.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @Inheritance(strategy = InheritanceType.JOINED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DiscriminatorColumn(name = "dType")
 @Table(name="Card")
-public abstract class CardEntity {
+public class CardEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,6 +32,9 @@ public abstract class CardEntity {
 
     @Column(nullable = false, length = 5000)
     protected String image;
+
+    @OneToMany(mappedBy = "cardEntity", cascade = CascadeType.ALL)
+    private List<UserCardEntity> userCards = new ArrayList<>();
 
     public CardEntity(String kind, String title, String subTitle, String sentence, String image) {
         this.kind = kind;
