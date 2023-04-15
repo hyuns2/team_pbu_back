@@ -42,7 +42,7 @@ public class WithdrawalScheduler {
         long renewed = 0;
         List<User> users = userRepository.findAll();
         for (User user : users) {
-            List<Participation> participationList = participationRepository.findByUser(user);
+            List<Participation> participationList = participationRepository.findAllByUser(user);
             long numOfParticipation = participationList.size();
             if (numOfParticipation == 0) {
                 continue;

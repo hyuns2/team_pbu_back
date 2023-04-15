@@ -10,10 +10,7 @@ import org.springframework.context.annotation.Import;
 import projectbuildup.mivv.common.MockEntity;
 import projectbuildup.mivv.domain.account.repository.AccountRepository;
 import projectbuildup.mivv.global.config.JpaAuditingConfig;
-import projectbuildup.mivv.global.error.exception.CInternalServerException;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @Slf4j
 @DataJpaTest
@@ -36,5 +33,4 @@ class AccountRepositoryTest {
         log.info("{}",saved);
         assertThat(saved.getAccountNumbers()).isEqualTo("0123456789");
     }
-
 }
