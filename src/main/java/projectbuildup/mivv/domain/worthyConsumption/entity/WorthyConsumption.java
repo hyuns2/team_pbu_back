@@ -11,7 +11,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 @Entity @Table
-@NoArgsConstructor @AllArgsConstructor
+@NoArgsConstructor(force = true)
+@AllArgsConstructor
 @Getter @Builder
 public class WorthyConsumption extends BaseTimeEntity {
     /*
@@ -37,9 +38,8 @@ public class WorthyConsumption extends BaseTimeEntity {
     private String priceTag;
     @NonNull
     private String placeTag;
-    @ElementCollection
     @NonNull
-    private List<String> summary;
+    private String summary;
     @Nullable
     @OneToOne(fetch = FetchType.LAZY, cascade =  CascadeType.ALL)
     @JoinColumn(name = "worthyConsumptionUrlId")

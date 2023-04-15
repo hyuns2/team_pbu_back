@@ -32,7 +32,7 @@ public class WorthyConsumptionRequestDto {
         String priceTag;
         String placeTag;
         @NotNull
-        List<String> summary;
+        String summary;
         @NotNull
         WorthyConsumptionUrlDto.CreationRequest worthyConsumptionUrlDto;
         @NotNull
@@ -68,7 +68,7 @@ public class WorthyConsumptionRequestDto {
         List<String> hashtags;
         int maxParticipants;
         List<String> whyRecommendation;
-        List<String> summary;
+        String summary;
     }
     @NoArgsConstructor
     @Getter @Setter
