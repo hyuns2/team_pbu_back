@@ -44,7 +44,10 @@ public enum ErrorCode {
 
     // 15000 ~ : 문의 관련 에러
     INQUIRY_OVER_ERROR(-15000, "문의 개수 한도를 초과했습니다.", HttpStatus.BAD_REQUEST),
-    INQUIRY_NOT_FOUND(-15100, "해당하는 문의를 찾을 수 없습니다.", HttpStatus.BAD_REQUEST);
+    INQUIRY_NOT_FOUND(-15100, "해당하는 문의를 찾을 수 없습니다.", HttpStatus.BAD_REQUEST),
+
+    // 16000 ~ : 아카이빙 관련 에러
+    CARD_NOT_FOUND(-16000, "해당하는 카드를 찾을 수 없습니다.", HttpStatus.BAD_REQUEST);
 
     final int code;
     final String message;

@@ -139,6 +139,13 @@ public class ExceptionAdvice {
         return new ResponseEntity<>(new ErrorResponseDto(errorCode), errorCode.getStatusCode());
     }
 
+    @ExceptionHandler(CCardNotFoundException.class)
+    protected ResponseEntity<ErrorResponseDto> handle(CCardNotFoundException e){
+        ErrorCode errorCode = e.getErrorCode();
+        e.printStackTrace();
+        return new ResponseEntity<>(new ErrorResponseDto(errorCode), errorCode.getStatusCode());
+    }
+    
     @ExceptionHandler(CSavingCountOverException.class)
     protected ResponseEntity<ErrorResponseDto> handle(CSavingCountOverException e){
         ErrorCode errorCode = e.getErrorCode();
