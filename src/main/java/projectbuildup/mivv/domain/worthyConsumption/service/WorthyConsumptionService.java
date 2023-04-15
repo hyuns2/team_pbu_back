@@ -20,12 +20,23 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class WorthyConsumptionService {
     private final WorthyConsumptionRepository worthyConsumptionRepository;
+
+    /**
+     * 가치소비를 생성하는 로직입니다.
+     * @param worthyConsumptionRequestDto
+     */
     public void createWorthyConsumption(WorthyConsumptionRequestDto.CreationRequest worthyConsumptionRequestDto){
         WorthyConsumptionUrl worthyConsumptionUrl = new WorthyConsumptionUrl(worthyConsumptionRequestDto.getWorthyConsumptionUrlDto());
         Condition condition = new Condition(worthyConsumptionRequestDto.getWorthyConsumptionConditionDto());
         WorthyConsumption worthyConsumption = worthyConsumptionRequestDto.toEntity(worthyConsumptionUrl, condition);
         worthyConsumptionRepository.save(worthyConsumption);
     }
+
+    /**
+     * 가치소비를 조회하는 로직입니다.
+     * @param worthyConsumptionId
+     * @return
+     */
     public WorthyConsumptionResponseDto.ReadSummaryResponse readSummaryWorthyConsumption(Long worthyConsumptionId){
         WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionId).orElseThrow(CWorthyConsumptionNotFoundException:: new);
         return new WorthyConsumptionResponseDto.ReadSummaryResponse(worthyConsumption);
@@ -42,6 +53,11 @@ public class WorthyConsumptionService {
         List<WorthyConsumptionResponseDto.ReadBasicResponse> allWorthyConsumptions = worthyConsumptionRepository.findAll().stream().map(WorthyConsumptionResponseDto.ReadBasicResponse::new).collect(Collectors.toList());
         return allWorthyConsumptions;
     }
+
+    /**
+     * 가치소비를 수정하는 로직입니다.
+     * @param worthyConsumptionRequestDto
+     */
     public void updateContentWorthyConsumption(WorthyConsumptionRequestDto.UpdateContentRequest worthyConsumptionRequestDto){
         WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionRequestDto.getId()).orElseThrow(CWorthyConsumptionNotFoundException:: new);
         worthyConsumption.updateContent(worthyConsumptionRequestDto);
@@ -72,6 +88,11 @@ public class WorthyConsumptionService {
         worthyConsumption.getCondition().updateCondition(worthyConsumptionRequestDto);
         worthyConsumptionRepository.save(worthyConsumption);
     }
+
+    /**
+     * 가치소비를 삭제하는 로직입니다.
+     * @param worthyConsumptionId
+     */
     public void deleteWorthyConsumption(Long worthyConsumptionId){
         WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionId).orElseThrow(CWorthyConsumptionNotFoundException:: new);
         worthyConsumptionRepository.delete(worthyConsumption);
