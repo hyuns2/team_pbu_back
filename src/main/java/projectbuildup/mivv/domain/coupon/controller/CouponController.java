@@ -19,8 +19,8 @@ import projectbuildup.mivv.domain.coupon.service.CouponService;
 @Tag(name = "[Coupon]", description = "쿠폰 관련 API입니다.")
 public class CouponController {
     private final CouponService couponService;
-    @Operation(summary = "쿠폰을 생성 합니다.", description = "")
-    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "쿠폰을 조회 합니다.", description = "")
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/{couponId}")
     public ResponseEntity<CouponResponseDto.ReadResponseWithWorthyConsumption> readCouponWithWorthyConsumption(@PathVariable(name = "couponId") Long couponId){
         CouponResponseDto.ReadResponseWithWorthyConsumption couponResponseDto = couponService.readCouponWithWorthyConsumption(couponId);
