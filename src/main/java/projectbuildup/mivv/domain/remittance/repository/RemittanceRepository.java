@@ -22,4 +22,17 @@ public interface RemittanceRepository extends JpaRepository<Remittance, Long> {
     long findSumAmountByUser(@Param("user") User user);
 
     List<Remittance> findAllByCreatedTimeAfter(LocalDateTime now);
+    
+    @Query("select sum(r.amount) from Remittance r where r.user = ?1 and r.amount > 0")
+    Integer findChargeSum(User user);
+
+    @Query("select count(r) from Remittance r where r.user = ?1 and r.amount > 0")
+    Integer findCountSum(User user);
+
+    @Query("select sum(r.amount) from Remittance r where r.user = ?1 and r.amount > 0 and r.modifiedTime between ?2 and ?3")
+    Integer findChargeSumBetweenTerm(User user, LocalDateTime settingDate, LocalDateTime nowDate);
+
+    @Query("select count(r) from Remittance r where r.user = ?1 and r.amount > 0 and r.modifiedTime between ?2 and ?3")
+    Integer findCountSumBetweenTerm(User user, LocalDateTime settingDate, LocalDateTime nowDate);
+
 }
