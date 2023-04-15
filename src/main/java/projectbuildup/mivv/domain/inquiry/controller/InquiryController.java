@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -32,7 +33,7 @@ public class InquiryController {
     @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('USER')")
     @PostMapping
-    public ResponseEntity<?> createInquiry(@AuthenticationPrincipal User user, @RequestBody InquiryDto.InquiryRequestDto dto) {
+    public ResponseEntity<?> createInquiry(@AuthenticationPrincipal User user, @Valid @RequestBody InquiryDto.InquiryRequestDto dto) {
         service.registerInquiry(dto, user);
 
         return new ResponseEntity<>(HttpStatus.OK);
@@ -43,7 +44,7 @@ public class InquiryController {
     @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('USER')")
     @PostMapping("/admin/answer")
-    public ResponseEntity<?> createAnswer(@AuthenticationPrincipal User user, @RequestBody InquiryDto.AnswerRequestDto dto) {
+    public ResponseEntity<?> createAnswer(@AuthenticationPrincipal User user, @Valid @RequestBody InquiryDto.AnswerRequestDto dto) {
         service.registerAnswer(dto);
 
         return new ResponseEntity<>(HttpStatus.OK);

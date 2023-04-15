@@ -6,6 +6,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import projectbuildup.mivv.domain.account.entity.Account;
+import projectbuildup.mivv.domain.archiving.entity.CardEntity;
+import projectbuildup.mivv.domain.archiving.entity.NumericalConditionCardEntity;
+import projectbuildup.mivv.domain.archiving.entity.UserCardEntity;
 import projectbuildup.mivv.domain.auth.dto.AuthDto;
 import projectbuildup.mivv.domain.participation.entity.Participation;
 import projectbuildup.mivv.domain.saving_count.entity.SavingCount;
@@ -38,6 +41,9 @@ public class User extends BaseTimeEntity implements UserDetails {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn
     Account account;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<UserCardEntity> userCards = new ArrayList<>();
 
     public static User of (AuthDto.SignupRequest requestDto, String encodedPassword, IdentityVerification identityVerification){
         return User.builder()
