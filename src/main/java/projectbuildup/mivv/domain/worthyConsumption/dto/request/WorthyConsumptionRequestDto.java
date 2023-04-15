@@ -34,9 +34,9 @@ public class WorthyConsumptionRequestDto {
         @NotNull
         List<String> summary;
         @NotNull
-        WorthyConsumptionUrlDto.CreationRequest worthyConsumptionUrlRequest;
+        WorthyConsumptionUrlDto.CreationRequest worthyConsumptionUrlDto;
         @NotNull
-        WorthyConsumptionConditionDto worthyConsumptionConditionDto;
+        WorthyConsumptionConditionDto.CreationRequest worthyConsumptionConditionDto;
         public WorthyConsumption toEntity(WorthyConsumptionUrl worthyConsumptionUrl, Condition condition){
             return WorthyConsumption.builder()
                     .title(title)
@@ -106,32 +106,7 @@ public class WorthyConsumptionRequestDto {
         String placeTag;
 
     }
-    @NoArgsConstructor @AllArgsConstructor
-    @Getter @Setter
-    @Builder
-    public static class UpdateIssuableCouponDateRequest extends WorthyConsumptionRequestDto.IdRequest{
-        @NotNull(message = "가치소비의 쿠폰 발급 가능 시작 날짜를 입력해주세요")
-        @Schema(example = "2023-04-13")
-        @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
-        //@DateTimeFormat(pattern = "yyyy-MM-dd")
-        LocalDate issuableCouponStartDate;
-        @NotNull(message = "가치소비의 쿠폰 발급 가능 종료 날짜를 입력해주세요")
-        @Schema(example = "2023-04-13")
-        @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
-        //@DateTimeFormat(pattern = "yyyy-MM-dd")
-        LocalDate issuableCouponEndDate;
 
-    }
-    @NoArgsConstructor @AllArgsConstructor
-    @Getter @Setter
-    @Builder
-    public static class UpdateConditionRequest extends WorthyConsumptionRequestDto.IdRequest{
-        @NotNull(message = "가치소비의 쿠폰 발급 가능 인원을 입력해주세요")
-        int maxParticipants;
-        @NotNull(message = "가치소비의 쿠폰 발급 가능 전월 달성 금액을 입력해주세요")
-        int lastMonthAmount;
-
-    }
 
 
 }

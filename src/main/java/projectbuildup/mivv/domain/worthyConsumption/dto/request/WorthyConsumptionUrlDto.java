@@ -22,15 +22,7 @@ public class WorthyConsumptionUrlDto {
         String detailBackgroundImageUrl;
         @NotBlank
         String placeImageUrl;
-        public WorthyConsumptionUrl toEntity(){
-            return WorthyConsumptionUrl.builder()
-                    .videoUrl(videoUrl)
-                    .imageUrl(imageUrl)
-                    .detailImageUrl(detailImageUrl)
-                    .detailBackgroundImageUrl(detailBackgroundImageUrl)
-                    .placeImageUrl(placeImageUrl)
-                    .build();
-        }
+
     }
 
 }

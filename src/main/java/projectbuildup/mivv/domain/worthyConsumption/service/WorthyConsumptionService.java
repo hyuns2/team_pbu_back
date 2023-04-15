@@ -3,6 +3,7 @@ package projectbuildup.mivv.domain.worthyConsumption.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import projectbuildup.mivv.domain.worthyConsumption.dto.WorthyConsumptionConditionDto;
 import projectbuildup.mivv.domain.worthyConsumption.dto.request.WorthyConsumptionRequestDto;
 import projectbuildup.mivv.domain.worthyConsumption.dto.response.WorthyConsumptionResponseDto;
 import projectbuildup.mivv.domain.worthyConsumption.entity.Condition;
@@ -20,7 +21,7 @@ import java.util.stream.Collectors;
 public class WorthyConsumptionService {
     private final WorthyConsumptionRepository worthyConsumptionRepository;
     public void createWorthyConsumption(WorthyConsumptionRequestDto.CreationRequest worthyConsumptionRequestDto){
-        WorthyConsumptionUrl worthyConsumptionUrl = new WorthyConsumptionUrl(worthyConsumptionRequestDto.getWorthyConsumptionUrlRequest());
+        WorthyConsumptionUrl worthyConsumptionUrl = new WorthyConsumptionUrl(worthyConsumptionRequestDto.getWorthyConsumptionUrlDto());
         Condition condition = new Condition(worthyConsumptionRequestDto.getWorthyConsumptionConditionDto());
         WorthyConsumption worthyConsumption = worthyConsumptionRequestDto.toEntity(worthyConsumptionUrl, condition);
         worthyConsumptionRepository.save(worthyConsumption);
@@ -61,12 +62,12 @@ public class WorthyConsumptionService {
         worthyConsumption.updatePlace(worthyConsumptionRequestDto);
         worthyConsumptionRepository.save(worthyConsumption);
     }
-    public void updateIssuableCouponDate(WorthyConsumptionRequestDto.UpdateIssuableCouponDateRequest worthyConsumptionRequestDto){
+    public void updateIssuableCouponDate(WorthyConsumptionConditionDto.UpdateIssuableCouponDateRequest worthyConsumptionRequestDto){
         WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionRequestDto.getId()).orElseThrow(CWorthyConsumptionNotFoundException:: new);
         worthyConsumption.getCondition().updateIssuableCouponDate(worthyConsumptionRequestDto);
         worthyConsumptionRepository.save(worthyConsumption);
     }
-    public void updateCouponCondition(WorthyConsumptionRequestDto.UpdateConditionRequest worthyConsumptionRequestDto){
+    public void updateCouponCondition(WorthyConsumptionConditionDto.UpdateConditionRequest worthyConsumptionRequestDto){
         WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionRequestDto.getId()).orElseThrow(CWorthyConsumptionNotFoundException:: new);
         worthyConsumption.getCondition().updateCondition(worthyConsumptionRequestDto);
         worthyConsumptionRepository.save(worthyConsumption);

@@ -27,15 +27,15 @@ public class Condition {
     @OneToOne(mappedBy = "worthyConsumptionUrl", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private WorthyConsumption worthyConsumption;
 
-    public void updateCondition(WorthyConsumptionRequestDto.UpdateConditionRequest worthyConsumptionRequestDto){
+    public void updateCondition(WorthyConsumptionConditionDto.UpdateConditionRequest worthyConsumptionRequestDto){
         this.maxParticipants = worthyConsumptionRequestDto.getMaxParticipants();
         this.lastMonthAmount = worthyConsumptionRequestDto.getLastMonthAmount();
     }
-    public void updateIssuableCouponDate(WorthyConsumptionRequestDto.UpdateIssuableCouponDateRequest requestWorthyConsumptionDto){
+    public void updateIssuableCouponDate(WorthyConsumptionConditionDto.UpdateIssuableCouponDateRequest requestWorthyConsumptionDto){
         this.issuableCouponStartDate = requestWorthyConsumptionDto.getIssuableCouponStartDate();
         this.issuableCouponEndDate = requestWorthyConsumptionDto.getIssuableCouponEndDate();
     }
-    public Condition(WorthyConsumptionConditionDto conditionDto){
+    public Condition(WorthyConsumptionConditionDto.CreationRequest conditionDto){
         this.maxParticipants= conditionDto.getMaxParticipants();
         this.lastMonthAmount = conditionDto.getLastMonthAmount();
         this.issuableCouponStartDate = conditionDto.getIssuableCouponStartDate();

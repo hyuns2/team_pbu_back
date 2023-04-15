@@ -42,7 +42,7 @@ public class WorthyConsumptionValidationService {
      */
     public void checkMaxParticipants(Long couponId, WorthyConsumption worthyConsumption){
         int nowParticipants = couponIssuanceRepository.countByCouponId(couponId);
-        if(nowParticipants>=worthyConsumption.getMaxParticipants())
+        if(nowParticipants>=worthyConsumption.getCondition().getMaxParticipants())
             throw new CBadRequestException("쿠폰 발급 가능한 인원을 초과하였습니다.");
     }
 

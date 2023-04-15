@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import projectbuildup.mivv.domain.coupon.dto.request.CouponRequestDto;
 import projectbuildup.mivv.domain.coupon.service.CouponService;
+import projectbuildup.mivv.domain.worthyConsumption.dto.WorthyConsumptionConditionDto;
 import projectbuildup.mivv.domain.worthyConsumption.dto.request.WorthyConsumptionRequestDto;
 import projectbuildup.mivv.domain.worthyConsumption.dto.response.WorthyConsumptionResponseDto;
 import projectbuildup.mivv.domain.worthyConsumption.service.WorthyConsumptionService;
@@ -105,13 +106,13 @@ public class WorthyConsumptionController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
     @PutMapping("/{worthyConsumptionId}/date")
-    public ResponseEntity<HttpStatus> updateWorthyConsumptionDate(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId, @Valid @RequestBody WorthyConsumptionRequestDto.UpdateIssuableCouponDateRequest worthyConsumptionRequestDto){
+    public ResponseEntity<HttpStatus> updateWorthyConsumptionDate(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId, @Valid @RequestBody WorthyConsumptionConditionDto.UpdateIssuableCouponDateRequest worthyConsumptionRequestDto){
         worthyConsumptionValidationService.isSameWorthyConsumptionId(worthyConsumptionId, worthyConsumptionRequestDto.getId());
         worthyConsumptionService.updateIssuableCouponDate(worthyConsumptionRequestDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
     @PutMapping("/{worthyConsumptionId}/condition")
-    public ResponseEntity<HttpStatus> updateWorthyConsumptionCondition(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId, @Valid @RequestBody WorthyConsumptionRequestDto.UpdateConditionRequest worthyConsumptionRequestDto){
+    public ResponseEntity<HttpStatus> updateWorthyConsumptionCondition(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId, @Valid @RequestBody WorthyConsumptionConditionDto.UpdateConditionRequest worthyConsumptionRequestDto){
         worthyConsumptionValidationService.isSameWorthyConsumptionId(worthyConsumptionId, worthyConsumptionRequestDto.getId());
         worthyConsumptionService.updateCouponCondition(worthyConsumptionRequestDto);
         return new ResponseEntity<>(HttpStatus.OK);
