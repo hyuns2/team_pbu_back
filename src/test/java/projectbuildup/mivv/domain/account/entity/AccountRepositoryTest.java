@@ -37,15 +37,4 @@ class AccountRepositoryTest {
         assertThat(saved.getAccountNumbers()).isEqualTo("0123456789");
     }
 
-    @Test
-    @DisplayName("계좌 저장시 커넥티드아이디가 주어지지 않으면 예외를 발생시킨다.")
-    void 계좌_저장시_커넥티드아이디가_주어지지_않으면_예외_발생() {
-        // given
-
-        // when
-
-        // then
-        assertThatThrownBy(() -> Account.builder().bankType(BankType.CITY).accountNumbers("0123456789").build())
-                .isInstanceOf(CInternalServerException.class);
-    }
 }

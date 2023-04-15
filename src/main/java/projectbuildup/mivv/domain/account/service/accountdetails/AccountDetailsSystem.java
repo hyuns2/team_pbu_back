@@ -8,4 +8,8 @@ import java.util.Map;
 public interface AccountDetailsSystem {
     List<Map<String, String>> getDepositHistory(User user);
     List<Map<String, String>> getWithdrawHistory(User user);
+    String getInAmountField();
+    String getOutAmountField();
+    String getDateField();
+    String getTimeField();
 }

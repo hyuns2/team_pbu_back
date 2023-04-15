@@ -17,6 +17,15 @@ import java.util.List;
 @RestControllerAdvice
 public class ExceptionAdvice {
 
+
+    @ExceptionHandler(InterruptedException.class)
+    protected ResponseEntity<ErrorResponseDto> handle(InterruptedException e){
+        ErrorCode errorCode = ErrorCode.INTERNAL_SERVER_ERROR;
+        e.printStackTrace();
+
+        return new ResponseEntity<>(new ErrorResponseDto(errorCode), errorCode.getStatusCode());
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     protected ResponseEntity<ValidationErrorResponseDto> handle(MethodArgumentNotValidException e){
         ErrorCode errorCode = ErrorCode.VALIDATION_ERROR;
@@ -132,6 +141,13 @@ public class ExceptionAdvice {
 
     @ExceptionHandler(CCardNotFoundException.class)
     protected ResponseEntity<ErrorResponseDto> handle(CCardNotFoundException e){
+        ErrorCode errorCode = e.getErrorCode();
+        e.printStackTrace();
+        return new ResponseEntity<>(new ErrorResponseDto(errorCode), errorCode.getStatusCode());
+    }
+    
+    @ExceptionHandler(CSavingCountOverException.class)
+    protected ResponseEntity<ErrorResponseDto> handle(CSavingCountOverException e){
         ErrorCode errorCode = e.getErrorCode();
         e.printStackTrace();
         return new ResponseEntity<>(new ErrorResponseDto(errorCode), errorCode.getStatusCode());

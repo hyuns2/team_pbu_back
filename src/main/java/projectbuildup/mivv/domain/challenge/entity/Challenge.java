@@ -1,8 +1,10 @@
 package projectbuildup.mivv.domain.challenge.entity;
 
+
 import jakarta.persistence.*;
 import lombok.*;
 import projectbuildup.mivv.domain.challenge.dto.ChallengeDto;
+import projectbuildup.mivv.domain.participation.entity.Participation;
 import projectbuildup.mivv.global.common.BaseTimeEntity;
 
 import java.time.LocalDate;
@@ -14,9 +16,11 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Builder
+@ToString
 public class Challenge extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long id;
     private String mainTitle;
     private String subTitle;
@@ -50,4 +54,5 @@ public class Challenge extends BaseTimeEntity {
                 .endDate(requestDto.getEndDate())
                 .build();
     }
+
 }
