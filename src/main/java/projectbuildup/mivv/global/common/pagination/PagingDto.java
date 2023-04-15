@@ -1,4 +1,4 @@
-package projectbuildup.mivv.global.common;
+package projectbuildup.mivv.global.common.pagination;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

@@ -1,10 +1,14 @@
-package projectbuildup.mivv.domain.remittance;
+package projectbuildup.mivv.domain.breakdown.service;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
+import projectbuildup.mivv.domain.remittance.repository.RemittanceRepository;
+import projectbuildup.mivv.domain.remittance.service.RemittanceService;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -13,7 +17,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class)
-class RemittanceServiceMockTest {
+class BreakdownServiceMockTest {
+
+    @InjectMocks
+    RemittanceService remittanceService;
+
+    @Mock
+    RemittanceRepository remittanceRepository;
 
     @Test
     @DisplayName("String -> DateTimeLocal 파싱 테스트")

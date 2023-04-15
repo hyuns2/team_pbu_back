@@ -1,5 +1,6 @@
 package projectbuildup.mivv.domain.remittance.service;
 
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -14,12 +15,13 @@ import projectbuildup.mivv.domain.remittance.repository.RemittanceRepository;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.domain.user.repository.UserRepository;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class Scheduler {
+public class WithdrawalScheduler {
     private final AccountDetailsSystem accountDetailsSystem;
     private final UserRepository userRepository;
     private final ParticipationRepository participationRepository;
@@ -40,39 +42,34 @@ public class Scheduler {
         long renewed = 0;
         List<User> users = userRepository.findAll();
         for (User user : users) {
-            List<Challenge> participatingChallenges = participationRepository.findAllByUser(user).stream()
-                    .map(Participation::getChallenge)
-                    .toList();
-            long numOfParticipation = participatingChallenges.size();
+            List<Participation> participationList = participationRepository.findAllByUser(user);
+            long numOfParticipation = participationList.size();
             if (numOfParticipation == 0) {
                 continue;
             }
             List<Map<String, String>> withdrawHistory = accountDetailsSystem.getWithdrawHistory(user);
             long sumOfWithdraw = getSum(withdrawHistory);
             long averageWithdrawAmount = sumOfWithdraw / numOfParticipation;
-            saveWithdraw(user, participatingChallenges, averageWithdrawAmount);
+            saveWithdraw(participationList, averageWithdrawAmount);
             renewed++;
         }
         log.info("출금액 동기화 종료({}명의 출금 정보 갱신됨)", renewed);
     }
 
-    private void saveWithdraw(User user, List<Challenge> participatingChallenges, long averageAmount) {
-        for (Challenge challenge : participatingChallenges) {
-            Remittance remittance = Remittance.builder()
-                    .user(user)
-                    .challenge(challenge)
-                    .amount(-averageAmount)
-                    .build();
-            remittanceRepository.save(remittance);
-        }
-    }
-
     private long getSum(List<Map<String, String>> withdrawHistory) {
         long sum = 0;
+        log.info("{}",withdrawHistory);
         for (Map<String, String> fieldMap : withdrawHistory) {
-            long amount = Long.parseLong(fieldMap.get(CodefAccountDetailsSystem.AMOUNT_FIELD));
+            long amount = Long.parseLong(fieldMap.get(accountDetailsSystem.getOutAmountField()));
             sum += amount;
         }
         return sum;
+    }
+
+    private void saveWithdraw(List<Participation> participationList, long averageAmount) {
+        for (Participation participation : participationList) {
+            Remittance remittance = new Remittance(-averageAmount, participation);
+            remittanceRepository.save(remittance);
+        }
     }
 }

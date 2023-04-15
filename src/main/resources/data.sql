@@ -22,9 +22,9 @@ values (1, 'ROLE_USER');
 -- <Challenge> --
 insert into challenge(id, created_time, modified_time, end_date, image_url, main_title, remittance_available_count,
                       remittance_once_limit, start_date, sub_title)
-values (1, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', '2024-02-13', 'image', '샘플 챌린지1', 10, 0,
+values (1, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', '2024-02-13', 'image', '샘플 챌린지1', 5, 0,
         '2023-02-13', 'sample1'),
-       (2, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', '2024-02-13', 'image', '샘플 챌린지2', 10, 0,
+       (2, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', '2024-02-13', 'image', '샘플 챌린지2', 5, 0,
         '2023-02-13', 'sample2');
 
 
@@ -32,14 +32,21 @@ insert into challenge_description(challenge_id, description)
 values (1, 'description'),
        (2, 'description');
 
--- <Remittance> --
-insert into remittance(id, created_time, modified_time, amount, challenge_id, user_id)
-values (1, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', 11111, 1, 1);
+
+-- <SavingCount> --
+insert into saving_count(id, count)
+values (1, 5);
 
 
 -- <Participation> --
-insert into participation(id, created_time, modified_time, challenge_id, user_id)
-values (1, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', 1, 1),
-       (2, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', 2, 1);
+insert into participation(id, created_time, modified_time, challenge_id, saving_count_id, user_id)
+values (1, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', 1, 1, 1);
+
+
+-- <Remittance> --
+insert into remittance(id, created_time, modified_time, title, amount, participation_id)
+values (1, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', '샘플 챌린지1', 1000, 1),
+       (2, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', '샘플 챌린지1', 2000, 1);
+
 
 

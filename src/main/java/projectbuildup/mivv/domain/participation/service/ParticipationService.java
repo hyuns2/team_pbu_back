@@ -2,6 +2,7 @@ package projectbuildup.mivv.domain.participation.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import projectbuildup.mivv.domain.remittance.repository.RemittanceRepository;
 import projectbuildup.mivv.domain.challenge.entity.Challenge;
 import projectbuildup.mivv.domain.challenge.repository.ChallengeRepository;
 import projectbuildup.mivv.domain.participation.entity.Participation;
@@ -30,20 +31,13 @@ public class ParticipationService {
     public void joinChallenge(Long challengeId, Long userId) {
         User user = userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
         Challenge challenge = challengeRepository.findById(challengeId).orElseThrow(CResourceNotFoundException::new);
-        isJoinable(challenge, user);
-        participate(challenge, user);
-    }
-
-    public void isJoinable(Challenge challenge, User user) {
         if (participationRepository.findByChallengeAndUser(challenge, user).isPresent()) {
             throw new CBadRequestException("이미 참여중인 챌린지입니다.");
         }
-    }
-
-    private void participate(Challenge challenge, User user) {
         Participation participation = new Participation(user, challenge);
         participationRepository.save(participation);
     }
+
 
     /**
      * 챌린지를 포기합니다.

@@ -2,6 +2,7 @@ package projectbuildup.mivv.domain.inquiry.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 import projectbuildup.mivv.domain.inquiry.entity.InquiryEntity;
@@ -9,18 +10,18 @@ import projectbuildup.mivv.domain.user.entity.User;
 
 import java.time.LocalDateTime;
 
-@Builder
-@NoArgsConstructor
 public class InquiryDto {
 
-    @Builder
     @AllArgsConstructor
     @Data
     public static class InquiryRequestDto {
+
+        @NotBlank
         @Length(min = 2, max = 30)
         @Schema(description = "문의 제목")
         private String title;
 
+        @NotBlank
         @Length(min = 2, max = 1000)
         @Schema(description = "문의 내용")
         private String content;
@@ -38,28 +39,21 @@ public class InquiryDto {
         }
     }
 
-    @Builder
     @AllArgsConstructor
     @Data
     public static class AnswerRequestDto {
-        @NotBlank
+
+        @NotNull
         @Schema(description = "문의 고유번호")
         private Long id;
+
+        @NotBlank
         @Length(min = 2, max = 1000)
         @Schema(description = "답변 내용")
         private String answer;
 
-        public static InquiryEntity toEntity(final AnswerRequestDto arDto) {
-
-            return InquiryEntity.builder().
-                    id(arDto.getId()).
-                    answer(arDto.getAnswer()).build();
-
-        }
     }
 
-    @Builder
-    @NoArgsConstructor
     @AllArgsConstructor
     @Data
     public static class SimpleRequestDto {
@@ -67,14 +61,8 @@ public class InquiryDto {
         @Schema(description = "문의 고유번호")
         private Long id;
 
-        public static InquiryEntity toEntity(final SimpleRequestDto srDto) {
-            return InquiryEntity.builder().
-                    id(srDto.getId()).build();
-
-        }
     }
 
-    @Builder
     @AllArgsConstructor
     @Data
     public static class InquiryResponseDto {

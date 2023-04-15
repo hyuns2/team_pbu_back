@@ -2,13 +2,11 @@ package projectbuildup.mivv.domain.remittance.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import projectbuildup.mivv.domain.remittance.entity.Remittance;
-import projectbuildup.mivv.global.constant.ExampleValue;
 
 import java.time.LocalDateTime;
 
@@ -16,6 +14,7 @@ import java.time.LocalDateTime;
 public class RemittanceDto {
 
     @Getter
+    @Setter
     @NoArgsConstructor
     @AllArgsConstructor
     public static class RemitRequest{
@@ -25,14 +24,8 @@ public class RemittanceDto {
         private Long challengeId;
         @Schema(description = "송금할 금액")
         private Long amount;
-
-        public void setUserId(Long userId) {
-            this.userId = userId;
-        }
-        public void setChallengeId(Long challengeId){
-            this.challengeId = challengeId;
-        }
     }
+
 
     @Getter
     public static class DetailsResponse {
@@ -45,9 +38,16 @@ public class RemittanceDto {
         LocalDateTime time;
 
         public DetailsResponse(Remittance remittance) {
-            this.title = remittance.getChallenge().getMainTitle();
+            this.title = remittance.getTitle();
             this.amount = remittance.getAmount();
             this.time = remittance.getCreatedTime();
         }
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class StatusResponse{
+        long total;
+        RemittanceCount remittanceCount;
     }
 }

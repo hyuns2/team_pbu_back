@@ -16,7 +16,6 @@ public class ChallengeDto {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    @Builder
     public static class CreationRequest {
         @Schema(description = "큰제목")
         @NotBlank
@@ -86,7 +85,25 @@ public class ChallengeDto {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    @Builder
+    public static class ShortResponse {
+        private Long id;
+        private LocalDate endDate;
+        private String mainTitle;
+        private String subTitle;
+        private long remittanceOnceLimit;
+
+        public ShortResponse(Challenge challenge) {
+            this.id = challenge.getId();
+            this.endDate = challenge.getEndDate();
+            this.mainTitle = challenge.getMainTitle();
+            this.subTitle = challenge.getSubTitle();
+            this.remittanceOnceLimit = challenge.getRemittanceOnceLimit();
+        }
+    }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class Response {
         private Long id;
         private LocalDate startDate;
