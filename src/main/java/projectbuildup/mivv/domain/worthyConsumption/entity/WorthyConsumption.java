@@ -50,7 +50,7 @@ public class WorthyConsumption extends BaseTimeEntity {
     @JoinColumn(name = "ConditionId")
     @Setter
     private Condition condition;
-    @ElementCollection
+    //@ElementCollection @Builder.Default
     @OneToMany(mappedBy = "worthyConsumption", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Coupon> coupons = new ArrayList<Coupon>();
     @Setter
