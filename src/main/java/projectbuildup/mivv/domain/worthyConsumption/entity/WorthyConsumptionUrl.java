@@ -11,7 +11,7 @@ import projectbuildup.mivv.domain.worthyConsumption.dto.request.WorthyConsumptio
 public class WorthyConsumptionUrl {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "worthyConsumptionUrlId")
+    @Column(name = "WorthyConsumptionUrlId")
     private Long id;
     private String videoUrl;
     private String imageUrl;
@@ -20,8 +20,8 @@ public class WorthyConsumptionUrl {
     private String placeImageUrl;
     //@MapsId
     //@Nullable
-    @OneToOne(mappedBy = "worthyConsumptionUrl", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private WorthyConsumption worthyConsumption;
+    //@OneToOne(mappedBy = "worthyConsumptionUrl", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    //private WorthyConsumption worthyConsumption;
 
     public WorthyConsumptionUrl(WorthyConsumptionUrlDto.CreationRequest worthyConsumptionUrlRequest) {
         this.videoUrl = worthyConsumptionUrlRequest.getVideoUrl();

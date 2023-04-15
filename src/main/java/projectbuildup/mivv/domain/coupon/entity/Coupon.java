@@ -15,6 +15,7 @@ import java.time.LocalDate;
 public class Coupon extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "CouponId")
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "worthyConsumptionId")
@@ -30,6 +31,15 @@ public class Coupon extends BaseTimeEntity {
     private LocalDate limitStartDate;
     @Nonnull
     private LocalDate limitEndDate;
+
+    public Coupon(CouponRequestDto.CreationRequest couponRequestDto) {
+        this.title = couponRequestDto.getTitle();
+        this.imageUrl = couponRequestDto.getImageUrl();
+        this.pin = couponRequestDto.getPin();
+        this.limitStartDate = couponRequestDto.getLimitStartDate();
+        this.limitEndDate = couponRequestDto.getLimitEndDate();
+    }
+
     public void updateContent(CouponRequestDto.UpdateContentRequest couponRequestDto){
         this.title = couponRequestDto.getTitle();
         this.imageUrl = couponRequestDto.getImageUrl();

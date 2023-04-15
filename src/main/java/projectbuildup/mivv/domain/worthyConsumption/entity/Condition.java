@@ -24,8 +24,8 @@ public class Condition {
     private LocalDate issuableCouponEndDate;
     @NonNull
     private int lastMonthAmount;
-    @OneToOne(mappedBy = "worthyConsumptionUrl", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private WorthyConsumption worthyConsumption;
+    //@OneToOne(mappedBy = "Condition", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    //private WorthyConsumption worthyConsumption;
 
     public void updateCondition(WorthyConsumptionConditionDto.UpdateConditionRequest worthyConsumptionRequestDto){
         this.maxParticipants = worthyConsumptionRequestDto.getMaxParticipants();

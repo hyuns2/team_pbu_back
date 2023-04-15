@@ -19,9 +19,15 @@ public class CouponService {
     private final CouponRepository couponRepository;
     private final WorthyConsumptionRepository worthyConsumptionRepository;
 
+    /**
+     * 가치소비에서 쿠폰을 생성하는 로직입니다.
+     * @param worthyConsumptionId
+     * @param couponRequestDto
+     */
     public void createCoupon(Long worthyConsumptionId, CouponRequestDto.CreationRequest couponRequestDto){
         WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionId).orElseThrow(CWorthyConsumptionNotFoundException::new);
-        Coupon coupon = couponRequestDto.toEntity();//주입할거가 없다면 빌더 패턴 말고 그냥 new 해야하는건가?
+        Coupon coupon = new Coupon(couponRequestDto);
+        //Coupon coupon = couponRequestDto.toEntity();//주입할거가 없다면 빌더 패턴 말고 그냥 new 해야하는건가?
         worthyConsumption.addCoupon(coupon);
         worthyConsumptionRepository.save(worthyConsumption);
 
