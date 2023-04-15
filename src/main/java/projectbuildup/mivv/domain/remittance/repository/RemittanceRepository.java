@@ -22,5 +22,5 @@ public interface RemittanceRepository extends JpaRepository<Remittance, Long> {
     long findSumAmountByUser(@Param("user") User user);
 
     List<Remittance> findAllByCreatedTimeAfter(LocalDateTime now);
-
+    
 }
