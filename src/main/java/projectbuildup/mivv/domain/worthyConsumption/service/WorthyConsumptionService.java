@@ -3,15 +3,20 @@ package projectbuildup.mivv.domain.worthyConsumption.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import projectbuildup.mivv.domain.couponIssuance.repository.CouponIssuanceRepository;
+import projectbuildup.mivv.domain.couponIssuance.service.CouponIssuanceService;
 import projectbuildup.mivv.domain.worthyConsumption.dto.WorthyConsumptionConditionDto;
 import projectbuildup.mivv.domain.worthyConsumption.dto.request.WorthyConsumptionRequestDto;
 import projectbuildup.mivv.domain.worthyConsumption.dto.response.WorthyConsumptionResponseDto;
+import projectbuildup.mivv.domain.worthyConsumption.entity.CheckConditionType;
 import projectbuildup.mivv.domain.worthyConsumption.entity.Condition;
 import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumption;
 import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumptionUrl;
 import projectbuildup.mivv.domain.worthyConsumption.repository.WorthyConsumptionRepository;
+import projectbuildup.mivv.global.error.exception.CBadRequestException;
 import projectbuildup.mivv.global.error.exception.CWorthyConsumptionNotFoundException;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,6 +25,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class WorthyConsumptionService {
     private final WorthyConsumptionRepository worthyConsumptionRepository;
+    private final CouponIssuanceRepository couponIssuanceRepository;
 
     /**
      * 가치소비를 생성하는 로직입니다.
@@ -43,6 +49,7 @@ public class WorthyConsumptionService {
     }
     public WorthyConsumptionResponseDto.ReadBasicResponse readBasicWorthyConsumption(Long worthyConsumptionId){
         WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionId).orElseThrow(CWorthyConsumptionNotFoundException:: new);
+        checkConditionToIssuableCoupon(worthyConsumption);
         return new WorthyConsumptionResponseDto.ReadBasicResponse(worthyConsumption);
     }
     public WorthyConsumptionResponseDto.ReadDetailResponse readDetailWorthyConsumption(Long worthyConsumptionId){
@@ -96,5 +103,24 @@ public class WorthyConsumptionService {
     public void deleteWorthyConsumption(Long worthyConsumptionId){
         WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionId).orElseThrow(CWorthyConsumptionNotFoundException:: new);
         worthyConsumptionRepository.delete(worthyConsumption);
+    }
+
+    /**
+     * 가치소비의 쿠폰이 발급 가능한 상황인지 판단하는 로직입니다.
+     */
+    public void checkConditionToIssuableCoupon(WorthyConsumption worthyConsumption){
+        checkConditionDateForCoupon(worthyConsumption);
+        checkMaxParticipantsForCoupon(worthyConsumption.getCoupons().get(1).getId(), worthyConsumption);//쿠폰이 많을 때, 해당 달에 해당하는 쿠폰을 반환하기 위해 List 말고 Stack 같은 자료구조형을 생각해봅니다..
+
+    }
+    public void checkConditionDateForCoupon(WorthyConsumption worthyConsumption){
+        if(!(worthyConsumption.getCondition().getIssuableCouponStartDate().isBefore(LocalDate.now())//테스트시 now 설정 X
+                &&worthyConsumption.getCondition().getIssuableCouponEndDate().isAfter(LocalDate.now())))
+            worthyConsumption.getCondition().setIsIssuableCoupon(CheckConditionType.NOT_DATE);
+    }
+    public void checkMaxParticipantsForCoupon(Long couponId, WorthyConsumption worthyConsumption){
+        int nowParticipants = couponIssuanceRepository.countByCouponId(couponId);
+        if(nowParticipants>=worthyConsumption.getCondition().getMaxParticipants())
+            worthyConsumption.getCondition().setIsIssuableCoupon(CheckConditionType.ALREADY_SPEND);
     }
 }

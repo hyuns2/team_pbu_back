@@ -2,6 +2,7 @@ package projectbuildup.mivv.domain.worthyConsumption.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
+import projectbuildup.mivv.domain.worthyConsumption.entity.CheckConditionType;
 import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumption;
 
 import java.util.List;
@@ -34,7 +35,7 @@ public class WorthyConsumptionResponseDto {
         private List<String> hashtags;
         private String videoUrl;
         private String imageUrl;
-        private Boolean isIssuable;//이거 처리 해야 됨
+        private CheckConditionType isIssuableCoupon;//이거 처리 해야 됨
         private Boolean isLiked;//이거 처리 해야 됨
 
         public ReadBasicResponse(WorthyConsumption worthyConsumption) {
@@ -42,6 +43,7 @@ public class WorthyConsumptionResponseDto {
             this.hashtags = worthyConsumption.getHashtags();
             this.videoUrl = worthyConsumption.getWorthyConsumptionUrl().getVideoUrl();
             this.imageUrl = worthyConsumption.getWorthyConsumptionUrl().getImageUrl();
+            this.isIssuableCoupon = worthyConsumption.getCondition().getIsIssuableCoupon();
         }
 
     }

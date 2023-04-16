@@ -26,7 +26,8 @@ public class Condition {
     private int lastMonthAmount;
     //@OneToOne(mappedBy = "Condition", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     //private WorthyConsumption worthyConsumption;
-
+    @Setter
+    private CheckConditionType isIssuableCoupon = CheckConditionType.OK;
     public void updateCondition(WorthyConsumptionConditionDto.UpdateConditionRequest worthyConsumptionRequestDto){
         this.maxParticipants = worthyConsumptionRequestDto.getMaxParticipants();
         this.lastMonthAmount = worthyConsumptionRequestDto.getLastMonthAmount();

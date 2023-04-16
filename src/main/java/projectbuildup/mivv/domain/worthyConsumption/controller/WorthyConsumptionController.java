@@ -44,6 +44,8 @@ public class WorthyConsumptionController {
      * basic은 소비추천화면입니다. (SCR_Value)에 해당하는 정보입니다.
      * detail은 소비추천화면에서 더 알아보기를 눌렀을 경우 가치소비에 대한 상세 정보를 담았습니다.
      *
+     * basic을 조회할 때, 발급가능한 쿠폰이 있는지 판단하는 로직이 필요하고, 이 정보를 담은 필드도 필요하다고 판단해 해당 서비스 로직과 DTO를 구성하였습니다.
+     *
      * @param worthyConsumptionId
      * @return
      */
