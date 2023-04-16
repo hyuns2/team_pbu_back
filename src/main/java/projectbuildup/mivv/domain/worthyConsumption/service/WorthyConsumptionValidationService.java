@@ -31,30 +31,5 @@ public class WorthyConsumptionValidationService {
         if(!ObjectUtils.equals(worthyConsumptionId, worthyConsumptionDtoId))
             throw new CBadRequestException("PathVariable WorthyConsumptionId와 requestDto 속 가치소비 id가 일치하지 않습니다.");
     }
-    public void checkConditionForIssuingCoupon(Long worthyConsumptionId, User user){
-
-    }
-
-    /**
-     * 쿠폰 발급 전, 발급 가능한 인원을 초과하였는지 확인하는 로직입니다.
-     * @param couponId
-     * @param worthyConsumption
-     */
-    public void checkMaxParticipants(Long couponId, WorthyConsumption worthyConsumption){
-        int nowParticipants = couponIssuanceRepository.countByCouponId(couponId);
-        if(nowParticipants>=worthyConsumption.getCondition().getMaxParticipants())
-            throw new CBadRequestException("쿠폰 발급 가능한 인원을 초과하였습니다.");
-    }
-
-    /**
-     * 쿠폰 발급 전, 발급 가능한 날짜인지 확인하는 로직입니다.
-     * @param worthyConsumption
-     */
-    public void checkDate(WorthyConsumption worthyConsumption){
-        LocalDate nowDate = LocalDate.now(); //확인은 더미데이터로 하기
-        if( !(worthyConsumption.getCondition().getIssuableCouponStartDate().isBefore(nowDate) && worthyConsumption.getCondition().getIssuableCouponEndDate().isAfter(nowDate)))
-            throw new CBadRequestException("발급 가능 날짜가 아닙니다.");
-    }
-
 
 }
