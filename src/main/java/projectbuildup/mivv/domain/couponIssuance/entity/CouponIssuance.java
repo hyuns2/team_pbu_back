@@ -22,6 +22,8 @@ public class CouponIssuance extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private Coupon coupon;
+    @Enumerated(EnumType.STRING)
+    private CouponIssuableType status;
     private Boolean isCreated;
     private Boolean isUsed;
     public CouponIssuance(User user, Coupon coupon){
@@ -31,7 +33,6 @@ public class CouponIssuance extends BaseTimeEntity {
         this.isUsed = false;
     }
     public void useCoupon(){
-
         this.isUsed = true;
     }
 
