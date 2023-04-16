@@ -53,11 +53,6 @@ public class WorthyConsumption extends BaseTimeEntity {
     //@ElementCollection @Builder.Default
     @OneToMany(mappedBy = "worthyConsumption", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Coupon> coupons = new ArrayList<Coupon>();
-    @Setter
-    private LocalDate issuableCouponStartDate;
-    @Setter
-    private LocalDate issuableCouponEndDate;
-
     public void updateContent(WorthyConsumptionRequestDto.UpdateContentRequest requestWorthyConsumptionDto){
         this.title = requestWorthyConsumptionDto.getTitle();
         this.hashtags = requestWorthyConsumptionDto.getHashtags();
