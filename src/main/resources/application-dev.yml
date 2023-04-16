@@ -3,13 +3,13 @@ spring:
   datasource:  # mysql 사용
     url: jdbc:mysql://localhost:3306/mivv_new_dev?validationQuery="select 1"&useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=UTF-8&serverTimezone=UTC&useLegacyDatetimeCode=false
     username: root
-    password: gusthdl
+    password: pbuback!
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       connection-test-query: select 1 from dual
   jpa:  # jpa 사용시 추가
     database: mysql
-    database-platform: org.hibernate.dialect.MariaDB106Dialect
+    database-platform: org.hibernate.dialect.MySQL8Dialect
     properties:
       hibernate:
         jdbc:

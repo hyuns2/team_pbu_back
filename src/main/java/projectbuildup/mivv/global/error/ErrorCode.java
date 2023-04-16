@@ -12,6 +12,7 @@ import java.util.Arrays;
 public enum ErrorCode {
     RESOURCE_NOT_FOUND(-1000, "해당 리소스를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
     BAD_REQUEST(-1002, "잘못된 접근입니다.", HttpStatus.BAD_REQUEST),
+    SAVING_COUNT_OVER(-1003, "절약 가능 횟수를 모두 사용하였습니다.", HttpStatus.BAD_REQUEST),
 
 
     // 6000 ~ : 권한, 인증 에러
@@ -41,9 +42,10 @@ public enum ErrorCode {
     INTERNAL_SERVER_ERROR(-9999, "서버 에러입니다.", HttpStatus.INTERNAL_SERVER_ERROR),
     EMPTY(-11111, "없음", HttpStatus.OK),
 
-    // 15000 ~ : 문의 관련 에러
+    // 15000 ~ : 문의, 아카이빙 관련 에러
     INQUIRY_OVER_ERROR(-15000, "문의 개수 한도를 초과했습니다.", HttpStatus.BAD_REQUEST),
-    INQUIRY_NOT_FOUND(-15100, "해당하는 문의를 찾을 수 없습니다.", HttpStatus.BAD_REQUEST);
+    INQUIRY_NOT_FOUND(-15100, "해당하는 문의를 찾을 수 없습니다.", HttpStatus.BAD_REQUEST),
+    CARD_NOT_FOUND(-16000, "해당하는 카드를 찾을 수 없습니다.", HttpStatus.BAD_REQUEST);
 
     final int code;
     final String message;
