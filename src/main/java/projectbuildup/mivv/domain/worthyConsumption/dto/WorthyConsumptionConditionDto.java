@@ -18,7 +18,7 @@ public class WorthyConsumptionConditionDto {
     @Schema(description = "가치소비 조건 생성 DTO")
     public static class CreationRequest {
         @NotNull
-        @Positive
+        //@Positive
         private int maxParticipants;
         @NotNull(message = "가치소비의 쿠폰 발급 가능 시작 날짜를 입력해주세요")
         @Schema(example = "2001-03-02")

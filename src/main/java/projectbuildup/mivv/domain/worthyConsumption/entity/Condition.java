@@ -25,6 +25,7 @@ public class Condition {
     //@OneToOne(mappedBy = "Condition", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     //private WorthyConsumption worthyConsumption;
     @Setter
+    @Enumerated(EnumType.STRING)
     private CheckConditionType isIssuableCoupon;
     public void updateCondition(WorthyConsumptionConditionDto.UpdateConditionRequest worthyConsumptionRequestDto){
         this.maxParticipants = worthyConsumptionRequestDto.getMaxParticipants();
@@ -39,5 +40,8 @@ public class Condition {
         this.lastMonthAmount = conditionDto.getLastMonthAmount();
         this.issuableCouponStartDate = conditionDto.getIssuableCouponStartDate();
         this.issuableCouponEndDate = conditionDto.getIssuableCouponEndDate();
+    }
+    public void checkIssuableCouponStatus(CheckConditionType conditionType){
+        this.isIssuableCoupon = conditionType;
     }
 }

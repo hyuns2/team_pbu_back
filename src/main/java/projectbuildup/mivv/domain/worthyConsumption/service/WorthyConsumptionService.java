@@ -114,18 +114,21 @@ public class WorthyConsumptionService {
      * 쿠폰이 여러개 있는 경우에 해당 달에 맞는 쿠폰이 뭔지 파악해야하는데, 이건 기획단에 한번 더 물어보고 짜려고 합니다.(기준 모호)
      */
     public void checkConditionToIssuableCoupon(WorthyConsumption worthyConsumption){
-        checkConditionDateForCoupon(worthyConsumption);
+        worthyConsumption.getCondition().checkIssuableCouponStatus(OK);
+        //checkConditionDateForCoupon(worthyConsumption);
         checkMaxParticipantsForCoupon(worthyConsumption.getCoupons().get(1).getId(), worthyConsumption);//쿠폰이 많을 때, 해당 달에 해당하는 쿠폰을 반환하기 위해 List 말고 Stack 같은 자료구조형을 생각해봅니다..
-        worthyConsumption.getCondition().setIsIssuableCoupon(OK);
+        checkConditionDateForCoupon(worthyConsumption);
+        //worthyConsumption.getCondition().checkIssuableCouponStatus(OK);
+        //worthyConsumption.getCondition().setIsIssuableCoupon(OK);
     }
     public void checkConditionDateForCoupon(WorthyConsumption worthyConsumption){
         if(!(worthyConsumption.getCondition().getIssuableCouponStartDate().isBefore(LocalDate.now())//테스트시 now 설정 X
                 &&worthyConsumption.getCondition().getIssuableCouponEndDate().isAfter(LocalDate.now())))
-            worthyConsumption.getCondition().setIsIssuableCoupon(NOT_DATE);
+            worthyConsumption.getCondition().checkIssuableCouponStatus(NOT_DATE);
     }
     public void checkMaxParticipantsForCoupon(Long couponId, WorthyConsumption worthyConsumption){
         int nowParticipants = couponIssuanceRepository.countByCouponId(couponId);
         if(nowParticipants>=worthyConsumption.getCondition().getMaxParticipants())
-            worthyConsumption.getCondition().setIsIssuableCoupon(ALREADY_SPEND);
+            worthyConsumption.getCondition().checkIssuableCouponStatus(ALREADY_SPEND);
     }
 }
