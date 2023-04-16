@@ -15,10 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter @Builder
 public class WorthyConsumption extends BaseTimeEntity {
-    /*
-    전월 달성 금액, 이용 가능 기간 추가해야 됨
-    온라인인거 확인도 해야되네..
-     */
+
     @Id @Column(name = "WorthyConsumptionId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -40,6 +37,7 @@ public class WorthyConsumption extends BaseTimeEntity {
     private String placeTag;
     @NonNull
     private String summary;
+
     @Nullable
     @OneToOne(fetch = FetchType.LAZY, cascade =  CascadeType.ALL)
     @JoinColumn(name = "WorthyConsumptionUrlId")
@@ -53,6 +51,7 @@ public class WorthyConsumption extends BaseTimeEntity {
     //@ElementCollection @Builder.Default
     @OneToMany(mappedBy = "worthyConsumption", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Coupon> coupons = new ArrayList<Coupon>();
+
     public void updateContent(WorthyConsumptionRequestDto.UpdateContentRequest requestWorthyConsumptionDto){
         this.title = requestWorthyConsumptionDto.getTitle();
         this.hashtags = requestWorthyConsumptionDto.getHashtags();

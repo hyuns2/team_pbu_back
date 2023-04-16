@@ -35,7 +35,7 @@ public class WorthyConsumptionResponseDto {
         private List<String> hashtags;
         private String videoUrl;
         private String imageUrl;
-        private CheckConditionType isIssuableCoupon;//이거 처리 해야 됨
+        private CheckConditionType isIssuableCoupon;
         private Boolean isLiked;//이거 처리 해야 됨
 
         public ReadBasicResponse(WorthyConsumption worthyConsumption) {

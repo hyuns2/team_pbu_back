@@ -5,7 +5,7 @@ import lombok.*;
 import projectbuildup.mivv.domain.worthyConsumption.dto.request.WorthyConsumptionRequestDto;
 import projectbuildup.mivv.domain.worthyConsumption.dto.request.WorthyConsumptionUrlDto;
 
-@Entity @Table(name = "WorthyConsumption_URL")
+@Entity @Table(name = "WorthyConsumptionURL")
 @AllArgsConstructor @NoArgsConstructor
 @Getter @Builder
 public class WorthyConsumptionUrl {

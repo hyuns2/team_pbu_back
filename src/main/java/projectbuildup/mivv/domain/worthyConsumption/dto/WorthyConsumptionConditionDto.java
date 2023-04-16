@@ -9,9 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import projectbuildup.mivv.domain.worthyConsumption.dto.request.WorthyConsumptionRequestDto;
 
 import java.time.LocalDate;
-@Getter @Setter
-@AllArgsConstructor
-@NoArgsConstructor
+
 @Schema(description = "가치소비의 조건 DTO")
 public class WorthyConsumptionConditionDto {
     @Getter @Setter

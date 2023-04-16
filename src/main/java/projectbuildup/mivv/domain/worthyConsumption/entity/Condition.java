@@ -8,7 +8,7 @@ import projectbuildup.mivv.domain.worthyConsumption.dto.request.WorthyConsumptio
 import projectbuildup.mivv.global.error.exception.CBadRequestException;
 
 import java.time.LocalDate;
-@Entity @Table(name = "WorthyConsumption_URL")
+@Entity @Table(name = "WorthyConsumptionCondition")
 @AllArgsConstructor @NoArgsConstructor(force = true)
 @Getter @Builder
 public class Condition {
@@ -17,17 +17,15 @@ public class Condition {
     @NonNull
     private int maxParticipants;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Setter
     private LocalDate issuableCouponStartDate;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Setter
     private LocalDate issuableCouponEndDate;
     @NonNull
     private int lastMonthAmount;
     //@OneToOne(mappedBy = "Condition", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     //private WorthyConsumption worthyConsumption;
     @Setter
-    private CheckConditionType isIssuableCoupon = CheckConditionType.OK;
+    private CheckConditionType isIssuableCoupon;
     public void updateCondition(WorthyConsumptionConditionDto.UpdateConditionRequest worthyConsumptionRequestDto){
         this.maxParticipants = worthyConsumptionRequestDto.getMaxParticipants();
         this.lastMonthAmount = worthyConsumptionRequestDto.getLastMonthAmount();

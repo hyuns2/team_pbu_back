@@ -20,6 +20,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static projectbuildup.mivv.domain.worthyConsumption.entity.CheckConditionType.*;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -107,20 +109,23 @@ public class WorthyConsumptionService {
 
     /**
      * 가치소비의 쿠폰이 발급 가능한 상황인지 판단하는 로직입니다.
+     * 우선 오늘 날짜와 발급 가능 날짜를 판단하고
+     * 발급받은 사람 수를 세어 최종 판단을 합니다.
+     * 쿠폰이 여러개 있는 경우에 해당 달에 맞는 쿠폰이 뭔지 파악해야하는데, 이건 기획단에 한번 더 물어보고 짜려고 합니다.(기준 모호)
      */
     public void checkConditionToIssuableCoupon(WorthyConsumption worthyConsumption){
         checkConditionDateForCoupon(worthyConsumption);
         checkMaxParticipantsForCoupon(worthyConsumption.getCoupons().get(1).getId(), worthyConsumption);//쿠폰이 많을 때, 해당 달에 해당하는 쿠폰을 반환하기 위해 List 말고 Stack 같은 자료구조형을 생각해봅니다..
-
+        worthyConsumption.getCondition().setIsIssuableCoupon(OK);
     }
     public void checkConditionDateForCoupon(WorthyConsumption worthyConsumption){
         if(!(worthyConsumption.getCondition().getIssuableCouponStartDate().isBefore(LocalDate.now())//테스트시 now 설정 X
                 &&worthyConsumption.getCondition().getIssuableCouponEndDate().isAfter(LocalDate.now())))
-            worthyConsumption.getCondition().setIsIssuableCoupon(CheckConditionType.NOT_DATE);
+            worthyConsumption.getCondition().setIsIssuableCoupon(NOT_DATE);
     }
     public void checkMaxParticipantsForCoupon(Long couponId, WorthyConsumption worthyConsumption){
         int nowParticipants = couponIssuanceRepository.countByCouponId(couponId);
         if(nowParticipants>=worthyConsumption.getCondition().getMaxParticipants())
-            worthyConsumption.getCondition().setIsIssuableCoupon(CheckConditionType.ALREADY_SPEND);
+            worthyConsumption.getCondition().setIsIssuableCoupon(ALREADY_SPEND);
     }
 }
