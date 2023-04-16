@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import projectbuildup.mivv.domain.coupon.entity.Coupon;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.global.common.BaseTimeEntity;
@@ -22,10 +23,8 @@ public class CouponIssuance extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private Coupon coupon;
-    @Enumerated(EnumType.STRING)
-    private CouponIssuableType status;
-    private Boolean isCreated;
-    private Boolean isUsed;
+    private Boolean isCreated = false;
+    private Boolean isUsed = false;
     public CouponIssuance(User user, Coupon coupon){
         this.user = user;
         this.coupon = coupon;
