@@ -30,7 +30,7 @@ public class WorthyConsumptionConditionDto {
         private LocalDate issuableCouponEndDate;
         @NotNull
         @Positive
-        private int lastMonthAmount;
+        private Long lastMonthAmount;
     }
     @Getter @Setter
     @AllArgsConstructor
@@ -57,7 +57,7 @@ public class WorthyConsumptionConditionDto {
         @NotNull(message = "가치소비의 쿠폰 발급 가능 인원을 입력해주세요")
         int maxParticipants;
         @NotNull(message = "가치소비의 쿠폰 발급 가능 전월 달성 금액을 입력해주세요")
-        int lastMonthAmount;
+        Long lastMonthAmount;
 
     }
 }
