@@ -28,7 +28,9 @@ import java.util.Optional;
 @RequestMapping("/api")
 @Tag(name = "[Coupon Issue]", description = "사용자의 쿠폰 발급 관련 API입니다.")
 public class CouponIssuanceController {
+
     private final CouponIssuanceService couponIssuanceService;
+
     @Operation(summary = "사용자가 쿠폰을 발급 받습니다.", description = "")
     @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('USER')")
@@ -37,6 +39,7 @@ public class CouponIssuanceController {
         couponIssuanceService.issueCoupon(user.getId(), couponId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
     @Operation(summary = "사용자가 사용 가능한 쿠폰을 모두 조회합니다.", description = "")
     @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('USER')")
@@ -45,6 +48,7 @@ public class CouponIssuanceController {
         List<CouponResponseDto.ReadResponseWithWorthyConsumption> usableCouponList = couponIssuanceService.getUsableCouponList(user.getId());
         return new ResponseEntity<>(usableCouponList, HttpStatus.OK);
     }
+
     @Operation(summary = "사용자가 사용 완료한 쿠폰을 모두 조회합니다.", description = "")
     @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('USER')")
@@ -53,6 +57,7 @@ public class CouponIssuanceController {
         List<CouponResponseDto.ReadResponseWithWorthyConsumption> usableCouponList = couponIssuanceService.getUsedCouponList(user.getId());
         return new ResponseEntity<>(usableCouponList, HttpStatus.OK);
     }
+
     @Operation(summary = "사용자가 쿠폰을 사용합니다.", description = "")
     @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('USER')")

@@ -20,28 +20,28 @@ import projectbuildup.mivv.domain.coupon.service.CouponService;
 public class CouponController {
     private final CouponService couponService;
     @Operation(summary = "쿠폰을 조회 합니다.", description = "")
-    @PreAuthorize("hasRole('USER')")
+    //@PreAuthorize("hasRole('USER')")
     @GetMapping("/{couponId}")
     public ResponseEntity<CouponResponseDto.ReadResponseWithWorthyConsumption> readCouponWithWorthyConsumption(@PathVariable(name = "couponId") Long couponId){
         CouponResponseDto.ReadResponseWithWorthyConsumption couponResponseDto = couponService.readCouponWithWorthyConsumption(couponId);
         return new ResponseEntity<>(couponResponseDto, HttpStatus.OK);
     }
     @Operation(summary = "쿠폰의 내용을 수정 합니다.", description = "")
-    @PreAuthorize("hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{couponId}/content")
     public ResponseEntity<HttpStatus> updateCouponContent(@PathVariable(name = "couponId") Long couponId, @Valid @RequestBody CouponRequestDto.UpdateContentRequest couponRequestDto){
         couponService.updateCouponContent(couponRequestDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
     @Operation(summary = "쿠폰의 날짜를 수정 합니다.", description = "")
-    @PreAuthorize("hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{couponId}/date")
     public ResponseEntity<HttpStatus> updateCouponDate(@PathVariable(name = "couponId") Long couponId, @Valid @RequestBody CouponRequestDto.UpdateDateRequest couponRequestDto){
         couponService.updateCouponDate(couponRequestDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
     @Operation(summary = "쿠폰을 삭제 합니다.", description = "")
-    @PreAuthorize("hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{couponId}")
     public ResponseEntity<HttpStatus> deleteCoupon(@PathVariable(name = "couponId") Long couponId){
         couponService.deleteCoupon(couponId);

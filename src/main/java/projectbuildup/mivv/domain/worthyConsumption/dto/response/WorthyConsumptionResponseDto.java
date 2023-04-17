@@ -15,7 +15,7 @@ public class WorthyConsumptionResponseDto {
         private int originalPrice;
         private int salePrice;
         private String priceTag;
-        private int lastMonthAmount;
+        private Long lastMonthAmount;
         private int maxParticipants;
         private String summary;
 
