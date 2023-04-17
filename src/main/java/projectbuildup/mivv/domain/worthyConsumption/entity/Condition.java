@@ -21,7 +21,7 @@ public class Condition {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate issuableCouponEndDate;
     @NonNull
-    private Long lastMonthAmount;
+    private long lastMonthAmount;
     //@OneToOne(mappedBy = "Condition", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     //private WorthyConsumption worthyConsumption;
     @Setter

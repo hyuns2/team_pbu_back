@@ -28,7 +28,7 @@ public class WorthyConsumptionValidationService {
      * @param worthyConsumptionDtoId
      */
     public void isSameWorthyConsumptionId(Long worthyConsumptionId, Long worthyConsumptionDtoId){
-        if(!ObjectUtils.equals(worthyConsumptionId, worthyConsumptionDtoId))
+        if(!ObjectUtils.equals(worthyConsumptionId, worthyConsumptionDtoId))//이거 처리가 맞는지.. Long은 객체고 long은 원시형인데 equals하면 같은 값이어도 다르게 취급되는거 아닌가 싶네..
             throw new CBadRequestException("PathVariable WorthyConsumptionId와 requestDto 속 가치소비 id가 일치하지 않습니다.");
     }
 

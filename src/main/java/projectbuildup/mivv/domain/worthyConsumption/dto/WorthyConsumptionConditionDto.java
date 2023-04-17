@@ -20,17 +20,19 @@ public class WorthyConsumptionConditionDto {
         @NotNull
         //@Positive
         private int maxParticipants;
+
         @NotNull(message = "가치소비의 쿠폰 발급 가능 시작 날짜를 입력해주세요")
         @Schema(example = "2001-03-02")
         @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
         private LocalDate issuableCouponStartDate;
+
         @NotNull(message = "가치소비의 쿠폰 발급 가능 시작 날짜를 입력해주세요")
         @Schema(example = "2001-03-02")
         @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
         private LocalDate issuableCouponEndDate;
-        @NotNull
-        @Positive
-        private Long lastMonthAmount;
+
+        @NotNull @Positive
+        private long lastMonthAmount;
     }
     @Getter @Setter
     @AllArgsConstructor
@@ -42,6 +44,7 @@ public class WorthyConsumptionConditionDto {
         @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
         //@DateTimeFormat(pattern = "yyyy-MM-dd")
         LocalDate issuableCouponStartDate;
+
         @NotNull(message = "가치소비의 쿠폰 발급 가능 종료 날짜를 입력해주세요")
         @Schema(example = "2023-04-13")
         @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
@@ -54,10 +57,12 @@ public class WorthyConsumptionConditionDto {
     @NoArgsConstructor
     @Schema(description = "가치소비 조건 중 인원과 금액 관련 수정 DTO")
     public static class UpdateConditionRequest extends WorthyConsumptionRequestDto.IdRequest{
+
         @NotNull(message = "가치소비의 쿠폰 발급 가능 인원을 입력해주세요")
         int maxParticipants;
+
         @NotNull(message = "가치소비의 쿠폰 발급 가능 전월 달성 금액을 입력해주세요")
-        Long lastMonthAmount;
+        long lastMonthAmount;
 
     }
 }

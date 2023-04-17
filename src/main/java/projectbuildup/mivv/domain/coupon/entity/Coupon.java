@@ -29,7 +29,7 @@ public class Coupon extends BaseTimeEntity {
     @Nonnull
     private String imageUrl;
     @Nonnull
-    private Integer pin;
+    private int pin;
     @Nonnull
     private LocalDate limitStartDate;
     @Nonnull

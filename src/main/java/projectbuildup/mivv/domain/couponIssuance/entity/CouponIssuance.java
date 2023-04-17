@@ -27,15 +27,16 @@ public class CouponIssuance extends BaseTimeEntity {
     @JoinColumn
     private Coupon coupon;
 
-    private Boolean isCreated = Boolean.FALSE;
-    private Boolean isUsed = Boolean.FALSE;
+    private boolean created = false;
+    private boolean used = false;
     public CouponIssuance(User user, Coupon coupon){
         this.user = user;
         this.coupon = coupon;
-        this.isCreated = Boolean.TRUE;
+        this.created = true;
     }
     public void useCoupon(){
-        this.isUsed = Boolean.TRUE;
+
+        this.used = true;
     }
 
 }
