@@ -13,6 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import projectbuildup.mivv.domain.coupon.dto.response.CouponResponseDto;
+import projectbuildup.mivv.domain.couponIssuance.dto.CouponIssuanceDto;
 import projectbuildup.mivv.domain.couponIssuance.service.CouponIssuanceService;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.global.constant.ExampleValue;
@@ -56,8 +57,8 @@ public class CouponIssuanceController {
     @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('USER')")
     @PutMapping("/issue/coupons/{couponId}")
-    public ResponseEntity<HttpStatus> useCoupon(@PathVariable("couponId") Long couponId, @AuthenticationPrincipal User user){
-        couponIssuanceService.useCouponByUser(couponId, user.getId());
+    public ResponseEntity<HttpStatus> useCoupon(@PathVariable("couponId") Long couponId, @AuthenticationPrincipal User user, @RequestBody CouponIssuanceDto.PinDto pinDto){
+        couponIssuanceService.useCouponByUser(couponId, user.getId(), pinDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

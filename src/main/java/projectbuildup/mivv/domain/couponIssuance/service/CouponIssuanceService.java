@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import projectbuildup.mivv.domain.coupon.dto.response.CouponResponseDto;
 import projectbuildup.mivv.domain.coupon.entity.Coupon;
 import projectbuildup.mivv.domain.coupon.repository.CouponRepository;
+import projectbuildup.mivv.domain.couponIssuance.dto.CouponIssuanceDto;
 import projectbuildup.mivv.domain.couponIssuance.entity.CouponIssuance;
 import projectbuildup.mivv.domain.couponIssuance.repository.CouponIssuanceRepository;
 import projectbuildup.mivv.domain.remittance.repository.RemittanceRepository;
@@ -75,7 +76,7 @@ public class CouponIssuanceService {
     public void isAchievedLastAmount(User user, Coupon coupon){
         Long userLastSumAmount = remittanceRepository.findSumAmountByUser(user);
         int limitLastSumAmount = coupon.getWorthyConsumption().getCondition().getLastMonthAmount();
-        if(!(userLastSumAmount>= limitLastSumAmount))
+        if(!(userLastSumAmount>= (long)limitLastSumAmount))
             throw new CBadRequestException("전월 달성 금액 미달입니다.");
     }
 
@@ -165,7 +166,7 @@ public class CouponIssuanceService {
      * @param couponId
      * @param userId
      */
-    public void useCouponByUser(Long couponId, Long userId){
+    public void useCouponByUser(Long couponId, Long userId, CouponIssuanceDto.PinDto pinDto){
         User user = userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
         Coupon coupon = couponRepository.findById(couponId).orElseThrow(CCouponNotFoundException::new);
         CouponIssuance couponIssuance = couponIssuanceRepository.findByUserIdAndCouponId(userId, couponId);
@@ -173,7 +174,18 @@ public class CouponIssuanceService {
         //    couponIssuance.useCoupon();
         isUsableCoupon(couponIssuance);
         isUsableCouponDate(couponIssuance.getCoupon());
+        isRightPinNumber(coupon, pinDto.getPin());
         couponIssuance.useCoupon();
         couponIssuanceRepository.save(couponIssuance);
+    }
+
+    /**
+     * 쿠폰 핀 번호와 사용자가 입력한 핀 번호가 일치한지 판단하는 로직입니다.
+     * @param coupon
+     * @param pin
+     */
+    public void isRightPinNumber(Coupon coupon, int pin){
+        if(coupon.getPin()!=pin)
+            throw new CBadRequestException("핀 번호가 일치하지 않습니다.");
     }
 }
