@@ -10,6 +10,6 @@ public class CouponIssuanceDto {
     @NoArgsConstructor
     public static class PinDto{
         @NotNull @Positive
-        int pin;
+        Integer pin;
     }
 }

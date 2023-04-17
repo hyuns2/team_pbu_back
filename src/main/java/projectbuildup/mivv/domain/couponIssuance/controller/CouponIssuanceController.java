@@ -42,7 +42,7 @@ public class CouponIssuanceController {
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/issue/coupons/usable")
     public ResponseEntity<?> getUsableCouponList(@AuthenticationPrincipal User user){
-        List<CouponResponseDto.ReadResponseWithWorthyConsumption> usableCouponList = couponIssuanceService.getUsableCouponList(user);
+        List<CouponResponseDto.ReadResponseWithWorthyConsumption> usableCouponList = couponIssuanceService.getUsableCouponList(user.getId());
         return new ResponseEntity<>(usableCouponList, HttpStatus.OK);
     }
     @Operation(summary = "사용자가 사용 완료한 쿠폰을 모두 조회합니다.", description = "")
@@ -50,7 +50,7 @@ public class CouponIssuanceController {
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/issue/coupons/used")
     public ResponseEntity<?> getUsedCouponList(@AuthenticationPrincipal User user){
-        List<CouponResponseDto.ReadResponseWithWorthyConsumption> usableCouponList = couponIssuanceService.getUsedCouponList(user);
+        List<CouponResponseDto.ReadResponseWithWorthyConsumption> usableCouponList = couponIssuanceService.getUsedCouponList(user.getId());
         return new ResponseEntity<>(usableCouponList, HttpStatus.OK);
     }
     @Operation(summary = "사용자가 쿠폰을 사용합니다.", description = "")

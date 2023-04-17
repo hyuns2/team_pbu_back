@@ -13,20 +13,23 @@ import java.time.LocalDate;
 @AllArgsConstructor @NoArgsConstructor
 @Builder
 public class Coupon extends BaseTimeEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CouponId")
     private Long id;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "worthyConsumptionId")
     @Setter
     private WorthyConsumption worthyConsumption;
+
     @Nonnull
     private String title;
     @Nonnull
     private String imageUrl;
     @Nonnull
-    private int pin;
+    private Integer pin;
     @Nonnull
     private LocalDate limitStartDate;
     @Nonnull

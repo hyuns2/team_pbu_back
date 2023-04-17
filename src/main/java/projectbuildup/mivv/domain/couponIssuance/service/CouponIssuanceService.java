@@ -29,12 +29,11 @@ public class CouponIssuanceService {
     private final UserRepository userRepository;
     private final CouponRepository couponRepository;
     private final RemittanceRepository remittanceRepository;
-
     /*
      * 발급받을때 고려할 사항
      * 1. 먼저 유저가 유효한 유저인지 판단 (유저가 진짜 유저인가) : O
-     * 2. 쿠폰이 유효한지 판단 (쿠폰이 진짜 있는지 : O, 발급 가능한 날짜인지 : O-> 이건 가치소비 단에서 해결함)
-     * 3. 유저가 발급 받을 수 있는 조건인지 (이미 보유하고 있는 쿠폰인지 : O, 조건을 충족했는지)
+     * 2. 쿠폰이 유효한지 판단 (쿠폰이 진짜 있는지 : O, 발급 가능한 날짜인지 : O -> 이건 가치소비 단에서 해결함)
+     * 3. 유저가 발급 받을 수 있는 조건인지 (이미 보유하고 있는 쿠폰인지 : O, 전월 달성 금액 조건을 충족했는지)
      *
      * 사용할때 고려할 사항
      * 1. 유저가 유효한 유저인지 판단 (유저가 진짜 유저인가)
@@ -43,7 +42,6 @@ public class CouponIssuanceService {
      * 4. 핀번호 확인
      * 5. 사용시에, isUsed == true로 바꾸기
      */
-
     /**
      * 사용자가 쿠폰을 발급 받을때 필요한 로직입니다.
      * @param userId
@@ -54,15 +52,9 @@ public class CouponIssuanceService {
         Coupon coupon = couponRepository.findById(couponId).orElseThrow(CCouponNotFoundException::new);
 
         isIssuable(user, coupon);
-        //isIssuableCouponDate(coupon);
         isAchievedLastAmount(user, coupon);
         issue(user, coupon);
     }
-//    public void isIssuableCouponDate(Coupon coupon){//다시 확인하기
-//        if(!(coupon.getLimitEndDate().isAfter(LocalDate.now())))
-//            throw new CBadRequestException("발급 가능 날짜가 지난 유효하지 않은 쿠폰입니다.");
-//    }
-
     /**
      * 사용자가 쿠폰을 보유하고 있는지 검증하는 로직입니다.
      * @param user
@@ -75,11 +67,13 @@ public class CouponIssuanceService {
     }
     public void isAchievedLastAmount(User user, Coupon coupon){
         Long userLastSumAmount = remittanceRepository.findSumAmountByUser(user);
-        int limitLastSumAmount = coupon.getWorthyConsumption().getCondition().getLastMonthAmount();
-        if(!(userLastSumAmount>= (long)limitLastSumAmount))
-            throw new CBadRequestException("전월 달성 금액 미달입니다.");
-    }
+        Long limitLastSumAmount = coupon.getWorthyConsumption().getCondition().getLastMonthAmount();
 
+        if( userLastSumAmount.compareTo(limitLastSumAmount) >= 0)
+            throw new CBadRequestException("전월 달성 금액 미달입니다.");
+        //if(!(userLastSumAmount>= limitLastSumAmount))
+        //    throw new CBadRequestException("전월 달성 금액 미달입니다.");
+    }
     /**
      * 사용자가 쿠폰을 발급합니다.
      * @param user
@@ -89,40 +83,15 @@ public class CouponIssuanceService {
         CouponIssuance couponIssuance = new CouponIssuance(user, coupon);
         couponIssuanceRepository.save(couponIssuance);
     }
-
-
     /**
-     * 사용자가 보유한 쿠폰이 유효한지 검증하는 로직입니다.
-     * 발급이 되었고 사용하기 전인 쿠폰인지 확인합니다.
-     * 두가지 로직으로 짜봤습니다.
-     * @param couponIssuance
+     * 사용자가 사용 가능한 쿠폰 리스트를 조회할 때 필요한 로직입니다.
+     * @param
      * @return
      */
-    public Boolean isUsable(CouponIssuance couponIssuance){
-        if((couponIssuance.getIsCreated()==true) && (couponIssuance.getIsUsed() == false))
-            return true;
-        else
-            return false;
+    /*public List<CouponResponseDto.ReadResponseWithWorthyConsumption> getUsableCoupons(Long userId){
+        userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
 
-    }
-    public void isUsableCoupon(CouponIssuance couponIssuance){
-        if(!((couponIssuance.getIsCreated()==true) && (couponIssuance.getIsUsed() == false)))
-            throw new CBadRequestException("사용 불가능한 쿠폰입니다.");
-
-    }
-    public void isUsableCouponDate(Coupon coupon){
-        if(!((coupon.getLimitStartDate().isBefore(LocalDate.now()))&&(coupon.getLimitEndDate().isAfter(LocalDate.now()))))
-            throw new CBadRequestException("사용 가능한 날짜가 지난 쿠폰입니다.");
-
-    }
-
-    /**
-     * 사용자가 사용가능한 쿠폰 리스트를 조회할 때 필요한 로직입니다.
-     * @param user
-     * @return
-     */
-    public List<CouponResponseDto.ReadResponseWithWorthyConsumption> getUsableCouponList(User user){
-        List<CouponIssuance> couponIssuances = couponIssuanceRepository.findAllByUserId(user.getId()).stream().toList();
+        List<CouponIssuance> couponIssuances = couponIssuanceRepository.findAllByUserId(userId).stream().toList();
         List<Coupon> coupons = new ArrayList<>();
         Iterator iter = couponIssuances.iterator(); //뭔 차이지...
 
@@ -134,33 +103,41 @@ public class CouponIssuanceService {
         }
 
         return coupons.stream().map(CouponResponseDto.ReadResponseWithWorthyConsumption::new).collect(Collectors.toList());
-    }
-    public List<CouponResponseDto.ReadResponseWithWorthyConsumption> getUsableCouponList2(User user){
-        List<CouponIssuance> couponIssuances = couponIssuanceRepository.findAllByUserId(user.getId()).stream().toList();
+    }*/
+    public List<CouponResponseDto.ReadResponseWithWorthyConsumption> getUsableCouponList(Long userId){
+        userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
+
+        List<CouponIssuance> couponIssuances = couponIssuanceRepository.findAllByUserId(userId).stream().toList();
         List<Coupon> coupons = couponIssuances.stream()
                 .filter(couponIssuance ->
                         ((couponIssuance.getIsCreated()==true)&&(couponIssuance.getIsUsed()==false)))
                 .map(CouponIssuance::getCoupon)
                 .collect(Collectors.toList());
-        return coupons.stream().map(CouponResponseDto.ReadResponseWithWorthyConsumption::new).collect(Collectors.toList());
+
+        return coupons.stream()
+                .map(CouponResponseDto.ReadResponseWithWorthyConsumption::new)
+                .collect(Collectors.toList());
     }
 
     /**
      * 사용자가 사용완료한 쿠폰을 모두 조회하는 로직입니다.
-     * @param user
+     * @param
      * @return
      */
-    public List<CouponResponseDto.ReadResponseWithWorthyConsumption> getUsedCouponList(User user){
-        List<CouponIssuance> couponIssuances = couponIssuanceRepository.findAllByUserId(user.getId()).stream().toList();
+    public List<CouponResponseDto.ReadResponseWithWorthyConsumption> getUsedCouponList(Long userId){
+        userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
+
+        List<CouponIssuance> couponIssuances = couponIssuanceRepository.findAllByUserId(userId).stream().toList();
         List<Coupon> coupons = couponIssuances.stream()
                 .filter(couponIssuance ->
-                ((couponIssuance.getIsCreated()==true)&&(couponIssuance.getIsUsed()==true)))
+                        ((couponIssuance.getIsCreated()==true)&&(couponIssuance.getIsUsed()==true)))
                 .map(CouponIssuance::getCoupon)
                 .collect(Collectors.toList());
-        return coupons.stream().map(CouponResponseDto.ReadResponseWithWorthyConsumption::new).collect(Collectors.toList());
+
+        return coupons.stream()
+                .map(CouponResponseDto.ReadResponseWithWorthyConsumption::new)
+                .collect(Collectors.toList());
     }
-
-
     /***
      * 사용자가 쿠폰을 사용할 때 필요한 로직입니다.
      * @param couponId
@@ -170,22 +147,43 @@ public class CouponIssuanceService {
         User user = userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
         Coupon coupon = couponRepository.findById(couponId).orElseThrow(CCouponNotFoundException::new);
         CouponIssuance couponIssuance = couponIssuanceRepository.findByUserIdAndCouponId(userId, couponId);
-        //if(isUsable(couponIssuance))
-        //    couponIssuance.useCoupon();
+
         isUsableCoupon(couponIssuance);
         isUsableCouponDate(couponIssuance.getCoupon());
-        isRightPinNumber(coupon, pinDto.getPin());
+        isCorrectPinNumber(coupon, pinDto.getPin());
         couponIssuance.useCoupon();
         couponIssuanceRepository.save(couponIssuance);
     }
+    /**
+     * 사용자가 보유한 쿠폰이 유효한지 검증하는 로직입니다.
+     * 발급이 되었고 사용하기 전인 쿠폰인지 확인합니다.
+     * 두가지 로직으로 짜봤습니다.
+     * @param couponIssuance
+     * @return
+     */
+    /*public Boolean isUsable(CouponIssuance couponIssuance){
+        if((couponIssuance.getIsCreated()==true) && (couponIssuance.getIsUsed() == false))
+            return true;
+        else
+            return false;
 
+    }*/
+    public void isUsableCoupon(CouponIssuance couponIssuance){
+        //couponIssuance.getIsCreated().compareTo(true)
+        if( !(couponIssuance.getIsCreated().equals(Boolean.TRUE) && couponIssuance.getIsUsed().equals(Boolean.FALSE)) )
+            throw new CBadRequestException("사용 불가능한 쿠폰입니다.");
+    }
+    public void isUsableCouponDate(Coupon coupon){
+        if( !((coupon.getLimitStartDate().isBefore(LocalDate.now())) && (coupon.getLimitEndDate().isAfter(LocalDate.now()))) )
+            throw new CBadRequestException("사용 가능한 날짜가 지난 쿠폰입니다.");
+    }
     /**
      * 쿠폰 핀 번호와 사용자가 입력한 핀 번호가 일치한지 판단하는 로직입니다.
      * @param coupon
      * @param pin
      */
-    public void isRightPinNumber(Coupon coupon, int pin){
-        if(coupon.getPin()!=pin)
+    public void isCorrectPinNumber(Coupon coupon, Integer pin){
+        if(! coupon.getPin().equals(pin))
             throw new CBadRequestException("핀 번호가 일치하지 않습니다.");
     }
 }

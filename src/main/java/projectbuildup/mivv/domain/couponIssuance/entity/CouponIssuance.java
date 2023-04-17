@@ -18,22 +18,24 @@ public class CouponIssuance extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private User user;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private Coupon coupon;
-    private Boolean isCreated = false;
-    private Boolean isUsed = false;
+
+    private Boolean isCreated = Boolean.FALSE;
+    private Boolean isUsed = Boolean.FALSE;
     public CouponIssuance(User user, Coupon coupon){
         this.user = user;
         this.coupon = coupon;
-        this.isCreated = true;
-        this.isUsed = false;
+        this.isCreated = Boolean.TRUE;
     }
     public void useCoupon(){
-        this.isUsed = true;
+        this.isUsed = Boolean.TRUE;
     }
 
 }
