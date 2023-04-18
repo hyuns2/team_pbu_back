@@ -1,15 +1,12 @@
 package projectbuildup.mivv.domain.worthyConsumption.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import projectbuildup.mivv.domain.coupon.dto.request.CouponRequestDto;
 import projectbuildup.mivv.domain.coupon.service.CouponService;
@@ -17,9 +14,6 @@ import projectbuildup.mivv.domain.worthyConsumption.dto.WorthyConsumptionConditi
 import projectbuildup.mivv.domain.worthyConsumption.dto.request.WorthyConsumptionRequestDto;
 import projectbuildup.mivv.domain.worthyConsumption.dto.response.WorthyConsumptionResponseDto;
 import projectbuildup.mivv.domain.worthyConsumption.service.WorthyConsumptionService;
-import projectbuildup.mivv.domain.worthyConsumption.service.WorthyConsumptionValidationService;
-import projectbuildup.mivv.global.constant.ExampleValue;
-import projectbuildup.mivv.global.constant.Header;
 
 import java.util.List;
 
@@ -30,7 +24,6 @@ import java.util.List;
 @Tag(name = "[WorthyConsumption]", description = "가치소비 관련 API입니다.")
 public class WorthyConsumptionController {
     private final WorthyConsumptionService worthyConsumptionService;
-    private final WorthyConsumptionValidationService worthyConsumptionValidationService;
     private final CouponService couponService;
 
     /**
@@ -97,42 +90,36 @@ public class WorthyConsumptionController {
     @Operation(summary = "가치소비 설명 수정", description = "가치소비의 설명을 수정합니다.")
     @PutMapping("/{worthyConsumptionId}/content")
     public ResponseEntity<HttpStatus> updateWorthyConsumptionContent(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId, @Valid @RequestBody WorthyConsumptionRequestDto.UpdateContentRequest worthyConsumptionRequestDto){
-        worthyConsumptionValidationService.isSameWorthyConsumptionId(worthyConsumptionId, worthyConsumptionRequestDto.getId());
         worthyConsumptionService.updateContentWorthyConsumption(worthyConsumptionRequestDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
     @Operation(summary = "가치소비의 미디어 url 수정", description = "가치소비의 이미지 및 영상의 url을 수정합니다.")
     @PutMapping("/{worthyConsumptionId}/url")
     public ResponseEntity<HttpStatus> updateWorthyConsumptionUrl(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId, @Valid @RequestBody WorthyConsumptionRequestDto.UpdateUrlRequest worthyConsumptionRequestDto){
-        worthyConsumptionValidationService.isSameWorthyConsumptionId(worthyConsumptionId, worthyConsumptionRequestDto.getId());
         worthyConsumptionService.updateUrlWorthyConsumption(worthyConsumptionRequestDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
     @Operation(summary = "가치소비 가격 관련 수정", description = "가치소비의 가격과 가격 태그를 수정합니다.")
     @PutMapping("/{worthyConsumptionId}/price")
     public ResponseEntity<HttpStatus> updateWorthyConsumptionPrice(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId, @Valid @RequestBody WorthyConsumptionRequestDto.UpdatePriceRequest worthyConsumptionRequestDto){
-        worthyConsumptionValidationService.isSameWorthyConsumptionId(worthyConsumptionId, worthyConsumptionRequestDto.getId());
         worthyConsumptionService.updatePriceWorthyConsumption(worthyConsumptionRequestDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
     @Operation(summary = "가치소비 장소 관련 수정", description = "가치소비의 장소과 장소 태그를 수정합니다.")
     @PutMapping("/{worthyConsumptionId}/place")
     public ResponseEntity<HttpStatus> updateWorthyConsumptionPlace(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId, @Valid @RequestBody WorthyConsumptionRequestDto.UpdatePlaceRequest worthyConsumptionRequestDto){
-        worthyConsumptionValidationService.isSameWorthyConsumptionId(worthyConsumptionId, worthyConsumptionRequestDto.getId());
         worthyConsumptionService.updatePlaceWorthyConsumption(worthyConsumptionRequestDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
     @Operation(summary = "가치소비 날짜 수정", description = "가치소비의 쿠폰 발급 가능 기간을 수정합니다.")
     @PutMapping("/{worthyConsumptionId}/date")
     public ResponseEntity<HttpStatus> updateWorthyConsumptionDate(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId, @Valid @RequestBody WorthyConsumptionConditionDto.UpdateIssuableCouponDateRequest worthyConsumptionRequestDto){
-        worthyConsumptionValidationService.isSameWorthyConsumptionId(worthyConsumptionId, worthyConsumptionRequestDto.getId());
         worthyConsumptionService.updateIssuableCouponDate(worthyConsumptionRequestDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
     @Operation(summary = "가치소비 조건 수정", description = "가치소비의 쿠폰 발급시 조건을 수정합니다.")
     @PutMapping("/{worthyConsumptionId}/condition")
     public ResponseEntity<HttpStatus> updateWorthyConsumptionCondition(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId, @Valid @RequestBody WorthyConsumptionConditionDto.UpdateConditionRequest worthyConsumptionRequestDto){
-        worthyConsumptionValidationService.isSameWorthyConsumptionId(worthyConsumptionId, worthyConsumptionRequestDto.getId());
         worthyConsumptionService.updateCouponCondition(worthyConsumptionRequestDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
