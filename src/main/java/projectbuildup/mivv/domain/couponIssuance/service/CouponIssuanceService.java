@@ -1,6 +1,7 @@
 package projectbuildup.mivv.domain.couponIssuance.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import projectbuildup.mivv.domain.coupon.dto.response.CouponResponseDto;
 import projectbuildup.mivv.domain.coupon.entity.Coupon;
@@ -22,6 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class CouponIssuanceService {
@@ -52,8 +54,13 @@ public class CouponIssuanceService {
         Coupon coupon = couponRepository.findById(couponId).orElseThrow(CCouponNotFoundException::new);
 
         isIssuable(user, coupon);
+        System.out.println("isIssuable 확인");
+
         isAchievedLastAmount(user, coupon);
+        System.out.println("isAchievedLastAmount 확인");
+
         issue(user, coupon);
+        System.out.println("issue 확인");
     }
     /**
      * 사용자가 쿠폰을 보유하고 있는지 검증하는 로직입니다.
@@ -67,12 +74,13 @@ public class CouponIssuanceService {
     }
     public void isAchievedLastAmount(User user, Coupon coupon){
         long userLastSumAmount = remittanceRepository.findSumAmountByUser(user);
-        long limitLastSumAmount = coupon.getWorthyConsumption().getCondition().getLastMonthAmount();
+        log.info("사용자 전월 총 금액 {}", userLastSumAmount);
 
+        long limitLastSumAmount = coupon.getWorthyConsumption().getCondition().getLastMonthAmount();
+        log.info("전월 한도 금액 {}", limitLastSumAmount);
         if(userLastSumAmount < limitLastSumAmount)
             throw new CBadRequestException("전월 달성 금액 미달입니다.");
-        //if(!(userLastSumAmount>= limitLastSumAmount))
-        //    throw new CBadRequestException("전월 달성 금액 미달입니다.");
+
     }
     /**
      * 사용자가 쿠폰을 발급합니다.
@@ -108,11 +116,14 @@ public class CouponIssuanceService {
         userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
 
         List<CouponIssuance> couponIssuances = couponIssuanceRepository.findAllByUserId(userId).stream().toList();
+        log.info("사용자가 발급한 쿠폰 개수 {}", couponIssuances.stream().count());
+
         List<Coupon> coupons = couponIssuances.stream()
                 .filter(couponIssuance ->
                         ((couponIssuance.isCreated()==true)&&(couponIssuance.isUsed()==false)))
                 .map(CouponIssuance::getCoupon)
                 .collect(Collectors.toList());
+        log.info("사용자가 발급한 쿠폰 중 미사용 쿠폰 개수 {}", coupons.stream().count());
 
         return coupons.stream()
                 .map(CouponResponseDto.ReadResponseWithWorthyConsumption::new)
@@ -133,6 +144,7 @@ public class CouponIssuanceService {
                         ((couponIssuance.isCreated()==true)&&(couponIssuance.isUsed()==true)))
                 .map(CouponIssuance::getCoupon)
                 .collect(Collectors.toList());
+        log.info("사용자가 발급한 쿠폰 중 사용 완료 쿠폰 개수 {}", coupons.stream().count());
 
         return coupons.stream()
                 .map(CouponResponseDto.ReadResponseWithWorthyConsumption::new)
@@ -149,9 +161,17 @@ public class CouponIssuanceService {
         CouponIssuance couponIssuance = couponIssuanceRepository.findByUserIdAndCouponId(userId, couponId);
 
         isUsableCoupon(couponIssuance);
+        System.out.println("isUsableCoupon 확인");
+
         isUsableCouponDate(couponIssuance.getCoupon());
+        System.out.println("isUsableCouponDate 확인");
+
         isCorrectPinNumber(coupon, pinDto.getPin());
+        System.out.println("isCorrectPinNumber 확인");
+
         couponIssuance.useCoupon();
+        System.out.println("쿠폰 사용 확인");
+
         couponIssuanceRepository.save(couponIssuance);
     }
     /**
@@ -174,8 +194,13 @@ public class CouponIssuanceService {
             throw new CBadRequestException("사용 불가능한 쿠폰입니다.");
     }
     public void isUsableCouponDate(Coupon coupon){
-        if(! ((coupon.getLimitStartDate().isBefore(LocalDate.now()))
+        log.info("시작기한 {} 마감기한 {}", coupon.getLimitStartDate(), coupon.getLimitEndDate());
+        /*if(! ((coupon.getLimitStartDate().isBefore(LocalDate.now()))
                 && (coupon.getLimitEndDate().isAfter(LocalDate.now()))) )
+            throw new CBadRequestException("사용 가능한 날짜가 지난 쿠폰입니다.");*/
+        if(! ((coupon.getLimitStartDate().isBefore(LocalDate.now())) || coupon.getLimitStartDate().isEqual(LocalDate.now())
+                && (coupon.getLimitEndDate().isAfter(LocalDate.now())) || coupon.getLimitStartDate().isEqual(LocalDate.now())
+        ))
             throw new CBadRequestException("사용 가능한 날짜가 지난 쿠폰입니다.");
     }
     /**
@@ -184,6 +209,9 @@ public class CouponIssuanceService {
      * @param pin
      */
     public void isCorrectPinNumber(Coupon coupon, int pin){
+
+        log.info("쿠폰의 핀 번호 {} 입력받은 핀 번호 {}", coupon.getPin(), pin);
+
         if(coupon.getPin() != pin)
             throw new CBadRequestException("핀 번호가 일치하지 않습니다.");
     }

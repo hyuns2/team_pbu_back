@@ -35,7 +35,6 @@ public class CouponIssuance extends BaseTimeEntity {
         this.created = true;
     }
     public void useCoupon(){
-
         this.used = true;
     }
 

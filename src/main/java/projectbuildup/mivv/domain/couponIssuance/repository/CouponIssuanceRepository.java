@@ -5,11 +5,12 @@ import projectbuildup.mivv.domain.coupon.entity.Coupon;
 import projectbuildup.mivv.domain.couponIssuance.entity.CouponIssuance;
 import projectbuildup.mivv.domain.user.entity.User;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface CouponIssuanceRepository extends JpaRepository<CouponIssuance, Long> {
     Optional<CouponIssuance> findByUserAndCoupon(User user, Coupon coupon);
-    Optional<CouponIssuance> findAllByUserId(Long userId);
+    List<CouponIssuance> findAllByUserId(Long userId);
     CouponIssuance findByUserIdAndCouponId(Long userId, Long couponId);
     int countByCouponId(Long couponId);
 

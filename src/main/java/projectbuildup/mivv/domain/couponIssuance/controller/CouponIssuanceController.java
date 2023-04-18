@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
@@ -62,7 +63,7 @@ public class CouponIssuanceController {
     @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('USER')")
     @PutMapping("/issue/coupons/{couponId}")
-    public ResponseEntity<HttpStatus> useCoupon(@PathVariable("couponId") Long couponId, @AuthenticationPrincipal User user, @RequestBody CouponIssuanceDto.PinDto pinDto){
+    public ResponseEntity<HttpStatus> useCoupon(@PathVariable("couponId") Long couponId, @AuthenticationPrincipal User user, @Valid @RequestBody CouponIssuanceDto.PinDto pinDto){
         couponIssuanceService.useCouponByUser(couponId, user.getId(), pinDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
