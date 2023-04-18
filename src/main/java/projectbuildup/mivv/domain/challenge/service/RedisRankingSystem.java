@@ -6,12 +6,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
+import org.springframework.stereotype.Component;
 import projectbuildup.mivv.domain.challenge.dto.RankDto;
 
 import java.util.*;
 
 @Slf4j
 @RequiredArgsConstructor
+@Component
 public class RedisRankingSystem {
     private final StringRedisTemplate redisTemplate;
     private ZSetOperations<String, String> operations;
@@ -55,12 +57,12 @@ public class RedisRankingSystem {
      * @param key key
      * @return 1등
      */
-    public Long getTheFirst(String key) {
+    public RankDto.Unit getTheFirst(String key) {
         ZSetOperations.TypedTuple<String> tuple = Objects.requireNonNull(operations.popMax(key));
         String member = Objects.requireNonNull(tuple.getValue());
         Double score = Objects.requireNonNull(tuple.getScore());
         operations.add(key, member, score);
-        return Long.parseLong(member);
+        return new RankDto.Unit(1, Long.parseLong(member));
     }
 
     /**
@@ -70,13 +72,13 @@ public class RedisRankingSystem {
      * @param member member
      * @return 랭킹 리스트
      */
-    public List<RankDto> getNearbyRanking(String key, String member) {
+    public List<RankDto.Unit> getNearbyRanking(String key, String member) {
         List<String> tupleList = Objects.requireNonNull(operations.reverseRange(key, 0, -1)).stream()
                 .toList();
         List<Long> userRanking = getUserRanking(member, tupleList);
 
-        List<RankDto> result = new ArrayList<>();
-        long rank = Objects.requireNonNull(operations.reverseRank(key, member)) - NEARBY_SIZE;
+        List<RankDto.Unit> result = new ArrayList<>();
+        long rank = Objects.requireNonNull(operations.reverseRank(key, member)) - NEARBY_SIZE + 1;
         for (Long userId : userRanking) {
             addRank(result, rank, userId);
             rank++;
@@ -102,9 +104,9 @@ public class RedisRankingSystem {
         }
     }
 
-    private void addRank(List<RankDto> result, long rank, Long userId) {
+    private void addRank(List<RankDto.Unit> result, long rank, Long userId) {
         if (userId != null) {
-            RankDto rankData = new RankDto(rank, userId);
+            RankDto.Unit rankData = new RankDto.Unit(rank, userId);
             result.add(rankData);
         }
     }
