@@ -6,6 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 
+import java.util.Objects;
+import java.util.Set;
+
 @Slf4j
 @RequiredArgsConstructor
 public class RedisRankingSystem {
@@ -44,5 +47,20 @@ public class RedisRankingSystem {
         String key = String.valueOf(challengeId);
         String member = String.valueOf(userId);
         operations.incrementScore(key, member, score);
+    }
+
+    /**
+     * 해당 챌린지의 1등을 반환합니다.
+     *
+     * @param challengeId key
+     * @return 1등
+     */
+    public Long getTheFirst(Long challengeId) {
+        String key = String.valueOf(challengeId);
+        ZSetOperations.TypedTuple<String> tuple = Objects.requireNonNull(operations.popMax(key));
+        String member = Objects.requireNonNull(tuple.getValue());
+        Double score = Objects.requireNonNull(tuple.getScore());
+        operations.add(key, member, score);
+        return Long.parseLong(member);
     }
 }
