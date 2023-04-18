@@ -178,4 +178,17 @@ class RankingServiceTest {
     private double calcScore(long amount, int count) {
         return amount + (double) count / 1000;
     }
+
+    @Test
+    @DisplayName("increment로 값을 초기화할 수 있다.")
+    void test10() {
+        // given
+        operations.incrementScore(TEST_KEY, "1", 1000);
+
+        //when
+        Double score = operations.score(TEST_KEY, "1");
+
+        // then
+        assertThat(score).isEqualTo(1000);
+    }
 }

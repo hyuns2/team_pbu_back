@@ -23,7 +23,7 @@ public class RedisRankingSystem {
      * @param challengeId key
      * @param userId      member
      */
-    public void insertZeroScore(Long challengeId, Long userId) {
+    public void initZero(Long challengeId, Long userId) {
         String key = String.valueOf(challengeId);
         String member = String.valueOf(userId);
         Double score = operations.score(key, member);
@@ -32,5 +32,17 @@ public class RedisRankingSystem {
             return;
         }
         operations.incrementScore(key, member, -score);
+    }
+
+    /**
+     * 해당 챌린지 랭킹의 절약 점수를 갱신합니다.
+     *
+     * @param challengeId key
+     * @param userId      member
+     */
+    public void incrementScore(Long challengeId, Long userId, double score) {
+        String key = String.valueOf(challengeId);
+        String member = String.valueOf(userId);
+        operations.incrementScore(key, member, score);
     }
 }
