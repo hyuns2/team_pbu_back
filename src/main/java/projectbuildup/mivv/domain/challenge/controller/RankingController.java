@@ -34,4 +34,13 @@ public class RankingController {
         RankDto.GroupResponse responseDto = rankingService.getChallengeRanking(challengeId, user.getId());
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
+
+    @Operation(summary="전체 랭킹 조회", description="1등과 유저를 포함한 몇 명의 랭킹을 반환합니다.")
+    @Parameter(name = Header.ACCESS_TOKEN, description="액세스토큰", required=true, in= ParameterIn.HEADER, example= ExampleValue.JWT.ACCESS)
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/ranking")
+    public ResponseEntity<RankDto.GroupResponse> getTotalRanking(@AuthenticationPrincipal User user){
+        RankDto.GroupResponse responseDto = rankingService.getTotalRanking(user.getId());
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
 }

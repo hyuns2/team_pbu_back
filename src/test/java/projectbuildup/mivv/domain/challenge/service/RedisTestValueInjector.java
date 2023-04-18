@@ -8,11 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
-import org.springframework.data.redis.core.ZSetOperations.TypedTuple;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -22,25 +17,49 @@ class RedisTestValueInjector {
     @Autowired
     private StringRedisTemplate redisTemplate;
     static ZSetOperations<String, String> operations;
-    private final static String TEST_KEY = "1";
+    private final static String CHALLENGE_1_KEY = "1";
+    private final static String CHALLENGE_2_KEY = "2";
+    private final static String TOTAL_RANKING_KEY = RankingService.TOTAL_RANKING_KEY;
 
     @BeforeEach
     void beforeEach() {
-        redisTemplate.delete(TEST_KEY);
         operations = redisTemplate.opsForZSet();
     }
 
     @Test
-    @DisplayName("테스트 값 주입")
+    @DisplayName("1번 챌린지 랭킹 테스트 값 주입")
     void test1() {
-        operations.add(TEST_KEY, "9", 9000);
-        operations.add(TEST_KEY, "8", 8000);
-        operations.add(TEST_KEY, "7", 7000);
-        operations.add(TEST_KEY, "6", 6000);
-        operations.add(TEST_KEY, "5", 5000);
-        operations.add(TEST_KEY, "4", 4000);
-        operations.add(TEST_KEY, "3", 3000);
-        operations.add(TEST_KEY, "2", 2000);
-        operations.add(TEST_KEY, "1", 1000);
+        redisTemplate.delete(CHALLENGE_1_KEY);
+        operations.add(CHALLENGE_1_KEY, "9", 9000);
+        operations.add(CHALLENGE_1_KEY, "8", 8000);
+        operations.add(CHALLENGE_1_KEY, "7", 7000);
+        operations.add(CHALLENGE_1_KEY, "6", 6000);
+        operations.add(CHALLENGE_1_KEY, "5", 5000);
+        operations.add(CHALLENGE_1_KEY, "4", 4000);
+        operations.add(CHALLENGE_1_KEY, "3", 3000);
+        operations.add(CHALLENGE_1_KEY, "2", 2000);
+        operations.add(CHALLENGE_1_KEY, "1", 6000);
+    }
+
+    @Test
+    @DisplayName("전체 챌린지 랭킹 테스트 값 주입")
+    void test2() {
+        redisTemplate.delete(TOTAL_RANKING_KEY);
+        operations.add(TOTAL_RANKING_KEY, "9", 9000);
+        operations.add(TOTAL_RANKING_KEY, "8", 8000);
+        operations.add(TOTAL_RANKING_KEY, "7", 7000);
+        operations.add(TOTAL_RANKING_KEY, "6", 6000);
+        operations.add(TOTAL_RANKING_KEY, "5", 5000);
+        operations.add(TOTAL_RANKING_KEY, "4", 4000);
+        operations.add(TOTAL_RANKING_KEY, "3", 3000);
+        operations.add(TOTAL_RANKING_KEY, "2", 2000);
+        operations.add(TOTAL_RANKING_KEY, "1", 16000);
+    }
+
+    @Test
+    @DisplayName("2번 챌린지 랭킹 테스트 값 주입")
+    void test3() {
+        redisTemplate.delete(CHALLENGE_2_KEY);
+        operations.add(CHALLENGE_2_KEY, "1", 10000);
     }
 }
