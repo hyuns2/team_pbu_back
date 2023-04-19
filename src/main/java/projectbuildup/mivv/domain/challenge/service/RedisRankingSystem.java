@@ -26,18 +26,12 @@ public class RedisRankingSystem {
     }
 
     /**
-     * 해당 챌린지 랭킹의 절약 점수를 0으로 초기화합니다.
+     * 해당 챌린지 랭킹을 초기화합니다.
      *
-     * @param key    key
-     * @param member member
+     * @param key key
      */
-    public void initZero(String key, String member) {
-        Double score = operations.score(key, member);
-        if (score == null) {
-            operations.add(key, member, 0);
-            return;
-        }
-        operations.incrementScore(key, member, -score);
+    public void initZero(String key) {
+        redisTemplate.delete(key);
     }
 
     /**

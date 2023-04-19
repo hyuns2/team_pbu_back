@@ -191,4 +191,14 @@ class RankingServiceTest {
         // then
         assertThat(score).isEqualTo(1000);
     }
+
+    @Test
+    @DisplayName("삭제하려는 key가 없어도 오류가 발생하지 않는다.")
+    void test11() {
+        // given
+        redisTemplate.delete("test");
+        // when
+
+        // then
+    }
 }
