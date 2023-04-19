@@ -39,4 +39,12 @@ public class RankDto {
         UnitResponse first;
         List<UnitResponse> ranking;
     }
+
+    @Getter
+    @AllArgsConstructor
+    public static class ShortResponse{
+        Long challengeId;
+        String title;
+        Long rank;
+    }
 }

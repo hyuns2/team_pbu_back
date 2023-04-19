@@ -72,7 +72,7 @@ public class RedisRankingSystem {
         List<Long> userRanking = getUserRanking(member, tupleList);
 
         List<RankDto.Unit> result = new ArrayList<>();
-        long rank = Objects.requireNonNull(operations.reverseRank(key, member)) - NEARBY_SIZE + 1;
+        long rank = Objects.requireNonNull(operations.reverseRank(key, member)) + 1 - NEARBY_SIZE;
         for (Long userId : userRanking) {
             addRank(result, rank, userId);
             rank++;
@@ -103,5 +103,20 @@ public class RedisRankingSystem {
             RankDto.Unit rankData = new RankDto.Unit(rank, userId);
             result.add(rankData);
         }
+    }
+
+    /**
+     * 해당 챌린지의 등수를 조회합니다.
+     *
+     * @param key    key
+     * @param member member
+     * @return 등수
+     */
+    public Long getRank(String key, String member) {
+        Long rank = operations.reverseRank(key, member);
+        if (rank == null) {
+            return null;
+        }
+        return rank + 1;
     }
 }

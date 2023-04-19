@@ -5,12 +5,15 @@ import org.springframework.stereotype.Service;
 import projectbuildup.mivv.domain.challenge.dto.RankDto;
 import projectbuildup.mivv.domain.challenge.entity.Challenge;
 import projectbuildup.mivv.domain.challenge.repository.ChallengeRepository;
+import projectbuildup.mivv.domain.participation.entity.Participation;
+import projectbuildup.mivv.domain.participation.repository.ParticipationRepository;
 import projectbuildup.mivv.domain.remittance.repository.RemittanceRepository;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.domain.user.repository.UserRepository;
 import projectbuildup.mivv.global.error.exception.CResourceNotFoundException;
 import projectbuildup.mivv.global.error.exception.CUserNotFoundException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -20,6 +23,7 @@ public class RankingService {
     private final ChallengeRepository challengeRepository;
     private final UserRepository userRepository;
     private final RemittanceRepository remittanceRepository;
+    private final ParticipationRepository participationRepository;
     public final static String TOTAL_RANKING_KEY = "TOTAL";
 
     /**
@@ -85,14 +89,34 @@ public class RankingService {
     /**
      * 전체 랭킹 및 챌린지 랭킹의 점수를 갱신합니다.
      *
-     * @param user 사용자
+     * @param user      사용자
      * @param challenge 챌린지
-     * @param score 점수
+     * @param score     점수
      */
     public void updateScore(User user, Challenge challenge, double score) {
         String key = String.valueOf(challenge.getId());
         String member = String.valueOf(user.getId());
         rankingSystem.incrementScore(key, member, score);
         rankingSystem.incrementScore(TOTAL_RANKING_KEY, member, score);
+    }
+
+    /**
+     * 사용자가 참여중인 모든 챌린지에 대한 등수를 조회합니다. (본인 등수만 조회)
+     * 아직 송금 기록이 없는 경우, null을 리턴합니다.
+     *
+     * @param user 사용자
+     * @return 등수 정보
+     */
+    public List<RankDto.ShortResponse> getUserRanks(User user) {
+        List<Participation> participations = participationRepository.findAllByUser(user);
+        List<RankDto.ShortResponse> rankList = new ArrayList<>();
+        for (Participation participation : participations) {
+            String key = String.valueOf(participation.getChallenge().getId());
+            String member = String.valueOf(user.getId());
+            Long rank = rankingSystem.getRank(key, member);
+            Challenge challenge = participation.getChallenge();
+            rankList.add(new RankDto.ShortResponse(challenge.getId(), challenge.getMainTitle(), rank));
+        }
+        return rankList;
     }
 }
