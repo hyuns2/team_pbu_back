@@ -91,22 +91,6 @@ public class CouponIssuanceService {
      * @param
      * @return
      */
-    /*public List<CouponResponseDto.ReadResponseWithWorthyConsumption> getUsableCoupons(Long userId){
-        userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
-
-        List<CouponIssuance> couponIssuances = couponIssuanceRepository.findAllByUserId(userId).stream().toList();
-        List<Coupon> coupons = new ArrayList<>();
-        Iterator iter = couponIssuances.iterator(); //뭔 차이지...
-
-        CouponIssuance couponIssuance;
-        while(iter.hasNext()){
-            couponIssuance = (CouponIssuance) iter.next();
-            if(isUsable(couponIssuance))
-                coupons.add(couponIssuance.getCoupon());
-        }
-
-        return coupons.stream().map(CouponResponseDto.ReadResponseWithWorthyConsumption::new).collect(Collectors.toList());
-    }*/
     public List<CouponResponseDto.ReadResponseWithWorthyConsumption> getUsableCouponList(Long userId){
         userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
 
@@ -183,13 +167,11 @@ public class CouponIssuanceService {
             throw new CBadRequestException("사용 불가능한 쿠폰입니다.");
     }
     private void isUsableCouponDate(Coupon coupon){
-        log.info("시작기한 {} 마감기한 {}", coupon.getLimitStartDate(), coupon.getLimitEndDate());
-        /*if(! ((coupon.getLimitStartDate().isBefore(LocalDate.now()))
-                && (coupon.getLimitEndDate().isAfter(LocalDate.now()))) )
-            throw new CBadRequestException("사용 가능한 날짜가 지난 쿠폰입니다.");*/
-        if(! ((coupon.getLimitStartDate().isBefore(LocalDate.now())) || coupon.getLimitStartDate().isEqual(LocalDate.now())
+        /*if(! ((coupon.getLimitStartDate().isBefore(LocalDate.now())) || coupon.getLimitStartDate().isEqual(LocalDate.now())
                 && (coupon.getLimitEndDate().isAfter(LocalDate.now())) || coupon.getLimitStartDate().isEqual(LocalDate.now())
         ))
+            throw new CBadRequestException("사용 가능한 날짜가 지난 쿠폰입니다.");*/
+        if(coupon.getLimitStartDate().isAfter(LocalDate.now())||coupon.getLimitEndDate().isBefore(LocalDate.now()))
             throw new CBadRequestException("사용 가능한 날짜가 지난 쿠폰입니다.");
     }
     /**
