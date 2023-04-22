@@ -54,25 +54,20 @@ public class CouponIssuanceService {
         Coupon coupon = couponRepository.findById(couponId).orElseThrow(CCouponNotFoundException::new);
 
         isIssuable(user, coupon);
-        System.out.println("isIssuable 확인");
-
         isAchievedLastAmount(user, coupon);
-        System.out.println("isAchievedLastAmount 확인");
-
         issue(user, coupon);
-        System.out.println("issue 확인");
     }
     /**
      * 사용자가 쿠폰을 보유하고 있는지 검증하는 로직입니다.
      * @param user
      * @param coupon
      */
-    public void isIssuable(User user, Coupon coupon){
+    private void isIssuable(User user, Coupon coupon){
         if(couponIssuanceRepository.findByUserAndCoupon(user, coupon).isPresent()){
             throw new CBadRequestException("이미 보유중인 쿠폰입니다.");
         }
     }
-    public void isAchievedLastAmount(User user, Coupon coupon){
+    private void isAchievedLastAmount(User user, Coupon coupon){
         long userLastSumAmount = remittanceRepository.findSumAmountByUser(user);
         log.info("사용자 전월 총 금액 {}", userLastSumAmount);
 
@@ -87,7 +82,7 @@ public class CouponIssuanceService {
      * @param user
      * @param coupon
      */
-    public void issue(User user, Coupon coupon){
+    private void issue(User user, Coupon coupon){
         CouponIssuance couponIssuance = new CouponIssuance(user, coupon);
         couponIssuanceRepository.save(couponIssuance);
     }
@@ -161,16 +156,10 @@ public class CouponIssuanceService {
         CouponIssuance couponIssuance = couponIssuanceRepository.findByUserIdAndCouponId(userId, couponId);
 
         isUsableCoupon(couponIssuance);
-        System.out.println("isUsableCoupon 확인");
-
         isUsableCouponDate(couponIssuance.getCoupon());
-        System.out.println("isUsableCouponDate 확인");
-
         isCorrectPinNumber(coupon, pinDto.getPin());
-        System.out.println("isCorrectPinNumber 확인");
 
         couponIssuance.useCoupon();
-        System.out.println("쿠폰 사용 확인");
 
         couponIssuanceRepository.save(couponIssuance);
     }
@@ -188,12 +177,12 @@ public class CouponIssuanceService {
             return false;
 
     }*/
-    public void isUsableCoupon(CouponIssuance couponIssuance){
+    private void isUsableCoupon(CouponIssuance couponIssuance){
         if(! ((couponIssuance.isCreated()==true)
                 && (couponIssuance.isUsed()==false)) )
             throw new CBadRequestException("사용 불가능한 쿠폰입니다.");
     }
-    public void isUsableCouponDate(Coupon coupon){
+    private void isUsableCouponDate(Coupon coupon){
         log.info("시작기한 {} 마감기한 {}", coupon.getLimitStartDate(), coupon.getLimitEndDate());
         /*if(! ((coupon.getLimitStartDate().isBefore(LocalDate.now()))
                 && (coupon.getLimitEndDate().isAfter(LocalDate.now()))) )
@@ -208,7 +197,7 @@ public class CouponIssuanceService {
      * @param coupon
      * @param pin
      */
-    public void isCorrectPinNumber(Coupon coupon, int pin){
+    private void isCorrectPinNumber(Coupon coupon, int pin){
 
         log.info("쿠폰의 핀 번호 {} 입력받은 핀 번호 {}", coupon.getPin(), pin);
 
