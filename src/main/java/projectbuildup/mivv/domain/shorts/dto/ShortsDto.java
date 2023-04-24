@@ -1,5 +1,7 @@
 package projectbuildup.mivv.domain.shorts.dto;
 
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -7,8 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import projectbuildup.mivv.domain.shorts.entity.Shorts;
-import projectbuildup.mivv.domain.shorts.entity.ShortsType;
-import projectbuildup.mivv.domain.shorts.service.ShortsService;
+import projectbuildup.mivv.domain.shorts.entity.ShortsCategory;
 
 public class ShortsDto {
     @Getter @AllArgsConstructor @NoArgsConstructor
@@ -16,7 +17,7 @@ public class ShortsDto {
         @Setter
         Long id;
     }
-    @Getter
+    @Getter @Setter
     public static class creatRequest{
         @NotBlank(message = "제목은 필수 입력값입니다.")
         String title;
@@ -24,11 +25,12 @@ public class ShortsDto {
         String content;
         @NotBlank(message = "영상 주소는 필수 입력값입니다.")
         String videoUrl;
-        @NotNull(message = "영상 타입은 필수 입력값입니다.")
-        ShortsType type;
+        @NotNull(message = "영상 카테고리는 필수 입력값입니다.") @Enumerated(EnumType.STRING)
+        ShortsCategory category;
     }
-    @Getter
-    public class updateRequest extends idRequest{
+    @Getter @Setter
+    @AllArgsConstructor @NoArgsConstructor
+    public static class updateRequest extends idRequest{
         String title;
         String content;
         String videoUrl;
@@ -39,7 +41,7 @@ public class ShortsDto {
             this.title = shorts.getTitle();
             this.content = shorts.getContent();
             this.videoUrl = shorts.getVideoUrl();
-            this.type = shorts.getType();
+            this.category = shorts.getCategory();
         }
     }
 

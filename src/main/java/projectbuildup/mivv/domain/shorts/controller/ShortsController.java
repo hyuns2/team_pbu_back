@@ -4,12 +4,10 @@ import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import projectbuildup.mivv.domain.shorts.dto.ShortsDto;
-import projectbuildup.mivv.domain.shorts.repository.ShortsRepository;
 import projectbuildup.mivv.domain.shorts.service.ShortsService;
 
 import java.util.List;
@@ -18,7 +16,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/shorts")
-public class Shortscontroller {
+public class ShortsController {
   private final ShortsService shortsService;
   @Operation(summary = "쇼츠 생성", description = "쇼츠를 생성합니다.")
   @PostMapping

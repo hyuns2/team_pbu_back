@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum ShortsType {
+public enum ShortsCategory {
     SAVING("절약 쇼츠"),
     EDUCATION("금융 교육 쇼츠");
 
