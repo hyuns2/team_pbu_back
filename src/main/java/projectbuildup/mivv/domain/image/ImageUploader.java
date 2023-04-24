@@ -16,11 +16,11 @@ import java.util.UUID;
 @Component
 public class ImageUploader {
 
-    @Value("${path.root}")
-    String ROOT_PATH;
+    @Value("${path.images}")
+    String STORE_PATH;
 
     public ImageUploader(@Value("${path.root}") String property) {
-        this.ROOT_PATH = property;
+        this.STORE_PATH = property;
     }
 
     private static final String DELIMITER = "/";
@@ -28,7 +28,7 @@ public class ImageUploader {
     public ImageInfo upload(MultipartFile multipartFile) throws IOException {
         String originalName = Objects.requireNonNull(multipartFile.getOriginalFilename());
         String storeName = makeRandomName(originalName);
-        String storePath = ROOT_PATH + DELIMITER + storeName;
+        String storePath = STORE_PATH + DELIMITER + storeName;
 
         File file = new File(storePath);
         multipartFile.transferTo(file);

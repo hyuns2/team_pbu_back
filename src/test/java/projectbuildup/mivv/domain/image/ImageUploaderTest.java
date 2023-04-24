@@ -25,7 +25,7 @@ class ImageUploaderTest {
         String FILE_NAME = "test01";
         String CONTENT_TYPE = "jpg";
         String IMAGE_PATH = "src/test/resources/test01.jpg";
-        String STORE_PATH = "E:/ROOM/Github/mivv-backend/src/test/resources/store";
+        String STORE_PATH = "E:/ROOM/Github/mivv-backend/src/test/resources/store/images";
 
         MockMultipartFile mockMultipartFile = getMockMultipartFile(FILE_NAME, CONTENT_TYPE, IMAGE_PATH);
         ImageUploader imageUploader = new ImageUploader(STORE_PATH);
