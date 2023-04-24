@@ -31,12 +31,12 @@ class ImageUploaderTest {
         ImageUploader imageUploader = new ImageUploader(STORE_PATH);
 
         // when
-        ImageInfo imageInfo = imageUploader.upload(mockMultipartFile);
+        Image image = imageUploader.upload(mockMultipartFile);
 
         // then
-        File file = new File(imageInfo.getPath());
+        File file = new File(image.getPath());
         assertTrue(file.exists());
-        imageUploader.delete(imageInfo);
+        imageUploader.delete(image);
     }
 
     @Test
@@ -50,13 +50,13 @@ class ImageUploaderTest {
 
         MockMultipartFile mockMultipartFile = getMockMultipartFile(FILE_NAME, CONTENT_TYPE, IMAGE_PATH);
         ImageUploader imageUploader = new ImageUploader(STORE_PATH);
-        ImageInfo imageInfo = imageUploader.upload(mockMultipartFile);
+        Image image = imageUploader.upload(mockMultipartFile);
 
         // when
-        imageUploader.delete(imageInfo);
+        imageUploader.delete(image);
 
         // then
-        File file = new File(imageInfo.getPath());
+        File file = new File(image.getPath());
         assertFalse(file.exists());
     }
 }

@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class ImageInfo {
+public class Image {
     String storeFileName;
     String originalFileName;
     String path;

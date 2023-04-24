@@ -10,6 +10,7 @@ import projectbuildup.mivv.domain.archiving.entity.CardEntity;
 import projectbuildup.mivv.domain.archiving.entity.NumericalConditionCardEntity;
 import projectbuildup.mivv.domain.archiving.entity.UserCardEntity;
 import projectbuildup.mivv.domain.auth.dto.AuthDto;
+import projectbuildup.mivv.domain.image.Image;
 import projectbuildup.mivv.domain.participation.entity.Participation;
 import projectbuildup.mivv.domain.saving_count.entity.SavingCount;
 import projectbuildup.mivv.global.common.BaseTimeEntity;
@@ -31,9 +32,10 @@ public class User extends BaseTimeEntity implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     String nickname;
-    String profileImage;
     String email;
     String password;
+    Image profileImage;
+
     boolean agreement;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn
@@ -98,5 +100,10 @@ public class User extends BaseTimeEntity implements UserDetails {
 
     public void setAccount(Account account) {
         this.account = account;
+    }
+
+    public void updateProfile(String nickname, Image image) {
+        this.nickname = nickname;
+        this.profileImage = image;
     }
 }
