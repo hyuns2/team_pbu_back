@@ -18,16 +18,19 @@ public class Shorts {
     private String title;
     private String content;
     private String videoUrl;
+    private String imageUrl;
 
     public Shorts(ShortsDto.creatRequest shortsRequestDto){
         this.title = shortsRequestDto.getTitle();
         this.content = shortsRequestDto.getContent();
         this.videoUrl = shortsRequestDto.getVideoUrl();
+        this.imageUrl = shortsRequestDto.getImageUrl();
         this.category = shortsRequestDto.getCategory();
     }
     public void updateShorts(ShortsDto.updateRequest shortsRequestDto){
         this.title = shortsRequestDto.getTitle();
         this.content = shortsRequestDto.getContent();
         this.videoUrl = shortsRequestDto.getVideoUrl();
+        this.imageUrl = shortsRequestDto.getImageUrl();
     }
 }

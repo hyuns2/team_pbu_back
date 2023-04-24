@@ -25,6 +25,8 @@ public class ShortsDto {
         String content;
         @NotBlank(message = "영상 주소는 필수 입력값입니다.")
         String videoUrl;
+        @NotBlank(message = "영상의 썸네일 이미지는 필수 입력값입니다.")
+        String imageUrl;
         @NotNull(message = "영상 카테고리는 필수 입력값입니다.") @Enumerated(EnumType.STRING)
         ShortsCategory category;
     }
@@ -34,6 +36,7 @@ public class ShortsDto {
         String title;
         String content;
         String videoUrl;
+        String imageUrl;
     }
     @Getter
     public static class shortsResponse extends ShortsDto.creatRequest{
@@ -41,6 +44,7 @@ public class ShortsDto {
             this.title = shorts.getTitle();
             this.content = shorts.getContent();
             this.videoUrl = shorts.getVideoUrl();
+            this.imageUrl = shorts.getImageUrl();
             this.category = shorts.getCategory();
         }
     }
