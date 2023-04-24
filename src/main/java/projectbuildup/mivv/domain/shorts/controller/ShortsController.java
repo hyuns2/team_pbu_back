@@ -1,6 +1,7 @@
 package projectbuildup.mivv.domain.shorts.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +12,7 @@ import projectbuildup.mivv.domain.shorts.dto.ShortsDto;
 import projectbuildup.mivv.domain.shorts.service.ShortsService;
 
 import java.util.List;
-
+@Tag(name = "[Shorts]", description = "쇼츠 관련 API입니다.")
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -56,7 +57,7 @@ public class ShortsController {
       //shortsService.deleteShorts(new ShortsDto.idRequest(shortsId));
       shortsService.deleteShorts(shortsId);
       /*
-      고민) Long shortsId는 객체.. 니까 이것도 이 자체를 넘겨주는게 맞는 건가,, DTO로 감싸서 넘겨주는게 맞는거 같기도 한데.. 솔은 이렇게 안짰는데 이게 맞는 걸까유..ㅠ
+      고민) Long shortsId는 객체.. 니까 이것도 이 자체를 넘겨주는게 맞는 건가,, DTO로 감싸서 넘겨주는게 맞는거 같기도 한데.. 이게 맞는 걸까유..ㅠ
        */
       return new ResponseEntity<>(HttpStatus.OK);
   }

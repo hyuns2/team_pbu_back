@@ -25,13 +25,9 @@ public class ShortsService {
         return new ShortsDto.shortsResponse(shorts);
     }
     public List<ShortsDto.shortsResponse> getAllSavingShorts(){
-        //List<Shorts> shortsList = shortsRepository.findAll().stream().filter(shorts -> shorts.getCategory()==ShortsCategory.SAVING).toList();
-        //return shortsList.stream().map(ShortsDto.shortsResponse::new).toList();
-        //return shortsRepository.findAllByShortsCategory(ShortsCategory.SAVING).stream().map(ShortsDto.shortsResponse::new).toList();
         return shortsRepository.findAll().stream().filter(shorts -> shorts.getCategory()==ShortsCategory.SAVING).map(ShortsDto.shortsResponse::new).toList();
     }
     public List<ShortsDto.shortsResponse> getAllEduShorts(){
-        //return shortsRepository.findAllByShortsCategory(ShortsCategory.EDUCATION).stream().map(ShortsDto.shortsResponse::new).toList();
         return shortsRepository.findAll().stream().filter(shorts -> shorts.getCategory()==ShortsCategory.EDUCATION).map(ShortsDto.shortsResponse::new).toList();
 
     }
