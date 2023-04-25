@@ -40,7 +40,8 @@ public class Challenge extends BaseTimeEntity {
         this.remittanceOnceLimit = requestDto.getRemittanceOnceLimit();
         this.remittanceAvailableCount = requestDto.getRemittanceAvailableCount();
     }
-    public void updateImage(Image image){
+
+    public void updateImage(Image image) {
         this.image = image;
     }
 

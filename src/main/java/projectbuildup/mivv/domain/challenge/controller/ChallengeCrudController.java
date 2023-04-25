@@ -16,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 import projectbuildup.mivv.domain.challenge.dto.ChallengeDto;
 import projectbuildup.mivv.domain.challenge.service.ChallengeService;
 import projectbuildup.mivv.global.common.pagination.ChallengePageParam;
-import projectbuildup.mivv.global.common.pagination.PageParam;
 import projectbuildup.mivv.global.common.pagination.PagingDto;
 import projectbuildup.mivv.global.constant.ExampleValue;
 import projectbuildup.mivv.global.constant.Header;

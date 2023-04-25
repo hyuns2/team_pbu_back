@@ -46,6 +46,4 @@ public class ImageUploader {
         String uuid = UUID.randomUUID().toString();
         return uuid + "." + extension;
     }
-
-
 }

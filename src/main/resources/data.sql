@@ -61,6 +61,7 @@ values (1, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'ha
 
 insert into user_roles (user_id, roles)
 values (1, 'ROLE_USER'),
+       (1, 'ROLE_ADMIN'),
        (2, 'ROLE_USER'),
        (3, 'ROLE_USER'),
        (4, 'ROLE_USER'),
@@ -72,11 +73,13 @@ values (1, 'ROLE_USER'),
 
 
 -- <Challenge> --
-insert into challenge(id, created_time, modified_time, end_date, image_url, main_title, remittance_available_count,
+insert into challenge(id, created_time, modified_time, end_date, store_file_name,
+                      original_file_name, path, main_title,
+                      remittance_available_count,
                       remittance_once_limit, start_date, sub_title)
-values (1, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', '2024-02-13', 'image', '샘플 챌린지1', 5, 0,
+values (1, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', '2024-02-13', null, null, null, '샘플 챌린지1', 5, 0,
         '2023-02-13', 'sample1'),
-       (2, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', '2024-02-13', 'image', '샘플 챌린지2', 5, 0,
+       (2, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', '2024-02-13', null, null, null, '샘플 챌린지2', 5, 0,
         '2023-02-13', 'sample2');
 
 
