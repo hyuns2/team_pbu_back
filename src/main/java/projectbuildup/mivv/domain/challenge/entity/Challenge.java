@@ -4,7 +4,7 @@ package projectbuildup.mivv.domain.challenge.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import projectbuildup.mivv.domain.challenge.dto.ChallengeDto;
-import projectbuildup.mivv.domain.participation.entity.Participation;
+import projectbuildup.mivv.domain.image.Image;
 import projectbuildup.mivv.global.common.BaseTimeEntity;
 
 import java.time.LocalDate;
@@ -28,7 +28,7 @@ public class Challenge extends BaseTimeEntity {
     private List<String> description = new ArrayList<>();
     private long remittanceOnceLimit;
     private long remittanceAvailableCount;
-    private String imageUrl;
+    private Image image;
 
     private LocalDate startDate;
     private LocalDate endDate;
@@ -39,17 +39,19 @@ public class Challenge extends BaseTimeEntity {
         this.description = requestDto.getDescription();
         this.remittanceOnceLimit = requestDto.getRemittanceOnceLimit();
         this.remittanceAvailableCount = requestDto.getRemittanceAvailableCount();
-        this.imageUrl = requestDto.getImageUrl();
+    }
+    public void updateImage(Image image){
+        this.image = image;
     }
 
-    public static Challenge of(ChallengeDto.CreationRequest requestDto) {
+    public static Challenge from(ChallengeDto.CreationRequest requestDto, Image image) {
         return Challenge.builder()
                 .mainTitle(requestDto.getMainTitle())
                 .subTitle(requestDto.getSubTitle())
                 .description(requestDto.getDescription())
                 .remittanceOnceLimit(requestDto.getRemittanceOnceLimit())
                 .remittanceAvailableCount(requestDto.getRemittanceAvailableCount())
-                .imageUrl(requestDto.getImageUrl())
+                .image(image)
                 .startDate(requestDto.getStartDate())
                 .endDate(requestDto.getEndDate())
                 .build();

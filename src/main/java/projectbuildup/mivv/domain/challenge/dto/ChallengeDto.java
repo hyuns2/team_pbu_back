@@ -35,10 +35,6 @@ public class ChallengeDto {
         @Min(1)
         private int remittanceAvailableCount;
 
-        @Schema(description = "이미지 URL")
-        @NotBlank
-        private String imageUrl;
-
         @Schema(description = "시작일자", example = "yyyy-MM-dd")
         @FutureOrPresent
         @DateTimeFormat(pattern = "yyyy-MM-dd")
