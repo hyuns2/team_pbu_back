@@ -6,9 +6,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import projectbuildup.mivv.domain.challenge.dto.RankDto;
 import projectbuildup.mivv.domain.remittance.entity.Remittance;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 public class RemittanceDto {
@@ -49,5 +51,6 @@ public class RemittanceDto {
     public static class StatusResponse{
         long total;
         RemittanceCount remittanceCount;
+        List<RankDto.ShortResponse> ranks;
     }
 }

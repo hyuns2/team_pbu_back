@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import projectbuildup.mivv.domain.account.service.accountdetails.AccountDetailsSystem;
 import projectbuildup.mivv.domain.account.service.accountdetails.CodefAccountDetailsSystem;
+import projectbuildup.mivv.domain.challenge.dto.RankDto;
+import projectbuildup.mivv.domain.challenge.service.RankingService;
 import projectbuildup.mivv.domain.remittance.dto.RemittanceCount;
 import projectbuildup.mivv.domain.remittance.entity.Remittance;
 import projectbuildup.mivv.domain.remittance.repository.RemittanceRepository;
@@ -41,7 +43,7 @@ public class RemittanceService {
     private final ParticipationRepository participationRepository;
     private final RemittanceChecker remittanceChecker;
     private final RemittanceRepository remittanceRepository;
-
+    private final RankingService rankingService;
 
     /**
      * 5분간 계좌 내역을 비동기로 확인하며, 실제 송금이 이루어졌는지 확인합니다.
@@ -87,7 +89,8 @@ public class RemittanceService {
     public RemittanceDto.StatusResponse getBriefStatus(User user) {
         long totalAmount = getTotalAmount(user);
         RemittanceCount monthlyCount = getMonthlyCount(user, null);
-        return new RemittanceDto.StatusResponse(totalAmount, monthlyCount);
+        List<RankDto.ShortResponse> ranks = rankingService.getUserRanks(user);
+        return new RemittanceDto.StatusResponse(totalAmount, monthlyCount, ranks);
     }
 
     private long getTotalAmount(User user) {
