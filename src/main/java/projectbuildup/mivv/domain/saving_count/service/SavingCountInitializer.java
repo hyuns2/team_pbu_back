@@ -12,9 +12,9 @@ public class SavingCountInitializer {
     private final SavingCountService savingCountService;
     private static final long FIXED_ONE_DAY = 1000 * 60 * 60 * 24;
     private static final long FIXED_ONE_MINUTE = 1000 * 60;
-    private static final String CRON_DAYBREAK = "0 0 4 * * *";
+    private static final String CRON_MIDNIGHT = "0 0 0 * * *";
 
-    @Scheduled(fixedRate = FIXED_ONE_DAY)
+    @Scheduled(cron = CRON_MIDNIGHT)
     private void renewWithdraw() {
         log.info("참여 횟수 초기화 시작");
         savingCountService.initializeToZero();

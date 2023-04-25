@@ -23,7 +23,7 @@ import projectbuildup.mivv.global.constant.Header;
 @RestController
 @Slf4j
 @RequestMapping("/api")
-@Tag(name = "[1-2.Challenge]", description = "챌린지 참여 관련 API입니다.")
+@Tag(name = "[3.Challenge]", description = "챌린지 참여 관련 API입니다.")
 public class ParticipationController {
 
     private final ParticipationService participationService;
