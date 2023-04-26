@@ -15,7 +15,7 @@ public class WorthyConsumptionResponseDto {
         private int originalPrice;
         private int salePrice;
         private String priceTag;
-        private int lastMonthAmount;
+        private long lastMonthAmount;
         private int maxParticipants;
         private String summary;
 
@@ -36,7 +36,7 @@ public class WorthyConsumptionResponseDto {
         private String videoUrl;
         private String imageUrl;
         private CheckConditionType isIssuableCoupon;
-        private Boolean isLiked;//이거 처리 해야 됨
+        private boolean isLiked;//이거 처리 해야 됨
 
         public ReadBasicResponse(WorthyConsumption worthyConsumption) {
             super(worthyConsumption);

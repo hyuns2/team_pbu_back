@@ -19,18 +19,23 @@ public class WorthyConsumption extends BaseTimeEntity {
     @Id @Column(name = "WorthyConsumptionId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @NonNull @Column(name = "WorthyConsumptionTitle")
     private String title;
+
     @ElementCollection
     @NonNull
     private List<String> hashtags = new ArrayList<>();
+
     @NonNull
     private int originalPrice;
     @NonNull
     private int salePrice;
+
     @ElementCollection
     @NonNull
     private List<String> whyRecommendation = new ArrayList<>();
+
     @NonNull
     private String priceTag;
     @NonNull
@@ -43,11 +48,13 @@ public class WorthyConsumption extends BaseTimeEntity {
     @JoinColumn(name = "WorthyConsumptionUrlId")
     @Setter
     private WorthyConsumptionUrl worthyConsumptionUrl;
+
     @Nullable
     @OneToOne(fetch = FetchType.LAZY, cascade =  CascadeType.ALL)
     @JoinColumn(name = "ConditionId")
     @Setter
     private Condition condition;
+
     //@ElementCollection @Builder.Default
     @OneToMany(mappedBy = "worthyConsumption", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Coupon> coupons = new ArrayList<Coupon>();

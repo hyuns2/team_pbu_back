@@ -27,6 +27,7 @@ public class CouponService {
     public void createCoupon(Long worthyConsumptionId, CouponRequestDto.CreationRequest couponRequestDto){
         WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionId).orElseThrow(CWorthyConsumptionNotFoundException::new);
         Coupon coupon = new Coupon(couponRequestDto);
+        log.info("생성된 쿠폰은 {}", coupon);
         //Coupon coupon = couponRequestDto.toEntity();//주입할거가 없다면 빌더 패턴 말고 그냥 new 해야하는건가?
         worthyConsumption.addCoupon(coupon);
         worthyConsumptionRepository.save(worthyConsumption);

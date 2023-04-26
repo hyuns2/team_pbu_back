@@ -2,13 +2,20 @@ package projectbuildup.mivv.common;
 
 import projectbuildup.mivv.domain.account.entity.Account;
 import projectbuildup.mivv.domain.account.entity.BankType;
+import projectbuildup.mivv.domain.coupon.entity.Coupon;
 import projectbuildup.mivv.domain.remittance.entity.Remittance;
 import projectbuildup.mivv.domain.challenge.entity.Challenge;
 import projectbuildup.mivv.domain.participation.entity.Participation;
 import projectbuildup.mivv.domain.user.entity.IdentityVerification;
 import projectbuildup.mivv.domain.user.entity.User;
+import projectbuildup.mivv.domain.worthyConsumption.entity.CheckConditionType;
+import projectbuildup.mivv.domain.worthyConsumption.entity.Condition;
+import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumption;
+import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumptionUrl;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.concurrent.CountDownLatch;
 
 public class MockEntity {
 
@@ -22,6 +29,12 @@ public class MockEntity {
     public static final Remittance MOCK_REMITTANCE_2;
     public static final Remittance MOCK_REMITTANCE_3;
     public static final Remittance MOCK_REMITTANCE_4;
+
+    public static final WorthyConsumption MOCK_WORTHY_CONSUMPTION;
+    public static final Condition MOCK_CONDITION;
+    public static final WorthyConsumptionUrl MOCK_WORTHY_CONSUMPTION_URL;
+    public static final Coupon MOCK_COUPON;
+
 
     static{
         MOCK_ACCOUNT = Account.builder()
@@ -59,5 +72,41 @@ public class MockEntity {
         MOCK_REMITTANCE_2 = new Remittance(2000L, MOCK_PARTICIPATION);
         MOCK_REMITTANCE_3 = new Remittance(-500L, MOCK_PARTICIPATION);
         MOCK_REMITTANCE_4 = new Remittance(3000L, MOCK_PARTICIPATION);
+    }
+    static {
+        MOCK_WORTHY_CONSUMPTION_URL = WorthyConsumptionUrl.builder()
+                .imageUrl("이미지 url")
+                .videoUrl("비디오 url")
+                .detailImageUrl("상세보기의 이미지 url")
+                .detailBackgroundImageUrl("상세보기의 배경 이미지 url")
+                .placeImageUrl("위치 이미지 url")
+                .build();
+
+        MOCK_CONDITION = Condition.builder()
+                .maxParticipants(10)
+                .issuableCouponStartDate(LocalDate.of(2023, 4, 18))
+                .issuableCouponEndDate(LocalDate.of(2023, 4, 20))
+                .lastMonthAmount(1000)
+                .build();
+
+        MOCK_WORTHY_CONSUMPTION = WorthyConsumption.builder()
+                .title("가치소비 제목")
+                .hashtags(new ArrayList<>())
+                .originalPrice(10000)
+                .salePrice(5000)
+                .whyRecommendation(new ArrayList<>())
+                .placeTag("가치소비 장소 태그")
+                .priceTag("가치소비 가격 태그")
+                .summary("가치소비 요약 한줄")
+                .worthyConsumptionUrl(MOCK_WORTHY_CONSUMPTION_URL)
+                .condition(MOCK_CONDITION)
+                .build();
+        MOCK_COUPON = Coupon.builder()
+                .title("쿠폰 제목")
+                .imageUrl("쿠폰 이미지 url")
+                .pin(1111)
+                .limitEndDate(LocalDate.of(2023, 4, 18))
+                .limitEndDate(LocalDate.of(2023, 4, 19))
+                .build();
     }
 }
