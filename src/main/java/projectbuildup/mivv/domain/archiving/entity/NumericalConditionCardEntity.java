@@ -65,5 +65,4 @@ public class NumericalConditionCardEntity extends CardEntity {
                 this.term.equals(numericalConditionCardEntity.getTerm());
     }
 
-
 }

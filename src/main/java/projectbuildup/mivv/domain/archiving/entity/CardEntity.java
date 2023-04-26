@@ -2,14 +2,17 @@ package projectbuildup.mivv.domain.archiving.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import projectbuildup.mivv.domain.archiving.dto.ArchivingDto;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
+@Builder
 @Inheritance(strategy = InheritanceType.JOINED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @DiscriminatorColumn(name = "dType")
 @Table(name="Card")
 public class CardEntity {
@@ -42,6 +45,24 @@ public class CardEntity {
         this.subTitle = subTitle;
         this.sentence = sentence;
         this.image = image;
+    }
+
+    public void updateCard(ArchivingDto.updateGeneralCardRequestDto dto) {
+        if (dto.getKind() != null) {
+            this.kind = dto.getKind();
+        }
+        if (dto.getTitle() != null) {
+            this.title = dto.getTitle();
+        }
+        if (dto.getSubTitle() != null) {
+            this.subTitle = dto.getSubTitle();
+        }
+        if (dto.getSentence() != null) {
+            this.sentence = dto.getSentence();
+        }
+        if (dto.getImage() != null) {
+            this.image = dto.getImage();
+        }
     }
 
 }
