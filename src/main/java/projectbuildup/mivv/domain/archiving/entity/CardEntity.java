@@ -2,6 +2,7 @@ package projectbuildup.mivv.domain.archiving.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import projectbuildup.mivv.domain.archiving.dto.ArchivingDto;
 
 import java.util.ArrayList;
@@ -9,10 +10,9 @@ import java.util.List;
 
 @Entity
 @Getter
-@Builder
 @Inheritance(strategy = InheritanceType.JOINED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@SuperBuilder
 @DiscriminatorColumn(name = "dType")
 @Table(name="Card")
 public class CardEntity {
@@ -38,14 +38,6 @@ public class CardEntity {
 
     @OneToMany(mappedBy = "cardEntity", cascade = CascadeType.ALL)
     private List<UserCardEntity> userCards = new ArrayList<>();
-
-    public CardEntity(String kind, String title, String subTitle, String sentence, String image) {
-        this.kind = kind;
-        this.title = title;
-        this.subTitle = subTitle;
-        this.sentence = sentence;
-        this.image = image;
-    }
 
     public void updateCard(ArchivingDto.updateGeneralCardRequestDto dto) {
         if (dto.getKind() != null) {

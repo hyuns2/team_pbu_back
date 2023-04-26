@@ -2,12 +2,11 @@ package projectbuildup.mivv.domain.archiving.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import projectbuildup.mivv.domain.archiving.dto.ArchivingDto;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SuperBuilder
 @Getter
 @Entity
 @DiscriminatorValue("NumericalCondition")
@@ -17,14 +16,6 @@ public class NumericalConditionCardEntity extends CardEntity {
     protected Integer charge;
     protected Integer count;
     protected Integer term;
-
-    @Builder
-    public NumericalConditionCardEntity(String kind, String title, String subTitle, String sentence, String image, int charge, int count, int term) {
-        super(kind, title, subTitle, sentence, image);
-        this.charge = charge;
-        this.count = count;
-        this.term = term;
-    }
 
     public void updateCard(ArchivingDto.updateNumericalConditionCardRequestDto dto) {
         if (dto.getKind() != null) {
