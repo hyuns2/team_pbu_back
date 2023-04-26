@@ -2,8 +2,12 @@ package projectbuildup.mivv.domain.remittance.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.data.redis.RedisReactiveAutoConfiguration;
 import org.springframework.stereotype.Component;
 import projectbuildup.mivv.domain.account.service.accountdetails.AccountDetailsSystem;
+import projectbuildup.mivv.domain.challenge.service.RankScoreCalculator;
+import projectbuildup.mivv.domain.challenge.service.RankingService;
+import projectbuildup.mivv.domain.challenge.service.RedisRankingSystem;
 import projectbuildup.mivv.domain.participation.entity.Participation;
 import projectbuildup.mivv.domain.remittance.entity.Remittance;
 import projectbuildup.mivv.domain.remittance.repository.RemittanceRepository;
@@ -25,10 +29,13 @@ public class RemittanceChecker {
 
     private final AccountDetailsSystem accountDetailsSystem;
     private final RemittanceRepository remittanceRepository;
+    private final SavingCountService savingCountService;
+    private final RankingService rankingService;
+    private final RankScoreCalculator rankScoreCalculator;
+
     private final static long ASYNC_CHECK_TERM_SEC = 1;
     private final static int ASYNC_CHECK_TRY = 5;
     private final static String DATE_TIME_PATTERN = "yyyyMMddHHmmss";
-    private final SavingCountService savingCountService;
 
     /**
      * 비동기로 동작하는 작업입니다.
@@ -46,14 +53,23 @@ public class RemittanceChecker {
         for (int i = 0; i < ASYNC_CHECK_TRY; i++) {
             sleep(TimeUnit.MILLISECONDS.convert(ASYNC_CHECK_TERM_SEC, TimeUnit.SECONDS));
             log.info("{}초 경과, 조회 중...", (i + 1) * ASYNC_CHECK_TERM_SEC);
-            if (hasRecord(remittance, participation.getUser(), startTime)) {
-                remittanceRepository.save(remittance);
-                savingCountService.addCount(participation);
-                log.info("송금액 확인 성공");
+            if (updateRemittance(remittance, participation, startTime)) {
                 return true;
             }
         }
         log.info("송금액 확인 실패");
+        return false;
+    }
+
+    private boolean updateRemittance(Remittance remittance, Participation participation, LocalDateTime startTime) {
+        if (hasRecord(remittance, participation.getUser(), startTime)) {
+            remittanceRepository.save(remittance);
+            savingCountService.addCount(participation);
+            double score = rankScoreCalculator.calculate(remittance);
+            rankingService.updateScore(participation.getUser(), participation.getChallenge(), score);
+            log.info("송금액 확인 성공");
+            return true;
+        }
         return false;
     }
 

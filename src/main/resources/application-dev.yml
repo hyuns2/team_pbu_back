@@ -1,4 +1,3 @@
-
 spring:
   datasource:  # mysql 사용
     url: jdbc:mysql://localhost:3306/mivv_new_dev?validationQuery="select 1"&useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=UTF-8&serverTimezone=UTC&useLegacyDatetimeCode=false
@@ -9,7 +8,7 @@ spring:
       connection-test-query: select 1 from dual
   jpa:  # jpa 사용시 추가
     database: mysql
-    database-platform: org.hibernate.dialect.MariaDB106Dialect
+    database-platform: org.hibernate.dialect.MySQL8Dialect
     properties:
       hibernate:
         jdbc:
@@ -17,7 +16,7 @@ spring:
         enable_lazy_load_no_trans: true
         format_sql: true
         hbm2ddl:
-          auto: update
+          auto: create
     show-sql: true
   data:
     redis:
