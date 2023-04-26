@@ -52,3 +52,7 @@ springdoc:
 
 api:
   password-change: http://localhost:8080/api/password/change
+
+path:
+  images: E:/ROOM/Github/mivv-backend/src/test/resources/store/images
+

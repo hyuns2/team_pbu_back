@@ -36,30 +36,32 @@ values (1, 'abcdef', 'CODEF'),
        (9, 'abcdef', 'CODEF');
 
 -- <User> --
-insert into user (id, created_time, modified_time, agreement, email, nickname, password, profile_image,
+insert into user (id, created_time, modified_time, agreement, email, nickname, password, store_file_name,
+                  original_file_name, path,
                   identity_verification_id, account_id)
 values (1, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'hansol8701@naver.com', 'user01',
-        '{bcrypt}$2a$10$9WYLiZLDXSkF15LFXnjppOKS/Ae6SGkWtHZRZte3IN0TfByYufxmK', 'image-url', 1, 1),
+        '{bcrypt}$2a$10$9WYLiZLDXSkF15LFXnjppOKS/Ae6SGkWtHZRZte3IN0TfByYufxmK', null, null, null, 1, 1),
        (2, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'hansol8701@naver.com', 'user02',
-        '{bcrypt}$2a$10$9WYLiZLDXSkF15LFXnjppOKS/Ae6SGkWtHZRZte3IN0TfByYufxmK', 'image-url', 2, 2),
+        '{bcrypt}$2a$10$9WYLiZLDXSkF15LFXnjppOKS/Ae6SGkWtHZRZte3IN0TfByYufxmK', null, null, null, 2, 2),
        (3, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'hansol8701@naver.com', 'user03',
-        '{bcrypt}$2a$10$9WYLiZLDXSkF15LFXnjppOKS/Ae6SGkWtHZRZte3IN0TfByYufxmK', 'image-url', 3, 3),
+        '{bcrypt}$2a$10$9WYLiZLDXSkF15LFXnjppOKS/Ae6SGkWtHZRZte3IN0TfByYufxmK', null, null, null, 3, 3),
        (4, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'hansol8701@naver.com', 'user04',
-        '{bcrypt}$2a$10$9WYLiZLDXSkF15LFXnjppOKS/Ae6SGkWtHZRZte3IN0TfByYufxmK', 'image-url', 4, 4),
+        '{bcrypt}$2a$10$9WYLiZLDXSkF15LFXnjppOKS/Ae6SGkWtHZRZte3IN0TfByYufxmK', null, null, null, 4, 4),
        (5, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'hansol8701@naver.com', 'user05',
-        '{bcrypt}$2a$10$9WYLiZLDXSkF15LFXnjppOKS/Ae6SGkWtHZRZte3IN0TfByYufxmK', 'image-url', 5, 5),
+        '{bcrypt}$2a$10$9WYLiZLDXSkF15LFXnjppOKS/Ae6SGkWtHZRZte3IN0TfByYufxmK', null, null, null, 5, 5),
        (6, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'hansol8701@naver.com', 'user06',
-        '{bcrypt}$2a$10$9WYLiZLDXSkF15LFXnjppOKS/Ae6SGkWtHZRZte3IN0TfByYufxmK', 'image-url', 6, 6),
+        '{bcrypt}$2a$10$9WYLiZLDXSkF15LFXnjppOKS/Ae6SGkWtHZRZte3IN0TfByYufxmK', null, null, null, 6, 6),
        (7, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'hansol8701@naver.com', 'user07',
-        '{bcrypt}$2a$10$9WYLiZLDXSkF15LFXnjppOKS/Ae6SGkWtHZRZte3IN0TfByYufxmK', 'image-url', 7, 7),
+        '{bcrypt}$2a$10$9WYLiZLDXSkF15LFXnjppOKS/Ae6SGkWtHZRZte3IN0TfByYufxmK', null, null, null, 7, 7),
        (8, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'hansol8701@naver.com', 'user08',
-        '{bcrypt}$2a$10$9WYLiZLDXSkF15LFXnjppOKS/Ae6SGkWtHZRZte3IN0TfByYufxmK', 'image-url', 8, 8),
+        '{bcrypt}$2a$10$9WYLiZLDXSkF15LFXnjppOKS/Ae6SGkWtHZRZte3IN0TfByYufxmK', null, null, null, 8, 8),
        (9, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'hansol8701@naver.com', 'user09',
-        '{bcrypt}$2a$10$9WYLiZLDXSkF15LFXnjppOKS/Ae6SGkWtHZRZte3IN0TfByYufxmK', 'image-url', 9, 9);
+        '{bcrypt}$2a$10$9WYLiZLDXSkF15LFXnjppOKS/Ae6SGkWtHZRZte3IN0TfByYufxmK', null, null, null, 9, 9);
 
 
 insert into user_roles (user_id, roles)
 values (1, 'ROLE_USER'),
+       (1, 'ROLE_ADMIN'),
        (2, 'ROLE_USER'),
        (3, 'ROLE_USER'),
        (4, 'ROLE_USER'),
@@ -71,11 +73,13 @@ values (1, 'ROLE_USER'),
 
 
 -- <Challenge> --
-insert into challenge(id, created_time, modified_time, end_date, image_url, main_title, remittance_available_count,
+insert into challenge(id, created_time, modified_time, end_date, store_file_name,
+                      original_file_name, path, main_title,
+                      remittance_available_count,
                       remittance_once_limit, start_date, sub_title)
-values (1, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', '2024-02-13', 'image', '샘플 챌린지1', 5, 0,
+values (1, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', '2024-02-13', null, null, null, '샘플 챌린지1', 5, 0,
         '2023-02-13', 'sample1'),
-       (2, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', '2024-02-13', 'image', '샘플 챌린지2', 5, 0,
+       (2, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', '2024-02-13', null, null, null, '샘플 챌린지2', 5, 0,
         '2023-02-13', 'sample2');
 
 

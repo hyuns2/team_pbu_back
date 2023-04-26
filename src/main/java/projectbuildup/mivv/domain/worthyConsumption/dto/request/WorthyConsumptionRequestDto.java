@@ -1,14 +1,17 @@
 package projectbuildup.mivv.domain.worthyConsumption.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
+import projectbuildup.mivv.domain.worthyConsumption.dto.WorthyConsumptionConditionDto;
+import projectbuildup.mivv.domain.worthyConsumption.entity.Condition;
 import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumption;
 import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumptionUrl;
 
+import java.time.LocalDate;
 import java.util.List;
 @Schema(description = "가치소비 요청 DTO")
 public class WorthyConsumptionRequestDto {
@@ -20,8 +23,6 @@ public class WorthyConsumptionRequestDto {
         String title;
         @NotNull
         List<String> hashtags;
-        @Positive
-        int maxParticipants;
         @NotNull(message = "가치소비의 원래 가격을 입력해주세요") @Positive
         int originalPrice;
         @NotNull(message = "가치소비의 할인 가격을 입력해주세요") @Positive
@@ -31,14 +32,15 @@ public class WorthyConsumptionRequestDto {
         String priceTag;
         String placeTag;
         @NotNull
-        List<String> summary;
+        String summary;
         @NotNull
-        WorthyConsumptionUrlRequestDto.CreationRequest worthyConsumptionUrlRequest;
-        public WorthyConsumption toEntity(WorthyConsumptionUrl worthyConsumptionUrl){
+        WorthyConsumptionUrlDto.CreationRequest worthyConsumptionUrlDto;
+        @NotNull
+        WorthyConsumptionConditionDto.CreationRequest worthyConsumptionConditionDto;
+        public WorthyConsumption toEntity(WorthyConsumptionUrl worthyConsumptionUrl, Condition condition){
             return WorthyConsumption.builder()
                     .title(title)
                     .hashtags(hashtags)
-                    .maxParticipants(maxParticipants)
                     .worthyConsumptionUrl(worthyConsumptionUrl)
                     .originalPrice(originalPrice)
                     .salePrice(salePrice)
@@ -46,6 +48,7 @@ public class WorthyConsumptionRequestDto {
                     .priceTag(priceTag)
                     .placeTag(placeTag)
                     .summary(summary)
+                    .condition(condition)
                     .build();
         }
     }
@@ -65,7 +68,7 @@ public class WorthyConsumptionRequestDto {
         List<String> hashtags;
         int maxParticipants;
         List<String> whyRecommendation;
-        List<String> summary;
+        String summary;
     }
     @NoArgsConstructor
     @Getter @Setter
@@ -103,6 +106,7 @@ public class WorthyConsumptionRequestDto {
         String placeTag;
 
     }
+
 
 
 }

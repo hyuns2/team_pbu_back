@@ -104,6 +104,7 @@ class RemittanceRepositoryTest {
         remittanceRepository.save(remittance2);
         remittanceRepository.save(remittance3);
         remittanceRepository.save(remittance4);
+
         given(remittanceRepository.findSumAmountByUser(user)).willReturn(5500L);
 
         // when

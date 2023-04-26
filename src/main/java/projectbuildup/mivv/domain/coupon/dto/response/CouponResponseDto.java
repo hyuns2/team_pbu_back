@@ -25,4 +25,25 @@ public class CouponResponseDto {
             this.limitEndDate = coupon.getLimitEndDate();
         }
     }
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class ReadResponseWithWorthyConsumption{
+        String title;
+        int originalPrice;
+        int salePrice;
+        String priceTag;
+        String imageUrl;
+        LocalDate limitStartDate;
+        LocalDate limitEndDate;
+        public ReadResponseWithWorthyConsumption(Coupon coupon){
+            this.title = coupon.getTitle();
+            this.originalPrice = coupon.getWorthyConsumption().getOriginalPrice();
+            this.salePrice = coupon.getWorthyConsumption().getSalePrice();
+            this.priceTag = coupon.getWorthyConsumption().getPriceTag();
+            this.imageUrl = coupon.getImageUrl();
+            this.limitStartDate = coupon.getLimitStartDate();
+            this.limitEndDate = coupon.getLimitEndDate();
+        }
+    }
 }

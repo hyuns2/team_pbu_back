@@ -14,14 +14,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import projectbuildup.mivv.domain.user.dto.PasswordChangeDto;
+import projectbuildup.mivv.domain.user.dto.ProfileUpdateDto;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.domain.user.service.PasswordChanger;
+import projectbuildup.mivv.domain.user.service.UserService;
 import projectbuildup.mivv.global.constant.DeviceType;
 import projectbuildup.mivv.global.constant.ExampleValue;
 import projectbuildup.mivv.global.constant.Header;
 import projectbuildup.mivv.global.error.exception.CBadRequestException;
 import projectbuildup.mivv.global.utils.DeviceFinder;
+
+import java.io.IOException;
 
 @Slf4j
 @RestController
@@ -30,6 +35,7 @@ import projectbuildup.mivv.global.utils.DeviceFinder;
 @RequiredArgsConstructor
 public class UserController {
     private final PasswordChanger passwordChanger;
+    private final UserService userService;
     private final static String PASSWORD_CHANGE_APP_SCHEMA = "/change";
     public static final String LOCATION = "location";
 
@@ -62,6 +68,15 @@ public class UserController {
     public ResponseEntity<Void> changePassword(@RequestBody @Valid PasswordChangeDto requestDto, @AuthenticationPrincipal User user) {
         requestDto.setUserId(user.getId());
         passwordChanger.changePassword(requestDto);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Operation(summary = "프로필 수정", description = "사용자의 프로필 정보를 수정합니다.")
+    @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
+    @PreAuthorize("hasRole('USER')")
+    @PutMapping("/profile")
+    public ResponseEntity<Void> updateProfile(@RequestPart ProfileUpdateDto requestDto, @RequestPart MultipartFile profileImage, @AuthenticationPrincipal User user) throws IOException {
+        userService.func(user.getId(), requestDto, profileImage);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
