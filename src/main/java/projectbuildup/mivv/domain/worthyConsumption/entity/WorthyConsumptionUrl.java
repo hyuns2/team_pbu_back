@@ -1,18 +1,17 @@
 package projectbuildup.mivv.domain.worthyConsumption.entity;
 
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
 import projectbuildup.mivv.domain.worthyConsumption.dto.request.WorthyConsumptionRequestDto;
-import projectbuildup.mivv.domain.worthyConsumption.dto.request.WorthyConsumptionUrlRequestDto;
+import projectbuildup.mivv.domain.worthyConsumption.dto.request.WorthyConsumptionUrlDto;
 
-@Entity @Table(name = "WorthyConsumption_URL")
+@Entity @Table(name = "WorthyConsumptionURL")
 @AllArgsConstructor @NoArgsConstructor
 @Getter @Builder
 public class WorthyConsumptionUrl {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "worthyConsumptionUrl_id")
+    @Column(name = "WorthyConsumptionUrlId")
     private Long id;
     private String videoUrl;
     private String imageUrl;
@@ -21,10 +20,10 @@ public class WorthyConsumptionUrl {
     private String placeImageUrl;
     //@MapsId
     //@Nullable
-    @OneToOne(mappedBy = "worthyConsumptionUrl", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private WorthyConsumption worthyConsumption;
+    //@OneToOne(mappedBy = "worthyConsumptionUrl", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    //private WorthyConsumption worthyConsumption;
 
-    public WorthyConsumptionUrl(WorthyConsumptionUrlRequestDto.CreationRequest worthyConsumptionUrlRequest) {
+    public WorthyConsumptionUrl(WorthyConsumptionUrlDto.CreationRequest worthyConsumptionUrlRequest) {
         this.videoUrl = worthyConsumptionUrlRequest.getVideoUrl();
         this.imageUrl = worthyConsumptionUrlRequest.getImageUrl();
         this.detailImageUrl = worthyConsumptionUrlRequest.getDetailImageUrl();

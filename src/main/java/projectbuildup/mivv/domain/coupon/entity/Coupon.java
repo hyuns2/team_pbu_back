@@ -8,17 +8,18 @@ import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumption;
 import projectbuildup.mivv.global.common.BaseTimeEntity;
 
 import java.time.LocalDate;
-@Entity
-@Table
+@Entity @Table
 @Getter
 @AllArgsConstructor @NoArgsConstructor
 @Builder
 public class Coupon extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "CouponId")
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "worthyConsumptionId")
+    @Setter
     private WorthyConsumption worthyConsumption;
     @Nonnull
     private String title;
@@ -26,12 +27,19 @@ public class Coupon extends BaseTimeEntity {
     private String imageUrl;
     @Nonnull
     private int pin;
-    @Setter
-    private Boolean isUsed;
     @Nonnull
     private LocalDate limitStartDate;
     @Nonnull
     private LocalDate limitEndDate;
+
+    public Coupon(CouponRequestDto.CreationRequest couponRequestDto) {
+        this.title = couponRequestDto.getTitle();
+        this.imageUrl = couponRequestDto.getImageUrl();
+        this.pin = couponRequestDto.getPin();
+        this.limitStartDate = couponRequestDto.getLimitStartDate();
+        this.limitEndDate = couponRequestDto.getLimitEndDate();
+    }
+
     public void updateContent(CouponRequestDto.UpdateContentRequest couponRequestDto){
         this.title = couponRequestDto.getTitle();
         this.imageUrl = couponRequestDto.getImageUrl();

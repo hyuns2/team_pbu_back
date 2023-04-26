@@ -1,4 +1,3 @@
-
 spring:
   datasource:  # mysql 사용
     url: jdbc:mysql://localhost:3306/mivv_new_local?validationQuery="select 1"&useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=UTF-8&serverTimezone=UTC&useLegacyDatetimeCode=false
