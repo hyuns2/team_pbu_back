@@ -6,16 +6,16 @@ import projectbuildup.mivv.domain.coupon.entity.Coupon;
 import projectbuildup.mivv.domain.remittance.entity.Remittance;
 import projectbuildup.mivv.domain.challenge.entity.Challenge;
 import projectbuildup.mivv.domain.participation.entity.Participation;
+import projectbuildup.mivv.domain.shorts.entity.Shorts;
+import projectbuildup.mivv.domain.shorts.entity.ShortsCategory;
 import projectbuildup.mivv.domain.user.entity.IdentityVerification;
 import projectbuildup.mivv.domain.user.entity.User;
-import projectbuildup.mivv.domain.worthyConsumption.entity.CheckConditionType;
 import projectbuildup.mivv.domain.worthyConsumption.entity.Condition;
 import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumption;
 import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumptionUrl;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.concurrent.CountDownLatch;
 
 public class MockEntity {
 
@@ -35,6 +35,8 @@ public class MockEntity {
     public static final WorthyConsumptionUrl MOCK_WORTHY_CONSUMPTION_URL;
     public static final Coupon MOCK_COUPON;
 
+    public static final Shorts MOCK_SAVING_SHORTS;
+    public static final Shorts MOCK_EDU_SHORTS;
 
     static{
         MOCK_ACCOUNT = Account.builder()
@@ -107,6 +109,20 @@ public class MockEntity {
                 .pin(1111)
                 .limitEndDate(LocalDate.of(2023, 4, 18))
                 .limitEndDate(LocalDate.of(2023, 4, 19))
+                .build();
+    }
+    static {
+        MOCK_SAVING_SHORTS = Shorts.builder()
+                .title("쇼츠 제목")
+                .content("쇼츠 내용")
+                .videoUrl("쇼츠 영상 url")
+                .category(ShortsCategory.SAVING)
+                .build();
+        MOCK_EDU_SHORTS = Shorts.builder()
+                .title("쇼츠 제목")
+                .content("쇼츠 내용")
+                .videoUrl("쇼츠 영상 url")
+                .category(ShortsCategory.EDUCATION)
                 .build();
     }
 }

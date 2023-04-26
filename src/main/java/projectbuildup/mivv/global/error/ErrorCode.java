@@ -49,7 +49,13 @@ public enum ErrorCode {
 
 
     // 20000 ~ : 가치소비 관련 에러
-    COUPON_NOT_FOUND(-20000, "쿠폰을 찾을 수 없습니다.", HttpStatus.BAD_REQUEST);
+    COUPON_NOT_FOUND(-20000, "쿠폰을 찾을 수 없습니다.", HttpStatus.BAD_REQUEST),
+
+
+    // 25000 ~ : 쇼츠 관련 에러
+    SHORTS_NOT_FOUND(-25000, "숏츠를 찾을 수 없습니다.", HttpStatus.BAD_REQUEST);
+
+
     final int code;
     final String message;
     final HttpStatus statusCode;
