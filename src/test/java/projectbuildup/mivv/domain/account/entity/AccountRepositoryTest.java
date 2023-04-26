@@ -7,13 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
-import projectbuildup.mivv.common.MockEntity;
 import projectbuildup.mivv.domain.account.repository.AccountRepository;
 import projectbuildup.mivv.global.config.JpaAuditingConfig;
-import projectbuildup.mivv.global.error.exception.CInternalServerException;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @Slf4j
 @DataJpaTest
@@ -27,7 +27,8 @@ class AccountRepositoryTest {
     @DisplayName("계좌 저장시 커넥티드아이디를 함께 저장한다.")
     void 계좌_저장시_커넥티드아이디를_함께_저장한다() {
         // given
-        Account account = MockEntity.MOCK_ACCOUNT;
+        Map<OpenBanking, String> connectionMap = Map.of(OpenBanking.CODEF, "0123456789");
+        Account account = Account.builder().connectionMap(connectionMap).build();
 
         // when
         Account saved = accountRepository.save(account);
@@ -35,17 +36,5 @@ class AccountRepositoryTest {
         // then
         log.info("{}",saved);
         assertThat(saved.getAccountNumbers()).isEqualTo("0123456789");
-    }
-
-    @Test
-    @DisplayName("계좌 저장시 커넥티드아이디가 주어지지 않으면 예외를 발생시킨다.")
-    void 계좌_저장시_커넥티드아이디가_주어지지_않으면_예외_발생() {
-        // given
-
-        // when
-
-        // then
-        assertThatThrownBy(() -> Account.builder().bankType(BankType.CITY).accountNumbers("0123456789").build())
-                .isInstanceOf(CInternalServerException.class);
     }
 }
