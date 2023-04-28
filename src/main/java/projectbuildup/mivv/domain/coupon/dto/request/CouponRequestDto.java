@@ -10,6 +10,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import projectbuildup.mivv.domain.coupon.entity.Coupon;
+import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumption;
 
 import java.time.LocalDate;
 
@@ -37,7 +38,6 @@ public class CouponRequestDto {
                     .limitEndDate(limitEndDate)
                     .build();
         }
-
     }
     @AllArgsConstructor @NoArgsConstructor
     @Getter

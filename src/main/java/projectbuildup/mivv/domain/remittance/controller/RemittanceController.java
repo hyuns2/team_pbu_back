@@ -1,3 +1,4 @@
+
 package projectbuildup.mivv.domain.remittance.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import projectbuildup.mivv.domain.challenge.service.RankingService;
 import projectbuildup.mivv.domain.remittance.dto.RemittanceDto;
 import projectbuildup.mivv.domain.remittance.service.RemittanceService;
 import projectbuildup.mivv.domain.user.entity.User;
@@ -59,7 +61,7 @@ public class RemittanceController {
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
-    @Operation(summary = "사용자의 절약 상태 요약", description = "총 절약금액, 현재 월의 절약 횟수를 조회합니다.")
+    @Operation(summary = "사용자의 절약 상태 요약", description = "메인화면에 사용되는 기능입니다. 총 절약금액, 현재 월의 절약 횟수, 챌린지별 등수를 조회합니다.")
     @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/remittance/status")

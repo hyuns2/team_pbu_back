@@ -3,6 +3,7 @@ package projectbuildup.mivv.global.common.fileUpload;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import projectbuildup.mivv.global.error.exception.CFileNotInputException;
+import projectbuildup.mivv.global.error.exception.CIllegalFileExtensionException;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,20 +19,26 @@ public class FileStore {
         return fileDir + fileName;
     }
 
-    public UploadFile storeFile(MultipartFile multipartFile) throws IOException {
+    // 엑셀파일만 저장하는 메소드
+    public UploadFile storeExcelFile(MultipartFile multipartFile) throws IOException {
+
         if (multipartFile.isEmpty())
             throw new CFileNotInputException();
-
         String uploadFileName = multipartFile.getOriginalFilename();
-        String storeFileName = UUID.randomUUID() + "." + extractExt(uploadFileName);
+        String extension = checkExtension(uploadFileName);
+
+        if (!extension.equals("xls") && !extension.equals("xlsx")) {
+            throw new CIllegalFileExtensionException();
+        }
+        String storeFileName = UUID.randomUUID() + "." + extension;
 
         multipartFile.transferTo(new File(getFullPath(storeFileName)));
-
         return new UploadFile(uploadFileName, storeFileName);
+
     }
 
     // 확장자 뜯기
-    private String extractExt(String uploadFileName) {
+    private String checkExtension(String uploadFileName) {
         int dotIndex = uploadFileName.lastIndexOf(".");
         return uploadFileName.substring(dotIndex + 1);
     }

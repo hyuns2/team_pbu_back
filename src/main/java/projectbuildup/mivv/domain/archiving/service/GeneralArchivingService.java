@@ -89,10 +89,10 @@ public class GeneralArchivingService {
     public void assignGeneralCards(final ArchivingDto.AssignGeneralCardsRequestDto dto) throws IOException {
 
         FileStore fileStore = new FileStore();
-        UploadFile file = fileStore.storeFile(dto.getFile());
+        UploadFile file = fileStore.storeExcelFile(dto.getFile());
 
-        // 확장자 엑셀 아니면 쳐내기
         // 엑셀파일 읽고 사용자에게 카드 할당
+
 
     }
 

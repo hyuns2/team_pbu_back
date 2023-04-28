@@ -37,6 +37,7 @@ public enum ErrorCode {
     //8000 ~ : 클라이언트 에러
     ILLEGAL_ARGUMENT_ERROR(-8000, "잘못된 파라미터입니다.", HttpStatus.BAD_REQUEST),
     VALIDATION_ERROR(-8001, "유효성 검증에 실패했습니다.", HttpStatus.BAD_REQUEST),
+    ILLEGAL_FILE_EXTENSION_ERROR(-8002, "해당 파일 확장자는 지원하지 않습니다.", HttpStatus.BAD_REQUEST),
 
     // 9000 ~ : 서버 에러
     INTERNAL_SERVER_ERROR(-9999, "서버 에러입니다.", HttpStatus.INTERNAL_SERVER_ERROR),
@@ -46,7 +47,15 @@ public enum ErrorCode {
     INQUIRY_OVER_ERROR(-15000, "문의 개수 한도를 초과했습니다.", HttpStatus.BAD_REQUEST),
     INQUIRY_NOT_FOUND(-15100, "해당하는 문의를 찾을 수 없습니다.", HttpStatus.BAD_REQUEST),
     CARD_NOT_FOUND(-16000, "해당하는 카드를 찾을 수 없습니다.", HttpStatus.BAD_REQUEST),
-    FILE_NOT_INPUT(-17000, "파일 수신에 실패했습니다.", HttpStatus.BAD_REQUEST);
+
+
+    // 20000 ~ : 가치소비 관련 에러
+    COUPON_NOT_FOUND(-20000, "쿠폰을 찾을 수 없습니다.", HttpStatus.BAD_REQUEST),
+
+
+    // 25000 ~ : 쇼츠 관련 에러
+    SHORTS_NOT_FOUND(-25000, "숏츠를 찾을 수 없습니다.", HttpStatus.BAD_REQUEST);
+
 
     final int code;
     final String message;
