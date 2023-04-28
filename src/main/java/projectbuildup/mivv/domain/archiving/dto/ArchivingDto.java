@@ -2,9 +2,11 @@ package projectbuildup.mivv.domain.archiving.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.web.multipart.MultipartFile;
 import projectbuildup.mivv.domain.archiving.entity.CardEntity;
 import projectbuildup.mivv.domain.archiving.entity.NumericalConditionCardEntity;
 import projectbuildup.mivv.domain.archiving.entity.UserCardEntity;
@@ -193,6 +195,18 @@ public class ArchivingDto {
                     .build();
 
         }
+    }
+
+    @AllArgsConstructor
+    @Data
+    public static class AssignGeneralCardsRequestDto {
+        @NotNull
+        @Schema(description = "카드 고유변호")
+        private Long id;
+
+        @NotBlank
+        @Schema(description = "첨부 파일")
+        private MultipartFile file;
     }
 
     @AllArgsConstructor

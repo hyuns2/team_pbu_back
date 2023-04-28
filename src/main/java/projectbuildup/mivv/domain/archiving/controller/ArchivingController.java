@@ -7,10 +7,12 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import projectbuildup.mivv.domain.archiving.dto.ArchivingDto;
 import projectbuildup.mivv.domain.archiving.service.GeneralArchivingService;
 import projectbuildup.mivv.domain.archiving.service.NumericalArchivingService;
@@ -18,6 +20,7 @@ import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.global.constant.ExampleValue;
 import projectbuildup.mivv.global.constant.Header;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -116,12 +119,23 @@ public class ArchivingController {
         return ResponseEntity.ok().body(responseDto);
     }
 
-    @Operation(summary = "수치 조건의 카드 할당", description = "사용자에게 수치 조건에 맞는 카드를 할당합니다.")
+    @Operation(summary = "수치 조건의 카드 할당", description = "수치 조건에 만족하는지 체크하고, 만족하면 사용자는 카드를 부여받습니다.")
     @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('USER')")
-    @GetMapping("/assign/numericalCards")
+    @GetMapping("/assign/numerical-cards")
     public ResponseEntity<?> assignNumericalConditionCards(@AuthenticationPrincipal User user) {
         nService.assignNumericalConditionCards(user);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    //어드민 권한 설정 필요, hasRole('USER')로 테스트함
+    @Operation(summary = "일반 조건의 카드 할당", description = "관리자가 특정 조건을 달성한 사용자에게 해당하는 카드를 부여합니다.")
+    @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
+    @PreAuthorize("hasRole('USER')")
+    @PostMapping(value = "/assign/general-cards", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> assignGeneralCards(@AuthenticationPrincipal User user, @ModelAttribute("idAndFile") ArchivingDto.AssignGeneralCardsRequestDto dto) throws IOException {
+        gService.assignGeneralCards(dto);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

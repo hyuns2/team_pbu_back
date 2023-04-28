@@ -172,4 +172,11 @@ public class ExceptionAdvice {
         e.printStackTrace();
         return new ResponseEntity<>(new ErrorResponseDto(errorCode), errorCode.getStatusCode());
     }
+
+    @ExceptionHandler(CFileNotInputException.class)
+    protected ResponseEntity<ErrorResponseDto> handle(CFileNotInputException e) {
+        ErrorCode errorCode = e.getErrorCode();
+        e.printStackTrace();
+        return new ResponseEntity<>(new ErrorResponseDto(errorCode), errorCode.getStatusCode());
+    }
 }
