@@ -1,15 +1,22 @@
 package projectbuildup.mivv.domain.shorts.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import projectbuildup.mivv.domain.shorts.dto.ShortsDto;
 import projectbuildup.mivv.domain.shorts.service.ShortsService;
+import projectbuildup.mivv.domain.user.entity.User;
+import projectbuildup.mivv.global.constant.ExampleValue;
+import projectbuildup.mivv.global.constant.Header;
 
 import java.util.List;
 @Tag(name = "[Shorts]", description = "쇼츠 관련 API입니다.")
@@ -61,5 +68,4 @@ public class ShortsController {
        */
       return new ResponseEntity<>(HttpStatus.OK);
   }
-
 }

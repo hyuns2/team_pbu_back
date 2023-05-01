@@ -11,6 +11,7 @@ import projectbuildup.mivv.domain.archiving.entity.NumericalConditionCardEntity;
 import projectbuildup.mivv.domain.archiving.entity.UserCardEntity;
 import projectbuildup.mivv.domain.auth.dto.AuthDto;
 import projectbuildup.mivv.domain.image.Image;
+import projectbuildup.mivv.domain.likes.entity.Likes;
 import projectbuildup.mivv.domain.participation.entity.Participation;
 import projectbuildup.mivv.domain.saving_count.entity.SavingCount;
 import projectbuildup.mivv.global.common.BaseTimeEntity;
@@ -46,6 +47,9 @@ public class User extends BaseTimeEntity implements UserDetails {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<UserCardEntity> userCards = new ArrayList<>();
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn
+    Likes likes;
 
     public static User of (AuthDto.SignupRequest requestDto, String encodedPassword, IdentityVerification identityVerification){
         return User.builder()
