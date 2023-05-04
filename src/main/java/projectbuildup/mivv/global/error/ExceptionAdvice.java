@@ -171,10 +171,25 @@ public class ExceptionAdvice {
         return new ResponseEntity<>(new ErrorResponseDto(errorCode), errorCode.getStatusCode());
     }
 
+    @ExceptionHandler(CFileNotInputException.class)
+    protected ResponseEntity<ErrorResponseDto> handle(CFileNotInputException e) {
+        ErrorCode errorCode = e.getErrorCode();
+        e.printStackTrace();
+        return new ResponseEntity<>(new ErrorResponseDto(errorCode), errorCode.getStatusCode());
+    }
+
     @ExceptionHandler(CIllegalFileExtensionException.class)
     protected ResponseEntity<ErrorResponseDto> handle(CIllegalFileExtensionException e) {
         ErrorCode errorCode = e.getErrorCode();
         e.printStackTrace();
         return new ResponseEntity<>(new ErrorResponseDto(errorCode), errorCode.getStatusCode());
+    }
+
+    @ExceptionHandler(CInvalidCellException.class)
+    protected ResponseEntity<ErrorResponseDto> handle(CInvalidCellException e) {
+        ErrorCode errorCode = e.getErrorCode();
+        String message = e.getMessage();
+        e.printStackTrace();
+        return new ResponseEntity<>(new ErrorResponseDto(errorCode, message), errorCode.getStatusCode());
     }
 }

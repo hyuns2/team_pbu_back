@@ -10,7 +10,7 @@ public class CFileNotInputException extends RuntimeException {
 
     public CFileNotInputException(){
         super();
-        errorCode = ErrorCode.FILE_NOT_INPUT;
+        errorCode = ErrorCode.FILE_NOT_INPUT_ERROR;
     }
 
 }

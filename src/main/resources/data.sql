@@ -2,11 +2,11 @@
 insert into identity_verification (id, birth_date, code, mobile, name)
 values (1, '19990101', 'abcdefghijklmnopqrstuvwxyz', '01012345678', 'user01'),
        (2, '19990101', 'sadfsadfsadfsadfsdaf', '01012345678', 'user02'),
-       (3, '19990101', 'sadfsadfsadfsadfsdaf', '01012345678', 'user03'),
+       (3, '19990101', 'sadfsadfsadfsadfsdaf', '01099998888', 'user03'),
        (4, '19990101', 'sadfsadfsadfsadfsdaf', '01012345678', 'user04'),
        (5, '19990101', 'sadfsadfsadfsadfsdaf', '01012345678', 'user05'),
        (6, '19990101', 'sadfsadfsadfsadfsdaf', '01012345678', 'user06'),
-       (7, '19990101', 'sadfsadfsadfsadfsdaf', '01012345678', 'user07'),
+       (7, '19990101', 'sadfsadfsadfsadfsdaf', '01011112222', 'user07'),
        (8, '19990101', 'sadfsadfsadfsadfsdaf', '01012345678', 'user08'),
        (9, '19990101', 'sadfsadfsadfsadfsdaf', '01012345678', 'user09');
 
