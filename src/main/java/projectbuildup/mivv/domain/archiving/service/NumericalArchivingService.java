@@ -11,6 +11,7 @@ import projectbuildup.mivv.domain.remittance.repository.RemittanceRepository;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.global.error.exception.CCardNotFoundException;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,7 +25,7 @@ public class NumericalArchivingService {
     private final UserCardRepository userCardRepo;
     private final RemittanceRepository remittanceRepo;
 
-    public void createNumericalConditionCard(final ArchivingDto.createNumericalConditionCardRequestDto dto) {
+    public void createNumericalConditionCard(final ArchivingDto.createNumericalConditionCardRequestDto dto) throws IOException {
 
         NumericalConditionCardEntity entity = ArchivingDto.createNumericalConditionCardRequestDto.toEntity(dto);
 
@@ -32,7 +33,7 @@ public class NumericalArchivingService {
 
     }
 
-    public void updateNumericalConditionCard(final Long id, final ArchivingDto.updateNumericalConditionCardRequestDto dto) {
+    public void updateNumericalConditionCard(final Long id, final ArchivingDto.updateNumericalConditionCardRequestDto dto) throws IOException {
 
         Optional<NumericalConditionCardEntity> target = (Optional<NumericalConditionCardEntity>) cardRepo.findById(id);
         if (target.isEmpty()) {

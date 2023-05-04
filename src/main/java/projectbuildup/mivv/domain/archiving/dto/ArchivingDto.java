@@ -6,11 +6,16 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 import projectbuildup.mivv.domain.archiving.entity.CardEntity;
 import projectbuildup.mivv.domain.archiving.entity.NumericalConditionCardEntity;
 import projectbuildup.mivv.domain.archiving.entity.UserCardEntity;
+import projectbuildup.mivv.global.common.fileUpload.FileStore;
+import projectbuildup.mivv.global.common.fileUpload.UploadFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
 
 public class ArchivingDto {
@@ -39,10 +44,9 @@ public class ArchivingDto {
         @Schema(description = "카드 명언")
         private String sentence;
 
-        @NotBlank
-        @Length(min = 2, max = 5000)
-        @Schema(description = "카드 이미지 URL")
-        private String image;
+        @NotNull
+        @Schema(description = "카드 이미지 파일")
+        private MultipartFile image;
 
         @Schema(description = "발급조건 금액")
         private Integer charge;
@@ -53,14 +57,16 @@ public class ArchivingDto {
         @Schema(description = "발급조건 일수")
         private Integer term;
 
-        public static NumericalConditionCardEntity toEntity(final ArchivingDto.createNumericalConditionCardRequestDto dto) {
+        public static NumericalConditionCardEntity toEntity(final ArchivingDto.createNumericalConditionCardRequestDto dto) throws IOException {
+            FileStore fileStore = new FileStore();
+            UploadFile uploadFile = fileStore.storeImageFile(dto.getImage());
 
             return NumericalConditionCardEntity.builder()
                     .kind(dto.getKind())
                     .title(dto.getTitle())
                     .subTitle(dto.getSubTitle())
                     .sentence(dto.getSentence())
-                    .image(dto.getImage())
+                    .imagePath(uploadFile.getStoreFullPath())
                     .charge(dto.getCharge())
                     .count(dto.getCount())
                     .term(dto.getTerm())
@@ -89,9 +95,9 @@ public class ArchivingDto {
         @Schema(description = "카드 명언")
         private String sentence;
 
-        @Length(min = 2, max = 5000)
-        @Schema(description = "카드 이미지 URL")
-        private String image;
+        @NotNull
+        @Schema(description = "카드 이미지 파일")
+        private MultipartFile image;
 
         @Schema(description = "발급조건 금액")
         private Integer charge;
@@ -102,20 +108,6 @@ public class ArchivingDto {
         @Schema(description = "발급조건 일수")
         private Integer term;
 
-        public static NumericalConditionCardEntity toEntity(final ArchivingDto.updateNumericalConditionCardRequestDto dto) {
-
-            return NumericalConditionCardEntity.builder()
-                    .kind(dto.getKind())
-                    .title(dto.getTitle())
-                    .subTitle(dto.getSubTitle())
-                    .sentence(dto.getSentence())
-                    .image(dto.getImage())
-                    .charge(dto.getCharge())
-                    .count(dto.getCount())
-                    .term(dto.getTerm())
-                    .build();
-
-        }
     }
 
     @AllArgsConstructor
@@ -142,19 +134,20 @@ public class ArchivingDto {
         @Schema(description = "카드 명언")
         private String sentence;
 
-        @NotBlank
-        @Length(min = 2, max = 5000)
-        @Schema(description = "카드 이미지 URL")
-        private String image;
+        @NotNull
+        @Schema(description = "카드 이미지 파일")
+        private MultipartFile image;
 
-        public static CardEntity toEntity(final ArchivingDto.createGeneralCardRequestDto dto) {
+        public static CardEntity toEntity(final ArchivingDto.createGeneralCardRequestDto dto) throws IOException {
+            FileStore fileStore = new FileStore();
+            UploadFile uploadFile = fileStore.storeImageFile(dto.getImage());
 
             return CardEntity.builder()
                     .kind(dto.getKind())
                     .title(dto.getTitle())
                     .subTitle(dto.getSubTitle())
                     .sentence(dto.getSentence())
-                    .image(dto.getImage())
+                    .imagePath(uploadFile.getStoreFullPath())
                     .build();
 
         }
@@ -180,21 +173,10 @@ public class ArchivingDto {
         @Schema(description = "카드 명언")
         private String sentence;
 
-        @Length(min = 2, max = 5000)
-        @Schema(description = "카드 이미지 URL")
-        private String image;
+        @NotNull
+        @Schema(description = "카드 이미지 파일")
+        private MultipartFile image;
 
-        public static CardEntity toEntity(final ArchivingDto.updateGeneralCardRequestDto dto) {
-
-            return CardEntity.builder()
-                    .kind(dto.getKind())
-                    .title(dto.getTitle())
-                    .subTitle(dto.getSubTitle())
-                    .sentence(dto.getSentence())
-                    .image(dto.getImage())
-                    .build();
-
-        }
     }
 
     @AllArgsConstructor
@@ -204,7 +186,7 @@ public class ArchivingDto {
         @Schema(description = "카드 고유변호")
         private Long id;
 
-        @NotBlank
+        @NotNull
         @Schema(description = "첨부 파일")
         private MultipartFile file;
     }
@@ -229,9 +211,8 @@ public class ArchivingDto {
         @Schema(description = "카드 명언")
         private String sentence;
 
-        @Length(min = 2, max = 5000)
-        @Schema(description = "카드 이미지 URL")
-        private String image;
+        @Schema(description = "카드 이미지 파일경로")
+        private String imagePath;
 
         public CardResponseDto(final CardEntity entity) {
             this.id = entity.getId();
@@ -239,7 +220,7 @@ public class ArchivingDto {
             this.title = entity.getTitle();
             this.subTitle = entity.getSubTitle();
             this.sentence = entity.getSentence();
-            this.image = entity.getImage();
+            this.imagePath = entity.getImagePath();
         }
 
     }

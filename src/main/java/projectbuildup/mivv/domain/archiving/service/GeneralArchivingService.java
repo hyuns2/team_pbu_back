@@ -35,14 +35,14 @@ public class GeneralArchivingService {
     private final UserCardRepository userCardRepo;
     private final UserRepository userRepo;
 
-    public void createGeneralCard(final ArchivingDto.createGeneralCardRequestDto dto) {
+    public void createGeneralCard(final ArchivingDto.createGeneralCardRequestDto dto) throws IOException {
 
         CardEntity entity = ArchivingDto.createGeneralCardRequestDto.toEntity(dto);
         cardRepo.save(entity);
 
     }
 
-    public void updateGeneralCard(final Long id, final ArchivingDto.updateGeneralCardRequestDto dto) {
+    public void updateGeneralCard(final Long id, final ArchivingDto.updateGeneralCardRequestDto dto) throws IOException {
 
         Optional<CardEntity> target = cardRepo.findById(id);
         if (target.isEmpty()) {
@@ -114,7 +114,7 @@ public class GeneralArchivingService {
         UploadFile file = fileStore.storeExcelFile(dtoFile);
 
         // 엑셀파일 읽어서, 이름과 전화번호 빼내기
-        InputStream inputStream = new FileInputStream(fileStore.getFullPath(file.getStoreFilename()));
+        InputStream inputStream = new FileInputStream(file.getStoreFullPath());
         Workbook workBook = WorkbookFactory.create(inputStream);
         Sheet sheet = workBook.getSheetAt(0);
 

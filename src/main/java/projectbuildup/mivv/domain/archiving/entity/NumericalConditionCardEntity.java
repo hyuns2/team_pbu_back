@@ -4,6 +4,10 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import projectbuildup.mivv.domain.archiving.dto.ArchivingDto;
+import projectbuildup.mivv.global.common.fileUpload.FileStore;
+import projectbuildup.mivv.global.common.fileUpload.UploadFile;
+
+import java.io.IOException;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder
@@ -17,7 +21,7 @@ public class NumericalConditionCardEntity extends CardEntity {
     protected Integer count;
     protected Integer term;
 
-    public void updateCard(ArchivingDto.updateNumericalConditionCardRequestDto dto) {
+    public void updateCard(ArchivingDto.updateNumericalConditionCardRequestDto dto) throws IOException {
         if (dto.getKind() != null) {
             this.kind = dto.getKind();
         }
@@ -31,7 +35,10 @@ public class NumericalConditionCardEntity extends CardEntity {
             this.sentence = dto.getSentence();
         }
         if (dto.getImage() != null) {
-            this.image = dto.getImage();
+            FileStore fileStore = new FileStore();
+            UploadFile uploadFile = fileStore.storeImageFile(dto.getImage());
+
+            this.imagePath = uploadFile.getStoreFullPath();
         }
         if (dto.getCharge() != null) {
             this.charge = dto.getCharge();
@@ -50,7 +57,7 @@ public class NumericalConditionCardEntity extends CardEntity {
                 this.title.equals(numericalConditionCardEntity.getTitle()) &&
                 this.subTitle.equals(numericalConditionCardEntity.getSubTitle()) &&
                 this.sentence.equals(numericalConditionCardEntity.getSentence()) &&
-                this.image.equals(numericalConditionCardEntity.getImage()) &&
+                this.imagePath.equals(numericalConditionCardEntity.getImagePath()) &&
                 this.charge.equals(numericalConditionCardEntity.getCharge()) &&
                 this.count.equals(numericalConditionCardEntity.getCount()) &&
                 this.term.equals(numericalConditionCardEntity.getTerm());

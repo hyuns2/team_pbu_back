@@ -10,4 +10,6 @@ public class UploadFile {
     private String uploadFileName;
     //서버의 파일명
     private String storeFilename;
+    //서버 저장경로
+    private String storeFullPath;
 }

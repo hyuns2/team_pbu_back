@@ -4,7 +4,10 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import projectbuildup.mivv.domain.archiving.dto.ArchivingDto;
+import projectbuildup.mivv.global.common.fileUpload.FileStore;
+import projectbuildup.mivv.global.common.fileUpload.UploadFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,12 +37,12 @@ public class CardEntity {
     protected String sentence;
 
     @Column(nullable = false, length = 5000)
-    protected String image;
+    protected String imagePath;
 
     @OneToMany(mappedBy = "cardEntity", cascade = CascadeType.ALL)
     private List<UserCardEntity> userCards = new ArrayList<>();
 
-    public void updateCard(ArchivingDto.updateGeneralCardRequestDto dto) {
+    public void updateCard(ArchivingDto.updateGeneralCardRequestDto dto) throws IOException {
         if (dto.getKind() != null) {
             this.kind = dto.getKind();
         }
@@ -53,7 +56,10 @@ public class CardEntity {
             this.sentence = dto.getSentence();
         }
         if (dto.getImage() != null) {
-            this.image = dto.getImage();
+            FileStore fileStore = new FileStore();
+            UploadFile uploadFile = fileStore.storeImageFile(dto.getImage());
+
+            this.imagePath = uploadFile.getStoreFullPath();
         }
     }
 

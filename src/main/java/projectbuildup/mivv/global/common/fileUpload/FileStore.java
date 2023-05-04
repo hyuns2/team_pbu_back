@@ -15,10 +15,6 @@ public class FileStore {
     private final String rootPath = System.getProperty("user.dir");
     private final String fileDir = rootPath + "/files/";
 
-    public String getFullPath(String fileName) {
-        return fileDir + fileName;
-    }
-
     // 엑셀파일만 저장하는 메소드
     public UploadFile storeExcelFile(MultipartFile multipartFile) throws IOException {
 
@@ -31,9 +27,29 @@ public class FileStore {
             throw new CIllegalFileExtensionException();
         }
         String storeFileName = UUID.randomUUID() + "." + extension;
+        String storeFullPath = fileDir + "excels/" + storeFileName;
 
-        multipartFile.transferTo(new File(getFullPath(storeFileName)));
-        return new UploadFile(uploadFileName, storeFileName);
+        multipartFile.transferTo(new File(storeFullPath));
+        return new UploadFile(uploadFileName, storeFileName, storeFullPath);
+
+    }
+
+    // 이미지만 저장하는 메소드
+    public UploadFile storeImageFile(MultipartFile multipartFile) throws IOException {
+
+        if (multipartFile.isEmpty())
+            throw new CFileNotInputException();
+        String uploadFileName = multipartFile.getOriginalFilename();
+        String extension = checkExtension(uploadFileName);
+
+        if (!extension.equals("png") && !extension.equals("jpg") && !extension.equals("jpeg")) {
+            throw new CIllegalFileExtensionException();
+        }
+        String storeFileName = UUID.randomUUID() + "." + extension;
+        String storeFullPath = fileDir + "images/" + storeFileName;
+
+        multipartFile.transferTo(new File(storeFullPath));
+        return new UploadFile(uploadFileName, storeFileName, storeFullPath);
 
     }
 
