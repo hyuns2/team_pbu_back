@@ -37,6 +37,7 @@ public class GeneralArchivingService {
     private final UserRepository userRepo;
 
     private final ImageUploader imageUploader;
+    private final FileUploader fileUploader;
 
     public void createGeneralCard(final ArchivingDto.createGeneralCardRequestDto dto) throws IOException {
 
@@ -117,7 +118,6 @@ public class GeneralArchivingService {
 
     void checkAndAssignGeneralCards(MultipartFile dtoFile, CardEntity cardEntity) throws IOException {
         // 엑셀파일이면, 프로젝트 바로 안의 files 폴더에 저장
-        FileUploader fileUploader = new FileUploader();
         File file = fileUploader.storeExcelFile(dtoFile);
 
         // 엑셀파일 읽어서, 이름과 전화번호 빼내기
