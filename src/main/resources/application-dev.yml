@@ -20,6 +20,7 @@ spring:
         format_sql: true
         hbm2ddl:
           auto: create
+    defer-datasource-initialization: true #더미데이터 용
     show-sql: true
   sql: #더미데이터 용
     init:
