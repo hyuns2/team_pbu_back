@@ -163,7 +163,6 @@ public class ArchivingDto {
         @Schema(description = "카드 부제목")
         private String subTitle;
 
-        @NotBlank
         @Length(min = 2, max = 30)
         @Schema(description = "카드 명언")
         private String sentence;
@@ -184,23 +183,6 @@ public class ArchivingDto {
         @NotNull
         @Schema(description = "첨부 파일")
         private MultipartFile file;
-
-        @NotBlank
-        @Length(min = 2, max = 5000)
-        @Schema(description = "카드 이미지 URL")
-        private String image;
-
-        public static CardEntity toEntity(final ArchivingDto.createGeneralCardRequestDto dto) {
-
-            return CardEntity.builder()
-                    .kind(dto.getKind())
-                    .title(dto.getTitle())
-                    .subTitle(dto.getSubTitle())
-                    .sentence(dto.getSentence())
-                    .image(dto.getImage())
-                    .build();
-
-        }
     }
 
     @AllArgsConstructor
