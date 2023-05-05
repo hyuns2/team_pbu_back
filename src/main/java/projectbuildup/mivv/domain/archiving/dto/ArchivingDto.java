@@ -2,13 +2,18 @@ package projectbuildup.mivv.domain.archiving.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.web.multipart.MultipartFile;
 import projectbuildup.mivv.domain.archiving.entity.CardEntity;
 import projectbuildup.mivv.domain.archiving.entity.NumericalConditionCardEntity;
 import projectbuildup.mivv.domain.archiving.entity.UserCardEntity;
+import projectbuildup.mivv.global.common.fileStore.FileUploader;
+import projectbuildup.mivv.global.common.fileStore.File;
 
+import java.io.IOException;
 import java.time.LocalDate;
 
 public class ArchivingDto {
@@ -37,10 +42,9 @@ public class ArchivingDto {
         @Schema(description = "카드 명언")
         private String sentence;
 
-        @NotBlank
-        @Length(min = 2, max = 5000)
-        @Schema(description = "카드 이미지 URL")
-        private String image;
+        @NotNull
+        @Schema(description = "카드 이미지 파일")
+        private MultipartFile image;
 
         @Schema(description = "발급조건 금액")
         private Integer charge;
@@ -51,14 +55,14 @@ public class ArchivingDto {
         @Schema(description = "발급조건 일수")
         private Integer term;
 
-        public static NumericalConditionCardEntity toEntity(final ArchivingDto.createNumericalConditionCardRequestDto dto) {
+        public static NumericalConditionCardEntity toEntity(final ArchivingDto.createNumericalConditionCardRequestDto dto, String imagePath) throws IOException {
 
             return NumericalConditionCardEntity.builder()
                     .kind(dto.getKind())
                     .title(dto.getTitle())
                     .subTitle(dto.getSubTitle())
                     .sentence(dto.getSentence())
-                    .image(dto.getImage())
+                    .imagePath(imagePath)
                     .charge(dto.getCharge())
                     .count(dto.getCount())
                     .term(dto.getTerm())
@@ -87,9 +91,9 @@ public class ArchivingDto {
         @Schema(description = "카드 명언")
         private String sentence;
 
-        @Length(min = 2, max = 5000)
-        @Schema(description = "카드 이미지 URL")
-        private String image;
+        @NotNull
+        @Schema(description = "카드 이미지 파일")
+        private MultipartFile image;
 
         @Schema(description = "발급조건 금액")
         private Integer charge;
@@ -100,20 +104,6 @@ public class ArchivingDto {
         @Schema(description = "발급조건 일수")
         private Integer term;
 
-        public static NumericalConditionCardEntity toEntity(final ArchivingDto.updateNumericalConditionCardRequestDto dto) {
-
-            return NumericalConditionCardEntity.builder()
-                    .kind(dto.getKind())
-                    .title(dto.getTitle())
-                    .subTitle(dto.getSubTitle())
-                    .sentence(dto.getSentence())
-                    .image(dto.getImage())
-                    .charge(dto.getCharge())
-                    .count(dto.getCount())
-                    .term(dto.getTerm())
-                    .build();
-
-        }
     }
 
     @AllArgsConstructor
@@ -140,19 +130,18 @@ public class ArchivingDto {
         @Schema(description = "카드 명언")
         private String sentence;
 
-        @NotBlank
-        @Length(min = 2, max = 5000)
-        @Schema(description = "카드 이미지 URL")
-        private String image;
+        @NotNull
+        @Schema(description = "카드 이미지 파일")
+        private MultipartFile image;
 
-        public static CardEntity toEntity(final ArchivingDto.createGeneralCardRequestDto dto) {
+        public static CardEntity toEntity(final ArchivingDto.createGeneralCardRequestDto dto, String imagePath) throws IOException {
 
             return CardEntity.builder()
                     .kind(dto.getKind())
                     .title(dto.getTitle())
                     .subTitle(dto.getSubTitle())
                     .sentence(dto.getSentence())
-                    .image(dto.getImage())
+                    .imagePath(imagePath)
                     .build();
 
         }
@@ -174,15 +163,34 @@ public class ArchivingDto {
         @Schema(description = "카드 부제목")
         private String subTitle;
 
+        @NotBlank
         @Length(min = 2, max = 30)
         @Schema(description = "카드 명언")
         private String sentence;
 
+        @NotNull
+        @Schema(description = "카드 이미지 파일")
+        private MultipartFile image;
+
+    }
+
+    @AllArgsConstructor
+    @Data
+    public static class AssignGeneralCardsRequestDto {
+        @NotNull
+        @Schema(description = "카드 고유변호")
+        private Long id;
+
+        @NotNull
+        @Schema(description = "첨부 파일")
+        private MultipartFile file;
+
+        @NotBlank
         @Length(min = 2, max = 5000)
         @Schema(description = "카드 이미지 URL")
         private String image;
 
-        public static CardEntity toEntity(final ArchivingDto.updateGeneralCardRequestDto dto) {
+        public static CardEntity toEntity(final ArchivingDto.createGeneralCardRequestDto dto) {
 
             return CardEntity.builder()
                     .kind(dto.getKind())
@@ -215,9 +223,8 @@ public class ArchivingDto {
         @Schema(description = "카드 명언")
         private String sentence;
 
-        @Length(min = 2, max = 5000)
-        @Schema(description = "카드 이미지 URL")
-        private String image;
+        @Schema(description = "카드 이미지 파일경로")
+        private String imagePath;
 
         public CardResponseDto(final CardEntity entity) {
             this.id = entity.getId();
@@ -225,7 +232,7 @@ public class ArchivingDto {
             this.title = entity.getTitle();
             this.subTitle = entity.getSubTitle();
             this.sentence = entity.getSentence();
-            this.image = entity.getImage();
+            this.imagePath = entity.getImagePath();
         }
 
     }

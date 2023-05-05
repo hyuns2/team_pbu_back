@@ -1,4 +1,4 @@
-package projectbuildup.mivv.domain.image;
+package projectbuildup.mivv.global.common.imageStore;
 
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 public class Image {
-    String storeFileName;
-    String originalFileName;
-    String path;
+    String originalImageName;
+    String storeImageName;
+    String imagePath;
 }

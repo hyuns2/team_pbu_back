@@ -5,6 +5,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 import projectbuildup.mivv.domain.archiving.dto.ArchivingDto;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,12 +35,12 @@ public class CardEntity {
     protected String sentence;
 
     @Column(nullable = false, length = 5000)
-    protected String image;
+    protected String imagePath;
 
     @OneToMany(mappedBy = "cardEntity", cascade = CascadeType.ALL)
     private List<UserCardEntity> userCards = new ArrayList<>();
 
-    public void updateCard(ArchivingDto.updateGeneralCardRequestDto dto) {
+    public void updateCard(ArchivingDto.updateGeneralCardRequestDto dto, String imagePath) throws IOException {
         if (dto.getKind() != null) {
             this.kind = dto.getKind();
         }
@@ -53,7 +54,7 @@ public class CardEntity {
             this.sentence = dto.getSentence();
         }
         if (dto.getImage() != null) {
-            this.image = dto.getImage();
+            this.imagePath = imagePath;
         }
     }
 

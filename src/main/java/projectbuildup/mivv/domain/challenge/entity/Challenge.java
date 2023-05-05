@@ -4,7 +4,7 @@ package projectbuildup.mivv.domain.challenge.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import projectbuildup.mivv.domain.challenge.dto.ChallengeDto;
-import projectbuildup.mivv.domain.image.Image;
+import projectbuildup.mivv.global.common.imageStore.Image;
 import projectbuildup.mivv.global.common.BaseTimeEntity;
 
 import java.time.LocalDate;

@@ -10,11 +10,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import projectbuildup.mivv.domain.challenge.dto.ChallengeDto;
 import projectbuildup.mivv.domain.user.dto.PasswordChangeDto;
 import projectbuildup.mivv.domain.user.dto.ProfileUpdateDto;
 import projectbuildup.mivv.domain.user.entity.User;
@@ -74,9 +76,9 @@ public class UserController {
     @Operation(summary = "프로필 수정", description = "사용자의 프로필 정보를 수정합니다.")
     @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('USER')")
-    @PutMapping("/profile")
-    public ResponseEntity<Void> updateProfile(@RequestPart ProfileUpdateDto requestDto, @RequestPart MultipartFile profileImage, @AuthenticationPrincipal User user) throws IOException {
-        userService.func(user.getId(), requestDto, profileImage);
+    @PutMapping(value = "/profile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Void> updateProfile(@Valid @ModelAttribute("createChallenge") ProfileUpdateDto requestDto, @AuthenticationPrincipal User user) throws IOException {
+        userService.func(user.getId(), requestDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

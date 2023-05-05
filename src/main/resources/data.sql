@@ -2,11 +2,11 @@
 insert into identity_verification (id, birth_date, code, mobile, name)
 values (1, '19990101', 'abcdefghijklmnopqrstuvwxyz', '01012345678', 'user01'),
        (2, '19990101', 'sadfsadfsadfsadfsdaf', '01012345678', 'user02'),
-       (3, '19990101', 'sadfsadfsadfsadfsdaf', '01012345678', 'user03'),
+       (3, '19990101', 'sadfsadfsadfsadfsdaf', '01099998888', 'user03'),
        (4, '19990101', 'sadfsadfsadfsadfsdaf', '01012345678', 'user04'),
        (5, '19990101', 'sadfsadfsadfsadfsdaf', '01012345678', 'user05'),
        (6, '19990101', 'sadfsadfsadfsadfsdaf', '01012345678', 'user06'),
-       (7, '19990101', 'sadfsadfsadfsadfsdaf', '01012345678', 'user07'),
+       (7, '19990101', 'sadfsadfsadfsadfsdaf', '01011112222', 'user07'),
        (8, '19990101', 'sadfsadfsadfsadfsdaf', '01012345678', 'user08'),
        (9, '19990101', 'sadfsadfsadfsadfsdaf', '01012345678', 'user09');
 
@@ -36,8 +36,8 @@ values (1, 'abcdef', 'CODEF'),
        (9, 'abcdef', 'CODEF');
 
 -- <User> --
-insert into user (id, created_time, modified_time, agreement, email, nickname, password, store_file_name,
-                  original_file_name, path,
+insert into user (id, created_time, modified_time, agreement, email, nickname, password, store_image_name,
+                  original_image_name, image_path,
                   identity_verification_id, account_id)
 values (1, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'hansol8701@naver.com', 'user01',
         '{bcrypt}$2a$10$9WYLiZLDXSkF15LFXnjppOKS/Ae6SGkWtHZRZte3IN0TfByYufxmK', null, null, null, 1, 1),
@@ -73,8 +73,8 @@ values (1, 'ROLE_USER'),
 
 
 -- <Challenge> --
-insert into challenge(id, created_time, modified_time, end_date, store_file_name,
-                      original_file_name, path, main_title,
+insert into challenge(id, created_time, modified_time, end_date, store_image_name,
+                      original_image_name, image_path, main_title,
                       remittance_available_count,
                       remittance_once_limit, start_date, sub_title)
 values (1, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', '2024-02-13', null, null, null, '샘플 챌린지1', 5, 0,

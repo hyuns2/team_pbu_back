@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
 import projectbuildup.mivv.domain.challenge.entity.Challenge;
 
 import java.time.LocalDate;
@@ -44,6 +45,10 @@ public class ChallengeDto {
         @Future
         @DateTimeFormat(pattern = "yyyy-MM-dd")
         LocalDate endDate;
+
+        @Schema(description = "이미지")
+        @NotNull
+        MultipartFile imageFile;
     }
 
     @Getter
@@ -69,9 +74,9 @@ public class ChallengeDto {
         @Min(1)
         private long remittanceAvailableCount;
 
-        @Schema(description = "이미지 URL")
-        @NotBlank
-        private String imageUrl;
+        @Schema(description = "이미지")
+        @NotNull
+        MultipartFile imageFile;
 
         public void setChallengeId(Long challengeId) {
             this.challengeId = challengeId;

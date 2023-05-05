@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -18,6 +19,7 @@ import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.global.constant.ExampleValue;
 import projectbuildup.mivv.global.constant.Header;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -33,8 +35,8 @@ public class ArchivingController {
     @Operation(summary = "수치 조건의 카드 생성", description = "관리자가 수치 조건의 카드를 생성합니다.")
     @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('USER')")
-    @PostMapping("/admin/numerical-card")
-    public ResponseEntity<?> createNumericalConditionCard(@AuthenticationPrincipal User user, @Valid @RequestBody ArchivingDto.createNumericalConditionCardRequestDto dto) {
+    @PostMapping(value = "/admin/numerical-card", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> createNumericalConditionCard(@AuthenticationPrincipal User user, @Valid @ModelAttribute("createNumericalCards") ArchivingDto.createNumericalConditionCardRequestDto dto) throws IOException {
         nService.createNumericalConditionCard(dto);
 
         return new ResponseEntity<>(HttpStatus.OK);
@@ -44,8 +46,8 @@ public class ArchivingController {
     @Operation(summary = "일반 조건의 카드 생성", description = "관리자가 일반 조건의 카드를 생성합니다.")
     @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('USER')")
-    @PostMapping("/admin/general-card")
-    public ResponseEntity<?> createGeneralCard(@AuthenticationPrincipal User user, @Valid @RequestBody ArchivingDto.createGeneralCardRequestDto dto) {
+    @PostMapping(value = "/admin/general-card", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> createGeneralCard(@AuthenticationPrincipal User user, @Valid @ModelAttribute("createGeneralCards") ArchivingDto.createGeneralCardRequestDto dto) throws IOException {
         gService.createGeneralCard(dto);
 
         return new ResponseEntity<>(HttpStatus.OK);
@@ -55,8 +57,8 @@ public class ArchivingController {
     @Operation(summary = "수치 조건의 카드 수정", description = "관리자가 수치 조건의 카드를 수정합니다.")
     @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('USER')")
-    @PatchMapping("/admin/numerical-card/{id}")
-    public ResponseEntity<?> updateNumericalConditionCard(@AuthenticationPrincipal User user, @PathVariable("id") Long id, @Valid @RequestBody ArchivingDto.updateNumericalConditionCardRequestDto dto) {
+    @PatchMapping(value = "/admin/numerical-card/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> updateNumericalConditionCard(@AuthenticationPrincipal User user, @PathVariable("id") Long id, @Valid @ModelAttribute("updateNumericalCards") ArchivingDto.updateNumericalConditionCardRequestDto dto) throws IOException {
         nService.updateNumericalConditionCard(id, dto);
 
         return new ResponseEntity<>(HttpStatus.OK);
@@ -66,8 +68,8 @@ public class ArchivingController {
     @Operation(summary = "일반 조건의 카드 수정", description = "관리자가 일반 조건의 카드를 수정합니다.")
     @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('USER')")
-    @PatchMapping("/admin/general-card/{id}")
-    public ResponseEntity<?> updateGeneralCard(@AuthenticationPrincipal User user, @PathVariable("id") Long id, @Valid @RequestBody ArchivingDto.updateGeneralCardRequestDto dto) {
+    @PatchMapping(value = "/admin/general-card/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> updateGeneralCard(@AuthenticationPrincipal User user, @PathVariable("id") Long id, @Valid @ModelAttribute("updateGeneralCards") ArchivingDto.updateGeneralCardRequestDto dto) throws IOException {
         gService.updateGeneralCard(id, dto);
 
         return new ResponseEntity<>(HttpStatus.OK);
@@ -116,12 +118,23 @@ public class ArchivingController {
         return ResponseEntity.ok().body(responseDto);
     }
 
-    @Operation(summary = "수치 조건의 카드 할당", description = "사용자에게 수치 조건에 맞는 카드를 할당합니다.")
+    @Operation(summary = "수치 조건의 카드 할당", description = "수치 조건에 만족하는지 체크하고, 만족하면 사용자는 카드를 부여받습니다.")
     @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('USER')")
-    @GetMapping("/assign/numericalCards")
+    @GetMapping("/assign/numerical-cards")
     public ResponseEntity<?> assignNumericalConditionCards(@AuthenticationPrincipal User user) {
         nService.assignNumericalConditionCards(user);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    //어드민 권한 설정 필요, hasRole('USER')로 테스트함
+    @Operation(summary = "일반 조건의 카드 할당", description = "관리자가 특정 조건을 달성한 사용자에게 해당하는 카드를 부여합니다.")
+    @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
+    @PreAuthorize("hasRole('USER')")
+    @PostMapping(value = "/assign/general-cards", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> assignGeneralCards(@AuthenticationPrincipal User user, @ModelAttribute("assignGeneralCards") ArchivingDto.AssignGeneralCardsRequestDto dto) throws IOException {
+        gService.assignGeneralCards(dto);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

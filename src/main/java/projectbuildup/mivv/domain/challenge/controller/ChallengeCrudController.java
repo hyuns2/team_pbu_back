@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -34,9 +35,9 @@ public class ChallengeCrudController {
     @Operation(summary = "챌린지 개설", description = "")
     @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/challenges")
-    public ResponseEntity<Void> createChallenge(@RequestPart ChallengeDto.CreationRequest requestDto, @RequestPart MultipartFile imageFile) throws IOException {
-        challengeService.createChallenge(requestDto, imageFile);
+    @PostMapping(value = "/challenges", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Void> createChallenge(@Valid @ModelAttribute("createChallenge") ChallengeDto.CreationRequest requestDto) throws IOException {
+        challengeService.createChallenge(requestDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -59,10 +60,10 @@ public class ChallengeCrudController {
     @Operation(summary = "챌린지 정보 수정", description = "")
     @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('ADMIN')")
-    @PatchMapping("/challenges/{challengeId}")
-    public ResponseEntity<HttpStatus> updateChallenge(@PathVariable Long challengeId, @RequestPart ChallengeDto.UpdateRequest requestDto, @RequestPart MultipartFile imageFile) throws IOException {
+    @PatchMapping(value = "/challenges/{challengeId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<HttpStatus> updateChallenge(@PathVariable Long challengeId, @Valid @ModelAttribute("updateChallenge") ChallengeDto.UpdateRequest requestDto) throws IOException {
         requestDto.setChallengeId(challengeId);
-        challengeService.updateChallenge(requestDto, imageFile);
+        challengeService.updateChallenge(requestDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
