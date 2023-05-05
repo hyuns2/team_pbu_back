@@ -12,13 +12,14 @@ import projectbuildup.mivv.domain.archiving.repository.CardRepository;
 import projectbuildup.mivv.domain.archiving.repository.UserCardRepository;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.domain.user.repository.UserRepository;
-import projectbuildup.mivv.global.common.fileUpload.FileStore;
-import projectbuildup.mivv.global.common.fileUpload.UploadFile;
+import projectbuildup.mivv.global.common.fileStore.FileUploader;
+import projectbuildup.mivv.global.common.fileStore.File;
+import projectbuildup.mivv.global.common.imageStore.ImageUploader;
 import projectbuildup.mivv.global.error.exception.CCardNotFoundException;
 import projectbuildup.mivv.global.error.exception.CInvalidCellException;
 import projectbuildup.mivv.global.error.exception.CUserNotFoundException;
+import projectbuildup.mivv.global.common.imageStore.Image;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,7 +38,10 @@ public class GeneralArchivingService {
 
     public void createGeneralCard(final ArchivingDto.createGeneralCardRequestDto dto) throws IOException {
 
-        CardEntity entity = ArchivingDto.createGeneralCardRequestDto.toEntity(dto);
+        ImageUploader imageUploader = new ImageUploader("${path.images}");
+        Image image = imageUploader.upload(dto.getImage(), "cards");
+
+        CardEntity entity = ArchivingDto.createGeneralCardRequestDto.toEntity(dto, image.getImagePath());
         cardRepo.save(entity);
 
     }
@@ -49,8 +53,11 @@ public class GeneralArchivingService {
             throw new CCardNotFoundException();
         }
 
+        ImageUploader imageUploader = new ImageUploader("${path.images}");
+        Image image = imageUploader.upload(dto.getImage(), "cards");
+
         CardEntity result = target.get();
-        result.updateCard(dto);
+        result.updateCard(dto, image.getImagePath());
 
         cardRepo.save(result);
 
@@ -110,11 +117,11 @@ public class GeneralArchivingService {
 
     void checkAndAssignGeneralCards(MultipartFile dtoFile, CardEntity cardEntity) throws IOException {
         // 엑셀파일이면, 프로젝트 바로 안의 files 폴더에 저장
-        FileStore fileStore = new FileStore();
-        UploadFile file = fileStore.storeExcelFile(dtoFile);
+        FileUploader fileUploader = new FileUploader();
+        File file = fileUploader.storeExcelFile(dtoFile);
 
         // 엑셀파일 읽어서, 이름과 전화번호 빼내기
-        InputStream inputStream = new FileInputStream(file.getStoreFullPath());
+        InputStream inputStream = new FileInputStream(file.getFilePath());
         Workbook workBook = WorkbookFactory.create(inputStream);
         Sheet sheet = workBook.getSheetAt(0);
 

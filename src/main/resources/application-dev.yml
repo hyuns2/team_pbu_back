@@ -17,7 +17,7 @@ spring:
         enable_lazy_load_no_trans: true
         format_sql: true
         hbm2ddl:
-          auto: create
+          auto: update
     show-sql: true
   data:
     redis:
@@ -48,4 +48,5 @@ api:
   password-change: http://localhost:8080/api/password/change
 
 path:
+  files: /resources/static/files
   images: /resources/static/images

@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import projectbuildup.mivv.domain.account.entity.Account;
 import projectbuildup.mivv.domain.archiving.entity.UserCardEntity;
 import projectbuildup.mivv.domain.auth.dto.AuthDto;
-import projectbuildup.mivv.domain.image.Image;
+import projectbuildup.mivv.global.common.imageStore.Image;
 import projectbuildup.mivv.global.common.BaseTimeEntity;
 
 import java.util.ArrayList;

@@ -6,14 +6,12 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 import projectbuildup.mivv.domain.archiving.entity.CardEntity;
 import projectbuildup.mivv.domain.archiving.entity.NumericalConditionCardEntity;
 import projectbuildup.mivv.domain.archiving.entity.UserCardEntity;
-import projectbuildup.mivv.global.common.fileUpload.FileStore;
-import projectbuildup.mivv.global.common.fileUpload.UploadFile;
+import projectbuildup.mivv.global.common.fileStore.FileUploader;
+import projectbuildup.mivv.global.common.fileStore.File;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -57,16 +55,14 @@ public class ArchivingDto {
         @Schema(description = "발급조건 일수")
         private Integer term;
 
-        public static NumericalConditionCardEntity toEntity(final ArchivingDto.createNumericalConditionCardRequestDto dto) throws IOException {
-            FileStore fileStore = new FileStore();
-            UploadFile uploadFile = fileStore.storeImageFile(dto.getImage());
+        public static NumericalConditionCardEntity toEntity(final ArchivingDto.createNumericalConditionCardRequestDto dto, String imagePath) throws IOException {
 
             return NumericalConditionCardEntity.builder()
                     .kind(dto.getKind())
                     .title(dto.getTitle())
                     .subTitle(dto.getSubTitle())
                     .sentence(dto.getSentence())
-                    .imagePath(uploadFile.getStoreFullPath())
+                    .imagePath(imagePath)
                     .charge(dto.getCharge())
                     .count(dto.getCount())
                     .term(dto.getTerm())
@@ -138,16 +134,14 @@ public class ArchivingDto {
         @Schema(description = "카드 이미지 파일")
         private MultipartFile image;
 
-        public static CardEntity toEntity(final ArchivingDto.createGeneralCardRequestDto dto) throws IOException {
-            FileStore fileStore = new FileStore();
-            UploadFile uploadFile = fileStore.storeImageFile(dto.getImage());
+        public static CardEntity toEntity(final ArchivingDto.createGeneralCardRequestDto dto, String imagePath) throws IOException {
 
             return CardEntity.builder()
                     .kind(dto.getKind())
                     .title(dto.getTitle())
                     .subTitle(dto.getSubTitle())
                     .sentence(dto.getSentence())
-                    .imagePath(uploadFile.getStoreFullPath())
+                    .imagePath(imagePath)
                     .build();
 
         }

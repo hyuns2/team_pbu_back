@@ -3,6 +3,7 @@ package projectbuildup.mivv.domain.image;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockMultipartFile;
+import projectbuildup.mivv.global.common.imageStore.ImageUploader;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,7 +12,7 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class ImageUploaderTest {
+class ImageSampleUploaderTest {
 
     private MockMultipartFile getMockMultipartFile(String fileName, String contentType, String path) throws IOException {
         FileInputStream fileInputStream = new FileInputStream(path);

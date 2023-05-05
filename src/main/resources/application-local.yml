@@ -53,4 +53,5 @@ api:
   password-change: http://localhost:8080/api/password/change
 
 path:
+  files: C:\workspace_pbu\MIVV_Backend_new\files
   images: C:\workspace_pbu\MIVV_Backend_new\images

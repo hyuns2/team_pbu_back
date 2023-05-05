@@ -9,6 +9,8 @@ import projectbuildup.mivv.domain.archiving.repository.CardRepository;
 import projectbuildup.mivv.domain.archiving.repository.UserCardRepository;
 import projectbuildup.mivv.domain.remittance.repository.RemittanceRepository;
 import projectbuildup.mivv.domain.user.entity.User;
+import projectbuildup.mivv.global.common.imageStore.Image;
+import projectbuildup.mivv.global.common.imageStore.ImageUploader;
 import projectbuildup.mivv.global.error.exception.CCardNotFoundException;
 
 import java.io.IOException;
@@ -27,7 +29,10 @@ public class NumericalArchivingService {
 
     public void createNumericalConditionCard(final ArchivingDto.createNumericalConditionCardRequestDto dto) throws IOException {
 
-        NumericalConditionCardEntity entity = ArchivingDto.createNumericalConditionCardRequestDto.toEntity(dto);
+        ImageUploader imageUploader = new ImageUploader("${path.images}");
+        Image image = imageUploader.upload(dto.getImage(), "cards");
+
+        NumericalConditionCardEntity entity = ArchivingDto.createNumericalConditionCardRequestDto.toEntity(dto, image.getImagePath());
 
         cardRepo.save(entity);
 
@@ -40,8 +45,11 @@ public class NumericalArchivingService {
             throw new CCardNotFoundException();
         }
 
+        ImageUploader imageUploader = new ImageUploader("${path.images}");
+        Image image = imageUploader.upload(dto.getImage(), "cards");
+
         NumericalConditionCardEntity result = target.get();
-        result.updateCard(dto);
+        result.updateCard(dto, image.getImagePath());
 
         cardRepo.save(result);
 
