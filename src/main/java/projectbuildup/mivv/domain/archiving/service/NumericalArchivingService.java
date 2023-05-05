@@ -27,9 +27,10 @@ public class NumericalArchivingService {
     private final UserCardRepository userCardRepo;
     private final RemittanceRepository remittanceRepo;
 
+    private final ImageUploader imageUploader = new ImageUploader();
+
     public void createNumericalConditionCard(final ArchivingDto.createNumericalConditionCardRequestDto dto) throws IOException {
 
-        ImageUploader imageUploader = new ImageUploader("${path.images}");
         Image image = imageUploader.upload(dto.getImage(), "cards");
 
         NumericalConditionCardEntity entity = ArchivingDto.createNumericalConditionCardRequestDto.toEntity(dto, image.getImagePath());
@@ -45,7 +46,6 @@ public class NumericalArchivingService {
             throw new CCardNotFoundException();
         }
 
-        ImageUploader imageUploader = new ImageUploader("${path.images}");
         Image image = imageUploader.upload(dto.getImage(), "cards");
 
         NumericalConditionCardEntity result = target.get();

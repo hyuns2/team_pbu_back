@@ -36,8 +36,8 @@ values (1, 'abcdef', 'CODEF'),
        (9, 'abcdef', 'CODEF');
 
 -- <User> --
-insert into user (id, created_time, modified_time, agreement, email, nickname, password, store_file_name,
-                  original_file_name, path,
+insert into user (id, created_time, modified_time, agreement, email, nickname, password, store_image_name,
+                  original_image_name, image_path,
                   identity_verification_id, account_id)
 values (1, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'hansol8701@naver.com', 'user01',
         '{bcrypt}$2a$10$9WYLiZLDXSkF15LFXnjppOKS/Ae6SGkWtHZRZte3IN0TfByYufxmK', null, null, null, 1, 1),
@@ -73,8 +73,8 @@ values (1, 'ROLE_USER'),
 
 
 -- <Challenge> --
-insert into challenge(id, created_time, modified_time, end_date, store_file_name,
-                      original_file_name, path, main_title,
+insert into challenge(id, created_time, modified_time, end_date, store_image_name,
+                      original_image_name, image_path, main_title,
                       remittance_available_count,
                       remittance_once_limit, start_date, sub_title)
 values (1, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', '2024-02-13', null, null, null, '샘플 챌린지1', 5, 0,

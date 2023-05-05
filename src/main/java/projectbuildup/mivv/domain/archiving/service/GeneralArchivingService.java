@@ -36,9 +36,10 @@ public class GeneralArchivingService {
     private final UserCardRepository userCardRepo;
     private final UserRepository userRepo;
 
+    private final ImageUploader imageUploader;
+
     public void createGeneralCard(final ArchivingDto.createGeneralCardRequestDto dto) throws IOException {
 
-        ImageUploader imageUploader = new ImageUploader("${path.images}");
         Image image = imageUploader.upload(dto.getImage(), "cards");
 
         CardEntity entity = ArchivingDto.createGeneralCardRequestDto.toEntity(dto, image.getImagePath());
@@ -53,7 +54,6 @@ public class GeneralArchivingService {
             throw new CCardNotFoundException();
         }
 
-        ImageUploader imageUploader = new ImageUploader("${path.images}");
         Image image = imageUploader.upload(dto.getImage(), "cards");
 
         CardEntity result = target.get();

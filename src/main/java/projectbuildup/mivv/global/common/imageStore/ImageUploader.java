@@ -19,17 +19,14 @@ public class ImageUploader {
     @Value("${path.images}")
     String STORE_PATH;
 
-    public ImageUploader(@Value("${path.images}") String property) {
-        this.STORE_PATH = property;
-    }
-
     private static final String DELIMITER = "/";
 
     public Image upload(MultipartFile multipartFile, String dirName) throws IOException {
         String originalName = Objects.requireNonNull(multipartFile.getOriginalFilename());
         String storeName = makeRandomName(originalName);
         String storePath = STORE_PATH + DELIMITER + dirName + DELIMITER + storeName;
-
+        log.info(STORE_PATH);
+        log.info(storePath);
         File file = new File(storePath);
         multipartFile.transferTo(file);
         return new Image(storeName, originalName, storePath);
