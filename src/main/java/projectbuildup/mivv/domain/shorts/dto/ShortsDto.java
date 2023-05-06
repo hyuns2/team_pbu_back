@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 import projectbuildup.mivv.domain.shorts.entity.Shorts;
 import projectbuildup.mivv.domain.shorts.entity.ShortsCategory;
 
@@ -24,9 +25,9 @@ public class ShortsDto {
         @NotBlank(message = "설명은 필수 입력값입니다.")
         String content;
         @NotBlank(message = "영상 주소는 필수 입력값입니다.")
-        String videoUrl;
+        String videoPath;
         @NotBlank(message = "영상의 썸네일 이미지는 필수 입력값입니다.")
-        String imageUrl;
+        private MultipartFile image;
         @NotNull(message = "영상 카테고리는 필수 입력값입니다.") @Enumerated(EnumType.STRING)
         ShortsCategory category;
     }
@@ -35,18 +36,33 @@ public class ShortsDto {
     public static class updateRequest extends idRequest{
         String title;
         String content;
-        String videoUrl;
-        String imageUrl;
+        String videoPath;
+        private MultipartFile image;
     }
-    @Getter
-    public static class shortsResponse extends ShortsDto.creatRequest{
-        public shortsResponse(Shorts shorts){
+//    @Getter
+//    public static class shortsResponse extends ShortsDto.creatRequest{
+//        public shortsResponse(Shorts shorts){
+//            this.title = shorts.getTitle();
+//            this.content = shorts.getContent();
+//            this.videoPath = shorts.getVideoPath();
+//            this.imagePath= shorts.getImageUrl();
+//            this.category = shorts.getCategory();
+//        }
+//    }
+    public static class shortsResponse {
+    String title;
+    String content;
+    String videoPath;
+    String imagePath;
+    @Enumerated(EnumType.STRING)
+    ShortsCategory category;
+    public shortsResponse(Shorts shorts){
             this.title = shorts.getTitle();
             this.content = shorts.getContent();
-            this.videoUrl = shorts.getVideoUrl();
-            this.imageUrl = shorts.getImageUrl();
+            this.videoPath = shorts.getVideoPath();
+            this.imagePath= shorts.getImagePath();
             this.category = shorts.getCategory();
         }
-    }
+}
 
 }

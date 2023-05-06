@@ -13,29 +13,31 @@ public class WorthyConsumptionUrl {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "WorthyConsumptionUrlId")
     private Long id;
-    private String videoUrl;
-    private String imageUrl;
-    private String detailImageUrl;
-    private String detailBackgroundImageUrl;
-    private String placeImageUrl;
+    private String videoPath;
+    private String imagePath;
+    private String detailImagePath;
+    private String detailBackgroundImagePath;
+    private String placeImagePath;
     //@MapsId
     //@Nullable
     //@OneToOne(mappedBy = "worthyConsumptionUrl", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     //private WorthyConsumption worthyConsumption;
 
-    public WorthyConsumptionUrl(WorthyConsumptionUrlDto.CreationRequest worthyConsumptionUrlRequest) {
-        this.videoUrl = worthyConsumptionUrlRequest.getVideoUrl();
-        this.imageUrl = worthyConsumptionUrlRequest.getImageUrl();
-        this.detailImageUrl = worthyConsumptionUrlRequest.getDetailImageUrl();
-        this.detailBackgroundImageUrl = worthyConsumptionUrlRequest.getDetailBackgroundImageUrl();
-        this.placeImageUrl = worthyConsumptionUrlRequest.getPlaceImageUrl();
+    public WorthyConsumptionUrl(WorthyConsumptionUrlDto.CreationRequest worthyConsumptionUrlRequest,
+                                String imagePath, String detailImagePath, String detailBackgroundImagePath, String placeImagePath) {
+        this.videoPath = worthyConsumptionUrlRequest.getVideoPath();
+        this.imagePath = imagePath;
+        this.detailImagePath = detailImagePath;
+        this.detailBackgroundImagePath = detailBackgroundImagePath;
+        this.placeImagePath = placeImagePath;
     }
 
-    public void updateUrl(WorthyConsumptionRequestDto.UpdateUrlRequest requestWorthyConsumptionDto){
-        this.videoUrl = requestWorthyConsumptionDto.getVideoUrl();
-        this.imageUrl = requestWorthyConsumptionDto.getImageUrl();
-        this.detailImageUrl = requestWorthyConsumptionDto.getDetailImageUrl();
-        this.detailBackgroundImageUrl = requestWorthyConsumptionDto.getDetailBackgroundImageUrl();
-        this.placeImageUrl = requestWorthyConsumptionDto.getPlaceImageUrl();
+    public void updateUrl(WorthyConsumptionRequestDto.UpdateUrlRequest requestWorthyConsumptionDto,
+                          String imagePath, String detailImagePath, String detailBackgroundImagePath, String placeImagePath){
+        this.videoPath = requestWorthyConsumptionDto.getVideoPath();
+        this.imagePath = imagePath;
+        this.detailImagePath = detailImagePath;
+        this.detailBackgroundImagePath = detailBackgroundImagePath;
+        this.placeImagePath = placeImagePath;
     }
 }

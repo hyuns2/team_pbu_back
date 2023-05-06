@@ -7,8 +7,11 @@ import projectbuildup.mivv.domain.shorts.dto.ShortsDto;
 import projectbuildup.mivv.domain.shorts.entity.Shorts;
 import projectbuildup.mivv.domain.shorts.entity.ShortsCategory;
 import projectbuildup.mivv.domain.shorts.repository.ShortsRepository;
+import projectbuildup.mivv.global.common.imageStore.Image;
+import projectbuildup.mivv.global.common.imageStore.ImageUploader;
 import projectbuildup.mivv.global.error.exception.CShortsNotFoundException;
 
+import java.io.IOException;
 import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
@@ -16,8 +19,13 @@ import java.util.List;
 public class ShortsService {
     private final ShortsRepository shortsRepository;
 
-    public void createShorts(ShortsDto.creatRequest shortsRequestDto){
-        Shorts shorts = new Shorts(shortsRequestDto);
+    private final ImageUploader imageUploader;
+
+    public void createShorts(ShortsDto.creatRequest shortsRequestDto) throws IOException {
+        Image image = imageUploader.upload(shortsRequestDto.getImage(), "shorts");
+
+        Shorts shorts = new Shorts(shortsRequestDto, image.getImagePath());
+
         shortsRepository.save(shorts);
     }
     public ShortsDto.shortsResponse getShorts(Long shortsId){
@@ -31,9 +39,10 @@ public class ShortsService {
         return shortsRepository.findAll().stream().filter(shorts -> shorts.getCategory()==ShortsCategory.EDUCATION).map(ShortsDto.shortsResponse::new).toList();
 
     }
-    public void updateShorts(ShortsDto.updateRequest shortsRequestDto){
+    public void updateShorts(ShortsDto.updateRequest shortsRequestDto) throws IOException {
         Shorts shorts = shortsRepository.findById(shortsRequestDto.getId()).orElseThrow(CShortsNotFoundException::new);
-        shorts.updateShorts(shortsRequestDto);
+        Image image = imageUploader.upload(shortsRequestDto.getImage(), "shorts");
+        shorts.updateShorts(shortsRequestDto, image.getImagePath());
         shortsRepository.save(shorts);
     }
     public void deleteShorts(Long shortsId){

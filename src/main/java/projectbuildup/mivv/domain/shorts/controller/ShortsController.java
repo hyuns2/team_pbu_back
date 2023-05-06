@@ -18,6 +18,7 @@ import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.global.constant.ExampleValue;
 import projectbuildup.mivv.global.constant.Header;
 
+import java.io.IOException;
 import java.util.List;
 @Tag(name = "[Shorts]", description = "쇼츠 관련 API입니다.")
 @Slf4j
@@ -28,7 +29,7 @@ public class ShortsController {
   private final ShortsService shortsService;
   @Operation(summary = "쇼츠 생성", description = "쇼츠를 생성합니다.")
   @PostMapping
-  public ResponseEntity<HttpStatus> createShorts(@Valid @RequestBody ShortsDto.creatRequest shortsRequestDto){
+  public ResponseEntity<HttpStatus> createShorts(@Valid @RequestBody ShortsDto.creatRequest shortsRequestDto) throws IOException {
       shortsService.createShorts(shortsRequestDto);
       return new ResponseEntity<>(HttpStatus.CREATED);
   }
@@ -52,7 +53,7 @@ public class ShortsController {
   }
   @Operation(summary = "쇼츠 수정", description = "쇼츠를 수정합니다.")
   @PutMapping("/{shortsId}")
-  public ResponseEntity<HttpStatus> updateShorts(@PathVariable(name = "shortsId") Long shortsId, @RequestBody ShortsDto.updateRequest shortsRequestDto){
+  public ResponseEntity<HttpStatus> updateShorts(@PathVariable(name = "shortsId") Long shortsId, @RequestBody ShortsDto.updateRequest shortsRequestDto) throws IOException {
       shortsRequestDto.setId(shortsId);
       shortsService.updateShorts(shortsRequestDto);
       return new ResponseEntity<>(HttpStatus.OK);

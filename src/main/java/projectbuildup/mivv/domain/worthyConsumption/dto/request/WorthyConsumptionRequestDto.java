@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 import projectbuildup.mivv.domain.worthyConsumption.dto.WorthyConsumptionConditionDto;
 import projectbuildup.mivv.domain.worthyConsumption.entity.Condition;
 import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumption;
@@ -76,15 +77,15 @@ public class WorthyConsumptionRequestDto {
     @Builder
     public static class UpdateUrlRequest extends WorthyConsumptionRequestDto.IdRequest {
         @NotNull
-        String videoUrl;
+        String videoPath;
         @NotNull
-        String imageUrl;
+        private MultipartFile image;
         @NotNull
-        String detailImageUrl;
+        private MultipartFile detailImage;
         @NotNull
-        String detailBackgroundImageUrl;
+        private MultipartFile detailBackgroundImage;
         @NotNull
-        String placeImageUrl;
+        private MultipartFile placeImage;
     }
     @NoArgsConstructor
     @Getter @Setter

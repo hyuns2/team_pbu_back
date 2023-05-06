@@ -9,8 +9,12 @@ import projectbuildup.mivv.domain.coupon.entity.Coupon;
 import projectbuildup.mivv.domain.coupon.repository.CouponRepository;
 import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumption;
 import projectbuildup.mivv.domain.worthyConsumption.repository.WorthyConsumptionRepository;
+import projectbuildup.mivv.global.common.imageStore.Image;
+import projectbuildup.mivv.global.common.imageStore.ImageUploader;
 import projectbuildup.mivv.global.error.exception.CCouponNotFoundException;
 import projectbuildup.mivv.global.error.exception.CWorthyConsumptionNotFoundException;
+
+import java.io.IOException;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -19,15 +23,17 @@ public class CouponService {
     private final CouponRepository couponRepository;
     private final WorthyConsumptionRepository worthyConsumptionRepository;
 
+    private final ImageUploader imageUploader;
+
     /**
      * 가치소비에서 쿠폰을 생성하는 로직입니다.
      * @param worthyConsumptionId
      * @param couponRequestDto
      */
-    public void createCoupon(Long worthyConsumptionId, CouponRequestDto.CreationRequest couponRequestDto){
+    public void createCoupon(Long worthyConsumptionId, CouponRequestDto.CreationRequest couponRequestDto) throws IOException {
         WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionId).orElseThrow(CWorthyConsumptionNotFoundException::new);
-        Coupon coupon = new Coupon(couponRequestDto);
-        log.info("생성된 쿠폰은 {}", coupon);
+        Image image = imageUploader.upload(couponRequestDto.getImage(), "coupons");
+        Coupon coupon = new Coupon(couponRequestDto, image.getImagePath());
         //Coupon coupon = couponRequestDto.toEntity();//주입할거가 없다면 빌더 패턴 말고 그냥 new 해야하는건가?
         worthyConsumption.addCoupon(coupon);
         worthyConsumptionRepository.save(worthyConsumption);
@@ -43,9 +49,10 @@ public class CouponService {
         Coupon coupon = couponRepository.findById(couponId).orElseThrow(CCouponNotFoundException::new);
         return new CouponResponseDto.ReadResponseWithWorthyConsumption(coupon);
     }
-    public void updateCouponContent(CouponRequestDto.UpdateContentRequest couponRequestDto){
+    public void updateCouponContent(CouponRequestDto.UpdateContentRequest couponRequestDto) throws IOException {
         Coupon coupon = couponRepository.findById(couponRequestDto.getId()).orElseThrow(CCouponNotFoundException::new);
-        coupon.updateContent(couponRequestDto);
+        Image image = imageUploader.upload(couponRequestDto.getImage(), "coupons");
+        coupon.updateContent(couponRequestDto, image.getImagePath());
         couponRepository.save(coupon);
     }
     public void updateCouponDate(CouponRequestDto.UpdateDateRequest couponRequestDto){

@@ -31,7 +31,7 @@ public class LikesController {
     @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('USER')")
     @Operation(summary = "가치소비 찜 ", description = "가치소비를 찜합니다.")
-    @PostMapping("worthyConsumptions/{worthyConsumptionId}")
+    @PostMapping("worthyConsumptions/{worthyConsumptionId}/likes")
     public ResponseEntity<HttpStatus> addLikesWorthyConsumption(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId, @AuthenticationPrincipal User user){
         likesService.addLikes(user.getId(), worthyConsumptionId, LikesCategory.WORTHY_CONSUMPTION);
         return new ResponseEntity<>(HttpStatus.CREATED);
@@ -43,7 +43,7 @@ public class LikesController {
     @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('USER')")
     @Operation(summary = "가치소비 찜 해제 ", description = "찜한 가치소비를 해제합니다.")
-    @PostMapping("worthyConsumptions/{worthyConsumptionId}")
+    @DeleteMapping("worthyConsumptions/{worthyConsumptionId}/likes")
     public ResponseEntity<HttpStatus> deleteLikesWorthyConsumption(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId, @AuthenticationPrincipal User user){
         likesService.deleteLikes(user.getId(), worthyConsumptionId, LikesCategory.WORTHY_CONSUMPTION);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -57,7 +57,7 @@ public class LikesController {
     @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('USER')")
     @Operation(summary = "쇼츠 찜", description = "쇼츠를 찜합니다.")
-    @PostMapping("shorts/{shortsId}")
+    @PostMapping("shorts/{shortsId}/likes")
     public ResponseEntity<HttpStatus> addLikesShorts(@PathVariable(name = "shortsId") Long shortsId, @AuthenticationPrincipal User user){
         LikesCategory likesCategory = likesService.findShortsCategory(shortsId);
         likesService.addLikes(user.getId(), shortsId, likesCategory);
@@ -73,7 +73,7 @@ public class LikesController {
     @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('USER')")
     @Operation(summary = "쇼츠 찜 해제", description = "찜한 쇼츠를 해제합니다.")
-    @DeleteMapping("shorts/{shortsId}")
+    @DeleteMapping("shorts/{shortsId}/likes")
     public ResponseEntity<HttpStatus> deleteLikes(@PathVariable(name = "shortsId") Long shortsId, @AuthenticationPrincipal User user){
         LikesCategory likesCategory = likesService.findShortsCategory(shortsId);
         likesService.deleteLikes(user.getId(), shortsId, likesCategory);

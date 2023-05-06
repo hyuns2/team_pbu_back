@@ -13,9 +13,12 @@ import projectbuildup.mivv.domain.worthyConsumption.entity.Condition;
 import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumption;
 import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumptionUrl;
 import projectbuildup.mivv.domain.worthyConsumption.repository.WorthyConsumptionRepository;
+import projectbuildup.mivv.global.common.imageStore.Image;
+import projectbuildup.mivv.global.common.imageStore.ImageUploader;
 import projectbuildup.mivv.global.error.exception.CBadRequestException;
 import projectbuildup.mivv.global.error.exception.CWorthyConsumptionNotFoundException;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,12 +32,19 @@ public class WorthyConsumptionService {
     private final WorthyConsumptionRepository worthyConsumptionRepository;
     private final CouponIssuanceRepository couponIssuanceRepository;
 
+    private final ImageUploader imageUploader;
+
     /**
      * 가치소비를 생성하는 로직입니다.
      * @param worthyConsumptionRequestDto
      */
-    public void createWorthyConsumption(WorthyConsumptionRequestDto.CreationRequest worthyConsumptionRequestDto){
-        WorthyConsumptionUrl worthyConsumptionUrl = new WorthyConsumptionUrl(worthyConsumptionRequestDto.getWorthyConsumptionUrlDto());
+    public void createWorthyConsumption(WorthyConsumptionRequestDto.CreationRequest worthyConsumptionRequestDto) throws IOException {
+        Image image = imageUploader.upload(worthyConsumptionRequestDto.getWorthyConsumptionUrlDto().getImage(), "worthyConsumptions");
+        Image detailImage = imageUploader.upload(worthyConsumptionRequestDto.getWorthyConsumptionUrlDto().getDetailImage(), "worthyConsumptions");
+        Image detailBackgroundImage = imageUploader.upload(worthyConsumptionRequestDto.getWorthyConsumptionUrlDto().getDetailBackgroundImage(), "worthyConsumptions");
+        Image placeImage = imageUploader.upload(worthyConsumptionRequestDto.getWorthyConsumptionUrlDto().getPlaceImage(), "worthyConsumptions");
+
+        WorthyConsumptionUrl worthyConsumptionUrl = new WorthyConsumptionUrl(worthyConsumptionRequestDto.getWorthyConsumptionUrlDto(), image.getImagePath(), detailImage.getImagePath(), detailBackgroundImage.getImagePath(), placeImage.getImagePath());
         Condition condition = new Condition(worthyConsumptionRequestDto.getWorthyConsumptionConditionDto());
         WorthyConsumption worthyConsumption = worthyConsumptionRequestDto.toEntity(worthyConsumptionUrl, condition);
         worthyConsumptionRepository.save(worthyConsumption);
@@ -72,9 +82,15 @@ public class WorthyConsumptionService {
         worthyConsumption.updateContent(worthyConsumptionRequestDto);
         worthyConsumptionRepository.save(worthyConsumption);
     }
-    public void updateUrlWorthyConsumption(WorthyConsumptionRequestDto.UpdateUrlRequest worthyConsumptionRequestDto){
+    public void updateUrlWorthyConsumption(WorthyConsumptionRequestDto.UpdateUrlRequest worthyConsumptionRequestDto) throws IOException {
         WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionRequestDto.getId()).orElseThrow(CWorthyConsumptionNotFoundException:: new);
-        worthyConsumption.getWorthyConsumptionUrl().updateUrl(worthyConsumptionRequestDto);
+
+        Image image = imageUploader.upload(worthyConsumptionRequestDto.getImage(), "worthyConsumptions");
+        Image detailImage = imageUploader.upload(worthyConsumptionRequestDto.getDetailImage(), "worthyConsumptions");
+        Image detailBackgroundImage = imageUploader.upload(worthyConsumptionRequestDto.getDetailBackgroundImage(), "worthyConsumptions");
+        Image placeImage = imageUploader.upload(worthyConsumptionRequestDto.getPlaceImage(), "worthyConsumptions");
+
+        worthyConsumption.getWorthyConsumptionUrl().updateUrl(worthyConsumptionRequestDto, image.getImagePath(), detailImage.getImagePath(), detailBackgroundImage.getImagePath(), placeImage.getImagePath());
         worthyConsumptionRepository.save(worthyConsumption);
     }
     public void updatePriceWorthyConsumption(WorthyConsumptionRequestDto.UpdatePriceRequest worthyConsumptionRequestDto){

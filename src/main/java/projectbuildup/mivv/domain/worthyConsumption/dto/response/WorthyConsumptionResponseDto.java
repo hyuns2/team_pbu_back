@@ -33,16 +33,16 @@ public class WorthyConsumptionResponseDto {
     @Getter @Setter
     public static class ReadBasicResponse extends ReadSummaryResponse{
         private List<String> hashtags;
-        private String videoUrl;
-        private String imageUrl;
+        private String videoPath;
+        private String imagePath;
         private CheckConditionType isIssuableCoupon;
         private boolean isLiked;//이거 처리 해야 됨
 
         public ReadBasicResponse(WorthyConsumption worthyConsumption) {
             super(worthyConsumption);
             this.hashtags = worthyConsumption.getHashtags();
-            this.videoUrl = worthyConsumption.getWorthyConsumptionUrl().getVideoUrl();
-            this.imageUrl = worthyConsumption.getWorthyConsumptionUrl().getImageUrl();
+            this.videoPath = worthyConsumption.getWorthyConsumptionUrl().getVideoPath();
+            this.imagePath = worthyConsumption.getWorthyConsumptionUrl().getImagePath();
             this.isIssuableCoupon = worthyConsumption.getCondition().getIsIssuableCoupon();
         }
 
@@ -66,14 +66,14 @@ public class WorthyConsumptionResponseDto {
         public ReadDetailResponse(WorthyConsumption worthyConsumption) {
             this.title = worthyConsumption.getTitle();
             this.hashtags = worthyConsumption.getHashtags();
-            this.detailImageUrl = worthyConsumption.getWorthyConsumptionUrl().getDetailImageUrl();
-            this.detailBackgroundImageUrl = worthyConsumption.getWorthyConsumptionUrl().getDetailBackgroundImageUrl();
-            this.videoUrl = worthyConsumption.getWorthyConsumptionUrl().getVideoUrl();
+            this.detailImageUrl = worthyConsumption.getWorthyConsumptionUrl().getDetailImagePath();
+            this.detailBackgroundImageUrl = worthyConsumption.getWorthyConsumptionUrl().getDetailBackgroundImagePath();
+            this.videoUrl = worthyConsumption.getWorthyConsumptionUrl().getVideoPath();
             this.whyRecommendation = worthyConsumption.getWhyRecommendation();
             this.originalPrice = worthyConsumption.getOriginalPrice();
             this.salePrice = worthyConsumption.getSalePrice();
             this.priceTag = worthyConsumption.getPriceTag();
-            this.placeImageUrl = worthyConsumption.getWorthyConsumptionUrl().getPlaceImageUrl();
+            this.placeImageUrl = worthyConsumption.getWorthyConsumptionUrl().getPlaceImagePath();
             this.placeTag = worthyConsumption.getPlaceTag();
         }
 

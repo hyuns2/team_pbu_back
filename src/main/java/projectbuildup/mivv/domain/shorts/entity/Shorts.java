@@ -17,20 +17,20 @@ public class Shorts {
     private ShortsCategory category;
     private String title;
     private String content;
-    private String videoUrl;
-    private String imageUrl;
+    private String imagePath;
+    private String videoPath;
 
-    public Shorts(ShortsDto.creatRequest shortsRequestDto){
+    public Shorts(ShortsDto.creatRequest shortsRequestDto, String imagePath){
         this.title = shortsRequestDto.getTitle();
         this.content = shortsRequestDto.getContent();
-        this.videoUrl = shortsRequestDto.getVideoUrl();
-        this.imageUrl = shortsRequestDto.getImageUrl();
+        this.imagePath = imagePath;
+        this.videoPath = shortsRequestDto.getVideoPath();
         this.category = shortsRequestDto.getCategory();
     }
-    public void updateShorts(ShortsDto.updateRequest shortsRequestDto){
+    public void updateShorts(ShortsDto.updateRequest shortsRequestDto, String imagePath){
         this.title = shortsRequestDto.getTitle();
         this.content = shortsRequestDto.getContent();
-        this.videoUrl = shortsRequestDto.getVideoUrl();
-        this.imageUrl = shortsRequestDto.getImageUrl();
+        this.imagePath = imagePath;
+        this.videoPath = shortsRequestDto.getVideoPath();
     }
 }

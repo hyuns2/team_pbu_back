@@ -17,6 +17,8 @@ import projectbuildup.mivv.domain.coupon.service.CouponService;
 import projectbuildup.mivv.global.constant.ExampleValue;
 import projectbuildup.mivv.global.constant.Header;
 
+import java.io.IOException;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -36,7 +38,7 @@ public class CouponController {
     //@Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     //@PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{couponId}/content")
-    public ResponseEntity<HttpStatus> updateCouponContent(@PathVariable(name = "couponId") Long couponId, @Valid @RequestBody CouponRequestDto.UpdateContentRequest couponRequestDto){
+    public ResponseEntity<HttpStatus> updateCouponContent(@PathVariable(name = "couponId") Long couponId, @Valid @RequestBody CouponRequestDto.UpdateContentRequest couponRequestDto) throws IOException {
         couponService.updateCouponContent(couponRequestDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
