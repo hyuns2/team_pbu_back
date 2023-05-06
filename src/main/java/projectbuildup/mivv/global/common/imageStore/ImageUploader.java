@@ -21,14 +21,24 @@ public class ImageUploader {
 
     private static final String DELIMITER = "/";
 
+    public String getServerIP() {
+        try {
+            InetAddress ip = java.net.InetAddress.getLocalHost();
+            return ip.getHostAddress();
+        } catch (UnknownHostException e) {
+            throw new CUnknownIpException();
+        }
+    }
+
     public Image upload(MultipartFile multipartFile, String dirName) throws IOException {
+        String ipUrl = "http://" + getServerIP() + ":8080";
+
         String originalName = Objects.requireNonNull(multipartFile.getOriginalFilename());
         String storeName = makeRandomName(originalName);
         String storePath = STORE_PATH + DELIMITER + dirName + DELIMITER + storeName;
-        log.info(STORE_PATH);
-        log.info(storePath);
         File file = new File(storePath);
         multipartFile.transferTo(file);
+        storePath = ipUrl + storePath;
         return new Image(storeName, originalName, storePath);
     }
 
