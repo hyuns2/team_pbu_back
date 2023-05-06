@@ -4,12 +4,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-import projectbuildup.mivv.global.error.exception.CUnknownIpException;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
@@ -24,17 +21,8 @@ public class ImageUploader {
 
     private static final String DELIMITER = "/";
 
-    public String getServerIP() {
-        try {
-            InetAddress ip = java.net.InetAddress.getLocalHost();
-            return ip.getHostAddress();
-        } catch (UnknownHostException e) {
-            throw new CUnknownIpException();
-        }
-    }
-
     public Image upload(MultipartFile multipartFile, String dirName) throws IOException {
-        String ipUrl = "http://" + getServerIP() + ":8080";
+        String ipUrl = "http://3.37.5.91:8080";
 
         String originalName = Objects.requireNonNull(multipartFile.getOriginalFilename());
         String storeName = makeRandomName(originalName);
