@@ -192,4 +192,11 @@ public class ExceptionAdvice {
         e.printStackTrace();
         return new ResponseEntity<>(new ErrorResponseDto(errorCode, message), errorCode.getStatusCode());
     }
+    
+    @ExceptionHandler(CUnknownIpException.class)
+    protected ResponseEntity<ErrorResponseDto> handle(CUnknownIpException e) {
+        ErrorCode errorCode = e.getErrorCode();
+        e.printStackTrace();
+        return new ResponseEntity<>(new ErrorResponseDto(errorCode), errorCode.getStatusCode());
+    }
 }
