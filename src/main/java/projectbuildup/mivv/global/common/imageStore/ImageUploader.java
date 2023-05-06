@@ -8,6 +8,8 @@ import projectbuildup.mivv.global.error.exception.CUnknownIpException;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
