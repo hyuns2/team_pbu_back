@@ -22,7 +22,7 @@ public class ImageUploader {
     private static final String DELIMITER = "/";
 
     public Image upload(MultipartFile multipartFile, String dirName) throws IOException {
-        String ipUrl = "http://3.37.5.91:8080";
+        String ipUrl = "http://3.37.5.91";
 
         String originalName = Objects.requireNonNull(multipartFile.getOriginalFilename());
         String storeName = makeRandomName(originalName);
