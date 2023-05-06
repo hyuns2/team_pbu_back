@@ -155,8 +155,8 @@ values (1, false, '2023-05-01', '2023-04-01', '10000', '100');
 
 insert into worthy_consumptionurl(worthy_consumption_url_id, detail_background_image_url, detail_image_url, image_url,
                                    place_image_url, video_url)
-values (1, 'http://3.37.5.91/resources/static/images/valueDetails/valueDetailBackground1.png', 'http://3.37.5.91/resources/static/images/valueDetails/valueDetail1.png',
-        'http://3.37.5.91/resources/static/images/valueDetails/valueBackground1.png', 'http://3.37.5.91/resources/static/images/valueDetails/valueDetailMap1.png', 'https://youtu.be/0gY_z7fqPjs');
+values (1, 'http://3.37.5.91/resources/static/images/values/valueDetailBackground1.png', 'http://3.37.5.91/resources/static/images/values/valueDetail1.png',
+        'http://3.37.5.91/resources/static/images/values/valueBackground1.png', 'http://3.37.5.91/resources/static/images/values/valueDetailMap1.png', 'https://youtu.be/0gY_z7fqPjs');
 
 insert into worthy_consumption(worthy_consumption_id, created_time, modified_time, original_price, place_tag, price_tag,
                                sale_price, summary, worthy_consumption_title, condition_id, worthy_consumption_url_id)
