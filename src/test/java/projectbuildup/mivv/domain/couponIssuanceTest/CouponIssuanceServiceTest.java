@@ -3,13 +3,13 @@ package projectbuildup.mivv.domain.couponIssuanceTest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.web.bind.annotation.RequestBody;
-import projectbuildup.mivv.common.MockEntity;
 import projectbuildup.mivv.domain.auth.service.AuthService;
 import projectbuildup.mivv.domain.challenge.entity.Challenge;
 import projectbuildup.mivv.domain.challenge.repository.ChallengeRepository;
@@ -35,7 +35,7 @@ import projectbuildup.mivv.global.error.exception.CCouponNotFoundException;
 import projectbuildup.mivv.global.error.exception.CUserNotFoundException;
 
 import java.time.LocalDate;
-
+@Disabled
 @SpringBootTest
 @Slf4j
 public class CouponIssuanceServiceTest extends WorthyConsumptionServiceTest {

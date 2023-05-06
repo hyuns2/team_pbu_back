@@ -7,7 +7,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
 import projectbuildup.mivv.domain.challenge.entity.Challenge;
+import projectbuildup.mivv.global.common.imageStore.Image;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -44,6 +46,10 @@ public class ChallengeDto {
         @Future
         @DateTimeFormat(pattern = "yyyy-MM-dd")
         LocalDate endDate;
+
+        @Schema(description = "이미지")
+        @NotNull
+        MultipartFile imageFile;
     }
 
     @Getter
@@ -69,9 +75,9 @@ public class ChallengeDto {
         @Min(1)
         private long remittanceAvailableCount;
 
-        @Schema(description = "이미지 URL")
-        @NotBlank
-        private String imageUrl;
+        @Schema(description = "이미지")
+        @NotNull
+        MultipartFile imageFile;
 
         public void setChallengeId(Long challengeId) {
             this.challengeId = challengeId;
@@ -87,6 +93,7 @@ public class ChallengeDto {
         private String mainTitle;
         private String subTitle;
         private long remittanceOnceLimit;
+        private Image image;
 
         public ShortResponse(Challenge challenge) {
             this.id = challenge.getId();
@@ -94,6 +101,7 @@ public class ChallengeDto {
             this.mainTitle = challenge.getMainTitle();
             this.subTitle = challenge.getSubTitle();
             this.remittanceOnceLimit = challenge.getRemittanceOnceLimit();
+            this.image = challenge.getImage();
         }
     }
 
@@ -109,6 +117,7 @@ public class ChallengeDto {
         private List<String> description;
         private long remittanceOnceLimit;
         private long remittanceAvailableCount;
+        private Image image;
 
         public Response(Challenge challenge) {
             this.id = challenge.getId();
@@ -119,6 +128,7 @@ public class ChallengeDto {
             this.description = challenge.getDescription();
             this.remittanceOnceLimit = challenge.getRemittanceOnceLimit();
             this.remittanceAvailableCount = challenge.getRemittanceAvailableCount();
+            this.image = challenge.getImage();
         }
     }
 }
