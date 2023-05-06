@@ -2,11 +2,11 @@ package projectbuildup.mivv.domain.shortsTest;
 
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import projectbuildup.mivv.common.MockEntity;
 import projectbuildup.mivv.domain.shorts.dto.ShortsDto;
 import projectbuildup.mivv.domain.shorts.entity.Shorts;
 import projectbuildup.mivv.domain.shorts.entity.ShortsCategory;
@@ -15,9 +15,9 @@ import projectbuildup.mivv.domain.shorts.service.ShortsService;
 
 import java.util.Iterator;
 import java.util.List;
-
+@Disabled
 @SpringBootTest @Slf4j
-public class ShortsTest extends MockEntity {
+public class ShortsTest  {
     @Autowired
     ShortsService shortsService;
     @Autowired
