@@ -1,61 +1,61 @@
 -- <IdentityVerification> --
 insert into identity_verification (id, birth_date, code, mobile, name)
-values (1, '19990101', 'test_code', '01012345678', 'user01'),
-       (2, '19990101', 'sadfsadfsadfsadfsdaf', '01012345678', 'user02'),
-       (3, '19990101', 'sadfsadfsadfsadfsdaf', '01012345678', 'user03'),
-       (4, '19990101', 'sadfsadfsadfsadfsdaf', '01012345678', 'user04'),
-       (5, '19990101', 'sadfsadfsadfsadfsdaf', '01012345678', 'user05'),
-       (6, '19990101', 'sadfsadfsadfsadfsdaf', '01012345678', 'user06'),
-       (7, '19990101', 'sadfsadfsadfsadfsdaf', '01012345678', 'user07'),
-       (8, '19990101', 'sadfsadfsadfsadfsdaf', '01012345678', 'user08'),
-       (9, '19990101', 'sadfsadfsadfsadfsdaf', '01012345678', 'user09');
+values (1, '19990101', 'abcdefghijklmnopqrstuvwxyz', '01012345671', '김철수'),
+       (2, '19990101', 'abcdefghijklmnopqrstuvwxyz', '01012345672', '홍길동'),
+       (3, '19990101', 'abcdefghijklmnopqrstuvwxyz', '01099998883', '박지원'),
+       (4, '19990101', 'abcdefghijklmnopqrstuvwxyz', '01012345674', '최현수'),
+       (5, '19990101', 'abcdefghijklmnopqrstuvwxyz', '01012345675', '이민우'),
+       (6, '19990101', 'abcdefghijklmnopqrstuvwxyz', '01012345676', '정형식'),
+       (7, '19990101', 'abcdefghijklmnopqrstuvwxyz', '01011112227', '이재우'),
+       (8, '19990101', 'abcdefghijklmnopqrstuvwxyz', '01012345678', '배주현'),
+       (9, '19990101', 'abcdefghijklmnopqrstuvwxyz', '01012345679', '김다은');
 
 -- <Account> --
 insert into account(id, account_numbers, bank_type)
-values (1, '123456789', 'KDB'),
-       (2, '123456789', 'KDB'),
-       (3, '123456789', 'KDB'),
-       (4, '123456789', 'KDB'),
-       (5, '123456789', 'KDB'),
-       (6, '123456789', 'KDB'),
-       (7, '123456789', 'KDB'),
-       (8, '123456789', 'KDB'),
-       (9, '123456789', 'KDB');
+values (1, '123456781', 'KDB'),
+       (2, '123456782', 'IBK'),
+       (3, '123456783', 'KB'),
+       (4, '123456784', 'KDB'),
+       (5, '123456785', 'SUHYUP'),
+       (6, '123456786', 'NONGHYUP'),
+       (7, '123456787', 'WOORI'),
+       (8, '123456788', 'SC'),
+       (9, '123456789', 'CITY');
 
 
 
 insert into account_connection_map(account_id, connection_map, connection_map_key)
-values (1, 'abcdef', 'CODEF'),
-       (2, 'abcdef', 'CODEF'),
-       (3, 'abcdef', 'CODEF'),
-       (4, 'abcdef', 'CODEF'),
-       (5, 'abcdef', 'CODEF'),
+values (1, 'abcdea', 'CODEF'),
+       (2, 'abcdeb', 'CODEF'),
+       (3, 'abcdec', 'CODEF'),
+       (4, 'abcded', 'CODEF'),
+       (5, 'abcdee', 'CODEF'),
        (6, 'abcdef', 'CODEF'),
-       (7, 'abcdef', 'CODEF'),
-       (8, 'abcdef', 'CODEF'),
-       (9, 'abcdef', 'CODEF');
+       (7, 'abcdeg', 'CODEF'),
+       (8, 'abcdeh', 'CODEF'),
+       (9, 'abcdei', 'CODEF');
 
 -- <User> --
-insert into user (id, created_time, modified_time, agreement, email, nickname, password, store_file_name,
-                  original_file_name, path,
+insert into user (id, created_time, modified_time, agreement, email, nickname, password, store_image_name,
+                  original_image_name, image_path,
                   identity_verification_id, account_id)
-values (1, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'hansol8701@naver.com', 'user01',
+values (1, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'test01@naver.com', '철수',
         '{bcrypt}$2a$10$9WYLiZLDXSkF15LFXnjppOKS/Ae6SGkWtHZRZte3IN0TfByYufxmK', null, null, null, 1, 1),
-       (2, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'hansol8701@naver.com', 'user02',
+       (2, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'test02@naver.com', '길동',
         '{bcrypt}$2a$10$9WYLiZLDXSkF15LFXnjppOKS/Ae6SGkWtHZRZte3IN0TfByYufxmK', null, null, null, 2, 2),
-       (3, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'hansol8701@naver.com', 'user03',
+       (3, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'test03@naver.com', '지원',
         '{bcrypt}$2a$10$9WYLiZLDXSkF15LFXnjppOKS/Ae6SGkWtHZRZte3IN0TfByYufxmK', null, null, null, 3, 3),
-       (4, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'hansol8701@naver.com', 'user04',
+       (4, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'test04@naver.com', '현수',
         '{bcrypt}$2a$10$9WYLiZLDXSkF15LFXnjppOKS/Ae6SGkWtHZRZte3IN0TfByYufxmK', null, null, null, 4, 4),
-       (5, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'hansol8701@naver.com', 'user05',
+       (5, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'test05@naver.com', '민우',
         '{bcrypt}$2a$10$9WYLiZLDXSkF15LFXnjppOKS/Ae6SGkWtHZRZte3IN0TfByYufxmK', null, null, null, 5, 5),
-       (6, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'hansol8701@naver.com', 'user06',
+       (6, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'test06@naver.com', '형식',
         '{bcrypt}$2a$10$9WYLiZLDXSkF15LFXnjppOKS/Ae6SGkWtHZRZte3IN0TfByYufxmK', null, null, null, 6, 6),
-       (7, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'hansol8701@naver.com', 'user07',
+       (7, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'test07@naver.com', '재우',
         '{bcrypt}$2a$10$9WYLiZLDXSkF15LFXnjppOKS/Ae6SGkWtHZRZte3IN0TfByYufxmK', null, null, null, 7, 7),
-       (8, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'hansol8701@naver.com', 'user08',
+       (8, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'test08@naver.com', '주현',
         '{bcrypt}$2a$10$9WYLiZLDXSkF15LFXnjppOKS/Ae6SGkWtHZRZte3IN0TfByYufxmK', null, null, null, 8, 8),
-       (9, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'hansol8701@naver.com', 'user09',
+       (9, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'test09@naver.com', '다은',
         '{bcrypt}$2a$10$9WYLiZLDXSkF15LFXnjppOKS/Ae6SGkWtHZRZte3IN0TfByYufxmK', null, null, null, 9, 9);
 
 
@@ -73,19 +73,30 @@ values (1, 'ROLE_USER'),
 
 
 -- <Challenge> --
-insert into challenge(id, created_time, modified_time, end_date, store_file_name,
-                      original_file_name, path, main_title,
+insert into challenge(id, created_time, modified_time, end_date, store_image_name,
+                      original_image_name, image_path, main_title,
                       remittance_available_count,
                       remittance_once_limit, start_date, sub_title)
-values (1, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', '2024-02-13', null, null, null, '샘플 챌린지1', 5, 0,
-        '2023-02-13', 'sample1'),
-       (2, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', '2024-02-13', null, null, null, '샘플 챌린지2', 5, 0,
-        '2023-02-13', 'sample2');
+values (1, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', '2024-07-13', 'challenge1.png', 'challenge1.png',
+        'http://3.37.5.91/resources/static/images/challenges/challenge1.png', '배달팁 아끼기', 2, 4000,
+        '2023-03-13', '배달말고 포장, 배달팁 아끼기!'),
+       (2, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', '2024-07-13', 'challenge2.png', 'challenge2.png',
+        'http://3.37.5.91/resources/static/images/challenges/challenge2.png', '택시비 아끼기', 3, 6000,
+        '2023-03-13', '걸어서 갈 수 있잖아?'),
+       (3, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', '2024-07-13', 'challenge3.png', 'challenge3.png',
+        'http://3.37.5.91/resources/static/images/challenges/challenge3.png', '커피값 아끼기', 3, 5000,
+        '2023-03-13', '그 커피 꼭 사야 해?');
+
 
 
 insert into challenge_description(challenge_id, description)
-values (1, 'description'),
-       (2, 'description');
+values (1, '배달말고 포장해서, 배달팁도 아끼고 건강도 챙기기!'),
+       (1, '칼로리 높은 배달음식도 먹을텐데, 조금 걸어두는 편이 좋지 않겠어요?'),
+       (2, '배달말고 포장해서, 배달팁도 아끼고 건강도 챙기기!'),
+       (2, '칼로리 높은 배달음식도 먹을텐데, 조금 걸어두는 편이 좋지 않겠어요?'),
+       (3, '배달말고 포장해서, 배달팁도 아끼고 건강도 챙기기!'),
+       (3, '칼로리 높은 배달음식도 먹을텐데, 조금 걸어두는 편이 좋지 않겠어요?');
+
 
 
 -- <SavingCount> --
@@ -98,8 +109,7 @@ values (1, 0),
        (6, 0),
        (7, 0),
        (8, 0),
-       (9, 0),
-       (10, 0);
+       (9, 0);
 
 
 -- <Participation> --
@@ -107,13 +117,12 @@ insert into participation(id, created_time, modified_time, challenge_id, saving_
 values (1, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', 1, 1, 1),
        (2, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', 1, 2, 2),
        (3, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', 1, 3, 3),
-       (4, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', 1, 4, 4),
-       (5, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', 1, 5, 5),
-       (6, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', 1, 6, 6),
-       (7, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', 1, 7, 7),
-       (8, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', 1, 8, 8),
-       (9, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', 1, 9, 9),
-       (10, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', 2, 10, 1);
+       (4, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', 2, 4, 4),
+       (5, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', 2, 5, 5),
+       (6, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', 2, 6, 6),
+       (7, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', 3, 7, 7),
+       (8, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', 3, 8, 8),
+       (9, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', 3, 9, 9);
 
 
 -- <Remittance> --
