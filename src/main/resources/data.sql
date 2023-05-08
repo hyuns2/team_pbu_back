@@ -1,6 +1,6 @@
 -- <IdentityVerification> --
 insert into identity_verification (id, birth_date, code, mobile, name)
-values (1, '19990101', 'abcdefghijklmnopqrstuvwxyz', '01012345678', 'user01'),
+values (1, '19990101', 'test_code', '01012345678', 'user01'),
        (2, '19990101', 'sadfsadfsadfsadfsdaf', '01012345678', 'user02'),
        (3, '19990101', 'sadfsadfsadfsadfsdaf', '01012345678', 'user03'),
        (4, '19990101', 'sadfsadfsadfsadfsdaf', '01012345678', 'user04'),
