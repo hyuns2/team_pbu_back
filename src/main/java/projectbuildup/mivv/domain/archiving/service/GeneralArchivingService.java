@@ -39,7 +39,7 @@ public class GeneralArchivingService {
     private final ImageUploader imageUploader;
     private final FileUploader fileUploader;
 
-    public void createGeneralCard(final ArchivingDto.createGeneralCardRequestDto dto) throws IOException {
+    public void createGeneralConditionCard(final ArchivingDto.createGeneralCardRequestDto dto) throws IOException {
 
         Image image = imageUploader.upload(dto.getImage(), "cards");
 
@@ -48,7 +48,7 @@ public class GeneralArchivingService {
 
     }
 
-    public void updateGeneralCard(final Long id, final ArchivingDto.updateGeneralCardRequestDto dto) throws IOException {
+    public void updateGeneralConditionCard(final Long id, final ArchivingDto.updateGeneralCardRequestDto dto) throws IOException {
 
         Optional<CardEntity> target = cardRepo.findById(id);
         if (target.isEmpty()) {
@@ -104,7 +104,7 @@ public class GeneralArchivingService {
 
     }
 
-    void assignGeneralCards(CardEntity cardEntity, String name, String mobile) {
+    void assignGeneralConditionCards(CardEntity cardEntity, String name, String mobile) {
         // 이름과 전화번호로 사용자 알아내기
         Optional<User> targetUser = userRepo.findByNameAndMobile(name, mobile);
         if (targetUser.isEmpty()) {
@@ -116,7 +116,7 @@ public class GeneralArchivingService {
         userCardRepo.save(new UserCardEntity(userEntity, cardEntity, LocalDate.now()));
     }
 
-    void checkAndAssignGeneralCards(MultipartFile dtoFile, CardEntity cardEntity) throws IOException {
+    void checkAndAssignGeneralConditionCards(MultipartFile dtoFile, CardEntity cardEntity) throws IOException {
         // 엑셀파일이면, 프로젝트 바로 안의 files 폴더에 저장
         File file = fileUploader.storeExcelFile(dtoFile);
 
@@ -147,13 +147,13 @@ public class GeneralArchivingService {
                     mobile = cell.getStringCellValue();
             }
 
-            assignGeneralCards(cardEntity, name, mobile);
+            assignGeneralConditionCards(cardEntity, name, mobile);
 
         }
     }
 
     @Transactional
-    public void assignGeneralCards(final ArchivingDto.AssignGeneralCardsRequestDto dto) throws IOException {
+    public void assignGeneralConditionCards(final ArchivingDto.AssignGeneralCardsRequestDto dto) throws IOException {
 
         // id에 맞는 카드 조회
         Optional<CardEntity> targetCard = cardRepo.findById(dto.getId());
@@ -162,7 +162,7 @@ public class GeneralArchivingService {
         }
         CardEntity cardEntity = targetCard.get();
 
-        checkAndAssignGeneralCards(dto.getFile(), cardEntity);
+        checkAndAssignGeneralConditionCards(dto.getFile(), cardEntity);
 
     }
 

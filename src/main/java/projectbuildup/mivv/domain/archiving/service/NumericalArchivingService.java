@@ -2,6 +2,7 @@ package projectbuildup.mivv.domain.archiving.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import projectbuildup.mivv.domain.archiving.dto.ArchivingDto;
 import projectbuildup.mivv.domain.archiving.entity.NumericalConditionCardEntity;
 import projectbuildup.mivv.domain.archiving.entity.UserCardEntity;
@@ -29,17 +30,17 @@ public class NumericalArchivingService {
 
     private final ImageUploader imageUploader = new ImageUploader();
 
-    public void createNumericalConditionCard(final ArchivingDto.createNumericalConditionCardRequestDto dto) throws IOException {
+    public void createNumericalConditionCard(final ArchivingDto.createNumericalCardRequestDto dto) throws IOException {
 
         Image image = imageUploader.upload(dto.getImage(), "cards");
 
-        NumericalConditionCardEntity entity = ArchivingDto.createNumericalConditionCardRequestDto.toEntity(dto, image.getImagePath());
+        NumericalConditionCardEntity entity = ArchivingDto.createNumericalCardRequestDto.toEntity(dto, image.getImagePath());
 
         cardRepo.save(entity);
 
     }
 
-    public void updateNumericalConditionCard(final Long id, final ArchivingDto.updateNumericalConditionCardRequestDto dto) throws IOException {
+    public void updateNumericalConditionCard(final Long id, final ArchivingDto.updateNumericalCardRequestDto dto) throws IOException {
 
         Optional<NumericalConditionCardEntity> target = (Optional<NumericalConditionCardEntity>) cardRepo.findById(id);
         if (target.isEmpty()) {
@@ -96,6 +97,7 @@ public class NumericalArchivingService {
         }
     }
 
+    @Transactional
     public void assignNumericalConditionCards(final User user) {
 
         List<UserCardEntity> alreadyExistings = userCardRepo.findUserCardEntitiesByUser(user);

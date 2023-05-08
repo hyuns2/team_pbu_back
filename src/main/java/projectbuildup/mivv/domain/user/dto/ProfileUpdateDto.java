@@ -11,10 +11,8 @@ import org.springframework.web.multipart.MultipartFile;
 @NoArgsConstructor
 public class ProfileUpdateDto {
     @Schema(description = "큰제목")
-    @NotBlank
     String nickname;
 
     @Schema(description = "이미지")
-    @NotNull
     MultipartFile imageFile;
 }
