@@ -38,18 +38,29 @@ public class WorthyConsumptionService {
      * 가치소비를 생성하는 로직입니다.
      * @param worthyConsumptionRequestDto
      */
-    public void createWorthyConsumption(WorthyConsumptionRequestDto.CreationRequest worthyConsumptionRequestDto) throws IOException {
-        Image image = imageUploader.upload(worthyConsumptionRequestDto.getWorthyConsumptionUrlDto().getImage(), "worthyConsumptions");
-        Image detailImage = imageUploader.upload(worthyConsumptionRequestDto.getWorthyConsumptionUrlDto().getDetailImage(), "worthyConsumptions");
-        Image detailBackgroundImage = imageUploader.upload(worthyConsumptionRequestDto.getWorthyConsumptionUrlDto().getDetailBackgroundImage(), "worthyConsumptions");
-        Image placeImage = imageUploader.upload(worthyConsumptionRequestDto.getWorthyConsumptionUrlDto().getPlaceImage(), "worthyConsumptions");
+    /*public void createWorthyConsumption(WorthyConsumptionRequestDto.CreationRequest worthyConsumptionRequestDto) throws IOException {
+        Image image = imageUploader.upload(worthyConsumptionRequestDto.getWorthyConsumptionUrlDto().getImage(), "values");
+        Image detailImage = imageUploader.upload(worthyConsumptionRequestDto.getWorthyConsumptionUrlDto().getDetailImage(), "values");
+        Image detailBackgroundImage = imageUploader.upload(worthyConsumptionRequestDto.getWorthyConsumptionUrlDto().getDetailBackgroundImage(), "values");
+        Image placeImage = imageUploader.upload(worthyConsumptionRequestDto.getWorthyConsumptionUrlDto().getPlaceImage(), "values");
 
         WorthyConsumptionUrl worthyConsumptionUrl = new WorthyConsumptionUrl(worthyConsumptionRequestDto.getWorthyConsumptionUrlDto(), image.getImagePath(), detailImage.getImagePath(), detailBackgroundImage.getImagePath(), placeImage.getImagePath());
         Condition condition = new Condition(worthyConsumptionRequestDto.getWorthyConsumptionConditionDto());
         WorthyConsumption worthyConsumption = worthyConsumptionRequestDto.toEntity(worthyConsumptionUrl, condition);
         worthyConsumptionRepository.save(worthyConsumption);
-    }
+    }*/
+    public void createWorthyConsumption(WorthyConsumptionRequestDto.CreationRequest worthyConsumptionRequestDto) throws IOException {
+        Image image = imageUploader.upload(worthyConsumptionRequestDto.getImage(), "values");
+        Image detailImage = imageUploader.upload(worthyConsumptionRequestDto.getDetailImage(), "values");
+        Image detailBackgroundImage = imageUploader.upload(worthyConsumptionRequestDto.getDetailBackgroundImage(), "values");
+        Image placeImage = imageUploader.upload(worthyConsumptionRequestDto.getPlaceImage(), "values");
 
+        WorthyConsumptionUrl worthyConsumptionUrl = new WorthyConsumptionUrl(worthyConsumptionRequestDto, image.getImagePath(), detailImage.getImagePath(), detailBackgroundImage.getImagePath(), placeImage.getImagePath());
+        //Condition condition = new Condition(worthyConsumptionRequestDto.getWorthyConsumptionConditionDto());
+        Condition condition = new Condition(worthyConsumptionRequestDto);
+        WorthyConsumption worthyConsumption = worthyConsumptionRequestDto.toEntity(worthyConsumptionUrl, condition);
+        worthyConsumptionRepository.save(worthyConsumption);
+    }
     /**
      * 가치소비를 조회하는 로직입니다.
      * @param worthyConsumptionId
@@ -85,10 +96,10 @@ public class WorthyConsumptionService {
     public void updateUrlWorthyConsumption(WorthyConsumptionRequestDto.UpdateUrlRequest worthyConsumptionRequestDto) throws IOException {
         WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionRequestDto.getId()).orElseThrow(CWorthyConsumptionNotFoundException:: new);
 
-        Image image = imageUploader.upload(worthyConsumptionRequestDto.getImage(), "worthyConsumptions");
-        Image detailImage = imageUploader.upload(worthyConsumptionRequestDto.getDetailImage(), "worthyConsumptions");
-        Image detailBackgroundImage = imageUploader.upload(worthyConsumptionRequestDto.getDetailBackgroundImage(), "worthyConsumptions");
-        Image placeImage = imageUploader.upload(worthyConsumptionRequestDto.getPlaceImage(), "worthyConsumptions");
+        Image image = imageUploader.upload(worthyConsumptionRequestDto.getImage(), "values");
+        Image detailImage = imageUploader.upload(worthyConsumptionRequestDto.getDetailImage(), "values");
+        Image detailBackgroundImage = imageUploader.upload(worthyConsumptionRequestDto.getDetailBackgroundImage(), "values");
+        Image placeImage = imageUploader.upload(worthyConsumptionRequestDto.getPlaceImage(), "values");
 
         worthyConsumption.getWorthyConsumptionUrl().updateUrl(worthyConsumptionRequestDto, image.getImagePath(), detailImage.getImagePath(), detailBackgroundImage.getImagePath(), placeImage.getImagePath());
         worthyConsumptionRepository.save(worthyConsumption);

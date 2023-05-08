@@ -29,7 +29,7 @@ public class ShortsController {
   private final ShortsService shortsService;
   @Operation(summary = "쇼츠 생성", description = "쇼츠를 생성합니다.")
   @PostMapping
-  public ResponseEntity<HttpStatus> createShorts(@Valid @RequestBody ShortsDto.creatRequest shortsRequestDto) throws IOException {
+  public ResponseEntity<HttpStatus> createShorts(@Valid @ModelAttribute("createShorts") ShortsDto.creatRequest shortsRequestDto) throws IOException {
       shortsService.createShorts(shortsRequestDto);
       return new ResponseEntity<>(HttpStatus.CREATED);
   }
@@ -53,7 +53,7 @@ public class ShortsController {
   }
   @Operation(summary = "쇼츠 수정", description = "쇼츠를 수정합니다.")
   @PutMapping("/{shortsId}")
-  public ResponseEntity<HttpStatus> updateShorts(@PathVariable(name = "shortsId") Long shortsId, @RequestBody ShortsDto.updateRequest shortsRequestDto) throws IOException {
+  public ResponseEntity<HttpStatus> updateShorts(@PathVariable(name = "shortsId") Long shortsId, @Valid @ModelAttribute("updateShorts") ShortsDto.updateRequest shortsRequestDto) throws IOException {
       shortsRequestDto.setId(shortsId);
       shortsService.updateShorts(shortsRequestDto);
       return new ResponseEntity<>(HttpStatus.OK);

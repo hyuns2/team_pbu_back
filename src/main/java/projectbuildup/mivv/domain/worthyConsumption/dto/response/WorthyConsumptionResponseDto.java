@@ -12,11 +12,11 @@ public class WorthyConsumptionResponseDto {
     @Getter @Setter
     public static class ReadSummaryResponse {
         private String title;
-        private int originalPrice;
-        private int salePrice;
+        private Integer originalPrice;
+        private Integer salePrice;
         private String priceTag;
-        private long lastMonthAmount;
-        private int maxParticipants;
+        private Long lastMonthAmount;
+        private Integer maxParticipants;
         private String summary;
 
         public ReadSummaryResponse(WorthyConsumption worthyConsumption) {
@@ -36,7 +36,7 @@ public class WorthyConsumptionResponseDto {
         private String videoPath;
         private String imagePath;
         private CheckConditionType isIssuableCoupon;
-        private boolean isLiked;//이거 처리 해야 됨
+        private Boolean isLiked;//이거 처리 해야 됨
 
         public ReadBasicResponse(WorthyConsumption worthyConsumption) {
             super(worthyConsumption);
@@ -57,8 +57,8 @@ public class WorthyConsumptionResponseDto {
         private String detailBackgroundImageUrl;
         private String videoUrl;
         private List<String> whyRecommendation;
-        private int originalPrice;
-        private int salePrice;
+        private Integer originalPrice;
+        private Integer salePrice;
         private String priceTag;
         private String placeImageUrl;
         private String placeTag;

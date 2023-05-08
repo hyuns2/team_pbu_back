@@ -35,9 +35,9 @@ public class Condition {
         this.issuableCouponStartDate = requestWorthyConsumptionDto.getIssuableCouponStartDate();
         this.issuableCouponEndDate = requestWorthyConsumptionDto.getIssuableCouponEndDate();
     }
-    public Condition(WorthyConsumptionConditionDto.CreationRequest conditionDto){
-        this.maxParticipants= conditionDto.getMaxParticipants();
-        this.lastMonthAmount = conditionDto.getLastMonthAmount();
+    public Condition(WorthyConsumptionRequestDto.CreationRequest conditionDto){
+        this.maxParticipants= conditionDto.getMaxParticipants().intValue();
+        this.lastMonthAmount = conditionDto.getLastMonthAmount().intValue();
         this.issuableCouponStartDate = conditionDto.getIssuableCouponStartDate();
         this.issuableCouponEndDate = conditionDto.getIssuableCouponEndDate();
     }

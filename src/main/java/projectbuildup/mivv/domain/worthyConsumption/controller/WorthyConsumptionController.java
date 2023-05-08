@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,6 +20,7 @@ import projectbuildup.mivv.domain.likes.service.LikesService;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.domain.worthyConsumption.dto.WorthyConsumptionConditionDto;
 import projectbuildup.mivv.domain.worthyConsumption.dto.request.WorthyConsumptionRequestDto;
+import projectbuildup.mivv.domain.worthyConsumption.dto.request.WorthyConsumptionUrlDto;
 import projectbuildup.mivv.domain.worthyConsumption.dto.response.WorthyConsumptionResponseDto;
 import projectbuildup.mivv.domain.worthyConsumption.service.WorthyConsumptionService;
 import projectbuildup.mivv.global.constant.ExampleValue;
@@ -38,16 +40,24 @@ public class WorthyConsumptionController {
     private final LikesService likesService;
     /**
      * 가치소비를 생성합니다.
-     * @param worthyConsumptionRequestDto
+     * @param
      * @return
      */
     @Operation(summary = "가치소비 생성", description = "가치소비를 등록합니다.")
-    @PostMapping
-    public ResponseEntity<HttpStatus> createWorthyConsumption(@Valid @RequestBody WorthyConsumptionRequestDto.CreationRequest worthyConsumptionRequestDto) throws IOException {
-            worthyConsumptionService.createWorthyConsumption(worthyConsumptionRequestDto);
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<HttpStatus> createWorthyConsumption(@Valid @ModelAttribute("createWorthyConsumptions") WorthyConsumptionRequestDto.CreationRequest worthyConsumptionRequestDto) throws IOException {
+        log.error("{}", worthyConsumptionRequestDto);
+
+        worthyConsumptionService.createWorthyConsumption(worthyConsumptionRequestDto);
             return new ResponseEntity<>(HttpStatus.CREATED);
     }
-
+    /*@Operation(summary = "가치소비 생성", description = "가치소비를 등록합니다.")
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<HttpStatus> createWorthyConsumption(@Valid @RequestBody WorthyConsumptionRequestDto.CreationRequest worthyConsumptionRequestDto, @Valid @ModelAttribute("createWorthyConsumptions") WorthyConsumptionUrlDto.CreationRequest worthyConsumptionUrlDto) throws IOException {
+        worthyConsumptionRequestDto.setWorthyConsumptionUrlDto(worthyConsumptionUrlDto);
+        worthyConsumptionService.createWorthyConsumption(worthyConsumptionRequestDto);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }*/
     /**
      * 가치소비를 조회합니다.
      * summary는 내가 찜한 가치소비 페이지에 들어갈 정보입니다.
@@ -104,8 +114,8 @@ public class WorthyConsumptionController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
     @Operation(summary = "가치소비의 미디어 url 수정", description = "가치소비의 이미지 및 영상의 url을 수정합니다.")
-    @PutMapping("/{worthyConsumptionId}/url")
-    public ResponseEntity<HttpStatus> updateWorthyConsumptionUrl(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId, @Valid @RequestBody WorthyConsumptionRequestDto.UpdateUrlRequest worthyConsumptionRequestDto) throws IOException {
+    @PutMapping(value = "/{worthyConsumptionId}/url", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<HttpStatus> updateWorthyConsumptionUrl(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId, @Valid @ModelAttribute("updateWorthyConsumptions") WorthyConsumptionRequestDto.UpdateUrlRequest worthyConsumptionRequestDto) throws IOException {
         worthyConsumptionService.updateUrlWorthyConsumption(worthyConsumptionRequestDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -155,7 +165,7 @@ public class WorthyConsumptionController {
      * @return
      */
     @Operation(summary = "가치소비의 쿠폰 등록", description = "가치소비의 쿠폰을 등록합니다.")
-    @PostMapping("/{worthyConsumptionId}")
+    @PostMapping(value = "/{worthyConsumptionId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<HttpStatus> createCoupon(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId, @Valid @ModelAttribute("createCoupons") CouponRequestDto.CreationRequest couponRequestDto) throws IOException {
         couponService.createCoupon(worthyConsumptionId, couponRequestDto);
         return new ResponseEntity<>(HttpStatus.CREATED);

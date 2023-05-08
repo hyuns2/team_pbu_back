@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.multipart.MultipartFile;
 import projectbuildup.mivv.domain.worthyConsumption.dto.WorthyConsumptionConditionDto;
 import projectbuildup.mivv.domain.worthyConsumption.entity.Condition;
@@ -19,25 +20,40 @@ public class WorthyConsumptionRequestDto {
     @Builder @Getter
     @AllArgsConstructor @NoArgsConstructor
     @Schema(description = "가치소비 생성 요청 DTO")
-    public static class CreationRequest {
-        @NotBlank(message = "가치소비의 이름을 입력해주세요")
+    public static class CreationRequest extends WorthyConsumptionUrlDto.CreationRequest{
+        //@NotBlank(message = "가치소비의 이름을 입력해주세요")
         String title;
-        @NotNull
+        //@NotNull
         List<String> hashtags;
-        @NotNull(message = "가치소비의 원래 가격을 입력해주세요") @Positive
-        int originalPrice;
-        @NotNull(message = "가치소비의 할인 가격을 입력해주세요") @Positive
-        int salePrice;
-        @NotNull
+        //@NotNull(message = "가치소비의 원래 가격을 입력해주세요") @Positive
+        Integer originalPrice;
+        //@NotNull(message = "가치소비의 할인 가격을 입력해주세요") @Positive
+        Integer salePrice;
+        //@NotNull
         List<String> whyRecommendation;
         String priceTag;
         String placeTag;
-        @NotNull
+        //@NotNull
         String summary;
-        @NotNull
-        WorthyConsumptionUrlDto.CreationRequest worthyConsumptionUrlDto;
-        @NotNull
-        WorthyConsumptionConditionDto.CreationRequest worthyConsumptionConditionDto;
+        //@Setter
+        //WorthyConsumptionUrlDto.CreationRequest worthyConsumptionUrlDto;
+        //@NotNull
+        //WorthyConsumptionConditionDto.CreationRequest worthyConsumptionConditionDto;
+
+        private Integer maxParticipants;
+
+        //@NotNull(message = "가치소비의 쿠폰 발급 가능 시작 날짜를 입력해주세요")
+        @Schema(example = "2001-03-02")
+        @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
+        private LocalDate issuableCouponStartDate;
+
+        //@NotNull(message = "가치소비의 쿠폰 발급 가능 시작 날짜를 입력해주세요")
+        @Schema(example = "2001-03-02")
+        @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
+        private LocalDate issuableCouponEndDate;
+
+        //@NotNull @Positive
+        private Long lastMonthAmount;
         public WorthyConsumption toEntity(WorthyConsumptionUrl worthyConsumptionUrl, Condition condition){
             return WorthyConsumption.builder()
                     .title(title)
@@ -67,7 +83,7 @@ public class WorthyConsumptionRequestDto {
         @NotBlank(message = "가치소비의 이름을 입력해주세요")
         String title;
         List<String> hashtags;
-        int maxParticipants;
+        Integer maxParticipants;
         List<String> whyRecommendation;
         String summary;
     }
@@ -93,9 +109,9 @@ public class WorthyConsumptionRequestDto {
     @Builder
     public static class UpdatePriceRequest extends WorthyConsumptionRequestDto.IdRequest{
         @NotNull(message = "가치소비의 원래 가격을 입력해주세요") @Positive
-        int originalPrice;
+        Integer originalPrice;
         @NotNull(message = "가치소비의 할인 가격을 입력해주세요") @Positive
-        int salePrice;
+        Integer salePrice;
         String priceTag;
 
     }

@@ -143,18 +143,18 @@ insert into inquiry(id, answer, content, time_stamp, title, user_id)
 values (1, null, '문의 내용입니다.', '2023-04-01 11:31:14.982873', '문의 샘플1', 1),
        (2, null, '문의 내용입니다.', '2023-04-01 11:31:14.982873', '문의 샘플2', 2);
 
-insert into shorts(id, category, content, image_url, title, video_url)
+insert into shorts(id, category, content, image_path, title, video_path)
 values (1, 'SAVING', '', 'shortImage1.png', '샘플 비디오1', 'https://youtu.be/0gY_z7fqPjs'),
        (2, 'EDUCATION', '', 'shortImage2.png', '샘플 비디오2', 'https://youtu.be/0gY_z7fqPjs');
 
 
 
 insert into worthy_consumption_condition(id, is_issuable_coupon, issuable_coupon_end_date, issuable_coupon_start_date,
-                                  last_month_amount, max_participants)
+                                         last_month_amount, max_participants)
 values (1, false, '2023-05-01', '2023-04-01', '10000', '100');
 
-insert into worthy_consumptionurl(worthy_consumption_url_id, detail_background_image_url, detail_image_url, image_url,
-                                   place_image_url, video_url)
+insert into worthy_consumptionurl(worthy_consumption_url_id, detail_background_image_path, detail_image_path, image_path,
+                                  place_image_path, video_path)
 values (1, '/resources/static/images/valueDetailBackground1.png', '/resources/static/images/valueDetail1.png',
         '/resources/static/images/valueBackground1.png', '/resources/static/images/valueDetailMap1.png', 'https://youtu.be/0gY_z7fqPjs');
 
@@ -164,7 +164,7 @@ values (1, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', 99000, '�
         '7월 절약 금액 55,000원 달성 시', '레드 짐', 1, 1);
 
 
-insert into coupon(coupon_id, created_time, modified_time, image_url, limit_end_date, limit_start_date, pin, title,
+insert into coupon(coupon_id, created_time, modified_time, image_path, limit_end_date, limit_start_date, pin, title,
                    worthy_consumption_id)
 values (1, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873', '/resources/static/images/coupon1.png',
         '2023-08-31', '2023-07-31', '1234', '레드짐 8월 할인권', 1),

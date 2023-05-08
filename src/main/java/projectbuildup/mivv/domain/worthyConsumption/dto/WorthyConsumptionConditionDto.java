@@ -17,22 +17,22 @@ public class WorthyConsumptionConditionDto {
     @NoArgsConstructor
     @Schema(description = "가치소비 조건 생성 DTO")
     public static class CreationRequest {
-        @NotNull
+        //@NotNull
         //@Positive
-        private int maxParticipants;
+        private Integer maxParticipants;
 
-        @NotNull(message = "가치소비의 쿠폰 발급 가능 시작 날짜를 입력해주세요")
+        //@NotNull(message = "가치소비의 쿠폰 발급 가능 시작 날짜를 입력해주세요")
         @Schema(example = "2001-03-02")
         @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
         private LocalDate issuableCouponStartDate;
 
-        @NotNull(message = "가치소비의 쿠폰 발급 가능 시작 날짜를 입력해주세요")
+        //@NotNull(message = "가치소비의 쿠폰 발급 가능 시작 날짜를 입력해주세요")
         @Schema(example = "2001-03-02")
         @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
         private LocalDate issuableCouponEndDate;
 
-        @NotNull @Positive
-        private long lastMonthAmount;
+        //@NotNull @Positive
+        private Long lastMonthAmount;
     }
     @Getter @Setter
     @AllArgsConstructor
@@ -59,10 +59,10 @@ public class WorthyConsumptionConditionDto {
     public static class UpdateConditionRequest extends WorthyConsumptionRequestDto.IdRequest{
 
         @NotNull(message = "가치소비의 쿠폰 발급 가능 인원을 입력해주세요")
-        int maxParticipants;
+        Integer maxParticipants;
 
         @NotNull(message = "가치소비의 쿠폰 발급 가능 전월 달성 금액을 입력해주세요")
-        long lastMonthAmount;
+        Long lastMonthAmount;
 
     }
 }

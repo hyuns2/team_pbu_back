@@ -34,11 +34,11 @@ public class CouponController {
         CouponResponseDto.ReadResponseWithWorthyConsumption couponResponseDto = couponService.readCouponWithWorthyConsumption(couponId);
         return new ResponseEntity<>(couponResponseDto, HttpStatus.OK);
     }
-    @Operation(summary = "쿠폰의 내용을 수정합니다.", description = "관리자가 쿠폰의 title과 imageUrl을 수정합니다.")
+    @Operation(summary = "쿠폰의 내용을 수정합니다.", description = "관리자가 쿠폰의 title과 image를 수정합니다.")
     //@Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     //@PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{couponId}/content")
-    public ResponseEntity<HttpStatus> updateCouponContent(@PathVariable(name = "couponId") Long couponId, @Valid @RequestBody CouponRequestDto.UpdateContentRequest couponRequestDto) throws IOException {
+    public ResponseEntity<HttpStatus> updateCouponContent(@PathVariable(name = "couponId") Long couponId, @Valid @ModelAttribute("updateCoupons") CouponRequestDto.UpdateContentRequest couponRequestDto) throws IOException {
         couponService.updateCouponContent(couponRequestDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
