@@ -2,12 +2,13 @@ package projectbuildup.mivv.domain.archiving.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import projectbuildup.mivv.domain.archiving.dto.ArchivingDto;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SuperBuilder
 @Getter
 @Entity
 @DiscriminatorValue("NumericalCondition")
@@ -18,15 +19,7 @@ public class NumericalConditionCardEntity extends CardEntity {
     protected Integer count;
     protected Integer term;
 
-    @Builder
-    public NumericalConditionCardEntity(String kind, String title, String subTitle, String sentence, String image, int charge, int count, int term) {
-        super(kind, title, subTitle, sentence, image);
-        this.charge = charge;
-        this.count = count;
-        this.term = term;
-    }
-
-    public void updateCard(ArchivingDto.updateNumericalConditionCardRequestDto dto) {
+    public void updateCard(ArchivingDto.updateNumericalConditionCardRequestDto dto, String imagePath) throws IOException {
         if (dto.getKind() != null) {
             this.kind = dto.getKind();
         }
@@ -40,7 +33,7 @@ public class NumericalConditionCardEntity extends CardEntity {
             this.sentence = dto.getSentence();
         }
         if (dto.getImage() != null) {
-            this.image = dto.getImage();
+            this.imagePath = imagePath;
         }
         if (dto.getCharge() != null) {
             this.charge = dto.getCharge();
@@ -59,11 +52,10 @@ public class NumericalConditionCardEntity extends CardEntity {
                 this.title.equals(numericalConditionCardEntity.getTitle()) &&
                 this.subTitle.equals(numericalConditionCardEntity.getSubTitle()) &&
                 this.sentence.equals(numericalConditionCardEntity.getSentence()) &&
-                this.image.equals(numericalConditionCardEntity.getImage()) &&
+                this.imagePath.equals(numericalConditionCardEntity.getImagePath()) &&
                 this.charge.equals(numericalConditionCardEntity.getCharge()) &&
                 this.count.equals(numericalConditionCardEntity.getCount()) &&
                 this.term.equals(numericalConditionCardEntity.getTerm());
     }
-
 
 }

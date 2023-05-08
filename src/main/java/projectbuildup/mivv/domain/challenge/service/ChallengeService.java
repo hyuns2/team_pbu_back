@@ -10,8 +10,8 @@ import org.springframework.web.multipart.MultipartFile;
 import projectbuildup.mivv.domain.challenge.dto.ChallengeDto;
 import projectbuildup.mivv.domain.challenge.entity.Challenge;
 import projectbuildup.mivv.domain.challenge.repository.ChallengeRepository;
-import projectbuildup.mivv.domain.image.Image;
-import projectbuildup.mivv.domain.image.ImageUploader;
+import projectbuildup.mivv.global.common.imageStore.Image;
+import projectbuildup.mivv.global.common.imageStore.ImageUploader;
 import projectbuildup.mivv.global.common.pagination.PageParam;
 import projectbuildup.mivv.global.common.pagination.PagingDto;
 import projectbuildup.mivv.global.error.exception.CResourceNotFoundException;
@@ -32,8 +32,8 @@ public class ChallengeService {
      *
      * @param requestDto 생성할 챌린지 정보
      */
-    public void createChallenge(ChallengeDto.CreationRequest requestDto, MultipartFile imageFile) throws IOException {
-        Image image = imageUploader.upload(imageFile);
+    public void createChallenge(ChallengeDto.CreationRequest requestDto) throws IOException {
+        Image image = imageUploader.upload(requestDto.getImageFile(), "challenges");
         Challenge challenge = Challenge.from(requestDto, image);
         challengeRepository.save(challenge);
     }
@@ -70,12 +70,12 @@ public class ChallengeService {
      *
      * @param requestDto 수정할 항목
      */
-    public void updateChallenge(ChallengeDto.UpdateRequest requestDto, MultipartFile imageFile) throws IOException {
+    public void updateChallenge(ChallengeDto.UpdateRequest requestDto) throws IOException {
         Challenge challenge = challengeRepository.findById(requestDto.getChallengeId()).orElseThrow(CResourceNotFoundException::new);
         challenge.update(requestDto);
-        if (imageFile != null) {
+        if (requestDto.getImageFile() != null) {
             imageUploader.delete(challenge.getImage());
-            Image image = imageUploader.upload(imageFile);
+            Image image = imageUploader.upload(requestDto.getImageFile(), "challenges");
             challenge.updateImage(image);
         }
         challengeRepository.save(challenge);

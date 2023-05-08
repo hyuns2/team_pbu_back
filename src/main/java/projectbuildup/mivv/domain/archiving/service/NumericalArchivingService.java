@@ -3,88 +3,55 @@ package projectbuildup.mivv.domain.archiving.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import projectbuildup.mivv.domain.archiving.dto.ArchivingDto;
-import projectbuildup.mivv.domain.archiving.entity.CardEntity;
 import projectbuildup.mivv.domain.archiving.entity.NumericalConditionCardEntity;
 import projectbuildup.mivv.domain.archiving.entity.UserCardEntity;
 import projectbuildup.mivv.domain.archiving.repository.CardRepository;
 import projectbuildup.mivv.domain.archiving.repository.UserCardRepository;
 import projectbuildup.mivv.domain.remittance.repository.RemittanceRepository;
 import projectbuildup.mivv.domain.user.entity.User;
+import projectbuildup.mivv.global.common.imageStore.Image;
+import projectbuildup.mivv.global.common.imageStore.ImageUploader;
 import projectbuildup.mivv.global.error.exception.CCardNotFoundException;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
-public class ArchivingService {
+public class NumericalArchivingService {
 
     private final CardRepository cardRepo;
     private final UserCardRepository userCardRepo;
     private final RemittanceRepository remittanceRepo;
 
-    public void createNumericalConditionCard(final ArchivingDto.createNumericalConditionCardRequestDto dto) {
+    private final ImageUploader imageUploader = new ImageUploader();
 
-        NumericalConditionCardEntity entity = ArchivingDto.createNumericalConditionCardRequestDto.toEntity(dto);
+    public void createNumericalConditionCard(final ArchivingDto.createNumericalConditionCardRequestDto dto) throws IOException {
+
+        Image image = imageUploader.upload(dto.getImage(), "cards");
+
+        NumericalConditionCardEntity entity = ArchivingDto.createNumericalConditionCardRequestDto.toEntity(dto, image.getImagePath());
 
         cardRepo.save(entity);
 
     }
 
-    public void updateNumericalConditionCard(final Long id, final ArchivingDto.updateNumericalConditionCardRequestDto dto) {
+    public void updateNumericalConditionCard(final Long id, final ArchivingDto.updateNumericalConditionCardRequestDto dto) throws IOException {
 
         Optional<NumericalConditionCardEntity> target = (Optional<NumericalConditionCardEntity>) cardRepo.findById(id);
         if (target.isEmpty()) {
             throw new CCardNotFoundException();
         }
 
+        Image image = imageUploader.upload(dto.getImage(), "cards");
+
         NumericalConditionCardEntity result = target.get();
-        result.updateCard(dto);
+        result.updateCard(dto, image.getImagePath());
 
         cardRepo.save(result);
-
-    }
-
-    public void deleteCard(final Long id) {
-
-        Optional<CardEntity> target = cardRepo.findById(id);
-        if (target.isEmpty()) {
-            throw new CCardNotFoundException();
-        }
-
-        CardEntity result = target.get();
-        cardRepo.delete(result);
-
-    }
-
-    public ArchivingDto.CardResponseDto retrieveCard(final Long id) {
-
-        Optional<CardEntity> target = cardRepo.findById(id);
-        if (target.isEmpty()) {
-            throw new CCardNotFoundException();
-        }
-
-        CardEntity result = target.get();
-        return new ArchivingDto.CardResponseDto(result);
-
-    }
-
-    public List<ArchivingDto.CardResponseDto> retrieveCards() {
-
-        List<CardEntity> result = cardRepo.findAll();
-
-        return result.stream().map(ArchivingDto.CardResponseDto::new).collect(Collectors.toList());
-
-    }
-
-    public List<ArchivingDto.UserCardResponseDto> retrieveUserCards(final User user) {
-
-        List<UserCardEntity> result = userCardRepo.findUserCardEntitiesByUser(user);
-
-        return result.stream().map(ArchivingDto.UserCardResponseDto::new).collect(Collectors.toList());
 
     }
 

@@ -12,7 +12,7 @@ public class ExampleValue {
         public final static String URL = "/static/videos/sample-m3u8/sample.m3u8";
     }
 
-    public static class Image{
+    public static class ImageSample {
         public final static String SAMPLE = "/static/images/default/sample.jpg";
         public final static String THUMBNAIL = "/static/images/default/thumbnail.jpg";
         public final static String PROFILE_IMAGE = "/static/images/default/profile_image.jpg";

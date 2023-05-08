@@ -3,7 +3,7 @@ package projectbuildup.mivv.domain.challenge.dto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import projectbuildup.mivv.domain.image.Image;
+import projectbuildup.mivv.global.common.imageStore.Image;
 
 
 import java.util.List;
