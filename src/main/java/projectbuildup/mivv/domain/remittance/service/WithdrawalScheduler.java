@@ -15,6 +15,7 @@ import projectbuildup.mivv.domain.remittance.repository.RemittanceRepository;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.domain.user.repository.UserRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -40,6 +41,7 @@ public class WithdrawalScheduler {
     private void renewWithdraw() {
         log.info("출금액 동기화 시작");
         long renewed = 0;
+        LocalDate startDate = LocalDate.now();
         List<User> users = userRepository.findAll();
         for (User user : users) {
             List<Participation> participationList = participationRepository.findAllByUser(user);
@@ -47,7 +49,7 @@ public class WithdrawalScheduler {
             if (numOfParticipation == 0) {
                 continue;
             }
-            List<Map<String, String>> withdrawHistory = accountDetailsSystem.getWithdrawHistory(user);
+            List<Map<String, String>> withdrawHistory = accountDetailsSystem.getWithdrawHistory(user, startDate);
             long sumOfWithdraw = getSum(withdrawHistory);
             long averageWithdrawAmount = sumOfWithdraw / numOfParticipation;
             saveWithdraw(participationList, averageWithdrawAmount);

@@ -43,6 +43,7 @@ public class CodefAccountSystem implements AccountSystem {
 
     private OwnAccounts findAllAccountNumbers(String connectedId, BankType bankType) {
         String result = codefClient.getOwnAccounts(bankType, connectedId);
+        log.info(result);
         try {
             HashMap<String, Object> responseMap = new ObjectMapper().readValue(result, HashMap.class);
             HashMap<String, Object> dataMap = (HashMap<String, Object>) responseMap.get("data");

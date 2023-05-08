@@ -55,7 +55,7 @@ public class CodefClient {
     @PostConstruct
     public void init() {
         codef = new EasyCodef();
-        codef.setClientInfo(CLIENT_ID, CLIENT_SECRET);
+        codef.setClientInfoForDemo(CLIENT_ID, CLIENT_SECRET);
         codef.setPublicKey(PUBLIC_KEY);
     }
 
@@ -64,7 +64,7 @@ public class CodefClient {
             EasyCodef codef = new EasyCodef();
             codef.setClientInfo(CLIENT_ID, CLIENT_SECRET);
             codef.setPublicKey(PUBLIC_KEY);
-            return codef.requestToken(EasyCodefServiceType.API);
+            return codef.requestToken(EasyCodefServiceType.DEMO);
         } catch (IOException e) {
             throw new CInternalServerException();
         }
@@ -76,7 +76,7 @@ public class CodefClient {
         String encodedPassword = EasyCodefUtil.encryptRSA(password, codef.getPublicKey());
         accountMap.put("countryCode", "KR");
         accountMap.put("businessType", "BK");
-        accountMap.put("organization", accountDto.getBankType());
+        accountMap.put("organization", accountDto.getBankType().getCode());
         accountMap.put("clientType", "P");
         accountMap.put("loginType", "1");
         accountMap.put("id", id);
@@ -97,14 +97,16 @@ public class CodefClient {
     public String createConnectedId(AccountRegisterDto accountDto, User user) {
         List<HashMap<String, Object>> accountList = new ArrayList<>();
         HashMap<String, Object> accountMap = new HashMap<>();
+        HashMap<String, Object> parameterMap = new HashMap<>();
         try {
             fillMapParameter(accountMap, accountDto);
             accountList.add(accountMap);
-            HashMap<String, Object> parameterMap = new HashMap<>();
             parameterMap.put("accountList", accountList);
-            String result = codef.createAccount(EasyCodefServiceType.SANDBOX, parameterMap);
+            String result = codef.createAccount(EasyCodefServiceType.DEMO, parameterMap);
+            log.info(result);
             HashMap<String, Object> responseMap = new ObjectMapper().readValue(result, HashMap.class);
             HashMap<String, Object> resultMap = (HashMap<String, Object>) responseMap.get("data");
+            log.info("aaaa" + (String) resultMap.get("connectedId"));
             return (String) resultMap.get("connectedId");
         } catch (Exception e) {
             e.printStackTrace();
@@ -124,7 +126,7 @@ public class CodefClient {
         try {
             parameterMap.put("organization", bankType.getCode());
             parameterMap.put("connectedId", connectedId);
-            return codef.requestProduct(CODEF_OWN_ACCOUNT_API, EasyCodefServiceType.SANDBOX, parameterMap);
+            return codef.requestProduct(CODEF_OWN_ACCOUNT_API, EasyCodefServiceType.DEMO, parameterMap);
         } catch (Exception e) {
             e.printStackTrace();
             throw new CInternalServerException();
@@ -142,7 +144,7 @@ public class CodefClient {
      * @return (거래 일자, 거래시간, 거래 금액) 리스트
      */
     public Map<String, Object> getHistory(String connectedId, String bankCode, String accountNumbers, LocalDate startDate) {
-        LocalDate endDate = startDate.plusDays(1);
+        LocalDate endDate = LocalDate.now();
         String startDateStr = startDate.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         String endDateStr = endDate.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         HashMap<String, Object> parameterMap = new HashMap<>();
@@ -154,7 +156,8 @@ public class CodefClient {
         parameterMap.put("orderBy", "0");
         String productUrl = "/v1/kr/bank/p/account/transaction-list";
         try {
-            String result = codef.requestProduct(productUrl, EasyCodefServiceType.SANDBOX, parameterMap);
+            String result = codef.requestProduct(productUrl, EasyCodefServiceType.DEMO, parameterMap);
+            log.info(result);
             return new ObjectMapper().readValue(result, HashMap.class);
         } catch (Exception e) {
             throw new RuntimeException(e);
