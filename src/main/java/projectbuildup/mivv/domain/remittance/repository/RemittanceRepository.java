@@ -31,9 +31,8 @@ public interface RemittanceRepository extends JpaRepository<Remittance, Long> {
     List<Remittance> findByUserAndDepositAndCreatedTimeBetween(@Param("user") User user, @Param("startTime") LocalDateTime startTime, @Param("endTime") LocalDateTime endTime);
 
     @Query("select sum(r.amount) from Remittance r inner join Participation  p on r.participation = p inner join User  u on p.user = u  where u = :user ")
-    long findSumAmountByUser(@Param("user") User user);
+    Long findSumAmountByUser(@Param("user") User user);
 
     @Query("select sum(r.amount) from Remittance r inner join Participation  p on r.participation = p inner join User  u on p.user = u  inner join Challenge  c on p.challenge = c where u = :user and c = :challenge ")
-    long findSumAmountByUserAndChallenge(@Param("user") User user, @Param("challenge") Challenge challenge);
-
+    Long findSumAmountByUserAndChallenge(@Param("user") User user, @Param("challenge") Challenge challenge);
 }
