@@ -118,19 +118,46 @@ values (1, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', 1, 1, 1),
 
 -- <Remittance> --
 insert into remittance(id, created_time, modified_time, title, amount, participation_id)
-values (1, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', '샘플 챌린지1', 1000, 1),
-       (2, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', '샘플 챌린지1', 2000, 2),
-       (3, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', '샘플 챌린지1', 3000, 3),
-       (4, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', '샘플 챌린지1', 4000, 4),
-       (5, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', '샘플 챌린지1', 5000, 5),
-       (6, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', '샘플 챌린지1', 6000, 6),
-       (7, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', '샘플 챌린지1', 7000, 7),
-       (8, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', '샘플 챌린지1', 8000, 8),
-       (9, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', '샘플 챌린지1', 9000, 9),
-       (10, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', '샘플 챌린지1', 2000, 1),
-       (11, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', '샘플 챌린지1', 3000, 1),
-       (12, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', '샘플 챌린지1', 10000, 10);
+values (1, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873', '배달팁 아끼기', 1000, 1),
+       (2, '2023-04-12 11:31:14.982873', '2023-04-01 11:31:14.982873', '배달팁 아끼기', 2000, 2),
+       (3, '2023-04-13 11:31:14.982873', '2023-04-01 11:31:14.982873', '배달팁 아끼기', 3000, 3),
+       (4, '2023-04-14 11:31:14.982873', '2023-04-01 11:31:14.982873', '택시비 아끼기', 4000, 4),
+       (5, '2023-04-15 11:31:14.982873', '2023-04-01 11:31:14.982873', '택시비 아끼기', 5000, 5),
+       (6, '2023-04-16 11:31:14.982873', '2023-04-01 11:31:14.982873', '택시비 아끼기', 6000, 6),
+       (7, '2023-05-01 11:31:14.982873', '2023-04-01 11:31:14.982873', '커피값 아끼기', 7000, 7),
+       (8, '2023-05-02 11:31:14.982873', '2023-04-01 11:31:14.982873', '커피값 아끼기', 8000, 8),
+       (9, '2023-05-03 11:31:14.982873', '2023-04-01 11:31:14.982873', '커피값 아끼기', 9000, 9),
+       (10, '2023-05-03 11:31:14.982873', '2023-04-01 11:31:14.982873', '배달팁 아끼기', 2000, 1),
+       (11, '2023-05-03 11:31:14.982873', '2023-04-01 11:31:14.982873', '배달팁 아끼기', 3000, 1);
+
+insert into inquiry(id, answer, content, time_stamp, title, user_id)
+values (1, null, '문의 내용입니다.', '2023-04-01 11:31:14.982873', '문의 샘플1', 1),
+       (2, null, '문의 내용입니다.', '2023-04-01 11:31:14.982873', '문의 샘플2', 2);
+
+insert into shorts(id, category, content, image_url, title, video_url)
+values (1, 'SAVING', '', 'http://3.37.5.91/resources/static/images/shorts/shortImage1.png', '샘플 비디오1', 'https://youtu.be/0gY_z7fqPjs'),
+       (2, 'EDUCATION', '', 'http://3.37.5.91/resources/static/images/shorts/shortImage2.png', '샘플 비디오2', 'https://youtu.be/0gY_z7fqPjs');
 
 
 
+insert into worthy_consumption_condition(id, is_issuable_coupon, issuable_coupon_end_date, issuable_coupon_start_date,
+                                         last_month_amount, max_participants)
+values (1, false, '2023-05-01', '2023-04-01', '10000', '100');
 
+insert into worthy_consumptionurl(worthy_consumption_url_id, detail_background_image_url, detail_image_url, image_url,
+                                  place_image_url, video_url)
+values (1, 'http://3.37.5.91/resources/static/images/values/valueDetailBackground1.png', 'http://3.37.5.91/resources/static/images/values/valueDetail1.png',
+        'http://3.37.5.91/resources/static/images/values/valueBackground1.png', 'http://3.37.5.91/resources/static/images/values/valueDetailMap1.png', 'https://youtu.be/0gY_z7fqPjs');
+
+insert into worthy_consumption(worthy_consumption_id, created_time, modified_time, original_price, place_tag, price_tag,
+                               sale_price, summary, worthy_consumption_title, condition_id, worthy_consumption_url_id)
+values (1, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', 99000, '대구 전 지역', '1달 회원권', '55000',
+        '7월 절약 금액 55,000원 달성 시', '레드 짐', 1, 1);
+
+
+insert into coupon(coupon_id, created_time, modified_time, image_url, limit_end_date, limit_start_date, pin, title,
+                   worthy_consumption_id)
+values (1, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873', 'http://3.37.5.91/resources/static/images/coupons/coupon1.png',
+        '2023-08-31', '2023-07-31', '1234', '레드짐 8월 할인권', 1),
+       (2, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873', 'http://3.37.5.91/resources/static/images/coupons/coupon1.png',
+        '2023-07-31', '2023-06-30', '1234', '레드짐 7월 할인권', 1);
