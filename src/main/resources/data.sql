@@ -151,7 +151,7 @@ values (1, 'SAVING', '', 'http://3.37.5.91/resources/static/images/shorts/shortI
 
 insert into worthy_consumption_condition(id, is_issuable_coupon, issuable_coupon_end_date, issuable_coupon_start_date,
                                          last_month_amount, max_participants)
-values (1, false, '2023-05-01', '2023-04-01', '10000', '100');
+values (1, 'OK', '2023-05-01', '2023-04-01', '10000', '100');
 
 insert into worthy_consumptionurl(worthy_consumption_url_id, detail_background_image_url, detail_image_url, image_url,
                                   place_image_url, video_url)
