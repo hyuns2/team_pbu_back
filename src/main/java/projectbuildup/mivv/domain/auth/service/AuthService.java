@@ -30,6 +30,10 @@ public class AuthService {
     private final JwtValidator jwtValidator;
     private final TokenRepository tokenRepository;
 
+    public void doesEnrolled(Long userId){
+
+    }
+
     /**
      * 회원 가입합니다.
      *
