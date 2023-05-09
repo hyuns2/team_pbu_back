@@ -28,6 +28,8 @@ import java.util.List;
 public class ShortsController {
   private final ShortsService shortsService;
   @Operation(summary = "쇼츠 생성", description = "쇼츠를 생성합니다.")
+  @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
+  @PreAuthorize("hasRole('ADMIN')")
   @PostMapping
   public ResponseEntity<HttpStatus> createShorts(@Valid @ModelAttribute("createShorts") ShortsDto.creatRequest shortsRequestDto) throws IOException {
       shortsService.createShorts(shortsRequestDto);
@@ -36,7 +38,7 @@ public class ShortsController {
   @Operation(summary = "쇼츠 단건 조회", description = "쇼츠 하나를 조회합니다.")
   @GetMapping("/{shortsId}")
   public ResponseEntity<ShortsDto.shortsResponse> getOneShorts(@PathVariable(name = "shortsId") Long shortsId){
-      ShortsDto.shortsResponse shortsResponseDto = shortsService.getShorts(shortsId);
+      ShortsDto.shortsResponse shortsResponseDto = shortsService.getOneShorts(shortsId);
       return new ResponseEntity<>(shortsResponseDto, HttpStatus.OK);
   }
   @Operation(summary = "절약 쇼츠 조회", description = "절약 쇼츠를 모두 조회합니다.")
@@ -52,21 +54,19 @@ public class ShortsController {
       return new ResponseEntity<>(shortsResponseDtoList, HttpStatus.OK);
   }
   @Operation(summary = "쇼츠 수정", description = "쇼츠를 수정합니다.")
-  @PutMapping("/{shortsId}")
+  @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
+  @PreAuthorize("hasRole('ADMIN')")
+  @PatchMapping("/{shortsId}")
   public ResponseEntity<HttpStatus> updateShorts(@PathVariable(name = "shortsId") Long shortsId, @Valid @ModelAttribute("updateShorts") ShortsDto.updateRequest shortsRequestDto) throws IOException {
-      shortsRequestDto.setId(shortsId);
-      shortsService.updateShorts(shortsRequestDto);
+      shortsService.updateShorts(shortsId, shortsRequestDto);
       return new ResponseEntity<>(HttpStatus.OK);
   }
   @Operation(summary = "쇼츠 삭제", description = "쇼츠를 삭제합니다.")
+  @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
+  @PreAuthorize("hasRole('ADMIN')")
   @DeleteMapping ("/{shortsId}")
   public ResponseEntity<HttpStatus> deleteShorts(@PathVariable(name = "shortsId") Long shortsId){
-      ShortsDto.idRequest shortsRequestDto;
-      //shortsService.deleteShorts(new ShortsDto.idRequest(shortsId));
       shortsService.deleteShorts(shortsId);
-      /*
-      고민) Long shortsId는 객체.. 니까 이것도 이 자체를 넘겨주는게 맞는 건가,, DTO로 감싸서 넘겨주는게 맞는거 같기도 한데.. 이게 맞는 걸까유..ㅠ
-       */
       return new ResponseEntity<>(HttpStatus.OK);
   }
 }

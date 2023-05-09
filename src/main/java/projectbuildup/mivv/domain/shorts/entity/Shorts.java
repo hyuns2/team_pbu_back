@@ -27,7 +27,7 @@ public class Shorts {
         this.videoPath = shortsRequestDto.getVideoPath();
         this.category = shortsRequestDto.getCategory();
     }
-    public void updateShorts(ShortsDto.updateRequest shortsRequestDto, String imagePath){
+    public void update(ShortsDto.updateRequest shortsRequestDto, String imagePath){
         this.title = shortsRequestDto.getTitle();
         this.content = shortsRequestDto.getContent();
         this.imagePath = imagePath;

@@ -18,17 +18,14 @@ import java.util.List;
 @Service
 public class ShortsService {
     private final ShortsRepository shortsRepository;
-
     private final ImageUploader imageUploader;
 
     public void createShorts(ShortsDto.creatRequest shortsRequestDto) throws IOException {
         Image image = imageUploader.upload(shortsRequestDto.getImage(), "shorts");
-
         Shorts shorts = new Shorts(shortsRequestDto, image.getImagePath());
-
         shortsRepository.save(shorts);
     }
-    public ShortsDto.shortsResponse getShorts(Long shortsId){
+    public ShortsDto.shortsResponse getOneShorts(Long shortsId){
         Shorts shorts = shortsRepository.findById(shortsId).orElseThrow(CShortsNotFoundException::new);
         return new ShortsDto.shortsResponse(shorts);
     }
@@ -39,10 +36,10 @@ public class ShortsService {
         return shortsRepository.findAll().stream().filter(shorts -> shorts.getCategory()==ShortsCategory.EDUCATION).map(ShortsDto.shortsResponse::new).toList();
 
     }
-    public void updateShorts(ShortsDto.updateRequest shortsRequestDto) throws IOException {
-        Shorts shorts = shortsRepository.findById(shortsRequestDto.getId()).orElseThrow(CShortsNotFoundException::new);
+    public void updateShorts(Long shortsId, ShortsDto.updateRequest shortsRequestDto) throws IOException {
+        Shorts shorts = shortsRepository.findById(shortsId).orElseThrow(CShortsNotFoundException::new);
         Image image = imageUploader.upload(shortsRequestDto.getImage(), "shorts");
-        shorts.updateShorts(shortsRequestDto, image.getImagePath());
+        shorts.update(shortsRequestDto, image.getImagePath());
         shortsRepository.save(shorts);
     }
     public void deleteShorts(Long shortsId){

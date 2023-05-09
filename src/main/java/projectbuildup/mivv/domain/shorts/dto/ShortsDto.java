@@ -13,11 +13,6 @@ import projectbuildup.mivv.domain.shorts.entity.Shorts;
 import projectbuildup.mivv.domain.shorts.entity.ShortsCategory;
 
 public class ShortsDto {
-    @Getter @AllArgsConstructor @NoArgsConstructor
-    public static class idRequest{
-        @Setter
-        Long id;
-    }
     @Getter @Setter
     public static class creatRequest{
         @NotBlank(message = "제목은 필수 입력값입니다.")
@@ -33,22 +28,13 @@ public class ShortsDto {
     }
     @Getter @Setter
     @AllArgsConstructor @NoArgsConstructor
-    public static class updateRequest extends idRequest{
+    public static class updateRequest {
         String title;
         String content;
         String videoPath;
         private MultipartFile image;
     }
-//    @Getter
-//    public static class shortsResponse extends ShortsDto.creatRequest{
-//        public shortsResponse(Shorts shorts){
-//            this.title = shorts.getTitle();
-//            this.content = shorts.getContent();
-//            this.videoPath = shorts.getVideoPath();
-//            this.imagePath= shorts.getImageUrl();
-//            this.category = shorts.getCategory();
-//        }
-//    }
+
     public static class shortsResponse {
     String title;
     String content;
@@ -63,6 +49,5 @@ public class ShortsDto {
             this.imagePath= shorts.getImagePath();
             this.category = shorts.getCategory();
         }
-}
-
+    }
 }
