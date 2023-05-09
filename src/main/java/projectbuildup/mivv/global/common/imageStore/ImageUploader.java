@@ -18,12 +18,13 @@ public class ImageUploader {
 
     @Value("${path.images}")
     String STORE_PATH;
+    
+    @Value("${path.ipAddress}")
+    String ipUrl;
 
     private static final String DELIMITER = "/";
 
     public Image upload(MultipartFile multipartFile, String dirName) throws IOException {
-        String ipUrl = "http://3.37.5.91";
-
         String originalName = Objects.requireNonNull(multipartFile.getOriginalFilename());
         String storeName = makeRandomName(originalName);
         String storePath = STORE_PATH + DELIMITER + dirName + DELIMITER + storeName;
