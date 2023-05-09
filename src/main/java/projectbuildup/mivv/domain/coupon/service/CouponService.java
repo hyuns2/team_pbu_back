@@ -7,6 +7,7 @@ import projectbuildup.mivv.domain.coupon.dto.CouponDto;
 import projectbuildup.mivv.domain.coupon.dto.response.CouponResponseDto;
 import projectbuildup.mivv.domain.coupon.entity.Coupon;
 import projectbuildup.mivv.domain.coupon.repository.CouponRepository;
+import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumption;
 import projectbuildup.mivv.domain.worthyConsumption.repository.WorthyConsumptionRepository;
 import projectbuildup.mivv.global.common.imageStore.Image;
@@ -35,18 +36,17 @@ public class CouponService {
 
         Image image = imageUploader.upload(couponDto.getImage(), "coupons");
         Coupon coupon = new Coupon(couponDto, image.getImagePath());
-        //Coupon coupon = couponRequestDto.toEntity();//주입할거가 없다면 빌더 패턴 말고 그냥 new 해야하는건가?
         worthyConsumption.addCoupon(coupon);
         worthyConsumptionRepository.save(worthyConsumption);
-
     }
     /**
      * 쿠폰 조회시, 완전한 정보 모두를 포함한 것입니다.
      * @param couponId
      * @return
      */
-    public CouponResponseDto.ReadResponseWithWorthyConsumption readCouponWithWorthyConsumption(Long couponId){
+    public CouponResponseDto.ReadResponseWithWorthyConsumption readCouponWithWorthyConsumption(Long couponId, User user){
         Coupon coupon = couponRepository.findById(couponId).orElseThrow(CCouponNotFoundException::new);
+        //유저가 보유한 쿠폰이 맞는지 확인해야 함
         return new CouponResponseDto.ReadResponseWithWorthyConsumption(coupon);
     }
     public void updateCoupon(Long couponId, CouponDto.Update couponDto) throws IOException {
