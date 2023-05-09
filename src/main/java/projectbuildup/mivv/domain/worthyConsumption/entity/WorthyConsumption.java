@@ -44,13 +44,13 @@ public class WorthyConsumption extends BaseTimeEntity {
     private String summary;
 
     @Nullable
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade =  CascadeType.ALL)
     @JoinColumn(name = "WorthyConsumptionUrlId")
     @Setter
     private WorthyConsumptionUrl worthyConsumptionUrl;
 
     @Nullable
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade =  CascadeType.ALL)
     @JoinColumn(name = "ConditionId")
     @Setter
     private Condition condition;

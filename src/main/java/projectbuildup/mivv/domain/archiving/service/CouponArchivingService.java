@@ -1,7 +1,6 @@
 package projectbuildup.mivv.domain.archiving.service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import projectbuildup.mivv.domain.archiving.dto.ArchivingDto;
@@ -14,7 +13,6 @@ import projectbuildup.mivv.domain.coupon.repository.CouponRepository;
 import projectbuildup.mivv.domain.couponIssuance.entity.CouponIssuance;
 import projectbuildup.mivv.domain.couponIssuance.repository.CouponIssuanceRepository;
 import projectbuildup.mivv.domain.user.entity.User;
-import projectbuildup.mivv.domain.user.repository.UserRepository;
 import projectbuildup.mivv.global.common.imageStore.Image;
 import projectbuildup.mivv.global.common.imageStore.ImageUploader;
 import projectbuildup.mivv.global.error.exception.CCardNotFoundException;
@@ -28,7 +26,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
-@Slf4j
 @RequiredArgsConstructor
 @Service
 public class CouponArchivingService {
@@ -37,13 +34,12 @@ public class CouponArchivingService {
     private final UserCardRepository userCardRepo;
     private final CouponIssuanceRepository couponIssuanceRepo;
     private final CouponRepository couponRepo;
-    private final UserRepository userRepo;
     private final ImageUploader imageUploader;
 
     public void createCouponConditionCard(final ArchivingDto.createCouponCardRequestDto dto) throws IOException {
 
         // 조건이 하나도 안주어져 있는 경우
-        if (dto.getWhatNumber() == 0 && dto.getHowSuccessive() == 0) {
+        if (dto.getWhatNumber() == null && dto.getHowSuccessive() == null) {
             throw new CInvalidCardConditionException();
         }
 
@@ -86,10 +82,10 @@ public class CouponArchivingService {
             // 연속 발급 조건만 만족
             if (element.getWhatNumber() == 0 && element.getHowSuccessive() <= howSuccessive)
                 userCardRepo.save(new UserCardEntity(user, element, LocalDate.now()));
-            // 발급 순서 조건만 만족
+                // 발급 순서 조건만 만족
             else if (element.getHowSuccessive() == 0 && element.getWhatNumber() == whatNumber)
                 userCardRepo.save(new UserCardEntity(user, element, LocalDate.now()));
-            // 둘다 만족
+                // 둘다 만족
             else if (element.getWhatNumber() == whatNumber && element.getHowSuccessive() <= howSuccessive)
                 userCardRepo.save(new UserCardEntity(user, element, LocalDate.now()));
         }

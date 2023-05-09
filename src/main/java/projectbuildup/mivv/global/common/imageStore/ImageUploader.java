@@ -22,14 +22,11 @@ public class ImageUploader {
     private static final String DELIMITER = "/";
 
     public Image upload(MultipartFile multipartFile, String dirName) throws IOException {
-        String ipUrl = "http://3.37.5.91";
-
         String originalName = Objects.requireNonNull(multipartFile.getOriginalFilename());
         String storeName = makeRandomName(originalName);
         String storePath = STORE_PATH + DELIMITER + dirName + DELIMITER + storeName;
         File file = new File(storePath);
         multipartFile.transferTo(file);
-        storePath = ipUrl + storePath;
         return new Image(storeName, originalName, storePath);
     }
 

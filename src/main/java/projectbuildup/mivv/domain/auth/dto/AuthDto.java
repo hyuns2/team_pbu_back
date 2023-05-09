@@ -53,7 +53,7 @@ public class AuthDto {
     @NoArgsConstructor
     public static class LoginRequest {
         @NotBlank
-        @Schema(description = "본인인증 식별자", example = "test_code")
+        @Schema(description = "본인인증 식별자")
         String verificationCode;
         @Length()
         @Schema(description = "비밀번호", example = ExampleValue.User.PASSWORD)

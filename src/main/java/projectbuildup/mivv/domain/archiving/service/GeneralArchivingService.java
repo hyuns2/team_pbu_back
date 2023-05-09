@@ -44,7 +44,6 @@ public class GeneralArchivingService {
         Image image = imageUploader.upload(dto.getImage(), "cards");
 
         CardEntity entity = ArchivingDto.createGeneralCardRequestDto.toEntity(dto, image.getImagePath());
-
         cardRepo.save(entity);
 
     }
@@ -105,7 +104,7 @@ public class GeneralArchivingService {
 
     }
 
-    void assignGeneralConditionCards(CardEntity cardEntity, String name, String mobile) {
+    private void assignGeneralConditionCards(CardEntity cardEntity, String name, String mobile) {
         // 이름과 전화번호로 사용자 알아내기
         Optional<User> targetUser = userRepo.findByNameAndMobile(name, mobile);
         if (targetUser.isEmpty()) {
@@ -117,7 +116,9 @@ public class GeneralArchivingService {
         userCardRepo.save(new UserCardEntity(userEntity, cardEntity, LocalDate.now()));
     }
 
-    void checkAndAssignGeneralConditionCards(MultipartFile dtoFile, CardEntity cardEntity) throws IOException {
+
+
+    private void checkAndAssignGeneralConditionCards(MultipartFile dtoFile, CardEntity cardEntity) throws IOException {
         // 엑셀파일이면, 프로젝트 바로 안의 files 폴더에 저장
         File file = fileUploader.storeExcelFile(dtoFile);
 

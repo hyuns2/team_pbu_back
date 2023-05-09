@@ -69,7 +69,7 @@ public class AuthService {
      * @param requestDto 어세스토큰, 리프레시토큰
      */
     public void logout(AuthDto.UnlinkRequestDto requestDto) {
-//        tokenRepository.saveBlockedToken(requestDto.getAccessToken());
+        tokenRepository.saveBlockedToken(requestDto.getAccessToken());
         tokenRepository.deleteRefreshToken(requestDto.getRefreshToken());
     }
 
