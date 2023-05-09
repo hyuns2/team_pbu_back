@@ -153,6 +153,14 @@ public class ArchivingController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @Operation(summary = "쿠폰 발급 조건의 카드 할당", description = "쿠폰 발급 조건에 만족하는지 체크하고, 만족하면 사용자는 카드를 부여받습니다.")
+    @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping(value = "/assign/coupon-cards", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> assignCouponConditionsCards(@AuthenticationPrincipal User user, @ModelAttribute("assignCouponCards") ArchivingDto.AssignCouponCardsRequestDto dto) {
+        cService.assignCouponConditionsCard(user, dto);
 
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
 }

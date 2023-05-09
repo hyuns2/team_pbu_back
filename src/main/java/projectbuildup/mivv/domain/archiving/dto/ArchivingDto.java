@@ -212,11 +212,11 @@ public class ArchivingDto {
         @Schema(description = "카드 이미지 파일")
         private MultipartFile image;
 
-        @Positive
+        @NotNull
         @Schema(description = "몇번째 쿠폰 발급자에게 카드를 부여할건가")
         private Integer whatNumber;
 
-        @Positive
+        @NotNull
         @Schema(description = "몇개월 연속 쿠폰 발급자에게 카드를 부여할건가")
         private Integer howSuccessive;
 
@@ -273,7 +273,7 @@ public class ArchivingDto {
     public static class AssignCouponCardsRequestDto {
         @NotNull
         @Schema(description = "쿠폰 고유번호")
-        private Long id;
+        private Long couponId;
     }
 
     @AllArgsConstructor

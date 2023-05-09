@@ -44,6 +44,7 @@ public class GeneralArchivingService {
         Image image = imageUploader.upload(dto.getImage(), "cards");
 
         CardEntity entity = ArchivingDto.createGeneralCardRequestDto.toEntity(dto, image.getImagePath());
+
         cardRepo.save(entity);
 
     }

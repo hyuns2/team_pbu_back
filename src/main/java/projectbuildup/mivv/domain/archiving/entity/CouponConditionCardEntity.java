@@ -25,7 +25,7 @@ public class CouponConditionCardEntity extends CardEntity {
     // 몇번 이상 연속 발급 성공자인지
     protected Integer howSuccessive;
 
-    public void updateCard(ArchivingDto.updateCouponCardRequestDto dto, String imagePath) throws IOException {
+    public void updateCard(ArchivingDto.updateCouponCardRequestDto dto, String imagePath) {
         if (dto.getKind() != null) {
             this.kind = dto.getKind();
         }

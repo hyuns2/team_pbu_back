@@ -1,7 +1,7 @@
 package projectbuildup.mivv.domain.archiving.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Sort;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import projectbuildup.mivv.domain.archiving.dto.ArchivingDto;
@@ -9,12 +9,16 @@ import projectbuildup.mivv.domain.archiving.entity.CouponConditionCardEntity;
 import projectbuildup.mivv.domain.archiving.entity.UserCardEntity;
 import projectbuildup.mivv.domain.archiving.repository.CardRepository;
 import projectbuildup.mivv.domain.archiving.repository.UserCardRepository;
+import projectbuildup.mivv.domain.coupon.entity.Coupon;
+import projectbuildup.mivv.domain.coupon.repository.CouponRepository;
 import projectbuildup.mivv.domain.couponIssuance.entity.CouponIssuance;
 import projectbuildup.mivv.domain.couponIssuance.repository.CouponIssuanceRepository;
 import projectbuildup.mivv.domain.user.entity.User;
+import projectbuildup.mivv.domain.user.repository.UserRepository;
 import projectbuildup.mivv.global.common.imageStore.Image;
 import projectbuildup.mivv.global.common.imageStore.ImageUploader;
 import projectbuildup.mivv.global.error.exception.CCardNotFoundException;
+import projectbuildup.mivv.global.error.exception.CCouponNotFoundException;
 import projectbuildup.mivv.global.error.exception.CInvalidCardConditionException;
 
 import java.io.IOException;
@@ -24,6 +28,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class CouponArchivingService {
@@ -31,12 +36,14 @@ public class CouponArchivingService {
     private final CardRepository cardRepo;
     private final UserCardRepository userCardRepo;
     private final CouponIssuanceRepository couponIssuanceRepo;
+    private final CouponRepository couponRepo;
+    private final UserRepository userRepo;
     private final ImageUploader imageUploader;
 
     public void createCouponConditionCard(final ArchivingDto.createCouponCardRequestDto dto) throws IOException {
 
         // 조건이 하나도 안주어져 있는 경우
-        if (dto.getWhatNumber() == null && dto.getHowSuccessive() == null) {
+        if (dto.getWhatNumber() == 0 && dto.getHowSuccessive() == 0) {
             throw new CInvalidCardConditionException();
         }
 
@@ -64,6 +71,87 @@ public class CouponArchivingService {
 
     }
 
+    private void assignCards(final User user, final int whatNumber, final int howSuccessive) {
+        List<UserCardEntity> alreadyExistings = userCardRepo.findUserCardEntitiesByUser(user);
 
+        List<CouponConditionCardEntity> allCards = (List<CouponConditionCardEntity>) cardRepo.findAll();
+
+        for (UserCardEntity element: alreadyExistings) {
+            allCards.remove(element.getCardEntity());
+        }
+
+        List<CouponConditionCardEntity> cardsToCheck = allCards;
+
+        for (CouponConditionCardEntity element: cardsToCheck) {
+            // 연속 발급 조건만 만족
+            if (element.getWhatNumber() == 0 && element.getHowSuccessive() <= howSuccessive)
+                userCardRepo.save(new UserCardEntity(user, element, LocalDate.now()));
+            // 발급 순서 조건만 만족
+            else if (element.getHowSuccessive() == 0 && element.getWhatNumber() == whatNumber)
+                userCardRepo.save(new UserCardEntity(user, element, LocalDate.now()));
+            // 둘다 만족
+            else if (element.getWhatNumber() == whatNumber && element.getHowSuccessive() <= howSuccessive)
+                userCardRepo.save(new UserCardEntity(user, element, LocalDate.now()));
+        }
+    }
+
+    private int checkHowSuccessive(final User user) {
+        List<LocalDateTime> createdTimesByUserId = couponIssuanceRepo.findCreatedTimeByUserId(user);
+        int howSuccessive = 0;
+        LocalDateTime before = LocalDateTime.now();
+        for (LocalDateTime element: createdTimesByUserId) {
+            if (createdTimesByUserId.indexOf(element) == 0) {
+                // 마지막 발급이 이번달인가?
+                if (Math.abs(ChronoUnit.MONTHS.between(LocalDateTime.now(), element)) > 0) {
+                    break;
+                }
+            }
+            else {
+                long diffMonths = ChronoUnit.MONTHS.between(before, element);
+                diffMonths = Math.abs(diffMonths);
+                if (diffMonths == 1) {
+                    howSuccessive++;
+                }
+                else if (diffMonths > 1) {
+                    break;
+                }
+            }
+            before = element;
+        }
+        return howSuccessive;
+    }
+
+    private int checkWhatNumber(final User user, final Coupon coupon) {
+        List<CouponIssuance> issuancesByCouponId = couponIssuanceRepo.findAllByCoupon(coupon);
+        int whatNumber = 0;
+        for (CouponIssuance element: issuancesByCouponId) {
+            if (element.getUser().getId().equals(user.getId())) {
+                whatNumber = issuancesByCouponId.indexOf(element) + 1;
+                break;
+            }
+        }
+        return whatNumber;
+    }
+
+    @Transactional
+    public void assignCouponConditionsCard(final User user, final ArchivingDto.AssignCouponCardsRequestDto dto) {
+
+        // 쿠폰 객체 불러오기
+        Optional<Coupon> target = couponRepo.findById(dto.getCouponId());
+        if (target.isEmpty()) {
+            throw new CCouponNotFoundException();
+        }
+        Coupon coupon = target.get();
+
+        // 해당 쿠폰에서 몇번째 발급자에 해당하는지 체크
+        int whatNumber = checkWhatNumber(user, coupon);
+
+        // 몇달째 연속으로 발급했는지 체크
+        int howSuccessive = checkHowSuccessive(user);
+
+        // 쿠폰 발급 카드 조건 사항에 맞다면 카드 부여
+        assignCards(user, whatNumber, howSuccessive);
+
+    }
 
 }
