@@ -7,12 +7,16 @@ import projectbuildup.mivv.domain.coupon.dto.CouponDto;
 import projectbuildup.mivv.domain.coupon.dto.response.CouponResponseDto;
 import projectbuildup.mivv.domain.coupon.entity.Coupon;
 import projectbuildup.mivv.domain.coupon.repository.CouponRepository;
+import projectbuildup.mivv.domain.couponIssuance.repository.CouponIssuanceRepository;
 import projectbuildup.mivv.domain.user.entity.User;
+import projectbuildup.mivv.domain.user.repository.UserRepository;
 import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumption;
 import projectbuildup.mivv.domain.worthyConsumption.repository.WorthyConsumptionRepository;
 import projectbuildup.mivv.global.common.imageStore.Image;
 import projectbuildup.mivv.global.common.imageStore.ImageUploader;
+import projectbuildup.mivv.global.error.exception.CBadRequestException;
 import projectbuildup.mivv.global.error.exception.CCouponNotFoundException;
+import projectbuildup.mivv.global.error.exception.CUserExistException;
 import projectbuildup.mivv.global.error.exception.CWorthyConsumptionNotFoundException;
 
 import java.io.IOException;
@@ -23,12 +27,14 @@ import java.io.IOException;
 public class CouponService {
     private final CouponRepository couponRepository;
     private final WorthyConsumptionRepository worthyConsumptionRepository;
+    private final UserRepository userRepository;
+    private final CouponIssuanceRepository couponIssuanceRepository;
 
     private final ImageUploader imageUploader;
 
     /**
      * 가치소비에서 쿠폰을 생성하는 로직입니다.
-     * @param worthyConsumptionId
+     * @param
      * @param
      */
     public void createCoupon(Long worthyConsumptionId, CouponDto.Creation couponDto) throws IOException {
@@ -41,12 +47,16 @@ public class CouponService {
     }
     /**
      * 쿠폰 조회시, 완전한 정보 모두를 포함한 것입니다.
-     * @param couponId
+     * @param
      * @return
      */
-    public CouponResponseDto.ReadResponseWithWorthyConsumption readCouponWithWorthyConsumption(Long couponId, User user){
+    public CouponResponseDto.ReadResponseWithWorthyConsumption readCouponWithWorthyConsumption(Long couponId, Long userId){
         Coupon coupon = couponRepository.findById(couponId).orElseThrow(CCouponNotFoundException::new);
-        //유저가 보유한 쿠폰이 맞는지 확인해야 함
+        User user = userRepository.findById(userId).orElseThrow(CUserExistException::new);
+
+        if(couponIssuanceRepository.findByUserAndCoupon(user, coupon).isEmpty())
+            throw new CBadRequestException("유저가 보유한 쿠폰이 아닙니다.");
+
         return new CouponResponseDto.ReadResponseWithWorthyConsumption(coupon);
     }
     public void updateCoupon(Long couponId, CouponDto.Update couponDto) throws IOException {

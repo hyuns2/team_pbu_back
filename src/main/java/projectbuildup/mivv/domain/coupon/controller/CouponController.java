@@ -34,7 +34,7 @@ public class CouponController {
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/{couponId}")
     public ResponseEntity<CouponResponseDto.ReadResponseWithWorthyConsumption> readCouponWithWorthyConsumption(@PathVariable(name = "couponId") Long couponId, @AuthenticationPrincipal User user){
-        CouponResponseDto.ReadResponseWithWorthyConsumption couponResponseDto = couponService.readCouponWithWorthyConsumption(couponId, user);
+        CouponResponseDto.ReadResponseWithWorthyConsumption couponResponseDto = couponService.readCouponWithWorthyConsumption(couponId, user.getId());
         return new ResponseEntity<>(couponResponseDto, HttpStatus.OK);
     }
     @Operation(summary = "쿠폰을 수정합니다.", description = "관리자가 쿠폰을 수정합니다.")
