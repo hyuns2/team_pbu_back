@@ -29,11 +29,11 @@ public class CodefAccountSystem implements AccountSystem {
     @Override
     public Account createAccount(AccountRegisterDto accountDto, User user) {
         String connectedId = issueConnectedId(accountDto, user);
-        OwnAccounts ownAccounts = findAllAccountNumbers(connectedId, accountDto.getBankType());
+        OwnAccounts ownAccounts = findAllAccountNumbers(connectedId, accountDto.getOrganizationCode());
         if (!ownAccounts.contains(accountDto.getAccountNumbers())) {
             throw new CResourceNotFoundException();
         }
-        return new Account(accountDto.getAccountNumbers(), accountDto.getBankType(), OpenBanking.CODEF, connectedId);
+        return new Account(accountDto.getAccountNumbers(), BankType.findByCode(accountDto.getOrganizationCode()), OpenBanking.CODEF, connectedId);
     }
 
     private String issueConnectedId(AccountRegisterDto accountDto, User user) {
@@ -41,7 +41,7 @@ public class CodefAccountSystem implements AccountSystem {
     }
 
 
-    private OwnAccounts findAllAccountNumbers(String connectedId, BankType bankType) {
+    private OwnAccounts findAllAccountNumbers(String connectedId, String bankType) {
         String result = codefClient.getOwnAccounts(bankType, connectedId);
         log.info(result);
         try {

@@ -30,7 +30,7 @@ public class AuthController {
     private final AuthService authService;
     private final IdentityVerificationService identityVerificationService;
 
-    @Operation(summary = "본인인증합니다.", description = "본인인증 API 호출 결과로 받은 key를 이용해 본인인증을 수행합니다. 반환받은 code는 로그인 및 회원가입 시 사용됩니다. " +
+    @Operation(summary = "본인인증합니다.", description = "본인인증 API 호출 결과로 받은 key를 이용해 본인인증을 수행합니다. 반환받은 verificationCode는 로그인 및 회원가입 시 사용됩니다. " +
             "만약 이미 회원가입 된 계정이 있다면, isNewUser = true를 반환합니다.")
     @PostMapping("/auth/certify")
     @PreAuthorize("permitAll()")
@@ -39,7 +39,7 @@ public class AuthController {
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
-    @Operation(summary = "회원가입합니다.", description = "")
+    @Operation(summary = "회원가입합니다.", description = "verficiationCode는 본인인증 결과로 반환되는 코드입니다. ")
     @PostMapping("/auth/signup")
     @PreAuthorize("permitAll()")
     public ResponseEntity<Void> signup(@RequestBody @Valid AuthDto.SignupRequest requestDto) {

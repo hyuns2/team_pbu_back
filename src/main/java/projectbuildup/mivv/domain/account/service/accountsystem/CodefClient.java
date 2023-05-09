@@ -1,27 +1,15 @@
 package projectbuildup.mivv.domain.account.service.accountsystem;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.codef.api.EasyCodef;
 import io.codef.api.EasyCodefServiceType;
 import io.codef.api.EasyCodefUtil;
 import jakarta.annotation.PostConstruct;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.web.format.DateTimeFormatters;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.client.WebClient;
 import projectbuildup.mivv.domain.account.dto.AccountRegisterDto;
 import projectbuildup.mivv.domain.account.dto.IdPasswordBasedRegisterDto;
-import projectbuildup.mivv.domain.account.entity.Account;
-import projectbuildup.mivv.domain.account.entity.BankType;
-import projectbuildup.mivv.domain.user.entity.IdentityVerification;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.global.error.exception.CInternalServerException;
 
@@ -29,7 +17,6 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
@@ -76,7 +63,7 @@ public class CodefClient {
         String encodedPassword = EasyCodefUtil.encryptRSA(password, codef.getPublicKey());
         accountMap.put("countryCode", "KR");
         accountMap.put("businessType", "BK");
-        accountMap.put("organization", accountDto.getBankType().getCode());
+        accountMap.put("organization", accountDto.getOrganizationCode());
         accountMap.put("clientType", "P");
         accountMap.put("loginType", "1");
         accountMap.put("id", id);
@@ -121,10 +108,10 @@ public class CodefClient {
      * @param connectedId 커넥티드 아이디
      * @return 보유 계좌 목록 (코드에프 테스트 계정의 경우 accountList = [06170204000000, 23850204000000, 54780300000000])
      */
-    public String getOwnAccounts(BankType bankType, String connectedId) {
+    public String getOwnAccounts(String bankType, String connectedId) {
         HashMap<String, Object> parameterMap = new HashMap<>();
         try {
-            parameterMap.put("organization", bankType.getCode());
+            parameterMap.put("organization", bankType);
             parameterMap.put("connectedId", connectedId);
             return codef.requestProduct(CODEF_OWN_ACCOUNT_API, EasyCodefServiceType.DEMO, parameterMap);
         } catch (Exception e) {
