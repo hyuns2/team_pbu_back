@@ -55,4 +55,5 @@ api:
 path:
   files: /resources/static/files
   images: /resources/static/images
+  ipAddress: http://3.37.5.91
 
