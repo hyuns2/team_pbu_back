@@ -3,7 +3,7 @@ package projectbuildup.mivv.domain.coupon.entity;
 import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
 import lombok.*;
-import projectbuildup.mivv.domain.coupon.dto.request.CouponRequestDto;
+import projectbuildup.mivv.domain.coupon.dto.CouponDto;
 import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumption;
 import projectbuildup.mivv.global.common.BaseTimeEntity;
 
@@ -35,22 +35,19 @@ public class Coupon extends BaseTimeEntity {
     @Nonnull
     private LocalDate limitEndDate;
 
-    public Coupon(CouponRequestDto.CreationRequest couponRequestDto,String imagePath) {
-        this.title = couponRequestDto.getTitle();
+    public Coupon(CouponDto.Creation couponDto,String imagePath) {
+        this.title = couponDto.getTitle();
         this.imagePath = imagePath;
-        this.pin = couponRequestDto.getPin();
-        this.limitStartDate = couponRequestDto.getLimitStartDate();
-        this.limitEndDate = couponRequestDto.getLimitEndDate();
+        this.pin = couponDto.getPin();
+        this.limitStartDate = couponDto.getLimitStartDate();
+        this.limitEndDate = couponDto.getLimitEndDate();
     }
-
-    public void updateContent(CouponRequestDto.UpdateContentRequest couponRequestDto, String imagePath){
-        this.title = couponRequestDto.getTitle();
+    public void update(CouponDto.Update couponDto, String imagePath){
+        this.title = couponDto.getTitle();
         this.imagePath = imagePath;
-    }
-    public void updateDate(CouponRequestDto.UpdateDateRequest couponRequestDto){
-        this.limitStartDate = couponRequestDto.getLimitStartDate();
-        this.limitEndDate = couponRequestDto.getLimitEndDate();
-
+        this.pin = couponDto.getPin();
+        this.limitStartDate = couponDto.getLimitStartDate();
+        this.limitEndDate = couponDto.getLimitEndDate();
     }
 
 

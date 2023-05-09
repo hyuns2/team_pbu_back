@@ -142,7 +142,7 @@ values (1, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873', '배달�
 insert into inquiry(id, answer, content, time_stamp, title, user_id)
 values (1, null, '문의 내용입니다.', '2023-04-01 11:31:14.982873', '문의 샘플1', 1),
        (2, null, '문의 내용입니다.', '2023-04-01 11:31:14.982873', '문의 샘플2', 2);
-
+/*
 insert into shorts(id, category, content, image_path, title, video_path)
 values (1, 'SAVING', '', 'shortImage1.png', '샘플 비디오1', 'https://youtu.be/0gY_z7fqPjs'),
        (2, 'EDUCATION', '', 'shortImage2.png', '샘플 비디오2', 'https://youtu.be/0gY_z7fqPjs');
@@ -159,7 +159,7 @@ values (1, '/resources/static/images/valueDetailBackground1.png', '/resources/st
         '/resources/static/images/valueBackground1.png', '/resources/static/images/valueDetailMap1.png', 'https://youtu.be/0gY_z7fqPjs');
 
 insert into worthy_consumption(worthy_consumption_id, created_time, modified_time, original_price, place_tag, price_tag,
-                               sale_price, summary, worthy_consumption_title, condition_id, worthy_consumption_url_id)
+    sale_price, summary, worthy_consumption_title, condition_id, worthy_consumption_url_id)
 values (1, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', 99000, '대구 전 지역', '1달 회원권', '55000',
         '7월 절약 금액 55,000원 달성 시', '레드 짐', 1, 1);
 
@@ -169,4 +169,4 @@ insert into coupon(coupon_id, created_time, modified_time, image_path, limit_end
 values (1, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873', '/resources/static/images/coupon1.png',
         '2023-08-31', '2023-07-31', '1234', '레드짐 8월 할인권', 1),
        (2, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873', '/resources/static/images/coupon1.png',
-        '2023-07-31', '2023-06-30', '1234', '레드짐 7월 할인권', 1);
+        '2023-07-31', '2023-06-30', '1234', '레드짐 7월 할인권', 1);*/
