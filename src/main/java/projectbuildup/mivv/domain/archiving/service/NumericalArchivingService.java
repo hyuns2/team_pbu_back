@@ -56,7 +56,7 @@ public class NumericalArchivingService {
 
     }
 
-    public void ifNumericalConditionCardHasNotTerm(User user, Integer charge, Integer count, Integer term, NumericalConditionCardEntity element) {
+    private void ifNumericalConditionCardHasNotTerm(User user, Integer charge, Integer count, Integer term, NumericalConditionCardEntity element) {
         Integer chargeSum = remittanceRepo.findChargeSum(user);
         Integer countSum = remittanceRepo.findCountSum(user);
 
@@ -69,7 +69,7 @@ public class NumericalArchivingService {
         }
     }
 
-    public void ifNumericalConditionCardHasTerm(User user, Integer charge, Integer count, Integer term, NumericalConditionCardEntity element) {
+    private void ifNumericalConditionCardHasTerm(User user, Integer charge, Integer count, Integer term, NumericalConditionCardEntity element) {
         Integer chargeSum = remittanceRepo.findChargeSumBetweenTerm(user, LocalDateTime.now().minusDays(term), LocalDateTime.now());
         Integer countSum = remittanceRepo.findCountSumBetweenTerm(user, LocalDateTime.now().minusDays(term), LocalDateTime.now());
 
@@ -82,7 +82,7 @@ public class NumericalArchivingService {
         }
     }
 
-    public void checkAndAssignNumericalConditionCards(User user, List<NumericalConditionCardEntity> cardsToCheck) {
+    private void checkAndAssignNumericalConditionCards(User user, List<NumericalConditionCardEntity> cardsToCheck) {
         for (NumericalConditionCardEntity element: cardsToCheck) {
             Integer charge = element.getCharge();
             Integer count = element.getCount();

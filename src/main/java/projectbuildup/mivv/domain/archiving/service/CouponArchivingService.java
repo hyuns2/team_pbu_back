@@ -39,7 +39,7 @@ public class CouponArchivingService {
     public void createCouponConditionCard(final ArchivingDto.createCouponCardRequestDto dto) throws IOException {
 
         // 조건이 하나도 안주어져 있는 경우
-        if (dto.getWhatNumber() == null && dto.getHowSuccessive() == null) {
+        if (dto.getWhatNumber() == 0 && dto.getHowSuccessive() == 0) {
             throw new CInvalidCardConditionException();
         }
 
@@ -67,7 +67,7 @@ public class CouponArchivingService {
 
     }
 
-    private void assignCards(final User user, final int whatNumber, final int howSuccessive) {
+    private void assignCards(User user, int whatNumber, int howSuccessive) {
         List<UserCardEntity> alreadyExistings = userCardRepo.findUserCardEntitiesByUser(user);
 
         List<CouponConditionCardEntity> allCards = (List<CouponConditionCardEntity>) cardRepo.findAll();
@@ -91,33 +91,31 @@ public class CouponArchivingService {
         }
     }
 
-    private int checkHowSuccessive(final User user) {
-        List<LocalDateTime> createdTimesByUserId = couponIssuanceRepo.findCreatedTimeByUserId(user);
+    private int checkHowSuccessive(User user) {
         int howSuccessive = 0;
+
+        List<LocalDateTime> createdTimesByUserId = couponIssuanceRepo.findCreatedTimeByUserId(user);
         LocalDateTime before = LocalDateTime.now();
         for (LocalDateTime element: createdTimesByUserId) {
-            if (createdTimesByUserId.indexOf(element) == 0) {
-                // 마지막 발급이 이번달인가?
-                if (Math.abs(ChronoUnit.MONTHS.between(LocalDateTime.now(), element)) > 0) {
-                    break;
-                }
+            // 마지막 발급이 이번달인가?
+            if (createdTimesByUserId.indexOf(element) == 0 && Math.abs(ChronoUnit.MONTHS.between(LocalDateTime.now(), element)) > 0)
+                break;
+
+            long diffMonths = ChronoUnit.MONTHS.between(before, element);
+            diffMonths = Math.abs(diffMonths);
+            if (diffMonths == 1) {
+                howSuccessive++;
             }
-            else {
-                long diffMonths = ChronoUnit.MONTHS.between(before, element);
-                diffMonths = Math.abs(diffMonths);
-                if (diffMonths == 1) {
-                    howSuccessive++;
-                }
-                else if (diffMonths > 1) {
-                    break;
-                }
+            else if (diffMonths > 1) {
+                break;
             }
+
             before = element;
         }
         return howSuccessive;
     }
 
-    private int checkWhatNumber(final User user, final Coupon coupon) {
+    private int checkWhatNumber(User user, Coupon coupon) {
         List<CouponIssuance> issuancesByCouponId = couponIssuanceRepo.findAllByCoupon(coupon);
         int whatNumber = 0;
         for (CouponIssuance element: issuancesByCouponId) {

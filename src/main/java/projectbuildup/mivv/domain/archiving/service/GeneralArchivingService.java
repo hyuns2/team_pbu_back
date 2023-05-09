@@ -24,6 +24,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -116,7 +117,27 @@ public class GeneralArchivingService {
         userCardRepo.save(new UserCardEntity(userEntity, cardEntity, LocalDate.now()));
     }
 
+    private List<String> checkRowData(Row row, int rowIndex) {
+        String name = null;
+        String mobile = null;
+        for (int cellIndex = 0; cellIndex < 2; cellIndex++) {
+            Cell cell = row.getCell(cellIndex);
 
+            if (cell == null || cell.getCellType() != CellType.STRING)
+                throw new CInvalidCellException((rowIndex+1) + "행의 문제");
+
+            if (cellIndex == 0)
+                name = cell.getStringCellValue();
+            else
+                mobile = cell.getStringCellValue();
+        }
+
+        List<String> result = new ArrayList<>(2);
+        result.add(0, name);
+        result.add(1, mobile);
+
+        return result;
+    }
 
     private void checkAndAssignGeneralConditionCards(MultipartFile dtoFile, CardEntity cardEntity) throws IOException {
         // 엑셀파일이면, 프로젝트 바로 안의 files 폴더에 저장
@@ -134,22 +155,11 @@ public class GeneralArchivingService {
             if (row == null)
                 throw new CInvalidCellException((rowIndex+1) + "행의 문제");
 
-            String name = null;
-            String mobile = null;
+            // rowIndex 행의 두가지 데이터 받아오기
+            List<String> result = checkRowData(row, rowIndex);
 
-            for (int cellIndex = 0; cellIndex < 2; cellIndex++) {
-                Cell cell = row.getCell(cellIndex);
-
-                if (cell == null || cell.getCellType() != CellType.STRING)
-                    throw new CInvalidCellException((rowIndex+1) + "행의 문제");
-
-                if (cellIndex == 0)
-                    name = cell.getStringCellValue();
-                else
-                    mobile = cell.getStringCellValue();
-            }
-
-            assignGeneralConditionCards(cardEntity, name, mobile);
+            // 사용자 알아내서 카드 할당
+            assignGeneralConditionCards(cardEntity, result.get(0), result.get(1));
 
         }
     }

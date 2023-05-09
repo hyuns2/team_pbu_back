@@ -212,11 +212,11 @@ public class ArchivingDto {
         @Schema(description = "카드 이미지 파일")
         private MultipartFile image;
 
-        @Positive
+        @NotNull
         @Schema(description = "몇번째 쿠폰 발급자에게 카드를 부여할건가")
         private Integer whatNumber;
 
-        @Positive
+        @NotNull
         @Schema(description = "몇개월 연속 쿠폰 발급자에게 카드를 부여할건가")
         private Integer howSuccessive;
 
@@ -258,11 +258,9 @@ public class ArchivingDto {
         @Schema(description = "카드 이미지 파일")
         private MultipartFile image;
 
-        @Positive
         @Schema(description = "몇번째 쿠폰 발급자에게 카드를 부여할건가")
         private Integer whatNumber;
 
-        @Positive
         @Schema(description = "몇개월 연속 쿠폰 발급자에게 카드를 부여할건가")
         private Integer howSuccessive;
 
