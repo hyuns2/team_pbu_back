@@ -2,9 +2,12 @@ package projectbuildup.mivv.domain.likes.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import projectbuildup.mivv.domain.likes.entity.Likes;
+import projectbuildup.mivv.domain.challenge.dto.ChallengeDto;
+import projectbuildup.mivv.domain.likes.entity.LikesShorts;
 import projectbuildup.mivv.domain.likes.entity.LikesCategory;
-import projectbuildup.mivv.domain.likes.repository.LikesRepository;
+import projectbuildup.mivv.domain.likes.entity.LikesWorthyConsumption;
+import projectbuildup.mivv.domain.likes.repository.LikesShortsRepository;
+import projectbuildup.mivv.domain.likes.repository.LikesWorthyConsumptionRepository;
 import projectbuildup.mivv.domain.shorts.dto.ShortsDto;
 import projectbuildup.mivv.domain.shorts.entity.Shorts;
 import projectbuildup.mivv.domain.shorts.entity.ShortsCategory;
@@ -22,41 +25,55 @@ import projectbuildup.mivv.global.error.exception.CWorthyConsumptionNotFoundExce
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
+import static org.apache.commons.collections4.CollectionUtils.collect;
 
 @Service
 @RequiredArgsConstructor
 public class LikesService extends BaseTimeEntity {
+
     private final UserRepository userRepository;
     private final ShortsRepository shortsRepository;
     private final WorthyConsumptionRepository worthyConsumptionRepository;
-    public void addLikes(Long userId, Long contentId, LikesCategory category){
+
+    private final LikesWorthyConsumptionRepository likesWorthyConsumptionRepository;
+    private final LikesShortsRepository likesShortsRepository;
+    public void addLikesShorts(Long userId, Long shortsId){
         User user = userRepository.findById(userId).orElseThrow(CUserExistException::new);
-        Likes likes = user.getLikes();
+        Shorts shorts = shortsRepository.findById(shortsId).orElseThrow(CShortsNotFoundException::new);
+        LikesCategory likesCategory;
 
-        if(category==LikesCategory.WORTHY_CONSUMPTION)
-            likes.getUserLikesWorthyConsumptionList().add(contentId);
-        else if(category==LikesCategory.SHORTS_SAVING)
-            likes.getUserLikesSavingShortsList().add(contentId);
+        if(shorts.getCategory().equals(ShortsCategory.SAVING))
+            likesCategory = LikesCategory.SHORTS_SAVING;
         else
-            likes.getUserLikesEduShortsList().add(contentId);
+            likesCategory = LikesCategory.SHORTS_EDU;
 
-        userRepository.save(user);
-
+        LikesShorts likesShorts = new LikesShorts(user, shorts, likesCategory);
+        likesShortsRepository.save(likesShorts);
     }
-    public void deleteLikes(Long userId, Long contentId, LikesCategory category){
+    public void addLikesWorthyConsumption(Long userId, Long worthyConumptionId){
         User user = userRepository.findById(userId).orElseThrow(CUserExistException::new);
-        Likes likes = user.getLikes();
+        WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConumptionId).orElseThrow(CWorthyConsumptionNotFoundException::new);
 
-        if(category==LikesCategory.WORTHY_CONSUMPTION)
-            likes.getUserLikesWorthyConsumptionList().remove(contentId);
-        else if(category==LikesCategory.SHORTS_SAVING)
-            likes.getUserLikesSavingShortsList().remove(contentId);
-        else
-            likes.getUserLikesEduShortsList().remove(contentId);
+        LikesWorthyConsumption likesWorthyConsumption = new LikesWorthyConsumption(user, worthyConsumption);
+        likesWorthyConsumptionRepository.save(likesWorthyConsumption);
+    }
 
-        userRepository.save(user);
 
+    public void deleteLikesWorthyConsumption(Long userId, Long worthyConsumptionId){
+        User user = userRepository.findById(userId).orElseThrow(CUserExistException::new);
+        WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionId).orElseThrow(CWorthyConsumptionNotFoundException::new);
+
+        likesWorthyConsumptionRepository.deleteLikesWorthyConsumptionByUserAndWorthyConsumption(user, worthyConsumption);
+    }
+    public void deleteLikesShorts(Long userId, Long shortsId){
+        User user = userRepository.findById(userId).orElseThrow(CUserExistException::new);
+        Shorts shorts = shortsRepository.findById(shortsId).orElseThrow(CShortsNotFoundException::new);
+
+        likesShortsRepository.deleteLikesShortsByUserAndShorts(user, shorts);
     }
     public LikesCategory findShortsCategory(Long shortsId){
         Shorts shorts = shortsRepository.findById(shortsId).orElseThrow(CShortsNotFoundException::new);
@@ -66,35 +83,37 @@ public class LikesService extends BaseTimeEntity {
             return LikesCategory.SHORTS_EDU;
     }
 
-    public List<ShortsDto.shortsResponse> getUserLikesEduShorts(Long userId){
+    public List<WorthyConsumptionResponseDto.ReadSummaryResponse> getAllUserLikesWorthyConsumption(Long userId){
         User user = userRepository.findById(userId).orElseThrow(CUserExistException::new);
-        Iterator iter = user.getLikes().getUserLikesEduShortsList().stream().iterator();
-        List<Shorts> eduShortsList = new ArrayList<>();
-        while(iter.hasNext()){
-            Shorts shorts = shortsRepository.findById((Long)iter.next()).orElseThrow(CShortsNotFoundException::new);
-            eduShortsList.add(shorts);
-        }
-        return eduShortsList.stream().map(ShortsDto.shortsResponse::new).toList();
+        return likesWorthyConsumptionRepository.findAllByUser(user)
+                .stream().map(LikesWorthyConsumption::getWorthyConsumption)
+                .map(WorthyConsumptionResponseDto.ReadSummaryResponse::new)
+                .toList();
     }
-    public List<ShortsDto.shortsResponse> getUserLikesSavingShorts(Long userId){
+    public List<ShortsDto.shortsResponse> getAllUserLikesShorts(Long userId){
         User user = userRepository.findById(userId).orElseThrow(CUserExistException::new);
-        Iterator iter = user.getLikes().getUserLikesSavingShortsList().stream().iterator();
-        List<Shorts> savingShortsList = new ArrayList<>();
-        while(iter.hasNext()){
-            Shorts shorts = shortsRepository.findById((Long)iter.next()).orElseThrow(CShortsNotFoundException::new);
-            savingShortsList.add(shorts);
-        }
-        return savingShortsList.stream().map(ShortsDto.shortsResponse::new).toList();
+
+        return likesShortsRepository.findAllByUser(user)
+                .stream()
+                .map(likesShorts -> new ShortsDto.shortsResponse(likesShorts.getShorts(), true))
+                .toList();
     }
-    public List<WorthyConsumptionResponseDto.ReadSummaryResponse> getUserLikesWorthyConsumption(Long userId){
+    public List<ShortsDto.shortsResponse> getAllUserLikesEduShorts(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(CUserExistException::new);
-        Iterator iter = user.getLikes().getUserLikesWorthyConsumptionList().stream().iterator();
-        List<WorthyConsumption> worthyConsumptionList = new ArrayList<>();
-        while(iter.hasNext()){
-            WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById((Long)iter.next()).orElseThrow(CWorthyConsumptionNotFoundException::new);
-            worthyConsumptionList.add(worthyConsumption);
-        }
-        return worthyConsumptionList.stream().map(WorthyConsumptionResponseDto.ReadSummaryResponse::new).toList();
+
+        return likesShortsRepository.findAllByUserAndLikesCategory(user, LikesCategory.SHORTS_EDU)
+                .stream()
+                .map(likesShorts -> new ShortsDto.shortsResponse(likesShorts.getShorts(), true))
+                .collect(Collectors.toList());
+
+    }
+    public List<ShortsDto.shortsResponse> getAllUserLikesSavingShorts(Long userId){
+        User user = userRepository.findById(userId).orElseThrow(CUserExistException::new);
+
+        return likesShortsRepository.findAllByUserAndLikesCategory(user, LikesCategory.SHORTS_SAVING)
+                .stream()
+                .map(likesShorts -> new ShortsDto.shortsResponse(likesShorts.getShorts(), true))
+                .collect(Collectors.toList());
     }
 
 }

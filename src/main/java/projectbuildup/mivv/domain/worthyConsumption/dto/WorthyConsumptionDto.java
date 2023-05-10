@@ -59,8 +59,7 @@ public class WorthyConsumptionDto {
                     .build();
         }
     }
-    @Getter @Setter
-    @NoArgsConstructor @AllArgsConstructor
+    @Data @AllArgsConstructor
     public class Update extends WorthyConsumptionUrlDto.Update{
         String title;
         List<String> hashtags;
@@ -76,7 +75,7 @@ public class WorthyConsumptionDto {
         @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
         private LocalDate issuableCouponStartDate;
 
-        @Schema(example = "2001-03-02")
+        @Schema(example = "2101-03-02")
         @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
         private LocalDate issuableCouponEndDate;
         private Long lastMonthAmount;

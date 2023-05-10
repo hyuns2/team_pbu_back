@@ -4,7 +4,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import projectbuildup.mivv.domain.couponIssuance.repository.CouponIssuanceRepository;
+import projectbuildup.mivv.domain.likes.repository.LikesShortsRepository;
+import projectbuildup.mivv.domain.likes.repository.LikesWorthyConsumptionRepository;
 import projectbuildup.mivv.domain.user.entity.User;
+import projectbuildup.mivv.domain.user.repository.UserRepository;
 import projectbuildup.mivv.domain.worthyConsumption.dto.WorthyConsumptionDto;
 import projectbuildup.mivv.domain.worthyConsumption.dto.response.WorthyConsumptionResponseDto;
 import projectbuildup.mivv.domain.worthyConsumption.entity.Condition;
@@ -13,6 +16,7 @@ import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumptionUrl;
 import projectbuildup.mivv.domain.worthyConsumption.repository.WorthyConsumptionRepository;
 import projectbuildup.mivv.global.common.imageStore.Image;
 import projectbuildup.mivv.global.common.imageStore.ImageUploader;
+import projectbuildup.mivv.global.error.exception.CUserNotFoundException;
 import projectbuildup.mivv.global.error.exception.CWorthyConsumptionNotFoundException;
 
 import java.io.IOException;
@@ -28,6 +32,9 @@ import static projectbuildup.mivv.domain.worthyConsumption.entity.CheckCondition
 public class WorthyConsumptionService {
     private final WorthyConsumptionRepository worthyConsumptionRepository;
     private final CouponIssuanceRepository couponIssuanceRepository;
+    private final UserRepository userRepository;
+    private final LikesWorthyConsumptionRepository likesWorthyConsumptionRepository;
+    private final LikesShortsRepository likesShortsRepository;
 
     private final ImageUploader imageUploader;
 
@@ -55,13 +62,14 @@ public class WorthyConsumptionService {
         WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionId).orElseThrow(CWorthyConsumptionNotFoundException:: new);
         return new WorthyConsumptionResponseDto.ReadSummaryResponse(worthyConsumption);
     }
-    public WorthyConsumptionResponseDto.ReadBasicResponse readBasicWorthyConsumption(Long worthyConsumptionId, User user){
+    public WorthyConsumptionResponseDto.ReadBasicResponse readBasicWorthyConsumption(Long worthyConsumptionId, Long userId){
         WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionId).orElseThrow(CWorthyConsumptionNotFoundException:: new);
+        User user = userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
+
         checkConditionToIssuableCoupon(worthyConsumption);
 
-        //유저가 찜한건지 확인 후 넘겨주기
-
-        return new WorthyConsumptionResponseDto.ReadBasicResponse(worthyConsumption);
+        Boolean isLiked = likesWorthyConsumptionRepository.findByUserAndWorthyConsumption(user, worthyConsumption).isPresent() ? Boolean.TRUE : Boolean.FALSE;
+        return new WorthyConsumptionResponseDto.ReadBasicResponse(worthyConsumption, isLiked);
     }
     public WorthyConsumptionResponseDto.ReadDetailResponse readDetailWorthyConsumption(Long worthyConsumptionId){
         WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionId).orElseThrow(CWorthyConsumptionNotFoundException:: new);

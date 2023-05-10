@@ -15,15 +15,15 @@ import projectbuildup.mivv.domain.shorts.entity.ShortsCategory;
 public class ShortsDto {
     @Getter @Setter
     public static class creatRequest{
-        @NotBlank(message = "제목은 필수 입력값입니다.")
+        //@NotBlank(message = "제목은 필수 입력값입니다.")
         String title;
-        @NotBlank(message = "설명은 필수 입력값입니다.")
+        //@NotBlank(message = "설명은 필수 입력값입니다.")
         String content;
-        @NotBlank(message = "영상 주소는 필수 입력값입니다.")
+        //@NotBlank(message = "영상 주소는 필수 입력값입니다.")
         String videoPath;
-        @NotBlank(message = "영상의 썸네일 이미지는 필수 입력값입니다.")
+        //@NotNull(message = "영상의 썸네일 이미지는 필수 입력값입니다.")
         private MultipartFile image;
-        @NotNull(message = "영상 카테고리는 필수 입력값입니다.") @Enumerated(EnumType.STRING)
+        //@NotNull(message = "영상 카테고리는 필수 입력값입니다.") @Enumerated(EnumType.STRING)
         ShortsCategory category;
     }
     @Getter @Setter
@@ -42,12 +42,14 @@ public class ShortsDto {
     String imagePath;
     @Enumerated(EnumType.STRING)
     ShortsCategory category;
-    public shortsResponse(Shorts shorts){
+    Boolean liked;
+    public shortsResponse(Shorts shorts, Boolean liked){
             this.title = shorts.getTitle();
             this.content = shorts.getContent();
             this.videoPath = shorts.getVideoPath();
             this.imagePath= shorts.getImagePath();
             this.category = shorts.getCategory();
+            this.liked = liked;
         }
     }
 }

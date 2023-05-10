@@ -10,9 +10,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import projectbuildup.mivv.domain.shorts.dto.ShortsDto;
 import projectbuildup.mivv.domain.shorts.service.ShortsService;
+import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.global.constant.ExampleValue;
 import projectbuildup.mivv.global.constant.Header;
 
@@ -35,20 +37,20 @@ public class ShortsController {
   }
   @Operation(summary = "쇼츠 단건 조회", description = "쇼츠 하나를 조회합니다.")
   @GetMapping("/{shortsId}")
-  public ResponseEntity<ShortsDto.shortsResponse> getOneShorts(@PathVariable(name = "shortsId") Long shortsId){
-      ShortsDto.shortsResponse shortsResponseDto = shortsService.getOneShorts(shortsId);
+  public ResponseEntity<ShortsDto.shortsResponse> getOneShorts(@PathVariable(name = "shortsId") Long shortsId, @AuthenticationPrincipal User user){
+      ShortsDto.shortsResponse shortsResponseDto = shortsService.getOneShorts(shortsId, user.getId());
       return new ResponseEntity<>(shortsResponseDto, HttpStatus.OK);
   }
   @Operation(summary = "절약 쇼츠 조회", description = "절약 쇼츠를 모두 조회합니다.")
   @GetMapping("/saving")
-  public ResponseEntity<List<ShortsDto.shortsResponse>> getAllSavingShorts(){
-      List<ShortsDto.shortsResponse> shortsResponseDtoList = shortsService.getAllSavingShorts();
+  public ResponseEntity<List<ShortsDto.shortsResponse>> getAllSavingShorts(@AuthenticationPrincipal User user){
+      List<ShortsDto.shortsResponse> shortsResponseDtoList = shortsService.getAllSavingShorts(user.getId());
       return new ResponseEntity<>(shortsResponseDtoList, HttpStatus.OK);
   }
   @Operation(summary = "소비 교육 쇼츠 조회", description = "소비 교육 쇼츠를 모두 조회합니다.")
   @GetMapping("/edu")
-  public ResponseEntity<List<ShortsDto.shortsResponse>> getAllEduShorts(){
-      List<ShortsDto.shortsResponse> shortsResponseDtoList = shortsService.getAllEduShorts();
+  public ResponseEntity<List<ShortsDto.shortsResponse>> getAllEduShorts(@AuthenticationPrincipal User user){
+      List<ShortsDto.shortsResponse> shortsResponseDtoList = shortsService.getAllEduShorts(user.getId());
       return new ResponseEntity<>(shortsResponseDtoList, HttpStatus.OK);
   }
   @Operation(summary = "쇼츠 수정", description = "쇼츠를 수정합니다.")

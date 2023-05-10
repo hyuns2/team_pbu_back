@@ -47,6 +47,13 @@ public class WorthyConsumptionResponseDto {
             this.isLiked = isLiked;
         }
 
+        public ReadBasicResponse(WorthyConsumption worthyConsumption) {
+            super(worthyConsumption);
+            this.hashtags = worthyConsumption.getHashtags();
+            this.videoPath = worthyConsumption.getWorthyConsumptionUrl().getVideoPath();
+            this.imagePath = worthyConsumption.getWorthyConsumptionUrl().getImagePath();
+            this.isIssuableCoupon = worthyConsumption.getCondition().getIsIssuableCoupon();
+        }
     }
     @NoArgsConstructor @AllArgsConstructor
     @Getter @Setter
