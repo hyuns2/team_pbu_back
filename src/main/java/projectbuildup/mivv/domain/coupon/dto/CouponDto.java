@@ -10,8 +10,7 @@ import java.time.LocalDate;
 
 @Schema(description = "쿠폰 DTO")
 public class CouponDto {
-    @AllArgsConstructor @NoArgsConstructor
-    @Getter @Setter
+    @Data @AllArgsConstructor
     @Schema(description = "쿠폰 생성 DTO")
     public class Creation {
         @NotBlank(message = "쿠폰의 이름을 입력해주세요")
@@ -24,8 +23,7 @@ public class CouponDto {
         @NotNull @Future
         private LocalDate limitEndDate;
     }
-    @AllArgsConstructor @NoArgsConstructor
-    @Getter @Setter
+    @AllArgsConstructor @Data
     @Schema(description = "쿠폰 수정 DTO")
     public class Update{
         private String title;

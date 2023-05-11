@@ -36,7 +36,7 @@ public class WorthyConsumptionResponseDto {
         private String videoPath;
         private String imagePath;
         private CheckConditionType isIssuableCoupon;
-        private Boolean isLiked;//이거 처리 해야 됨
+        private Boolean isLiked;
 
         public ReadBasicResponse(WorthyConsumption worthyConsumption, Boolean isLiked) {
             super(worthyConsumption);

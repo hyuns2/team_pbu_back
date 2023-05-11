@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import projectbuildup.mivv.domain.couponIssuance.repository.CouponIssuanceRepository;
 import projectbuildup.mivv.domain.likes.repository.LikesShortsRepository;
 import projectbuildup.mivv.domain.likes.repository.LikesWorthyConsumptionRepository;
+import projectbuildup.mivv.domain.shorts.dto.ShortsDto;
+import projectbuildup.mivv.domain.shorts.entity.ShortsCategory;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.domain.user.repository.UserRepository;
 import projectbuildup.mivv.domain.worthyConsumption.dto.WorthyConsumptionDto;
@@ -75,9 +77,14 @@ public class WorthyConsumptionService {
         WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionId).orElseThrow(CWorthyConsumptionNotFoundException:: new);
         return new WorthyConsumptionResponseDto.ReadDetailResponse(worthyConsumption);
     }
-    public List<WorthyConsumptionResponseDto.ReadBasicResponse> readAllWorthyConsumption(){
-        List<WorthyConsumptionResponseDto.ReadBasicResponse> allWorthyConsumptions = worthyConsumptionRepository.findAll().stream().map(WorthyConsumptionResponseDto.ReadBasicResponse::new).collect(Collectors.toList());
-        return allWorthyConsumptions;
+    public List<WorthyConsumptionResponseDto.ReadBasicResponse> readAllWorthyConsumption(Long userId){
+        User user = userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
+        return worthyConsumptionRepository.findAll().stream()
+                .map(worthyConsumption -> {
+                    boolean liked = likesWorthyConsumptionRepository.findByUserAndWorthyConsumption(user, worthyConsumption).isPresent();
+                    return new WorthyConsumptionResponseDto.ReadBasicResponse(worthyConsumption, liked);
+                })
+                .collect(Collectors.toList());
     }
 
     /**

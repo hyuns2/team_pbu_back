@@ -80,9 +80,11 @@ public class WorthyConsumptionController {
         return new ResponseEntity<>(WorthyConsumptionResponseDto, HttpStatus.OK);
     }
     @Operation(summary = "가치소비 전체 조회", description = "전체 가치소비를 조회합니다.")
+    @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
+    @PreAuthorize("hasRole('USER')")
     @GetMapping
-    public ResponseEntity<List<WorthyConsumptionResponseDto.ReadBasicResponse>> getAllWorthyConsumption(){
-        List<WorthyConsumptionResponseDto.ReadBasicResponse> worthyConsumptionResponseDtos = worthyConsumptionService.readAllWorthyConsumption();
+    public ResponseEntity<List<WorthyConsumptionResponseDto.ReadBasicResponse>> getAllWorthyConsumption(@AuthenticationPrincipal User user){
+        List<WorthyConsumptionResponseDto.ReadBasicResponse> worthyConsumptionResponseDtos = worthyConsumptionService.readAllWorthyConsumption(user.getId());
         return new ResponseEntity<>(worthyConsumptionResponseDtos, HttpStatus.OK);
     }
 
@@ -103,7 +105,7 @@ public class WorthyConsumptionController {
     @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping(value = "{worthyConsumptionId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<HttpStatus> updateWorthyConsumption(@PathVariable(name = "worthyConsumptionId")Long worthyConsumptionId, @Valid @ModelAttribute("updateWorthyConsumptions") WorthyConsumptionDto.Update worthyConsumptionDto) throws IOException {
+    public ResponseEntity<HttpStatus> updateWorthyConsumption(@PathVariable(name = "worthyConsumptionId")Long worthyConsumptionId, @ModelAttribute("updateWorthyConsumptions") WorthyConsumptionDto.Update worthyConsumptionDto) throws IOException {
         worthyConsumptionService.updateWorthyConsumption(worthyConsumptionId, worthyConsumptionDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
