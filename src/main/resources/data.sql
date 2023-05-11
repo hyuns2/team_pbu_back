@@ -23,7 +23,6 @@ values (1, '123456781', 'KDB'),
        (9, '123456789', 'CITY');
 
 
-
 insert into account_connection_map(account_id, connection_map, connection_map_key)
 values (1, 'abcdea', 'CODEF'),
        (2, 'abcdeb', 'CODEF'),

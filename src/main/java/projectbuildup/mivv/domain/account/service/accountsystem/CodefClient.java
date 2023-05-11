@@ -38,6 +38,9 @@ public class CodefClient {
     String PUBLIC_KEY;
     EasyCodef codef;
     private final String CODEF_OWN_ACCOUNT_API = "/v1/kr/bank/p/account/account-list";
+    private final String CODEF_TRANSACTION_LIST_API = "/v1/kr/bank/p/account/transaction-list";
+    private final String CODEF_TRANSFER_AUTHENTICATION_API = "/v1/kr/bank/a/account/transfer-authentication";
+
 
     @PostConstruct
     public void init() {
@@ -124,10 +127,10 @@ public class CodefClient {
      * 계좌의 입금 내역을 조회합니다.
      * 최신순으로 정렬됩니다.
      *
-     * @param connectedId 커넥티드 아이디
-     * @param bankCode    은행 코드
-     * @param accountNumbers    계좌 번호
-     * @param startDate   조회 시작 날짜
+     * @param connectedId    커넥티드 아이디
+     * @param bankCode       은행 코드
+     * @param accountNumbers 계좌 번호
+     * @param startDate      조회 시작 날짜
      * @return (거래 일자, 거래시간, 거래 금액) 리스트
      */
     public Map<String, Object> getHistory(String connectedId, String bankCode, String accountNumbers, LocalDate startDate) {
@@ -141,13 +144,26 @@ public class CodefClient {
         parameterMap.put("startDate", startDateStr);
         parameterMap.put("endDate", endDateStr);
         parameterMap.put("orderBy", "0");
-        String productUrl = "/v1/kr/bank/p/account/transaction-list";
         try {
-            String result = codef.requestProduct(productUrl, EasyCodefServiceType.DEMO, parameterMap);
-            log.info(result);
+            String result = codef.requestProduct(CODEF_TRANSACTION_LIST_API, EasyCodefServiceType.DEMO, parameterMap);
             return new ObjectMapper().readValue(result, HashMap.class);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            throw new CInternalServerException();
+        }
+    }
+
+    public String certifyTransfer(String organizationCode, String accountNumbers) {
+        HashMap<String, Object> parameterMap = new HashMap<>();
+        parameterMap.put("organization", organizationCode);
+        parameterMap.put("account", accountNumbers);
+        parameterMap.put("inPrintType", "1");
+        try {
+            String result = codef.requestProduct(CODEF_TRANSFER_AUTHENTICATION_API, EasyCodefServiceType.DEMO, parameterMap);
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new CInternalServerException();
         }
     }
 }
