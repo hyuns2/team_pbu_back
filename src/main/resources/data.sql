@@ -1,14 +1,14 @@
 -- <IdentityVerification> --
 insert into identity_verification (id, birth_date, code, mobile, name)
-values (1, '19990101', 'abcdefghijklmnopqrstuvwxyz', '01012345671', '김철수'),
-       (2, '19990101', 'abcdefghijklmnopqrstuvwxyz', '01012345672', '홍길동'),
-       (3, '19990101', 'abcdefghijklmnopqrstuvwxyz', '01099998883', '박지원'),
-       (4, '19990101', 'abcdefghijklmnopqrstuvwxyz', '01012345674', '최현수'),
-       (5, '19990101', 'abcdefghijklmnopqrstuvwxyz', '01012345675', '이민우'),
-       (6, '19990101', 'abcdefghijklmnopqrstuvwxyz', '01012345676', '정형식'),
-       (7, '19990101', 'abcdefghijklmnopqrstuvwxyz', '01011112227', '이재우'),
-       (8, '19990101', 'abcdefghijklmnopqrstuvwxyz', '01012345678', '배주현'),
-       (9, '19990101', 'abcdefghijklmnopqrstuvwxyz', '01012345679', '김다은');
+values (1, '19990101', 'abcxxxxxabc', '01012345671', '김철수'),
+       (2, '19990101', 'defxxxxxdef', '01012345672', '홍길동'),
+       (3, '19990101', 'ghixxxxxghi', '01099998883', '박지원'),
+       (4, '19990101', 'jklxxxxxjkl', '01012345674', '최현수'),
+       (5, '19990101', 'mnoxxxxxmno', '01012345675', '이민우'),
+       (6, '19990101', 'pqrxxxxxpqr', '01012345676', '정형식'),
+       (7, '19990101', 'stuxxxxxstu', '01011112227', '이재우'),
+       (8, '19990101', 'vwxxxxxxvwx', '01012345678', '배주현'),
+       (9, '19990101', 'yzaxxxxxyza', '01012345679', '김다은');
 
 -- <Account> --
 insert into account(id, account_numbers, bank_type)
@@ -21,7 +21,6 @@ values (1, '123456781', 'KDB'),
        (7, '123456787', 'WOORI'),
        (8, '123456788', 'SC'),
        (9, '123456789', 'CITY');
-
 
 
 insert into account_connection_map(account_id, connection_map, connection_map_key)

@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.domain.user.repository.UserRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -25,7 +26,7 @@ class CodefAccountDetailsSystemTest {
         // given
         User user = userRepository.findById(1L).get();
         // when
-        List<Map<String, String>> history = codefAccountDetailsSystem.getDepositHistory(user);
+        List<Map<String, String>> history = codefAccountDetailsSystem.getDepositHistory(user, LocalDate.now());
         log.info("{}", history);
         // then
     }

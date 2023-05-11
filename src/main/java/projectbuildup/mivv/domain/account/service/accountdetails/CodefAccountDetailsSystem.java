@@ -1,6 +1,7 @@
 package projectbuildup.mivv.domain.account.service.accountdetails;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Component;
 import projectbuildup.mivv.domain.account.entity.Account;
 import projectbuildup.mivv.domain.account.entity.OpenBanking;
@@ -23,10 +24,10 @@ public class CodefAccountDetailsSystem implements AccountDetailsSystem {
     private final static String TIME_FIELD = "resAccountTrTime";
 
     @Override
-    public List<Map<String, String>> getDepositHistory(User user) {
+    public List<Map<String, String>> getDepositHistory(User user, LocalDate startDate) {
         List<Map<String, String>> returnList = new ArrayList<>();
 
-        List<Map<String, Object>> list = getList(user);
+        List<Map<String, Object>> list = getList(user, startDate);
         for (Map<String, Object> map : list) {
             HashMap<String, String> returnMap = getReturnMap(map, IN_AMOUNT_FIELD);
             if (returnMap != null) {
@@ -37,10 +38,10 @@ public class CodefAccountDetailsSystem implements AccountDetailsSystem {
     }
 
     @Override
-    public List<Map<String, String>> getWithdrawHistory(User user) {
+    public List<Map<String, String>> getWithdrawHistory(User user, LocalDate startDate) {
         List<Map<String, String>> returnList = new ArrayList<>();
 
-        List<Map<String, Object>> list = getList(user);
+        List<Map<String, Object>> list = getList(user, startDate);
         for (Map<String, Object> map : list) {
             HashMap<String, String> returnMap = getReturnMap(map, OUT_AMOUNT_FIELD);
             if (returnMap != null) {
@@ -50,12 +51,12 @@ public class CodefAccountDetailsSystem implements AccountDetailsSystem {
         return returnList;
     }
 
-    private List<Map<String, Object>> getList(User user) {
+    private List<Map<String, Object>> getList(User user, LocalDate startDate) {
         Account account = user.getAccount();
         String connectedId = account.getConnectionMap().get(OpenBanking.CODEF);
         String bankCode = account.getBankType().getCode();
         String accountNumbers = account.getAccountNumbers();
-        Map<String, Object> result = codefClient.getHistory(connectedId, bankCode, accountNumbers, LocalDate.now());
+        Map<String, Object> result = codefClient.getHistory(connectedId, bankCode, accountNumbers, startDate);
         Map<String, Object> dataMap = (Map<String, Object>) result.get("data");
         List<Map<String, Object>> listMap = (List<Map<String, Object>>) dataMap.get("resTrHistoryList");
         return listMap;
