@@ -27,6 +27,8 @@ public class LikesController {
     private final LikesService likesService;
 
     @Operation(summary = "가치소비 찜 ", description = "가치소비를 찜합니다.")
+    @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
+    @PreAuthorize("hasRole('USER')")
     @PostMapping("/worthyConsumptions/{worthyConsumptionId}/likes")
     public ResponseEntity<HttpStatus> addLikesWorthyConsumption(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId, @AuthenticationPrincipal User user){
         likesService.addLikesWorthyConsumption(user.getId(), worthyConsumptionId);

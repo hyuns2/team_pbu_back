@@ -4,10 +4,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 import projectbuildup.mivv.domain.shorts.entity.Shorts;
 import projectbuildup.mivv.domain.shorts.entity.ShortsCategory;
@@ -32,9 +29,11 @@ public class ShortsDto {
         String title;
         String content;
         String videoPath;
+        @NotNull
         private MultipartFile image;
     }
-
+    @Data
+    @AllArgsConstructor
     public static class shortsResponse {
     String title;
     String content;

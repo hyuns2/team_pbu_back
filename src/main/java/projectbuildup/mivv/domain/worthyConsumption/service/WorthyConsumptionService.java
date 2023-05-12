@@ -105,50 +105,50 @@ public class WorthyConsumptionService {
             Image image = imageUploader.upload(worthyConsumptionDto.getImage(), "values");
             worthyConsumption.getWorthyConsumptionUrl().setImagePath(image.getImagePath());
         }
-        if(worthyConsumptionDto.getDetailImage() != null) {
+        if(worthyConsumptionDto.getDetailImage() != null && !worthyConsumptionDto.getDetailImage().isEmpty()) {
             Image detailImage = imageUploader.upload(worthyConsumptionDto.getDetailImage(), "values");
             worthyConsumption.getWorthyConsumptionUrl().setDetailImagePath(detailImage.getImagePath());
         }
-        if(worthyConsumptionDto.getDetailBackgroundImage() != null) {
+        if(worthyConsumptionDto.getDetailBackgroundImage() != null && !worthyConsumptionDto.getDetailBackgroundImage().isEmpty()) {
             Image detailBackgroundImage = imageUploader.upload(worthyConsumptionDto.getDetailBackgroundImage(), "values");
             worthyConsumption.getWorthyConsumptionUrl().setDetailBackgroundImagePath(detailBackgroundImage.getImagePath());
 
         }
-        if(worthyConsumptionDto.getPlaceImage() != null) {
+        if(worthyConsumptionDto.getPlaceImage() != null && !worthyConsumptionDto.getPlaceImage().isEmpty()) {
             Image placeImage = imageUploader.upload(worthyConsumptionDto.getPlaceImage(), "values");
             worthyConsumption.getWorthyConsumptionUrl().setPlaceImagePath(placeImage.getImagePath());
         }
     }
     public void updateCondition(WorthyConsumption worthyConsumption, WorthyConsumptionDto.Update worthyConsumptionDto) throws IOException {
 
-    if(worthyConsumptionDto.getMaxParticipants() != null)
-        worthyConsumption.getCondition().setMaxParticipants(worthyConsumptionDto.getMaxParticipants());
-    if(worthyConsumptionDto.getIssuableCouponStartDate() != null)
-        worthyConsumption.getCondition().setIssuableCouponStartDate(worthyConsumptionDto.getIssuableCouponStartDate());
-    if(worthyConsumptionDto.getIssuableCouponEndDate() != null)
-        worthyConsumption.getCondition().setIssuableCouponEndDate(worthyConsumptionDto.getIssuableCouponEndDate());
-    if(worthyConsumptionDto.getLastMonthAmount() != null)
-        worthyConsumption.getCondition().setLastMonthAmount(worthyConsumptionDto.getLastMonthAmount());
+        if(worthyConsumptionDto.getMaxParticipants() != null)
+            worthyConsumption.getCondition().setMaxParticipants(worthyConsumptionDto.getMaxParticipants());
+        if(worthyConsumptionDto.getIssuableCouponStartDate() != null)
+            worthyConsumption.getCondition().setIssuableCouponStartDate(worthyConsumptionDto.getIssuableCouponStartDate());
+        if(worthyConsumptionDto.getIssuableCouponEndDate() != null)
+            worthyConsumption.getCondition().setIssuableCouponEndDate(worthyConsumptionDto.getIssuableCouponEndDate());
+        if(worthyConsumptionDto.getLastMonthAmount() != null)
+            worthyConsumption.getCondition().setLastMonthAmount(worthyConsumptionDto.getLastMonthAmount());
 
     }
     public void updateContent(WorthyConsumption worthyConsumption, WorthyConsumptionDto.Update worthyConsumptionDto) throws IOException {
 
         if(worthyConsumptionDto.getTitle() != null)
-            worthyConsumption.getCondition().setMaxParticipants(worthyConsumptionDto.getMaxParticipants());
+            worthyConsumption.setTitle(worthyConsumptionDto.getTitle());
         if(worthyConsumptionDto.getHashtags() != null)
-            worthyConsumption.getCondition().setIssuableCouponStartDate(worthyConsumptionDto.getIssuableCouponStartDate());
+            worthyConsumption.setHashtags(worthyConsumptionDto.getHashtags());
         if(worthyConsumptionDto.getOriginalPrice() != null)
-            worthyConsumption.getCondition().setIssuableCouponEndDate(worthyConsumptionDto.getIssuableCouponEndDate());
+            worthyConsumption.setOriginalPrice(worthyConsumptionDto.getOriginalPrice());
         if(worthyConsumptionDto.getSalePrice() != null)
-            worthyConsumption.getCondition().setIssuableCouponEndDate(worthyConsumptionDto.getIssuableCouponEndDate());
+            worthyConsumption.setSalePrice(worthyConsumptionDto.getSalePrice());
         if(worthyConsumptionDto.getRecommendationReason() != null)
-            worthyConsumption.getCondition().setIssuableCouponStartDate(worthyConsumptionDto.getIssuableCouponStartDate());
+            worthyConsumption.setRecommendationReason(worthyConsumptionDto.getRecommendationReason());
         if(worthyConsumptionDto.getAvailablePrice() != null)
-            worthyConsumption.getCondition().setIssuableCouponStartDate(worthyConsumptionDto.getIssuableCouponStartDate());
+            worthyConsumption.setAvailablePrice(worthyConsumptionDto.getAvailablePrice());
         if(worthyConsumptionDto.getAvailablePlace() != null)
-            worthyConsumption.getCondition().setIssuableCouponStartDate(worthyConsumptionDto.getIssuableCouponStartDate());
+            worthyConsumption.setAvailablePlace(worthyConsumptionDto.getAvailablePlace());
         if(worthyConsumptionDto.getSummary() != null)
-            worthyConsumption.getCondition().setLastMonthAmount(worthyConsumptionDto.getLastMonthAmount());
+            worthyConsumption.setSummary(worthyConsumptionDto.getSummary());
 
     }
         /**

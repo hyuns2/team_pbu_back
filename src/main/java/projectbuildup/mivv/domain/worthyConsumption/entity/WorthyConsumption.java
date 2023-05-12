@@ -63,7 +63,7 @@ public class WorthyConsumption extends BaseTimeEntity {
     public void update(WorthyConsumptionDto.Update worthyConsumptionDto){
         this.title = worthyConsumptionDto.getTitle();
         this.hashtags = worthyConsumptionDto.getHashtags();
-        this.recommendationReason = worthyConsumptionDto.getWhyRecommendation();
+        this.recommendationReason = worthyConsumptionDto.getRecommendationReason();
         this.summary = worthyConsumptionDto.getSummary();
         this.originalPrice = worthyConsumptionDto.getOriginalPrice();
         this.salePrice = worthyConsumptionDto.getSalePrice();

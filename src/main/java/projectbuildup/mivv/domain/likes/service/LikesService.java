@@ -2,6 +2,7 @@ package projectbuildup.mivv.domain.likes.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import projectbuildup.mivv.domain.challenge.dto.ChallengeDto;
 import projectbuildup.mivv.domain.likes.entity.LikesShorts;
 import projectbuildup.mivv.domain.likes.entity.LikesCategory;
@@ -54,21 +55,22 @@ public class LikesService extends BaseTimeEntity {
         LikesShorts likesShorts = new LikesShorts(user, shorts, likesCategory);
         likesShortsRepository.save(likesShorts);
     }
-    public void addLikesWorthyConsumption(Long userId, Long worthyConumptionId){
+    public void addLikesWorthyConsumption(Long userId, Long worthyConsumptionId){
         User user = userRepository.findById(userId).orElseThrow(CUserExistException::new);
-        WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConumptionId).orElseThrow(CWorthyConsumptionNotFoundException::new);
+        WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionId).orElseThrow(CWorthyConsumptionNotFoundException::new);
 
         LikesWorthyConsumption likesWorthyConsumption = new LikesWorthyConsumption(user, worthyConsumption);
         likesWorthyConsumptionRepository.save(likesWorthyConsumption);
     }
 
-
+    @Transactional
     public void deleteLikesWorthyConsumption(Long userId, Long worthyConsumptionId){
         User user = userRepository.findById(userId).orElseThrow(CUserExistException::new);
         WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionId).orElseThrow(CWorthyConsumptionNotFoundException::new);
 
         likesWorthyConsumptionRepository.deleteLikesWorthyConsumptionByUserAndWorthyConsumption(user, worthyConsumption);
     }
+    @Transactional
     public void deleteLikesShorts(Long userId, Long shortsId){
         User user = userRepository.findById(userId).orElseThrow(CUserExistException::new);
         Shorts shorts = shortsRepository.findById(shortsId).orElseThrow(CShortsNotFoundException::new);

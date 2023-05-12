@@ -62,9 +62,11 @@ public class WorthyConsumptionDto {
     @Data @AllArgsConstructor
     public class Update extends WorthyConsumptionUrlDto.Update{
         String title;
+        @NotNull
         List<String> hashtags;
         Integer originalPrice;
         Integer salePrice;
+        @NotNull
         List<String> recommendationReason;
         String availablePrice;
         String availablePlace;
