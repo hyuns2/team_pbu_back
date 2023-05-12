@@ -20,26 +20,27 @@ public class WorthyConsumption extends BaseTimeEntity {
     private Long id;
 
     @NonNull @Column(name = "WorthyConsumptionTitle")
+    @Setter
     private String title;
 
     @ElementCollection
-    @NonNull
+    @NonNull @Setter
     private List<String> hashtags = new ArrayList<>();
 
-    @NonNull
+    @NonNull @Setter
     private int originalPrice;
-    @NonNull
+    @NonNull @Setter
     private int salePrice;
 
     @ElementCollection
-    @NonNull
+    @NonNull @Setter
     private List<String> recommendationReason = new ArrayList<>();
 
-    @NonNull
+    @NonNull @Setter
     private String availablePrice;
-    @NonNull
+    @NonNull @Setter
     private String availablePlace;
-    @NonNull
+    @NonNull @Setter
     private String summary;
 
     @Nullable

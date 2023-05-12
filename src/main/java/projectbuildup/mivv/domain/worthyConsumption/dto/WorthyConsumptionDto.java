@@ -65,7 +65,7 @@ public class WorthyConsumptionDto {
         List<String> hashtags;
         Integer originalPrice;
         Integer salePrice;
-        List<String> whyRecommendation;
+        List<String> recommendationReason;
         String availablePrice;
         String availablePlace;
         String summary;

@@ -88,27 +88,73 @@ public class WorthyConsumptionService {
     }
 
     /**
-     * 가치소비를 수정하는 로직입니다.
+     * 가치소비를 수정하는 로직입니다. Patch 방식으로 수정함
      * @param
      */
     public void updateWorthyConsumption(Long worthyConsumptionId, WorthyConsumptionDto.Update worthyConsumptionDto) throws IOException {
         WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionId).orElseThrow(CWorthyConsumptionNotFoundException:: new);
 
-        Image image = imageUploader.upload(worthyConsumptionDto.getImage(), "values");
-        Image detailImage = imageUploader.upload(worthyConsumptionDto.getDetailImage(), "values");
-        Image detailBackgroundImage = imageUploader.upload(worthyConsumptionDto.getDetailBackgroundImage(), "values");
-        Image placeImage = imageUploader.upload(worthyConsumptionDto.getPlaceImage(), "values");
-
-        worthyConsumption.getWorthyConsumptionUrl().update(worthyConsumptionDto, image.getImagePath(), detailImage.getImagePath(), detailBackgroundImage.getImagePath(), placeImage.getImagePath());
-        worthyConsumption.getCondition().update(worthyConsumptionDto);
-        worthyConsumption.update(worthyConsumptionDto);
+        updateUrl(worthyConsumption, worthyConsumptionDto);
+        updateCondition(worthyConsumption, worthyConsumptionDto);
+        updateContent(worthyConsumption, worthyConsumptionDto);
 
         worthyConsumptionRepository.save(worthyConsumption);
     }
-    /**
-     * 가치소비를 삭제하는 로직입니다.
-     * @param worthyConsumptionId
-     */
+    public void updateUrl(WorthyConsumption worthyConsumption, WorthyConsumptionDto.Update worthyConsumptionDto) throws IOException {
+        if(worthyConsumptionDto.getImage() != null){
+            Image image = imageUploader.upload(worthyConsumptionDto.getImage(), "values");
+            worthyConsumption.getWorthyConsumptionUrl().setImagePath(image.getImagePath());
+        }
+        if(worthyConsumptionDto.getDetailImage() != null) {
+            Image detailImage = imageUploader.upload(worthyConsumptionDto.getDetailImage(), "values");
+            worthyConsumption.getWorthyConsumptionUrl().setDetailImagePath(detailImage.getImagePath());
+        }
+        if(worthyConsumptionDto.getDetailBackgroundImage() != null) {
+            Image detailBackgroundImage = imageUploader.upload(worthyConsumptionDto.getDetailBackgroundImage(), "values");
+            worthyConsumption.getWorthyConsumptionUrl().setDetailBackgroundImagePath(detailBackgroundImage.getImagePath());
+
+        }
+        if(worthyConsumptionDto.getPlaceImage() != null) {
+            Image placeImage = imageUploader.upload(worthyConsumptionDto.getPlaceImage(), "values");
+            worthyConsumption.getWorthyConsumptionUrl().setPlaceImagePath(placeImage.getImagePath());
+        }
+    }
+    public void updateCondition(WorthyConsumption worthyConsumption, WorthyConsumptionDto.Update worthyConsumptionDto) throws IOException {
+
+    if(worthyConsumptionDto.getMaxParticipants() != null)
+        worthyConsumption.getCondition().setMaxParticipants(worthyConsumptionDto.getMaxParticipants());
+    if(worthyConsumptionDto.getIssuableCouponStartDate() != null)
+        worthyConsumption.getCondition().setIssuableCouponStartDate(worthyConsumptionDto.getIssuableCouponStartDate());
+    if(worthyConsumptionDto.getIssuableCouponEndDate() != null)
+        worthyConsumption.getCondition().setIssuableCouponEndDate(worthyConsumptionDto.getIssuableCouponEndDate());
+    if(worthyConsumptionDto.getLastMonthAmount() != null)
+        worthyConsumption.getCondition().setLastMonthAmount(worthyConsumptionDto.getLastMonthAmount());
+
+    }
+    public void updateContent(WorthyConsumption worthyConsumption, WorthyConsumptionDto.Update worthyConsumptionDto) throws IOException {
+
+        if(worthyConsumptionDto.getTitle() != null)
+            worthyConsumption.getCondition().setMaxParticipants(worthyConsumptionDto.getMaxParticipants());
+        if(worthyConsumptionDto.getHashtags() != null)
+            worthyConsumption.getCondition().setIssuableCouponStartDate(worthyConsumptionDto.getIssuableCouponStartDate());
+        if(worthyConsumptionDto.getOriginalPrice() != null)
+            worthyConsumption.getCondition().setIssuableCouponEndDate(worthyConsumptionDto.getIssuableCouponEndDate());
+        if(worthyConsumptionDto.getSalePrice() != null)
+            worthyConsumption.getCondition().setIssuableCouponEndDate(worthyConsumptionDto.getIssuableCouponEndDate());
+        if(worthyConsumptionDto.getRecommendationReason() != null)
+            worthyConsumption.getCondition().setIssuableCouponStartDate(worthyConsumptionDto.getIssuableCouponStartDate());
+        if(worthyConsumptionDto.getAvailablePrice() != null)
+            worthyConsumption.getCondition().setIssuableCouponStartDate(worthyConsumptionDto.getIssuableCouponStartDate());
+        if(worthyConsumptionDto.getAvailablePlace() != null)
+            worthyConsumption.getCondition().setIssuableCouponStartDate(worthyConsumptionDto.getIssuableCouponStartDate());
+        if(worthyConsumptionDto.getSummary() != null)
+            worthyConsumption.getCondition().setLastMonthAmount(worthyConsumptionDto.getLastMonthAmount());
+
+    }
+        /**
+         * 가치소비를 삭제하는 로직입니다.
+         * @param worthyConsumptionId
+         */
     public void deleteWorthyConsumption(Long worthyConsumptionId){
         WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionId).orElseThrow(CWorthyConsumptionNotFoundException:: new);
         worthyConsumptionRepository.delete(worthyConsumption);
@@ -122,11 +168,9 @@ public class WorthyConsumptionService {
      */
     public void checkConditionToIssuableCoupon(WorthyConsumption worthyConsumption){
         worthyConsumption.getCondition().checkIssuableCouponStatus(OK);
-        //checkConditionDateForCoupon(worthyConsumption);
-        checkMaxParticipantsForCoupon(worthyConsumption.getCoupons().get(1).getId(), worthyConsumption);//쿠폰이 많을 때, 해당 달에 해당하는 쿠폰을 반환하기 위해 List 말고 Stack 같은 자료구조형을 생각해봅니다..
+        checkMaxParticipantsForCoupon(worthyConsumption.getCoupons().get(0).getId(), worthyConsumption);
         checkConditionDateForCoupon(worthyConsumption);
-        //worthyConsumption.getCondition().checkIssuableCouponStatus(OK);
-        //worthyConsumption.getCondition().setIsIssuableCoupon(OK);
+        worthyConsumptionRepository.save(worthyConsumption);
     }
     public void checkConditionDateForCoupon(WorthyConsumption worthyConsumption){
         if(!(worthyConsumption.getCondition().getIssuableCouponStartDate().isBefore(LocalDate.now())//테스트시 now 설정 X

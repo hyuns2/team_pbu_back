@@ -10,6 +10,7 @@ import projectbuildup.mivv.domain.coupon.repository.CouponRepository;
 import projectbuildup.mivv.domain.couponIssuance.repository.CouponIssuanceRepository;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.domain.user.repository.UserRepository;
+import projectbuildup.mivv.domain.worthyConsumption.entity.CheckConditionType;
 import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumption;
 import projectbuildup.mivv.domain.worthyConsumption.repository.WorthyConsumptionRepository;
 import projectbuildup.mivv.global.common.imageStore.Image;
@@ -43,6 +44,7 @@ public class CouponService {
         Image image = imageUploader.upload(couponDto.getImage(), "coupons");
         Coupon coupon = new Coupon(couponDto, image.getImagePath());
         worthyConsumption.addCoupon(coupon);
+        worthyConsumption.getCondition().checkIssuableCouponStatus(CheckConditionType.OK);
         worthyConsumptionRepository.save(worthyConsumption);
     }
     /**

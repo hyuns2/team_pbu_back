@@ -12,10 +12,15 @@ public class WorthyConsumptionUrl {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "WorthyConsumptionUrlId")
     private Long id;
+    @Setter
     private String videoPath;
+    @Setter
     private String imagePath;
+    @Setter
     private String detailImagePath;
+    @Setter
     private String detailBackgroundImagePath;
+    @Setter
     private String placeImagePath;
     public WorthyConsumptionUrl(WorthyConsumptionDto.Creation worthyConsumptionDto,
                                 String imagePath, String detailImagePath, String detailBackgroundImagePath, String placeImagePath) {

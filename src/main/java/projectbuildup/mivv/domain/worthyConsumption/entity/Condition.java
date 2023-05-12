@@ -12,13 +12,13 @@ import java.time.LocalDate;
 public class Condition {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    @NonNull
+    @NonNull @Setter
     private int maxParticipants;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd") @Setter
     private LocalDate issuableCouponStartDate;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd") @Setter
     private LocalDate issuableCouponEndDate;
-    @NonNull
+    @NonNull @Setter
     private long lastMonthAmount;
     @Setter
     @Enumerated(EnumType.STRING)
