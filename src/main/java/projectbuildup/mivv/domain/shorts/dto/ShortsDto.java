@@ -29,7 +29,6 @@ public class ShortsDto {
         String title;
         String content;
         String videoPath;
-        @NotNull
         private MultipartFile image;
     }
     @Data

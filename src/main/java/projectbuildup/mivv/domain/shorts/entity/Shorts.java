@@ -15,22 +15,31 @@ public class Shorts {
     private Long id;
     @Enumerated(EnumType.STRING)
     private ShortsCategory category;
+    @Setter
     private String title;
+    @Setter
     private String content;
+    @Setter
     private String imagePath;
+    @Setter
     private String videoPath;
 
-    public Shorts(ShortsDto.creatRequest shortsRequestDto, String imagePath){
-        this.title = shortsRequestDto.getTitle();
-        this.content = shortsRequestDto.getContent();
+    public Shorts(ShortsDto.creatRequest shortsDto, String imagePath){
+        this.title = shortsDto.getTitle();
+        this.content = shortsDto.getContent();
         this.imagePath = imagePath;
-        this.videoPath = shortsRequestDto.getVideoPath();
-        this.category = shortsRequestDto.getCategory();
+        this.videoPath = shortsDto.getVideoPath();
+        this.category = shortsDto.getCategory();
     }
-    public void update(ShortsDto.updateRequest shortsRequestDto, String imagePath){
-        this.title = shortsRequestDto.getTitle();
-        this.content = shortsRequestDto.getContent();
+    public void update(ShortsDto.updateRequest shortsRequestDto){
+        if(shortsRequestDto.getTitle()!=null||shortsRequestDto.getTitle()!=""|| !shortsRequestDto.getTitle().isEmpty())
+            this.title = shortsRequestDto.getTitle();
+        if(shortsRequestDto.getContent()!=null||shortsRequestDto.getContent()!=""|| !shortsRequestDto.getContent().isEmpty())
+            this.content = shortsRequestDto.getContent();
+        if(shortsRequestDto.getVideoPath() != null || shortsRequestDto.getVideoPath()!="")
+            this.videoPath = shortsRequestDto.getVideoPath();
+    }
+    public void updateImage(String imagePath){
         this.imagePath = imagePath;
-        this.videoPath = shortsRequestDto.getVideoPath();
     }
 }

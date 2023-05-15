@@ -64,8 +64,12 @@ public class ShortsService {
     }
     public void updateShorts(Long shortsId, ShortsDto.updateRequest shortsRequestDto) throws IOException {
         Shorts shorts = shortsRepository.findById(shortsId).orElseThrow(CShortsNotFoundException::new);
-        Image image = imageUploader.upload(shortsRequestDto.getImage(), "shorts");
-        shorts.update(shortsRequestDto, image.getImagePath());
+        shorts.update(shortsRequestDto);
+
+        if(shortsRequestDto.getImage() != null) {
+            Image image = imageUploader.upload(shortsRequestDto.getImage(), "shorts");
+            shorts.updateImage(image.getImagePath());
+        }
         shortsRepository.save(shorts);
     }
     public void deleteShorts(Long shortsId){

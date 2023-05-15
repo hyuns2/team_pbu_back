@@ -112,7 +112,6 @@ public class WorthyConsumptionService {
         if(worthyConsumptionDto.getDetailBackgroundImage() != null && !worthyConsumptionDto.getDetailBackgroundImage().isEmpty()) {
             Image detailBackgroundImage = imageUploader.upload(worthyConsumptionDto.getDetailBackgroundImage(), "values");
             worthyConsumption.getWorthyConsumptionUrl().setDetailBackgroundImagePath(detailBackgroundImage.getImagePath());
-
         }
         if(worthyConsumptionDto.getPlaceImage() != null && !worthyConsumptionDto.getPlaceImage().isEmpty()) {
             Image placeImage = imageUploader.upload(worthyConsumptionDto.getPlaceImage(), "values");
