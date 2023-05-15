@@ -16,6 +16,7 @@ public class AuthDto {
 
     @Getter
     @NoArgsConstructor
+    @AllArgsConstructor
     public static class SignupRequest{
         @NotBlank
         @Schema(description = "본인인증 코드")
@@ -47,6 +48,7 @@ public class AuthDto {
 
     @Getter
     @NoArgsConstructor
+    @AllArgsConstructor
     public static class CertifyRequest {
         @NotBlank
         @Schema(description = "본인인증 API 호출 키")

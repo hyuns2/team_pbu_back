@@ -6,13 +6,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
+import projectbuildup.mivv.global.common.BaseTimeEntity;
 
 @Entity
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class IdentityVerification {
+public class IdentityVerification extends BaseTimeEntity {
     private final static String DUMMY_NAME = "심재헌";
     private final static String DUMMY_BIRTHDATE = "19990101";
     private final static String DUMMY_MOBILE = "01000000000";

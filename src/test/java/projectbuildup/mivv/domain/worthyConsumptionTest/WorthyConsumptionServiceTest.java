@@ -6,7 +6,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import projectbuildup.mivv.common.MockEntity;
 import projectbuildup.mivv.domain.coupon.dto.request.CouponRequestDto;
 import projectbuildup.mivv.domain.coupon.entity.Coupon;
 import projectbuildup.mivv.domain.coupon.repository.CouponRepository;
@@ -22,7 +21,7 @@ import java.util.stream.Collectors;
 
 @SpringBootTest
 @Slf4j
-public class WorthyConsumptionServiceTest  extends MockEntity {
+public class WorthyConsumptionServiceTest {
     @Autowired
     CouponRepository couponRepository;
     @Autowired
@@ -45,7 +44,7 @@ public class WorthyConsumptionServiceTest  extends MockEntity {
         가치소비 생성
          */
 
-        WorthyConsumption worthyConsumption = MOCK_WORTHY_CONSUMPTION;
+        WorthyConsumption worthyConsumption = new WorthyConsumption();
         WorthyConsumption worthyConsumption_saved = worthyConsumptionRepository.save(worthyConsumption);
 
         log.info("생성된 가치소비는 {}", worthyConsumption);
@@ -66,7 +65,7 @@ public class WorthyConsumptionServiceTest  extends MockEntity {
         가치소비 생성
          */
 
-        WorthyConsumption worthyConsumption = MOCK_WORTHY_CONSUMPTION;
+        WorthyConsumption worthyConsumption = new WorthyConsumption();
         WorthyConsumption worthyConsumption_saved = worthyConsumptionRepository.save(worthyConsumption);
 
         log.info("생성된 가치소비는 {}", worthyConsumption);

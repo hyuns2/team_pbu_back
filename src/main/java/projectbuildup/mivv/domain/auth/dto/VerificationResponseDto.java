@@ -8,5 +8,4 @@ import lombok.Getter;
 public class VerificationResponseDto {
     String verificationCode;
     boolean isNewUser;
-
 }
