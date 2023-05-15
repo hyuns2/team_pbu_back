@@ -42,8 +42,7 @@ public class AuthService {
         if (identityVerification.getUser() != null) {
             throw new CUserExistException();
         }
-//        String encodedPassword = passwordEncoder.encode(requestDto.getPassword());
-        String encodedPassword = requestDto.getPassword();
+        String encodedPassword = passwordEncoder.encode(requestDto.getPassword());
         User user = User.of(requestDto, encodedPassword, identityVerification);
         userRepository.save(user);
     }
@@ -57,16 +56,11 @@ public class AuthService {
     public TokenDto login(AuthDto.LoginRequest requestDto) {
         IdentityVerification identityVerification = identityVerificationRepository.findByCode(requestDto.getVerificationCode()).orElseThrow(CVerificationNotFoundException::new);
         User user = userRepository.findByIdentityVerification(identityVerification).orElseThrow(CUserNotFoundException::new);
-        if (requestDto.getPassword().equals(user.getPassword())) {
+        if (passwordEncoder.matches(requestDto.getPassword(), user.getPassword())) {
             TokenDto tokenDto = jwtProvider.generateToken(user);
             tokenRepository.saveRefreshToken(tokenDto.getRefreshToken(), user.getId());
             return tokenDto;
         }
-//        if (passwordEncoder.matches(requestDto.getPassword(), user.getPassword())) {
-//            TokenDto tokenDto = jwtProvider.generateToken(user);
-//            tokenRepository.saveRefreshToken(tokenDto.getRefreshToken(), user.getId());
-//            return tokenDto;
-//        }
         throw new CWrongPasswordException();
     }
 
