@@ -19,7 +19,7 @@ public class NumericalConditionCardEntity extends CardEntity {
     protected Integer count;
     protected Integer term;
 
-    public void updateCard(ArchivingDto.updateNumericalConditionCardRequestDto dto, String imagePath) throws IOException {
+    public void updateCard(ArchivingDto.updateNumericalCardRequestDto dto, String imagePath) throws IOException {
         if (dto.getKind() != null) {
             this.kind = dto.getKind();
         }

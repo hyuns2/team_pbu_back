@@ -2,6 +2,7 @@ package projectbuildup.mivv.domain.archiving.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import projectbuildup.mivv.domain.archiving.dto.ArchivingDto;
 import projectbuildup.mivv.domain.archiving.entity.NumericalConditionCardEntity;
 import projectbuildup.mivv.domain.archiving.entity.UserCardEntity;
@@ -29,17 +30,17 @@ public class NumericalArchivingService {
 
     private final ImageUploader imageUploader = new ImageUploader();
 
-    public void createNumericalConditionCard(final ArchivingDto.createNumericalConditionCardRequestDto dto) throws IOException {
+    public void createNumericalConditionCard(final ArchivingDto.createNumericalCardRequestDto dto) throws IOException {
 
         Image image = imageUploader.upload(dto.getImage(), "cards");
 
-        NumericalConditionCardEntity entity = ArchivingDto.createNumericalConditionCardRequestDto.toEntity(dto, image.getImagePath());
+        NumericalConditionCardEntity entity = ArchivingDto.createNumericalCardRequestDto.toEntity(dto, image.getImagePath());
 
         cardRepo.save(entity);
 
     }
 
-    public void updateNumericalConditionCard(final Long id, final ArchivingDto.updateNumericalConditionCardRequestDto dto) throws IOException {
+    public void updateNumericalConditionCard(final Long id, final ArchivingDto.updateNumericalCardRequestDto dto) throws IOException {
 
         Optional<NumericalConditionCardEntity> target = (Optional<NumericalConditionCardEntity>) cardRepo.findById(id);
         if (target.isEmpty()) {
@@ -55,7 +56,7 @@ public class NumericalArchivingService {
 
     }
 
-    public void ifNumericalConditionCardHasNotTerm(User user, Integer charge, Integer count, Integer term, NumericalConditionCardEntity element) {
+    private void ifNumericalConditionCardHasNotTerm(User user, Integer charge, Integer count, Integer term, NumericalConditionCardEntity element) {
         Integer chargeSum = remittanceRepo.findChargeSum(user);
         Integer countSum = remittanceRepo.findCountSum(user);
 
@@ -68,7 +69,7 @@ public class NumericalArchivingService {
         }
     }
 
-    public void ifNumericalConditionCardHasTerm(User user, Integer charge, Integer count, Integer term, NumericalConditionCardEntity element) {
+    private void ifNumericalConditionCardHasTerm(User user, Integer charge, Integer count, Integer term, NumericalConditionCardEntity element) {
         Integer chargeSum = remittanceRepo.findChargeSumBetweenTerm(user, LocalDateTime.now().minusDays(term), LocalDateTime.now());
         Integer countSum = remittanceRepo.findCountSumBetweenTerm(user, LocalDateTime.now().minusDays(term), LocalDateTime.now());
 
@@ -81,7 +82,7 @@ public class NumericalArchivingService {
         }
     }
 
-    public void checkAndAssignNumericalConditionCards(User user, List<NumericalConditionCardEntity> cardsToCheck) {
+    private void checkAndAssignNumericalConditionCards(User user, List<NumericalConditionCardEntity> cardsToCheck) {
         for (NumericalConditionCardEntity element: cardsToCheck) {
             Integer charge = element.getCharge();
             Integer count = element.getCount();
@@ -96,6 +97,7 @@ public class NumericalArchivingService {
         }
     }
 
+    @Transactional
     public void assignNumericalConditionCards(final User user) {
 
         List<UserCardEntity> alreadyExistings = userCardRepo.findUserCardEntitiesByUser(user);
