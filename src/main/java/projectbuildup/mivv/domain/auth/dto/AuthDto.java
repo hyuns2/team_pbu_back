@@ -42,7 +42,6 @@ public class AuthDto {
         @Schema(description = "본인인증 코드", example = ExampleValue.User.VERIFICATION_CODE)
         String verificationCode;
         @Schema(description = "비밀번호", example = ExampleValue.User.PASSWORD)
-        @Pattern(regexp = "\\d{6}")
         String password;
     }
 
