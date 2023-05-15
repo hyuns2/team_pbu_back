@@ -74,16 +74,16 @@ values (1, 'ROLE_USER'),
 -- <Challenge> --
 insert into challenge(id, created_time, modified_time, end_date, store_image_name,
                       original_image_name, image_path, main_title,
-                      remittance_available_count,
-                      remittance_once_limit, start_date, sub_title)
+                      limited_number_of_times,
+                      max_saving_amount, min_saving_amount, start_date, sub_title)
 values (1, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', '2024-07-13', 'challenge1.png', 'challenge1.png',
-        'http://3.37.5.91/resources/static/images/challenges/challenge1.png', '배달팁 아끼기', 2, 4000,
+        'http://3.37.5.91/resources/static/images/challenges/challenge1.png', '배달팁 아끼기', 2, 4000, 1000,
         '2023-03-13', '배달말고 포장, 배달팁 아끼기!'),
        (2, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', '2024-07-13', 'challenge2.png', 'challenge2.png',
-        'http://3.37.5.91/resources/static/images/challenges/challenge2.png', '택시비 아끼기', 3, 6000,
+        'http://3.37.5.91/resources/static/images/challenges/challenge2.png', '택시비 아끼기', 3, 6000, 1000,
         '2023-03-13', '걸어서 갈 수 있잖아?'),
        (3, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', '2024-07-13', 'challenge3.png', 'challenge3.png',
-        'http://3.37.5.91/resources/static/images/challenges/challenge3.png', '커피값 아끼기', 3, 5000,
+        'http://3.37.5.91/resources/static/images/challenges/challenge3.png', '커피값 아끼기', 3, 5000, 1000,
         '2023-03-13', '그 커피 꼭 사야 해?');
 
 
@@ -95,7 +95,6 @@ values (1, '배달말고 포장해서, 배달팁도 아끼고 건강도 챙기�
        (2, '칼로리 높은 배달음식도 먹을텐데, 조금 걸어두는 편이 좋지 않겠어요?'),
        (3, '배달말고 포장해서, 배달팁도 아끼고 건강도 챙기기!'),
        (3, '칼로리 높은 배달음식도 먹을텐데, 조금 걸어두는 편이 좋지 않겠어요?');
-
 
 
 -- <SavingCount> --
@@ -143,8 +142,10 @@ values (1, null, '문의 내용입니다.', '2023-04-01 11:31:14.982873', '문�
        (2, null, '문의 내용입니다.', '2023-04-01 11:31:14.982873', '문의 샘플2', 2);
 
 insert into shorts(id, category, content, image_url, title, video_url)
-values (1, 'SAVING', '', 'http://3.37.5.91/resources/static/images/shorts/shortImage1.png', '샘플 비디오1', 'https://youtu.be/0gY_z7fqPjs'),
-       (2, 'EDUCATION', '', 'http://3.37.5.91/resources/static/images/shorts/shortImage2.png', '샘플 비디오2', 'https://youtu.be/0gY_z7fqPjs');
+values (1, 'SAVING', '', 'http://3.37.5.91/resources/static/images/shorts/shortImage1.png', '샘플 비디오1',
+        'https://youtu.be/0gY_z7fqPjs'),
+       (2, 'EDUCATION', '', 'http://3.37.5.91/resources/static/images/shorts/shortImage2.png', '샘플 비디오2',
+        'https://youtu.be/0gY_z7fqPjs');
 
 
 
@@ -154,8 +155,10 @@ values (1, 'OK', '2023-05-01', '2023-04-01', '10000', '100');
 
 insert into worthy_consumptionurl(worthy_consumption_url_id, detail_background_image_url, detail_image_url, image_url,
                                   place_image_url, video_url)
-values (1, 'http://3.37.5.91/resources/static/images/values/valueDetailBackground1.png', 'http://3.37.5.91/resources/static/images/values/valueDetail1.png',
-        'http://3.37.5.91/resources/static/images/values/valueBackground1.png', 'http://3.37.5.91/resources/static/images/values/valueDetailMap1.png', 'https://youtu.be/0gY_z7fqPjs');
+values (1, 'http://3.37.5.91/resources/static/images/values/valueDetailBackground1.png',
+        'http://3.37.5.91/resources/static/images/values/valueDetail1.png',
+        'http://3.37.5.91/resources/static/images/values/valueBackground1.png',
+        'http://3.37.5.91/resources/static/images/values/valueDetailMap1.png', 'https://youtu.be/0gY_z7fqPjs');
 
 insert into worthy_consumption(worthy_consumption_id, created_time, modified_time, original_price, place_tag, price_tag,
                                sale_price, summary, worthy_consumption_title, condition_id, worthy_consumption_url_id)
@@ -165,13 +168,17 @@ values (1, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', 99000, '�
 
 insert into coupon(coupon_id, created_time, modified_time, image_url, limit_end_date, limit_start_date, pin, title,
                    worthy_consumption_id)
-values (1, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873', 'http://3.37.5.91/resources/static/images/coupons/coupon1.png',
+values (1, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
+        'http://3.37.5.91/resources/static/images/coupons/coupon1.png',
         '2023-08-31', '2023-07-31', '1234', '레드짐 8월 할인권', 1),
-       (2, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873', 'http://3.37.5.91/resources/static/images/coupons/coupon1.png',
+       (2, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
+        'http://3.37.5.91/resources/static/images/coupons/coupon1.png',
         '2023-07-31', '2023-06-30', '1234', '레드짐 7월 할인권', 1),
-       (3, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873', 'http://3.37.5.91/resources/static/images/coupons/coupon1.png',
+       (3, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
+        'http://3.37.5.91/resources/static/images/coupons/coupon1.png',
         '2023-07-31', '2023-06-30', '1234', '레드짐 7월 할인권', 1),
-       (4, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873', 'http://3.37.5.91/resources/static/images/coupons/coupon1.png',
+       (4, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
+        'http://3.37.5.91/resources/static/images/coupons/coupon1.png',
         '2023-07-31', '2023-06-30', '1234', '레드짐 7월 할인권', 1);
 
 insert into coupon_issuance(id, created_time, modified_time, created, used, coupon_coupon_id, user_id)
