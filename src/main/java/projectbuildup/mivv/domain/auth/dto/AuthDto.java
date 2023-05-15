@@ -32,31 +32,16 @@ public class AuthDto {
         @NotNull
         @AssertTrue
         Boolean agreement;
-
-        /**
-         * DTO 내용을 바탕으로 User 엔티티 생성
-         *
-         * @return 생성된 User 엔티티
-         */
-        public User toEntity(String encodedPassword) {
-            return User.builder()
-                    .email(this.email)
-                    .agreement(this.agreement)
-                    .nickname(this.nickname)
-                    .password(encodedPassword)
-                    .roles(Collections.singletonList("ROLE_USER"))
-                    .build();
-        }
     }
 
     @Getter
     @NoArgsConstructor
     public static class LoginRequest {
         @NotBlank
-        @Schema(description = "본인인증 식별자", example = ExampleValue.User.VERIFICATION_CODE)
+        @Schema(description = "본인인증 코드", example = ExampleValue.User.VERIFICATION_CODE)
         String verificationCode;
-        @Length()
         @Schema(description = "비밀번호", example = ExampleValue.User.PASSWORD)
+        @Pattern(regexp = "\\d{6}")
         String password;
     }
 

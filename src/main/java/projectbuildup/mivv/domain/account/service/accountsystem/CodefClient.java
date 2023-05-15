@@ -9,8 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import projectbuildup.mivv.domain.account.dto.AccountRegisterDto;
-import projectbuildup.mivv.domain.account.dto.IdPasswordBasedRegisterDto;
-import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.global.error.exception.CInternalServerException;
 
 import javax.crypto.BadPaddingException;
@@ -60,9 +58,10 @@ public class CodefClient {
         }
     }
 
-    private void temp(HashMap<String, Object> accountMap, AccountRegisterDto accountDto) throws NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, InvalidKeySpecException, BadPaddingException, InvalidKeyException {
-        String id = ((IdPasswordBasedRegisterDto) accountDto).getBankId();
-        String password = ((IdPasswordBasedRegisterDto) accountDto).getBankPassword();
+    private void fillMapParameter(HashMap<String, Object> accountMap, AccountRegisterDto accountDto) throws NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, InvalidKeySpecException, BadPaddingException, InvalidKeyException {
+        final String DAEGU_BANK = "0031";
+        String id = accountDto.getBankId();
+        String password = accountDto.getBankPassword();
         String encodedPassword = EasyCodefUtil.encryptRSA(password, codef.getPublicKey());
         accountMap.put("countryCode", "KR");
         accountMap.put("businessType", "BK");
@@ -71,20 +70,13 @@ public class CodefClient {
         accountMap.put("loginType", "1");
         accountMap.put("id", id);
         accountMap.put("password", encodedPassword);
-    }
-
-    private void temp2(HashMap<String, Object> accountMap, AccountRegisterDto accountDto) {
-
-    }
-
-    private void fillMapParameter(HashMap<String, Object> accountMap, AccountRegisterDto accountDto) throws NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, InvalidKeySpecException, BadPaddingException, InvalidKeyException {
-        if (accountDto instanceof IdPasswordBasedRegisterDto) {
-            temp(accountMap, accountDto);
+        if (accountDto.getOrganizationCode().equals(DAEGU_BANK)){
+            accountMap.put("withdrawAccountNo", accountDto.getAccountNumbers());
+            accountMap.put("withdrawAccountPassword", accountDto.getAccountPassword());
         }
-        temp(accountMap, accountDto);
     }
 
-    public String createConnectedId(AccountRegisterDto accountDto, User user) {
+    public String createConnectedId(AccountRegisterDto accountDto) {
         List<HashMap<String, Object>> accountList = new ArrayList<>();
         HashMap<String, Object> accountMap = new HashMap<>();
         HashMap<String, Object> parameterMap = new HashMap<>();
@@ -96,7 +88,6 @@ public class CodefClient {
             log.info(result);
             HashMap<String, Object> responseMap = new ObjectMapper().readValue(result, HashMap.class);
             HashMap<String, Object> resultMap = (HashMap<String, Object>) responseMap.get("data");
-            log.info("aaaa" + (String) resultMap.get("connectedId"));
             return (String) resultMap.get("connectedId");
         } catch (Exception e) {
             e.printStackTrace();
