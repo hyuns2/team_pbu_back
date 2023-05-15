@@ -3,9 +3,10 @@ package projectbuildup.mivv.global.constant;
 public class ExampleValue {
 
     public static class User {
-        public final static String PASSWORD = "123456";
+        public final static String PASSWORD = "Abc1234!";
         public final static String NICKNAME = "hello";
         public final static String EMAIL = "temp@naver.com";
+        public static final String VERIFICATION_CODE = "abcxxxxxabc";
     }
 
     public static class Video{
