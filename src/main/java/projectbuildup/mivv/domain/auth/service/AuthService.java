@@ -30,19 +30,20 @@ public class AuthService {
     private final JwtValidator jwtValidator;
     private final TokenRepository tokenRepository;
 
-    public void doesEnrolled(Long userId){
+    public void doesEnrolled(Long userId) {
 
     }
 
     /**
      * 회원 가입합니다.
+     * 이미 해당 개인정보로 가입된 계정이 존재할 경우, CUserExistException 을 던집니다.
      *
      * @param requestDto 회원가입에 필요한 사용자 정보
      */
     public void signup(AuthDto.SignupRequest requestDto) {
         String encodedPassword = passwordEncoder.encode(requestDto.getPassword());
         IdentityVerification identityVerification = identityVerificationRepository.findByCode(requestDto.getVerificationCode()).orElseThrow(CVerificationNotFoundException::new);
-        if (identityVerification.getUser() != null){
+        if (identityVerification.getUser() != null) {
             throw new CUserExistException();
         }
         User user = User.of(requestDto, encodedPassword, identityVerification);
