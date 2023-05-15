@@ -2,24 +2,19 @@ package projectbuildup.mivv.integrationtest;
 
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.ResultActions;
 import projectbuildup.mivv.DatabaseCleanUp;
 import projectbuildup.mivv.domain.auth.dto.AuthDto;
 import projectbuildup.mivv.domain.auth.dto.VerificationResponseDto;
 import projectbuildup.mivv.domain.auth.repository.IdentityVerificationRepository;
-import projectbuildup.mivv.domain.user.entity.IdentityVerification;
-import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.domain.user.repository.UserRepository;
 import projectbuildup.mivv.global.error.ErrorCode;
 import projectbuildup.mivv.global.error.exception.CUserExistException;
 
-import static java.lang.Thread.sleep;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
