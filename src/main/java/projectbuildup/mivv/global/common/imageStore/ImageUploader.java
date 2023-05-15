@@ -18,6 +18,9 @@ public class ImageUploader {
 
     @Value("${path.images}")
     String STORE_PATH;
+    
+    @Value("${path.ipAddress}")
+    String ipUrl;
 
     private static final String DELIMITER = "/";
 

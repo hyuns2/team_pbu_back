@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import projectbuildup.mivv.domain.account.dto.AccountCertifyTransferDto;
 import projectbuildup.mivv.domain.account.dto.IdPasswordBasedRegisterDto;
 import projectbuildup.mivv.domain.account.service.AccountRegisterService;
 import projectbuildup.mivv.domain.user.entity.User;
@@ -25,6 +26,13 @@ import projectbuildup.mivv.global.constant.Header;
 @RequestMapping("/api")
 public class AccountController {
     private final AccountRegisterService accountRegisterService;
+
+    @Operation(summary = "1원 인증", description = "인증코드가 반환됩니다. 사용자가 입력한 코드와 대조하여 같다면, 인증에 성공한 것으로 간주합니다.")
+    @PostMapping("/account/certify-transfer")
+    public ResponseEntity<String> certifyTransfer(@RequestBody AccountCertifyTransferDto requestDto) {
+        String response = accountRegisterService.certifyTransfer(requestDto);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
     @Operation(summary = "계좌 연동 (은행 ID/비밀번호 이용)", description = "은행 ID와 비밀번호를 사용해 계좌를 연동합니다.")
     @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
