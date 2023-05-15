@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 @Entity
 @ToString
 public class User extends BaseTimeEntity implements UserDetails {
+    private final static String DEFAULT_ROLE = "ROLE_USER";
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
@@ -43,14 +44,14 @@ public class User extends BaseTimeEntity implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<UserCardEntity> userCards = new ArrayList<>();
 
-    public static User of (AuthDto.SignupRequest requestDto, String encodedPassword, IdentityVerification identityVerification){
+    public static User of(AuthDto.SignupRequest requestDto, String encodedPassword, IdentityVerification identityVerification) {
         return User.builder()
                 .email(requestDto.getEmail())
                 .agreement(requestDto.getAgreement())
                 .nickname(requestDto.getNickname())
                 .password(encodedPassword)
                 .identityVerification(identityVerification)
-                .roles(Collections.singletonList("ROLE_USER"))
+                .roles(Collections.singletonList(DEFAULT_ROLE))
                 .build();
     }
 

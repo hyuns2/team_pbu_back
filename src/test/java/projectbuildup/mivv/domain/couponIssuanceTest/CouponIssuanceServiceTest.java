@@ -1,20 +1,13 @@
 package projectbuildup.mivv.domain.couponIssuanceTest;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.web.bind.annotation.RequestBody;
-import projectbuildup.mivv.common.MockEntity;
-import projectbuildup.mivv.domain.auth.service.AuthService;
 import projectbuildup.mivv.domain.challenge.entity.Challenge;
 import projectbuildup.mivv.domain.challenge.repository.ChallengeRepository;
-import projectbuildup.mivv.domain.coupon.dto.request.CouponRequestDto;
-import projectbuildup.mivv.domain.coupon.entity.Coupon;
 import projectbuildup.mivv.domain.coupon.repository.CouponRepository;
 import projectbuildup.mivv.domain.coupon.service.CouponService;
 import projectbuildup.mivv.domain.couponIssuance.dto.CouponIssuanceDto;
@@ -27,14 +20,9 @@ import projectbuildup.mivv.domain.remittance.entity.Remittance;
 import projectbuildup.mivv.domain.remittance.repository.RemittanceRepository;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.domain.user.repository.UserRepository;
-import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumption;
 import projectbuildup.mivv.domain.worthyConsumption.repository.WorthyConsumptionRepository;
 import projectbuildup.mivv.domain.worthyConsumption.service.WorthyConsumptionService;
 import projectbuildup.mivv.domain.worthyConsumptionTest.WorthyConsumptionServiceTest;
-import projectbuildup.mivv.global.error.exception.CCouponNotFoundException;
-import projectbuildup.mivv.global.error.exception.CUserNotFoundException;
-
-import java.time.LocalDate;
 
 @SpringBootTest
 @Slf4j
@@ -91,10 +79,10 @@ public class CouponIssuanceServiceTest extends WorthyConsumptionServiceTest {
          */
         super.testCreationCouponAtWorthyConsumption();//가치소비 생성, 가치소비에서 쿠폰 생성
 
-        user = MOCK_USER;
+        user = new User();
         userRepository.save(user);
 
-        Challenge challenge = MOCK_CHALLENGE;
+        Challenge challenge = new Challenge();
         challengeRepository.save(challenge);
 
         Participation participation = new Participation(user, challenge);

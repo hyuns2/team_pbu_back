@@ -1,5 +1,6 @@
 package projectbuildup.mivv.domain.auth.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import projectbuildup.mivv.domain.auth.dto.VerificationResponseDto;
@@ -23,6 +24,7 @@ public class IdentityVerificationService {
      * @param key API 호출 key
      * @return 본인인증 객체의 고유코드
      */
+    @Transactional
     public VerificationResponseDto verifyIdentity(String key) {
         IdentityVerification newVerification = certificationSystem.certify(key);
         Optional<IdentityVerification> existVerification =  identityVerificationRepository.findByMobile(newVerification.getMobile());

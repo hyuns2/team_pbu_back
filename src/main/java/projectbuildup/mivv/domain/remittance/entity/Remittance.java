@@ -35,7 +35,7 @@ public class Remittance extends BaseTimeEntity {
     }
 
     public static Remittance newDeposit(long amount, Participation participation) {
-        if (amount < participation.getChallenge().getRemittanceOnceLimit()) {
+        if (amount < participation.getChallenge().getMaxSavingAmount()) {
             throw new CBadRequestException("최소 금액 이상 송금할 수 있습니다.");
         }
         return new Remittance(amount, participation);

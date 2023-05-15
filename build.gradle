@@ -19,7 +19,8 @@ repositories {
 }
 
 dependencies {
-
+	//google guava
+	implementation("com.google.guava:guava:31.1-jre")
 	//test lombok 사용
 	testCompileOnly 'org.projectlombok:lombok'
 	testAnnotationProcessor 'org.projectlombok:lombok'

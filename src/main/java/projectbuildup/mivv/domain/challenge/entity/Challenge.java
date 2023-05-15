@@ -26,8 +26,9 @@ public class Challenge extends BaseTimeEntity {
     private String subTitle;
     @ElementCollection
     private List<String> description = new ArrayList<>();
-    private long remittanceOnceLimit;
-    private long remittanceAvailableCount;
+    private long maxSavingAmount;
+    private long minSavingAmount;
+    private long limitedNumberOfTimes;
     private Image image;
 
     private LocalDate startDate;
@@ -37,8 +38,8 @@ public class Challenge extends BaseTimeEntity {
         this.mainTitle = requestDto.getMainTitle();
         this.subTitle = requestDto.getSubTitle();
         this.description = requestDto.getDescription();
-        this.remittanceOnceLimit = requestDto.getRemittanceOnceLimit();
-        this.remittanceAvailableCount = requestDto.getRemittanceAvailableCount();
+        this.maxSavingAmount = requestDto.getRemittanceOnceLimit();
+        this.limitedNumberOfTimes = requestDto.getRemittanceAvailableCount();
     }
 
     public void updateImage(Image image) {
@@ -50,8 +51,9 @@ public class Challenge extends BaseTimeEntity {
                 .mainTitle(requestDto.getMainTitle())
                 .subTitle(requestDto.getSubTitle())
                 .description(requestDto.getDescription())
-                .remittanceOnceLimit(requestDto.getRemittanceOnceLimit())
-                .remittanceAvailableCount(requestDto.getRemittanceAvailableCount())
+                .maxSavingAmount(requestDto.getMaxSavingAmount())
+                .minSavingAmount(requestDto.getMinSavingAmount())
+                .limitedNumberOfTimes(requestDto.getLimitedNumberOfTimes())
                 .image(image)
                 .startDate(requestDto.getStartDate())
                 .endDate(requestDto.getEndDate())
