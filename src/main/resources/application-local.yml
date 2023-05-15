@@ -55,4 +55,4 @@ api:
 path:
   files: C:/workspace_pbu/files
   images: C:/workspace_pbu/images
-  ipAddress: http://3.37.5.91
+  ipAddress: /
