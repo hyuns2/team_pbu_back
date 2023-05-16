@@ -44,16 +44,16 @@ public class ChallengeCrudController {
     @Operation(summary = "챌린지 전체 조회", description = "")
     @PreAuthorize("permitAll()")
     @GetMapping("/challenges")
-    public ResponseEntity<PagingDto<ChallengeDto.Response>> getChallenges(@ParameterObject @Valid ChallengePageParam pageParam) {
-        PagingDto<ChallengeDto.Response> responseDto = challengeService.getChallenges(pageParam);
+    public ResponseEntity<PagingDto<ChallengeDto.ShortResponse>> getChallenges(@ParameterObject @Valid ChallengePageParam pageParam) {
+        PagingDto<ChallengeDto.ShortResponse> responseDto = challengeService.getChallenges(pageParam);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     @Operation(summary = "챌린지 단건 조회", description = "")
     @PreAuthorize("permitAll()")
     @GetMapping("/challenges/{challengeId}")
-    public ResponseEntity<ChallengeDto.ShortResponse> getChallenges(@PathVariable Long challengeId) {
-        ChallengeDto.ShortResponse responseDto = challengeService.getChallenge(challengeId);
+    public ResponseEntity<ChallengeDto.Response> getChallenges(@PathVariable Long challengeId) {
+        ChallengeDto.Response responseDto = challengeService.getChallenge(challengeId);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
