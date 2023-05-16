@@ -3,9 +3,14 @@ package projectbuildup.mivv.global.config;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.servers.Server;
 import org.springframework.context.annotation.Configuration;
 
 @OpenAPIDefinition(
+        servers = {
+                @Server(url = "http://localhost:8080", description = "Local Server URL"),
+                @Server(url = "https://server.gasomann.com/", description = "Dev Server URL")
+        },
         info = @Info(
                 title = "MIVV API 명세서",
                 description = "MIVV의 API 명세서입니다.",
@@ -18,5 +23,4 @@ import org.springframework.context.annotation.Configuration;
 )
 @Configuration
 public class SpringDocConfig {
-
 }

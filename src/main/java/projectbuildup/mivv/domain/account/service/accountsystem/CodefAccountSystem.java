@@ -40,7 +40,7 @@ public class CodefAccountSystem implements AccountSystem {
     }
 
     private String issueConnectedId(AccountRegisterDto accountDto, User user) {
-        return codefClient.createConnectedId(accountDto, user);
+        return codefClient.createConnectedId(accountDto);
     }
 
     private OwnAccounts findAllAccountNumbers(String connectedId, String bankType) {

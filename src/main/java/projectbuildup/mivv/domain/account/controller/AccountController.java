@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import projectbuildup.mivv.domain.account.dto.AccountCertifyTransferDto;
-import projectbuildup.mivv.domain.account.dto.IdPasswordBasedRegisterDto;
+import projectbuildup.mivv.domain.account.dto.AccountRegisterDto;
 import projectbuildup.mivv.domain.account.service.AccountRegisterService;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.global.constant.ExampleValue;
@@ -38,7 +38,7 @@ public class AccountController {
     @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('USER')")
     @PostMapping("/account/register")
-    public ResponseEntity<Void> registerAccount(@RequestBody IdPasswordBasedRegisterDto requestDto, @AuthenticationPrincipal User user) {
+    public ResponseEntity<Void> registerAccount(@RequestBody AccountRegisterDto requestDto, @AuthenticationPrincipal User user) {
         accountRegisterService.registerAccount(requestDto, user.getId());
         return new ResponseEntity<>(HttpStatus.OK);
     }

@@ -45,7 +45,7 @@ public class Participation extends BaseTimeEntity {
     }
 
     public boolean canRemit() {
-        long limit = challenge.getRemittanceAvailableCount();
+        long limit = challenge.getLimitedNumberOfTimes();
         return savingCount.getCount() < limit;
     }
 }

@@ -3,7 +3,6 @@ package projectbuildup.mivv.domain.challenge.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -28,13 +27,15 @@ public class ChallengeDto {
         @NotNull
         List<String> description;
 
-        @Schema(description = "1회 송금액")
+        @Schema(description = "최대 송금액")
         @Min(1000)
-        private int remittanceOnceLimit;
-
+        private long maxSavingAmount;
+        @Schema(description = "최소 송금액")
+        @Min(1000)
+        private long minSavingAmount;
         @Schema(description = "하루 송금 횟수 제한")
         @Min(1)
-        private int remittanceAvailableCount;
+        private int limitedNumberOfTimes;
 
         @Schema(description = "시작일자", example = "yyyy-MM-dd")
         @FutureOrPresent
@@ -98,7 +99,7 @@ public class ChallengeDto {
             this.endDate = challenge.getEndDate();
             this.mainTitle = challenge.getMainTitle();
             this.subTitle = challenge.getSubTitle();
-            this.remittanceOnceLimit = challenge.getRemittanceOnceLimit();
+            this.remittanceOnceLimit = challenge.getMaxSavingAmount();
         }
     }
 
@@ -122,8 +123,8 @@ public class ChallengeDto {
             this.mainTitle = challenge.getMainTitle();
             this.subTitle = challenge.getSubTitle();
             this.description = challenge.getDescription();
-            this.remittanceOnceLimit = challenge.getRemittanceOnceLimit();
-            this.remittanceAvailableCount = challenge.getRemittanceAvailableCount();
+            this.remittanceOnceLimit = challenge.getMaxSavingAmount();
+            this.remittanceAvailableCount = challenge.getLimitedNumberOfTimes();
         }
     }
 }

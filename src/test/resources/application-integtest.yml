@@ -1,8 +1,8 @@
 spring:
   datasource:  # mysql 사용
-    url: jdbc:mysql://localhost:3306/mivv_new_local?validationQuery="select 1"&useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=UTF-8&serverTimezone=UTC&useLegacyDatetimeCode=false
+    url: jdbc:mysql://localhost:3306/inttestdb?validationQuery="select 1"&useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=UTF-8&serverTimezone=UTC&useLegacyDatetimeCode=false
     username: root
-    password: gusthdl
+    password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       connection-test-query: select 1 from dual
@@ -22,7 +22,7 @@ spring:
   sql: #더미데이터 용
     init:
       mode: always
-      data-locations: classpath:data.sql
+      data-locations: classpath:integdata.sql
       encoding: UTF-8
   data:
     redis:
@@ -52,6 +52,11 @@ springdoc:
 api:
   password-change: http://localhost:8080/api/password/change
 
+app:
+  scheduling:
+    enable: false
+
 path:
   files: C:/workspace_pbu/files
   images: C:/workspace_pbu/images
+  ipAddress: http://3.37.5.91
