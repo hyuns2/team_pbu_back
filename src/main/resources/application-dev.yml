@@ -56,4 +56,4 @@ api:
 path:
   files: /resources/static/files
   images: /resources/static/images
-  ipAddress: https://server.gasomann.com/
+  ipAddress: https://server.gasomann.com
