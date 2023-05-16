@@ -1,4 +1,4 @@
-package projectbuildup.mivv.integrationtest;
+package projectbuildup.mivv.integrationtest.setting;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
@@ -12,7 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
 @Disabled
-@ActiveProfiles("test")
+@ActiveProfiles("integtest")
 @AutoConfigureMockMvc
 public class IntegrationTest {
     @Autowired

@@ -14,6 +14,7 @@ import projectbuildup.mivv.domain.auth.repository.IdentityVerificationRepository
 import projectbuildup.mivv.domain.user.repository.UserRepository;
 import projectbuildup.mivv.global.error.ErrorCode;
 import projectbuildup.mivv.global.error.exception.CUserExistException;
+import projectbuildup.mivv.integrationtest.setting.IntegrationTest;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;

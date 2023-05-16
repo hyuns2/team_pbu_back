@@ -1,5 +1,6 @@
 package projectbuildup.mivv.domain.participation.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import projectbuildup.mivv.domain.remittance.repository.RemittanceRepository;
@@ -45,6 +46,7 @@ public class ParticipationService {
      * @param challengeId 챌린지 아이디넘버
      * @param userId      회원 아이디넘버
      */
+    @Transactional
     public void giveUpChallenge(Long challengeId, Long userId) {
         User user = userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
         Challenge challenge = challengeRepository.findById(challengeId).orElseThrow(CResourceNotFoundException::new);
