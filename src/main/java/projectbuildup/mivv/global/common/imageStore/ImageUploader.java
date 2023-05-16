@@ -27,7 +27,7 @@ public class ImageUploader {
     public Image upload(MultipartFile multipartFile, String dirName) throws IOException {
         String originalName = Objects.requireNonNull(multipartFile.getOriginalFilename());
         String storeName = makeRandomName(originalName);
-        String storePath = STORE_PATH + DELIMITER + dirName + DELIMITER + storeName;
+        String storePath = ipUrl + STORE_PATH + DELIMITER + dirName + DELIMITER + storeName;
         File file = new File(storePath);
         multipartFile.transferTo(file);
         return new Image(storeName, originalName, storePath);
