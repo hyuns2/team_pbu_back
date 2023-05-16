@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import projectbuildup.mivv.domain.inquiry.entity.InquiryEntity;
+import projectbuildup.mivv.domain.user.entity.User;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,4 +28,6 @@ public interface InquiryRepository extends JpaRepository<InquiryEntity, Long> {
     @Transactional
     @Query("update InquiryEntity i set i.answer=?1 where i.id=?2")
     void updateAnswer(String answer, Long id);
+
+    void deleteAllByUser(User user);
 }

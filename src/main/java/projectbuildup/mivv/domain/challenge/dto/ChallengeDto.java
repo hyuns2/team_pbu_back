@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 import projectbuildup.mivv.domain.challenge.entity.Challenge;
+import projectbuildup.mivv.global.common.imageStore.Image;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -92,14 +93,20 @@ public class ChallengeDto {
         private LocalDate endDate;
         private String mainTitle;
         private String subTitle;
-        private long remittanceOnceLimit;
+        private long maxSavingAmount;
+        private long minSavingAmount;
+        private long numOfParticipation;
+        private Image image;
 
         public ShortResponse(Challenge challenge) {
             this.id = challenge.getId();
             this.endDate = challenge.getEndDate();
             this.mainTitle = challenge.getMainTitle();
             this.subTitle = challenge.getSubTitle();
-            this.remittanceOnceLimit = challenge.getMaxSavingAmount();
+            this.maxSavingAmount = challenge.getMaxSavingAmount();
+            this.minSavingAmount = challenge.getMinSavingAmount();
+            this.numOfParticipation = challenge.getParticipationList().size();
+            this.image = challenge.getImage();
         }
     }
 
@@ -113,18 +120,27 @@ public class ChallengeDto {
         private String mainTitle;
         private String subTitle;
         private List<String> description;
-        private long remittanceOnceLimit;
-        private long remittanceAvailableCount;
+        private long limitedNumberOfTimes;
 
-        public Response(Challenge challenge) {
+        private long maxSavingAmount;
+        private long minSavingAmount;
+        private long numOfParticipation;
+        private Image image;
+        private long totalAmount;
+
+        public Response(Challenge challenge, long totalAmount) {
             this.id = challenge.getId();
             this.startDate = challenge.getStartDate();
             this.endDate = challenge.getEndDate();
             this.mainTitle = challenge.getMainTitle();
             this.subTitle = challenge.getSubTitle();
             this.description = challenge.getDescription();
-            this.remittanceOnceLimit = challenge.getMaxSavingAmount();
-            this.remittanceAvailableCount = challenge.getLimitedNumberOfTimes();
+            this.limitedNumberOfTimes = challenge.getLimitedNumberOfTimes();
+            this.maxSavingAmount = challenge.getMaxSavingAmount();
+            this.minSavingAmount = challenge.getMinSavingAmount();
+            this.numOfParticipation = challenge.getParticipationList().size();
+            this.image = challenge.getImage();
+            this.totalAmount = totalAmount;
         }
     }
 }
