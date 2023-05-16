@@ -44,11 +44,13 @@ public enum ErrorCode {
     // 9000 ~ : 서버 에러
     INTERNAL_SERVER_ERROR(-9999, "서버 에러입니다.", HttpStatus.INTERNAL_SERVER_ERROR),
     EMPTY(-11111, "없음", HttpStatus.OK),
+    UNKNOWN_IP_ERROR(11112, "서버 Ip를 찾을 수 없습니다.", HttpStatus.INTERNAL_SERVER_ERROR),
 
     // 15000 ~ : 문의, 아카이빙 관련 에러
     INQUIRY_OVER_ERROR(-15000, "문의 개수 한도를 초과했습니다.", HttpStatus.BAD_REQUEST),
     INQUIRY_NOT_FOUND(-15100, "해당하는 문의를 찾을 수 없습니다.", HttpStatus.BAD_REQUEST),
     CARD_NOT_FOUND(-16000, "해당하는 카드를 찾을 수 없습니다.", HttpStatus.BAD_REQUEST),
+    INVALID_CARD_CONDITION(-16100, "쿠폰 발급 관련 카드 조건은 하나 이상이여야 합니다.", HttpStatus.BAD_REQUEST),
 
 
     // 20000 ~ : 가치소비 관련 에러

@@ -15,7 +15,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 public class IdentityVerification {
     private final static String DUMMY_NAME = "김철수";
     private final static String DUMMY_BIRTHDATE = "19990101";
-    private final static String DUMMY_MOBILE = "01012345678";
+    private final static String DUMMY_MOBILE = "01012345671";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

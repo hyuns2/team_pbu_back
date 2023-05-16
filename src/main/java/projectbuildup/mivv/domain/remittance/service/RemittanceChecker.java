@@ -33,7 +33,7 @@ public class RemittanceChecker {
     private final RankingService rankingService;
     private final RankScoreCalculator rankScoreCalculator;
 
-    private final static long ASYNC_CHECK_TERM_SEC = 1;
+    private final static long ASYNC_CHECK_TERM_SEC = 60;
     private final static int ASYNC_CHECK_TRY = 5;
     private final static String DATE_TIME_PATTERN = "yyyyMMddHHmmss";
 
@@ -47,6 +47,7 @@ public class RemittanceChecker {
      * @throws InterruptedException exception
      */
     public boolean check(Remittance remittance, Participation participation, LocalDateTime startTime) throws InterruptedException {
+        log.info("5분간 조회 시작");
         if (startTime == null) {
             startTime = LocalDateTime.now();
         }
@@ -83,7 +84,7 @@ public class RemittanceChecker {
      */
     private boolean hasRecord(Remittance remittance, User user, LocalDateTime startTime) {
         long amount = remittance.getAmount();
-        List<Map<String, String>> history = accountDetailsSystem.getDepositHistory(user);
+        List<Map<String, String>> history = accountDetailsSystem.getDepositHistory(user, startTime.toLocalDate());
         return history.stream()
                 .filter(map -> {
                     String date = map.get(accountDetailsSystem.getDateField());

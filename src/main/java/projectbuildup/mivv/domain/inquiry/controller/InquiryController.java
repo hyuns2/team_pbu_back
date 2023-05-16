@@ -39,10 +39,9 @@ public class InquiryController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    //어드민 권한 설정 필요, hasRole('USER')로 테스트함
     @Operation(summary = "관리자 답변 등록", description = "관리자가 답변을 등록합니다.")
     @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/admin/answer")
     public ResponseEntity<?> createAnswer(@AuthenticationPrincipal User user, @Valid @RequestBody InquiryDto.AnswerRequestDto dto) {
         service.registerAnswer(dto);
@@ -60,10 +59,9 @@ public class InquiryController {
         return ResponseEntity.ok().body(resultDto);
     }
 
-    //어드민 권한 설정 필요, hasRole('USER')로 테스트함
     @Operation(summary = "관리자 문의 전체 조회", description = "관리자가 시간순으로 문의를 전체 조회합니다.")
     @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/admin/inquiries")
     public ResponseEntity<?> retrieveForAdmin(@AuthenticationPrincipal User user) {
         List<InquiryDto.InquiryResponseDto> resultDto = service.retrieveForAdmin();
@@ -90,10 +88,9 @@ public class InquiryController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    //어드민 권한 설정 필요, hasRole('USER')로 테스트함
     @Operation(summary = "관리자 답변 삭제", description = "관리자가 답변을 삭제합니다.")
     @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/admin/answer/{id}")
     public ResponseEntity<?> deleteAnswer(@AuthenticationPrincipal User user, @PathVariable Long id) {
         service.deleteAnswer(id);

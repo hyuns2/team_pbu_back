@@ -29,7 +29,7 @@ import java.util.List;
 public class RemittanceController {
     private final RemittanceService remittanceService;
 
-    @Operation(summary = "절약하기", description = "절약하기 버튼을 누를 때 실행하는 API입니다. 이후 5분(테스트 환경은 5초)간 내역을 조회하며, 실제 송금이 이루어진 경우에만 절약 정보를 갱신합니다.")
+    @Operation(summary = "절약하기", description = "절약하기 버튼을 누를 때 실행하는 API입니다. 이후 5분간 내역을 조회하며, 실제 송금이 이루어진 경우에만 절약 정보를 갱신합니다.")
     @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('USER')")
     @PostMapping("/remittance/challenges/{challengeId}")

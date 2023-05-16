@@ -3,15 +3,15 @@ package projectbuildup.mivv.domain.archiving.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.web.multipart.MultipartFile;
 import projectbuildup.mivv.domain.archiving.entity.CardEntity;
+import projectbuildup.mivv.domain.archiving.entity.CouponConditionCardEntity;
 import projectbuildup.mivv.domain.archiving.entity.NumericalConditionCardEntity;
 import projectbuildup.mivv.domain.archiving.entity.UserCardEntity;
-import projectbuildup.mivv.global.common.fileStore.FileUploader;
-import projectbuildup.mivv.global.common.fileStore.File;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -20,7 +20,7 @@ public class ArchivingDto {
 
     @AllArgsConstructor
     @Data
-    public static class createNumericalConditionCardRequestDto {
+    public static class createNumericalCardRequestDto {
 
         @NotBlank
         @Length(min = 1, max = 30)
@@ -55,7 +55,7 @@ public class ArchivingDto {
         @Schema(description = "발급조건 일수")
         private Integer term;
 
-        public static NumericalConditionCardEntity toEntity(final ArchivingDto.createNumericalConditionCardRequestDto dto, String imagePath) throws IOException {
+        public static NumericalConditionCardEntity toEntity(final createNumericalCardRequestDto dto, String imagePath) throws IOException {
 
             return NumericalConditionCardEntity.builder()
                     .kind(dto.getKind())
@@ -73,7 +73,7 @@ public class ArchivingDto {
 
     @AllArgsConstructor
     @Data
-    public static class updateNumericalConditionCardRequestDto {
+    public static class updateNumericalCardRequestDto {
 
         @Length(min = 1, max = 30)
         @Schema(description = "카드 종류")
@@ -167,7 +167,6 @@ public class ArchivingDto {
         @Schema(description = "카드 명언")
         private String sentence;
 
-        @NotNull
         @Schema(description = "카드 이미지 파일")
         private MultipartFile image;
 
@@ -177,12 +176,102 @@ public class ArchivingDto {
     @Data
     public static class AssignGeneralCardsRequestDto {
         @NotNull
-        @Schema(description = "카드 고유변호")
+        @Schema(description = "카드 고유번호")
         private Long id;
 
         @NotNull
         @Schema(description = "첨부 파일")
         private MultipartFile file;
+    }
+
+    @AllArgsConstructor
+    @Data
+    public static class createCouponCardRequestDto {
+
+        @NotBlank
+        @Length(min = 1, max = 30)
+        @Schema(description = "카드 종류")
+        private String kind;
+
+        @NotBlank
+        @Length(min = 2, max = 30)
+        @Schema(description = "카드 제목")
+        private String title;
+
+        @NotBlank
+        @Length(min = 2, max = 30)
+        @Schema(description = "카드 부제목")
+        private String subTitle;
+
+        @NotBlank
+        @Length(min = 2, max = 30)
+        @Schema(description = "카드 명언")
+        private String sentence;
+
+        @NotNull
+        @Schema(description = "카드 이미지 파일")
+        private MultipartFile image;
+
+        @NotNull
+        @Schema(description = "몇번째 쿠폰 발급자에게 카드를 부여할건가")
+        private Integer whatNumber;
+
+        @NotNull
+        @Schema(description = "몇개월 연속 쿠폰 발급자에게 카드를 부여할건가")
+        private Integer howSuccessive;
+
+        public static CouponConditionCardEntity toEntity(final ArchivingDto.createCouponCardRequestDto dto, String imagePath) throws IOException {
+
+            return CouponConditionCardEntity.builder()
+                    .kind(dto.getKind())
+                    .title(dto.getTitle())
+                    .subTitle(dto.getSubTitle())
+                    .sentence(dto.getSentence())
+                    .imagePath(imagePath)
+                    .whatNumber(dto.getWhatNumber())
+                    .howSuccessive(dto.getHowSuccessive())
+                    .build();
+
+        }
+    }
+
+    @AllArgsConstructor
+    @Data
+    public static class updateCouponCardRequestDto {
+
+        @Length(min = 1, max = 30)
+        @Schema(description = "카드 종류")
+        private String kind;
+
+        @Length(min = 2, max = 30)
+        @Schema(description = "카드 제목")
+        private String title;
+
+        @Length(min = 2, max = 30)
+        @Schema(description = "카드 부제목")
+        private String subTitle;
+
+        @Length(min = 2, max = 30)
+        @Schema(description = "카드 명언")
+        private String sentence;
+
+        @Schema(description = "카드 이미지 파일")
+        private MultipartFile image;
+
+        @Schema(description = "몇번째 쿠폰 발급자에게 카드를 부여할건가")
+        private Integer whatNumber;
+
+        @Schema(description = "몇개월 연속 쿠폰 발급자에게 카드를 부여할건가")
+        private Integer howSuccessive;
+
+    }
+
+    @AllArgsConstructor
+    @Data
+    public static class AssignCouponCardsRequestDto {
+        @NotNull
+        @Schema(description = "쿠폰 고유번호")
+        private Long couponId;
     }
 
     @AllArgsConstructor
