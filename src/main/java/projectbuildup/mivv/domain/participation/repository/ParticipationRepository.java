@@ -18,4 +18,6 @@ public interface ParticipationRepository extends JpaRepository<Participation, Lo
     List<Participation> findAllByChallenge(Challenge challenge);
 
     List<Participation> findAllByUser(User user);
+
+    void deleteAllByUser(User user);
 }
