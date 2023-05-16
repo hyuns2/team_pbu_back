@@ -6,11 +6,15 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.Commit;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.ResultActions;
 import projectbuildup.mivv.DatabaseCleanUp;
 import projectbuildup.mivv.domain.auth.dto.AuthDto;
 import projectbuildup.mivv.domain.auth.dto.VerificationResponseDto;
 import projectbuildup.mivv.domain.auth.repository.IdentityVerificationRepository;
+import projectbuildup.mivv.domain.user.entity.IdentityVerification;
+import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.domain.user.repository.UserRepository;
 import projectbuildup.mivv.global.error.ErrorCode;
 import projectbuildup.mivv.global.error.exception.CUserExistException;
@@ -25,9 +29,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Slf4j
 public class AuthApiTest extends IntegrationTest {
 
-    private final static String CERTIFY_API = "/api/auth/certify";
-    private final static String SIGNUP_API = "/api/auth/signup";
-    private final static String LOGIN_API = "/api/auth/login";
+    public final static String CERTIFY_API = "/api/auth/certify";
+    public final static String SIGNUP_API = "/api/auth/signup";
+    public final static String LOGIN_API = "/api/auth/login";
     private final static String LOGOUT_API = "/api/auth/logout";
     private final static String WITHDRAW_API = "/api/auth/withdraw";
     private final static String REISSUE_API = "/api/auth/reissue";
@@ -86,7 +90,6 @@ public class AuthApiTest extends IntegrationTest {
 
     @Test
     @DisplayName("회원가입 - 이미 회원인 경우, 예외 반환")
-    @Transactional()
     void test2() throws Exception {
         // given
         AuthDto.CertifyRequest certifyRequest = new AuthDto.CertifyRequest("key");
@@ -98,17 +101,14 @@ public class AuthApiTest extends IntegrationTest {
                 .getResponse()
                 .getContentAsString();
         VerificationResponseDto certifyResponse = objectMapper.readValue(content, VerificationResponseDto.class);
-
+        IdentityVerification iv = identityVerificationRepository.save(IdentityVerification.generateDummyVerification());
+        userRepository.save(User.builder().identityVerification(iv).build());
         AuthDto.SignupRequest signupRequest = new AuthDto.SignupRequest(certifyResponse.getVerificationCode(), "test@naver.com", "테스트", "123456", true);
-        mvc.perform(post(SIGNUP_API)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(signupRequest))
-                .with(csrf()));
 
         //when
         ResultActions actions = mvc.perform(post(SIGNUP_API)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(signupRequest))
+                .content(objectMapper.writeValueAsString(new AuthDto.SignupRequest(iv.getCode(), "test@naver.com", "테스트", "123456", true)))
                 .with(csrf()));
 
         //then
