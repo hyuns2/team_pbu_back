@@ -26,7 +26,7 @@ import projectbuildup.mivv.global.constant.Header;
 public class RankingController {
     private final RankingService rankingService;
 
-    @Operation(summary="챌린지 랭킹 조회", description="1등과 유저를 포함한 몇 명의 랭킹을 반환합니다.")
+    @Operation(summary="챌린지 랭킹 조회", description="챌린지 랭킹 1등과 현재 사용자 + 앞뒤로 2명의 랭킹 정보를 반환합니다.")
     @Parameter(name = Header.ACCESS_TOKEN, description="액세스토큰", required=true, in= ParameterIn.HEADER, example= ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/ranking/challenge/{challengeId}")
@@ -35,7 +35,7 @@ public class RankingController {
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
-    @Operation(summary="전체 랭킹 조회", description="1등과 유저를 포함한 몇 명의 랭킹을 반환합니다.")
+    @Operation(summary="전체 랭킹 조회", description="전체 랭킹 1등과 현재 사용자 + 앞뒤로 2명의 랭킹 정보를 반환합니다.")
     @Parameter(name = Header.ACCESS_TOKEN, description="액세스토큰", required=true, in= ParameterIn.HEADER, example= ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/ranking")

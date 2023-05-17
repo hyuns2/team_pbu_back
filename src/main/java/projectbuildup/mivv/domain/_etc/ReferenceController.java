@@ -42,27 +42,39 @@ public class ReferenceController {
         final String CHALLENGE_2_KEY = "RANKING_2";
         final String TOTAL_RANKING_KEY = "RANKING_TOTAL";
         redisTemplate.delete(CHALLENGE_1_KEY);
-        operations.add(CHALLENGE_1_KEY, "9", 9.0001);
-        operations.add(CHALLENGE_1_KEY, "8", 8.0001);
-        operations.add(CHALLENGE_1_KEY, "7", 7.0001);
-        operations.add(CHALLENGE_1_KEY, "6", 6.0001);
-        operations.add(CHALLENGE_1_KEY, "5", 5.0001);
-        operations.add(CHALLENGE_1_KEY, "4", 4.0001);
-        operations.add(CHALLENGE_1_KEY, "3", 3.0001);
-        operations.add(CHALLENGE_1_KEY, "2", 2.0001);
-        operations.add(CHALLENGE_1_KEY, "1", 6.0003);
-        redisTemplate.delete(TOTAL_RANKING_KEY);
-        operations.add(TOTAL_RANKING_KEY, "9", 9.0001);
-        operations.add(TOTAL_RANKING_KEY, "8", 8.0001);
-        operations.add(TOTAL_RANKING_KEY, "7", 7.0001);
-        operations.add(TOTAL_RANKING_KEY, "6", 6.0001);
-        operations.add(TOTAL_RANKING_KEY, "5", 5.0001);
-        operations.add(TOTAL_RANKING_KEY, "4", 4.0001);
-        operations.add(TOTAL_RANKING_KEY, "3", 3.0001);
-        operations.add(TOTAL_RANKING_KEY, "2", 2.0001);
-        operations.add(TOTAL_RANKING_KEY, "1", 16.0004);
         redisTemplate.delete(CHALLENGE_2_KEY);
+        redisTemplate.delete(TOTAL_RANKING_KEY);
+
+        operations.add(CHALLENGE_1_KEY, "9", 9.0001);
+        operations.add(TOTAL_RANKING_KEY, "9", 9.0001);
+
+        operations.add(CHALLENGE_1_KEY, "8", 8.0001);
+        operations.add(TOTAL_RANKING_KEY, "8", 8.0001);
+
+        operations.add(CHALLENGE_1_KEY, "7", 7.0001);
+        operations.add(TOTAL_RANKING_KEY, "7", 7.0001);
+
+        operations.add(CHALLENGE_1_KEY, "6", 6.0001);
+        operations.add(TOTAL_RANKING_KEY, "6", 6.0001);
+
+        operations.add(CHALLENGE_1_KEY, "5", 5.0001);
+        operations.add(TOTAL_RANKING_KEY, "5", 5.0001);
+
+        operations.add(CHALLENGE_1_KEY, "4", 4.0001);
+        operations.add(TOTAL_RANKING_KEY, "4", 4.0001);
+
+        operations.add(CHALLENGE_1_KEY, "3", 3.0001);
+        operations.add(TOTAL_RANKING_KEY, "3", 3.0001);
+
+        operations.add(CHALLENGE_1_KEY, "2", 2.0001);
+        operations.add(TOTAL_RANKING_KEY, "2", 2.0001);
+
+        operations.add(CHALLENGE_1_KEY, "1", 6.0003);
+        operations.add(TOTAL_RANKING_KEY, "1", 6.0003);
+
         operations.add(CHALLENGE_2_KEY, "1", 10.0001);
+        operations.add(TOTAL_RANKING_KEY, "1", 10.0001);
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
