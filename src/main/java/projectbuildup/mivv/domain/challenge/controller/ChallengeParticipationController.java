@@ -37,8 +37,8 @@ public class ChallengeParticipationController {
     @Parameter(name = Header.ACCESS_TOKEN, description="액세스토큰", required=true, in= ParameterIn.HEADER, example= ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/challenges/ongoing")
-    public ResponseEntity<PagingDto<ChallengeDto.ShortResponse>> getOngoingChallenges(@ParameterObject @Valid ChallengePageParam pageParam, @AuthenticationPrincipal User user){
-        PagingDto<ChallengeDto.ShortResponse> responseDto = challengeParticipationService.getOngoingChallenges(user.getId(), pageParam);
+    public ResponseEntity<PagingDto<ChallengeDto.Response>> getOngoingChallenges(@ParameterObject @Valid ChallengePageParam pageParam, @AuthenticationPrincipal User user){
+        PagingDto<ChallengeDto.Response> responseDto = challengeParticipationService.getOngoingChallenges(user.getId(), pageParam);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
@@ -46,9 +46,9 @@ public class ChallengeParticipationController {
     @Parameter(name = Header.ACCESS_TOKEN, description="액세스토큰", required=true, in= ParameterIn.HEADER, example= ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/challenges/joinable")
-    public ResponseEntity<PagingDto<ChallengeDto.ShortResponse>> getJoinableChallenges(@ParameterObject @Valid ChallengePageParam pageParam, @AuthenticationPrincipal User user){
+    public ResponseEntity<PagingDto<ChallengeDto.Response>> getJoinableChallenges(@ParameterObject @Valid ChallengePageParam pageParam, @AuthenticationPrincipal User user){
         log.info("{}", pageParam);
-        PagingDto<ChallengeDto.ShortResponse> responseDto = challengeParticipationService.getJoinableChallenges(user.getId(), pageParam);
+        PagingDto<ChallengeDto.Response> responseDto = challengeParticipationService.getJoinableChallenges(user.getId(), pageParam);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 }

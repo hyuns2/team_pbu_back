@@ -88,31 +88,6 @@ public class ChallengeDto {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class ShortResponse {
-        private Long id;
-        private LocalDate endDate;
-        private String mainTitle;
-        private String subTitle;
-        private long maxSavingAmount;
-        private long minSavingAmount;
-        private long numOfParticipation;
-        private Image image;
-
-        public ShortResponse(Challenge challenge) {
-            this.id = challenge.getId();
-            this.endDate = challenge.getEndDate();
-            this.mainTitle = challenge.getMainTitle();
-            this.subTitle = challenge.getSubTitle();
-            this.maxSavingAmount = challenge.getMaxSavingAmount();
-            this.minSavingAmount = challenge.getMinSavingAmount();
-            this.numOfParticipation = challenge.getParticipationList().size();
-            this.image = challenge.getImage();
-        }
-    }
-
-    @Getter
-    @NoArgsConstructor
-    @AllArgsConstructor
     public static class Response {
         private Long id;
         private LocalDate startDate;
