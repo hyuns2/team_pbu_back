@@ -48,24 +48,19 @@ public class ChallengeService {
      * @param pageParam 페이지네이션
      * @return 전체 챌린지 목록
      */
-    public PagingDto<ChallengeDto.ShortResponse> getChallenges(PageParam pageParam) {
+    public PagingDto<ChallengeDto.Response> getAllChallenges(PageParam pageParam) {
         Pageable pageable = pageParam.toPageable();
         Page<Challenge> pages = challengeRepository.findAll(pageable);
-        List<ChallengeDto.ShortResponse> challenges = pages.getContent().stream()
-                .map(ChallengeDto.ShortResponse::new)
-                .toList();
-        return new PagingDto<>(pages.getNumber(), pages.getTotalPages(), challenges);
+        return convertToListResponse(pages);
     }
 
-    /**
-     * 챌린지 하나를 조회합니다.
-     *
-     * @param challengeId 챌린지 아이디넘버
-     * @return 챌린지 정보
-     */
-    public ChallengeDto.Response getChallenge(Long challengeId) {
-        Challenge challenge = challengeRepository.findById(challengeId).orElseThrow(CResourceNotFoundException::new);
-        return new ChallengeDto.Response(challenge, getTotalSavingAmount(challenge));
+
+
+    public PagingDto<ChallengeDto.Response> convertToListResponse(Page<Challenge> pages){
+        List<ChallengeDto.Response> challenges = pages.getContent().stream()
+                .map(c -> new ChallengeDto.Response(c, getTotalSavingAmount(c)))
+                .toList();
+        return new PagingDto<>(pages.getNumber(), pages.getTotalPages(), challenges);
     }
 
     private long getTotalSavingAmount(Challenge challenge) {
