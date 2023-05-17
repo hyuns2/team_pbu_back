@@ -8,7 +8,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import projectbuildup.mivv.domain.account.entity.Account;
 import projectbuildup.mivv.domain.archiving.entity.UserCardEntity;
 import projectbuildup.mivv.domain.auth.dto.AuthDto;
-import projectbuildup.mivv.domain.likes.entity.LikesShorts;
 import projectbuildup.mivv.global.common.imageStore.Image;
 import projectbuildup.mivv.global.common.BaseTimeEntity;
 
@@ -24,21 +23,32 @@ import java.util.stream.Collectors;
 @Builder
 @Entity
 @ToString
+@Table(name = "user")
 public class User extends BaseTimeEntity implements UserDetails {
+    private final static String DEFAULT_ROLE = "ROLE_USER";
     @Id
+    @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+    @Column(name = "nickname", nullable = false)
     String nickname;
+    @Column(name = "email", nullable = false)
     String email;
+    @Column(name = "password", nullable = false)
     String password;
+    @Columns(columns = {
+            @Column(name = "original_image_name"),
+            @Column(name = "image_path"),
+            @Column(name = "store_image_name")
+    })
     Image profileImage;
-
+    @Column(name = "agreement", nullable = false)
     boolean agreement;
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn
+    @JoinColumn(name = "identity_verification_id")
     IdentityVerification identityVerification;
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn
+    @JoinColumn(name = "account_id")
     Account account;
 
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
@@ -47,14 +57,14 @@ public class User extends BaseTimeEntity implements UserDetails {
 //    @JoinColumn
 //    LikesShorts likes;
 
-    public static User of (AuthDto.SignupRequest requestDto, String encodedPassword, IdentityVerification identityVerification){
+    public static User of(AuthDto.SignupRequest requestDto, String encodedPassword, IdentityVerification identityVerification) {
         return User.builder()
                 .email(requestDto.getEmail())
                 .agreement(requestDto.getAgreement())
                 .nickname(requestDto.getNickname())
                 .password(encodedPassword)
                 .identityVerification(identityVerification)
-                .roles(Collections.singletonList("ROLE_USER"))
+                .roles(Collections.singletonList(DEFAULT_ROLE))
                 .build();
     }
 

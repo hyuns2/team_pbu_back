@@ -17,6 +17,12 @@ public class UserService {
     private final ImageUploader imageUploader;
     private final UserRepository userRepository;
 
+    /**
+     * 프로필을 조회합니다.
+     *
+     * @param userId 사용자 아이디넘버
+     * @return 프로필 정보
+     */
     public ProfileDto.Response getProfile(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
         return new ProfileDto.Response(user);
