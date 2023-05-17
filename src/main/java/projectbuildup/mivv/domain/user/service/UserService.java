@@ -16,21 +16,28 @@ import java.io.IOException;
 public class UserService {
     private final ImageUploader imageUploader;
     private final UserRepository userRepository;
+
     public ProfileDto.Response getProfile(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
         return new ProfileDto.Response(user);
     }
 
+    /**
+     * 프로필을 수정합니다.
+     *
+     * @param userId     사용자 아이디넘버
+     * @param requestDto 수정할 닉네임, 프로필 이미지
+     * @throws IOException
+     */
     public void updateProfile(Long userId, ProfileDto.UpdateRequest requestDto) throws IOException {
         User user = userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
-        deleteBeforeUpdate(user);
+        deleteExistingImage(user);
         Image image = imageUploader.upload(requestDto.getImageFile(), "profiles");
-        imageUploader.delete(user.getProfileImage());
         user.updateProfile(requestDto.getNickname(), image);
         userRepository.save(user);
     }
 
-    private void deleteBeforeUpdate(User user) throws IOException {
+    private void deleteExistingImage(User user) throws IOException {
         if (user.getProfileImage() != null) {
             imageUploader.delete(user.getProfileImage());
         }

@@ -83,7 +83,7 @@ public class UserController {
     @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('USER')")
     @PutMapping(value = "/profile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Void> updateProfile(@Valid @ModelAttribute("createChallenge") ProfileDto.UpdateRequest requestDto, @AuthenticationPrincipal User user) throws IOException {
+    public ResponseEntity<Void> updateProfile(@Valid @ModelAttribute("updateRequest") ProfileDto.UpdateRequest requestDto, @AuthenticationPrincipal User user) throws IOException {
         userService.updateProfile(user.getId(), requestDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
