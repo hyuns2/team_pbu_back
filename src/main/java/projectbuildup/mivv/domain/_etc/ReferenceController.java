@@ -38,9 +38,9 @@ public class ReferenceController {
     @GetMapping("/ref/ranking-data")
     public ResponseEntity<?> injectRankingData() {
         ZSetOperations<String, String> operations = redisTemplate.opsForZSet();
-        final String CHALLENGE_1_KEY = "1";
-        final String CHALLENGE_2_KEY = "2";
-        final String TOTAL_RANKING_KEY = RankingService.TOTAL_RANKING_KEY;
+        final String CHALLENGE_1_KEY = "RANKING_1";
+        final String CHALLENGE_2_KEY = "RANKING_2";
+        final String TOTAL_RANKING_KEY = "RANKING_TOTAL";
         redisTemplate.delete(CHALLENGE_1_KEY);
         operations.add(CHALLENGE_1_KEY, "9", 9.0001);
         operations.add(CHALLENGE_1_KEY, "8", 8.0001);

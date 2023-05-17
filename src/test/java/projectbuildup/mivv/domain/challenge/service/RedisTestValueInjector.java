@@ -42,8 +42,15 @@ class RedisTestValueInjector {
     }
 
     @Test
-    @DisplayName("전체 챌린지 랭킹 테스트 값 주입")
+    @DisplayName("2번 챌린지 랭킹 테스트 값 주입")
     void test2() {
+        redisTemplate.delete(CHALLENGE_2_KEY);
+        operations.add(CHALLENGE_2_KEY, "1", 10.0001);
+    }
+
+    @Test
+    @DisplayName("전체 챌린지 랭킹 테스트 값 주입")
+    void test3() {
         redisTemplate.delete(TOTAL_RANKING_KEY);
         operations.add(TOTAL_RANKING_KEY, "9", 9.0001);
         operations.add(TOTAL_RANKING_KEY, "8", 8.0001);
@@ -56,10 +63,5 @@ class RedisTestValueInjector {
         operations.add(TOTAL_RANKING_KEY, "1", 16.0004);
     }
 
-    @Test
-    @DisplayName("2번 챌린지 랭킹 테스트 값 주입")
-    void test3() {
-        redisTemplate.delete(CHALLENGE_2_KEY);
-        operations.add(CHALLENGE_2_KEY, "1", 10.0001);
-    }
+
 }
