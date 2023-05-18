@@ -83,7 +83,7 @@ public class RankingService {
                 .userId(user.getId())
                 .nickname(user.getNickname())
                 .profileImage(user.getProfileImage())
-                .amount(sumAmount)
+                .amount(Objects.requireNonNullElse(sumAmount, 0L))
                 .build();
     }
 
