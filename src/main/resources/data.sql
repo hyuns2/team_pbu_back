@@ -188,3 +188,25 @@ values (1, '2023-03-08 11:31:14.982873', '2023-03-08 11:31:14.982873', 1, 0, 1, 
        (2, '2023-04-08 11:31:14.982873', '2023-04-08 11:31:14.982873', 1, 0, 2, 2),
        (3, '2023-04-08 11:31:14.982873', '2023-04-08 11:31:14.982873', 1, 0, 3, 1),
        (4, '2023-05-08 11:31:14.982873', '2023-05-08 11:31:14.982873', 1, 0, 2, 1);
+       
+insert into card(d_type, id, kind, title, sub_title, sentence, image_path)
+values ('CardEntity', 1, '종류1', '제목1', '부제목1', '명언1', 'http://3.37.5.91/resources/static/images/cardss/card1.png'),
+       ('CardEntity', 2, '종류2', '제목2', '부제목2', '명언2', 'http://3.37.5.91/resources/static/images/cardss/card2.png'),
+       ('CardEntity', 3, '종류3', '제목3', '부제목3', '명언3', 'http://3.37.5.91/resources/static/images/cardss/card3.png'),
+       ('CardEntity', 4, '종류4', '제목4', '부제목4', '명언4', 'http://3.37.5.91/resources/static/images/cardss/card4.png'),
+       ('CardEntity', 5, '종류5', '제목5', '부제목5', '명언5', 'http://3.37.5.91/resources/static/images/cardss/card5.png'),
+       ('CardEntity', 6, '종류6', '제목6', '부제목6', '명언6', 'http://3.37.5.91/resources/static/images/cardss/card6.png'),
+       ('CardEntity', 7, '종류7', '제목7', '부제목7', '명언7', 'http://3.37.5.91/resources/static/images/cardss/card7.png'),
+       ('CardEntity', 8, '종류8', '제목8', '부제목8', '명언8', 'http://3.37.5.91/resources/static/images/cardss/card8.png'),
+       ('CardEntity', 9, '종류9', '제목9', '부제목9', '명언9', 'http://3.37.5.91/resources/static/images/cardss/card9.png');
+
+insert into user_card(id, date, card_id, user_id)
+values (1, '2023-05-18', 1, 1),
+       (2, '2023-05-18', 2, 1),
+       (3, '2023-05-18', 3, 1),
+       (4, '2023-05-18', 4, 1),
+       (5, '2023-05-18', 5, 1),
+       (6, '2023-05-18', 6, 1),
+       (7, '2023-05-18', 7, 1),
+       (8, '2023-05-18', 8, 1),
+       (9, '2023-05-18', 9, 1);
