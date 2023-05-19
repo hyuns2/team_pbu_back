@@ -24,22 +24,25 @@ public class Shorts {
     @Setter
     private String videoPath;
 
-    public Shorts(ShortsDto.creatRequest shortsDto, String imagePath){
+    public Shorts(ShortsDto.creatRequest shortsDto, String videoPath, String imagePath){
         this.title = shortsDto.getTitle();
         this.content = shortsDto.getContent();
         this.imagePath = imagePath;
-        this.videoPath = shortsDto.getVideoPath();
+        this.videoPath = videoPath;
         this.category = shortsDto.getCategory();
     }
-    public void update(ShortsDto.updateRequest shortsRequestDto){
-        if(shortsRequestDto.getTitle()!=null||shortsRequestDto.getTitle()!=""|| !shortsRequestDto.getTitle().isEmpty())
-            this.title = shortsRequestDto.getTitle();
-        if(shortsRequestDto.getContent()!=null||shortsRequestDto.getContent()!=""|| !shortsRequestDto.getContent().isEmpty())
-            this.content = shortsRequestDto.getContent();
-        if(shortsRequestDto.getVideoPath() != null || shortsRequestDto.getVideoPath()!="")
-            this.videoPath = shortsRequestDto.getVideoPath();
+    public void update(ShortsDto.updateRequest shortsDto, String imagePath, String videoPath){
+        this.title = shortsDto.getTitle();
+        this.content = shortsDto.getContent();
+        this.imagePath = imagePath;
+        this.videoPath = videoPath;
+        this.category = shortsDto.getCategory();
+
     }
     public void updateImage(String imagePath){
         this.imagePath = imagePath;
+    }
+    public void updateVideo(String videoPath){
+        this.videoPath = videoPath;
     }
 }

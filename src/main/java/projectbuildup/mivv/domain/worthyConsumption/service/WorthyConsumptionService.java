@@ -18,6 +18,8 @@ import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumptionUrl;
 import projectbuildup.mivv.domain.worthyConsumption.repository.WorthyConsumptionRepository;
 import projectbuildup.mivv.global.common.imageStore.Image;
 import projectbuildup.mivv.global.common.imageStore.ImageUploader;
+import projectbuildup.mivv.global.common.videoStore.Video;
+import projectbuildup.mivv.global.common.videoStore.VideoUploader;
 import projectbuildup.mivv.global.error.exception.CUserNotFoundException;
 import projectbuildup.mivv.global.error.exception.CWorthyConsumptionNotFoundException;
 
@@ -39,18 +41,20 @@ public class WorthyConsumptionService {
     private final LikesShortsRepository likesShortsRepository;
 
     private final ImageUploader imageUploader;
+    private final VideoUploader videoUploader;
 
     /**
      * 가치소비를 생성하는 로직입니다.
      * @param
      */
     public void createWorthyConsumption(WorthyConsumptionDto.Creation worthyConsumptionDto) throws IOException {
+        Video video = videoUploader.upload(worthyConsumptionDto.getVideo(), "values");
         Image image = imageUploader.upload(worthyConsumptionDto.getImage(), "values");
         Image detailImage = imageUploader.upload(worthyConsumptionDto.getDetailImage(), "values");
         Image detailBackgroundImage = imageUploader.upload(worthyConsumptionDto.getDetailBackgroundImage(), "values");
         Image placeImage = imageUploader.upload(worthyConsumptionDto.getPlaceImage(), "values");
 
-        WorthyConsumptionUrl worthyConsumptionUrl = new WorthyConsumptionUrl(worthyConsumptionDto, image.getImagePath(), detailImage.getImagePath(), detailBackgroundImage.getImagePath(), placeImage.getImagePath());
+        WorthyConsumptionUrl worthyConsumptionUrl = new WorthyConsumptionUrl(video.getVideoPath(), image.getImagePath(), detailImage.getImagePath(), detailBackgroundImage.getImagePath(), placeImage.getImagePath());
         Condition condition = new Condition(worthyConsumptionDto);
         WorthyConsumption worthyConsumption = worthyConsumptionDto.toEntity(worthyConsumptionUrl, condition);
         worthyConsumptionRepository.save(worthyConsumption);
@@ -95,60 +99,19 @@ public class WorthyConsumptionService {
         WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionId).orElseThrow(CWorthyConsumptionNotFoundException:: new);
 
         updateUrl(worthyConsumption, worthyConsumptionDto);
-        updateCondition(worthyConsumption, worthyConsumptionDto);
-        updateContent(worthyConsumption, worthyConsumptionDto);
+        worthyConsumption.getCondition().update(worthyConsumptionDto);
+        worthyConsumption.update(worthyConsumptionDto);
 
         worthyConsumptionRepository.save(worthyConsumption);
     }
     public void updateUrl(WorthyConsumption worthyConsumption, WorthyConsumptionDto.Update worthyConsumptionDto) throws IOException {
-        if(worthyConsumptionDto.getImage() != null){
-            Image image = imageUploader.upload(worthyConsumptionDto.getImage(), "values");
-            worthyConsumption.getWorthyConsumptionUrl().setImagePath(image.getImagePath());
-        }
-        if(worthyConsumptionDto.getDetailImage() != null && !worthyConsumptionDto.getDetailImage().isEmpty()) {
-            Image detailImage = imageUploader.upload(worthyConsumptionDto.getDetailImage(), "values");
-            worthyConsumption.getWorthyConsumptionUrl().setDetailImagePath(detailImage.getImagePath());
-        }
-        if(worthyConsumptionDto.getDetailBackgroundImage() != null && !worthyConsumptionDto.getDetailBackgroundImage().isEmpty()) {
-            Image detailBackgroundImage = imageUploader.upload(worthyConsumptionDto.getDetailBackgroundImage(), "values");
-            worthyConsumption.getWorthyConsumptionUrl().setDetailBackgroundImagePath(detailBackgroundImage.getImagePath());
-        }
-        if(worthyConsumptionDto.getPlaceImage() != null && !worthyConsumptionDto.getPlaceImage().isEmpty()) {
-            Image placeImage = imageUploader.upload(worthyConsumptionDto.getPlaceImage(), "values");
-            worthyConsumption.getWorthyConsumptionUrl().setPlaceImagePath(placeImage.getImagePath());
-        }
-    }
-    public void updateCondition(WorthyConsumption worthyConsumption, WorthyConsumptionDto.Update worthyConsumptionDto) throws IOException {
+        Video video = videoUploader.upload(worthyConsumptionDto.getVideo(), "values");
+        Image image = imageUploader.upload(worthyConsumptionDto.getImage(), "values");
+        Image detailImage = imageUploader.upload(worthyConsumptionDto.getDetailImage(), "values");
+        Image detailBackgroundImage = imageUploader.upload(worthyConsumptionDto.getDetailBackgroundImage(), "values");
+        Image placeImage = imageUploader.upload(worthyConsumptionDto.getPlaceImage(), "values");
 
-        if(worthyConsumptionDto.getMaxParticipants() != null)
-            worthyConsumption.getCondition().setMaxParticipants(worthyConsumptionDto.getMaxParticipants());
-        if(worthyConsumptionDto.getIssuableCouponStartDate() != null)
-            worthyConsumption.getCondition().setIssuableCouponStartDate(worthyConsumptionDto.getIssuableCouponStartDate());
-        if(worthyConsumptionDto.getIssuableCouponEndDate() != null)
-            worthyConsumption.getCondition().setIssuableCouponEndDate(worthyConsumptionDto.getIssuableCouponEndDate());
-        if(worthyConsumptionDto.getLastMonthAmount() != null)
-            worthyConsumption.getCondition().setLastMonthAmount(worthyConsumptionDto.getLastMonthAmount());
-
-    }
-    public void updateContent(WorthyConsumption worthyConsumption, WorthyConsumptionDto.Update worthyConsumptionDto) throws IOException {
-
-        if(worthyConsumptionDto.getTitle() != null)
-            worthyConsumption.setTitle(worthyConsumptionDto.getTitle());
-        if(worthyConsumptionDto.getHashtags() != null)
-            worthyConsumption.setHashtags(worthyConsumptionDto.getHashtags());
-        if(worthyConsumptionDto.getOriginalPrice() != null)
-            worthyConsumption.setOriginalPrice(worthyConsumptionDto.getOriginalPrice());
-        if(worthyConsumptionDto.getSalePrice() != null)
-            worthyConsumption.setSalePrice(worthyConsumptionDto.getSalePrice());
-        if(worthyConsumptionDto.getRecommendationReason() != null)
-            worthyConsumption.setRecommendationReason(worthyConsumptionDto.getRecommendationReason());
-        if(worthyConsumptionDto.getAvailablePrice() != null)
-            worthyConsumption.setAvailablePrice(worthyConsumptionDto.getAvailablePrice());
-        if(worthyConsumptionDto.getAvailablePlace() != null)
-            worthyConsumption.setAvailablePlace(worthyConsumptionDto.getAvailablePlace());
-        if(worthyConsumptionDto.getSummary() != null)
-            worthyConsumption.setSummary(worthyConsumptionDto.getSummary());
-
+        worthyConsumption.getWorthyConsumptionUrl().update(video.getVideoPath(), image.getImagePath(), detailImage.getImagePath(), detailBackgroundImage.getImagePath(), placeImage.getImagePath());
     }
         /**
          * 가치소비를 삭제하는 로직입니다.

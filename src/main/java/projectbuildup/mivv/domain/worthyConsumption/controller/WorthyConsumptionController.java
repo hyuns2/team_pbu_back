@@ -104,7 +104,7 @@ public class WorthyConsumptionController {
     @Operation(summary = "가치소비 수정", description = "가치소비를 수정합니다.")
     @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('ADMIN')")
-    @PatchMapping(value = "{worthyConsumptionId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PutMapping(value = "{worthyConsumptionId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<HttpStatus> updateWorthyConsumption(@PathVariable(name = "worthyConsumptionId")Long worthyConsumptionId, @ModelAttribute("updateWorthyConsumptions") WorthyConsumptionDto.Update worthyConsumptionDto) throws IOException {
         worthyConsumptionService.updateWorthyConsumption(worthyConsumptionId, worthyConsumptionDto);
         return new ResponseEntity<>(HttpStatus.OK);

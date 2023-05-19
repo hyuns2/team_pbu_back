@@ -11,13 +11,15 @@ import projectbuildup.mivv.domain.shorts.entity.ShortsCategory;
 
 public class ShortsDto {
     @Getter @Setter
+    @AllArgsConstructor
     public static class creatRequest{
         //@NotBlank(message = "제목은 필수 입력값입니다.")
         String title;
         //@NotBlank(message = "설명은 필수 입력값입니다.")
         String content;
         //@NotBlank(message = "영상 주소는 필수 입력값입니다.")
-        String videoPath;
+        //String videoPath;
+        private MultipartFile video;
         //@NotNull(message = "영상의 썸네일 이미지는 필수 입력값입니다.")
         private MultipartFile image;
         //@NotNull(message = "영상 카테고리는 필수 입력값입니다.") @Enumerated(EnumType.STRING)
@@ -28,8 +30,10 @@ public class ShortsDto {
     public static class updateRequest {
         String title;
         String content;
-        String videoPath;
+        //String videoPath;
+        private MultipartFile video;
         private MultipartFile image;
+        ShortsCategory category;
     }
     @Data
     @AllArgsConstructor

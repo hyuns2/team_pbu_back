@@ -12,28 +12,23 @@ public class WorthyConsumptionUrl {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "WorthyConsumptionUrlId")
     private Long id;
-    @Setter
     private String videoPath;
-    @Setter
     private String imagePath;
-    @Setter
     private String detailImagePath;
-    @Setter
     private String detailBackgroundImagePath;
-    @Setter
     private String placeImagePath;
-    public WorthyConsumptionUrl(WorthyConsumptionDto.Creation worthyConsumptionDto,
+    public WorthyConsumptionUrl(String videoPath,
                                 String imagePath, String detailImagePath, String detailBackgroundImagePath, String placeImagePath) {
-        this.videoPath = worthyConsumptionDto.getVideoPath();
+        this.videoPath = videoPath;
         this.imagePath = imagePath;
         this.detailImagePath = detailImagePath;
         this.detailBackgroundImagePath = detailBackgroundImagePath;
         this.placeImagePath = placeImagePath;
     }
 
-    public void update(WorthyConsumptionDto.Update requestWorthyConsumptionDto,
+    public void update(String videoPath,
                           String imagePath, String detailImagePath, String detailBackgroundImagePath, String placeImagePath){
-        this.videoPath = requestWorthyConsumptionDto.getVideoPath();
+        this.videoPath = videoPath;
         this.imagePath = imagePath;
         this.detailImagePath = detailImagePath;
         this.detailBackgroundImagePath = detailBackgroundImagePath;

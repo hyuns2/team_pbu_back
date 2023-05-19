@@ -63,7 +63,7 @@ public class ShortsController {
   @Operation(summary = "쇼츠 수정", description = "쇼츠를 수정합니다.")
   @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
   @PreAuthorize("hasRole('ADMIN')")
-  @PatchMapping(value = "/{shortsId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  @PutMapping(value = "/{shortsId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   public ResponseEntity<HttpStatus> updateShorts(@PathVariable(name = "shortsId") Long shortsId, @ModelAttribute("updateShorts") ShortsDto.updateRequest shortsRequestDto) throws IOException {
       shortsService.updateShorts(shortsId, shortsRequestDto);
       return new ResponseEntity<>(HttpStatus.OK);

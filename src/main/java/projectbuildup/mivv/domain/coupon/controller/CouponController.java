@@ -41,7 +41,7 @@ public class CouponController {
     @Operation(summary = "쿠폰을 수정합니다.", description = "관리자가 쿠폰을 수정합니다.")
     @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('ADMIN')")
-    @PatchMapping(value = "/{couponId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PutMapping(value = "/{couponId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<HttpStatus> updateCoupon(@PathVariable(name = "couponId")Long couponId, @Valid @ModelAttribute("updateCoupon") CouponDto.Update couponDto) throws IOException {
         couponService.updateCoupon(couponId, couponDto);
         return new ResponseEntity<>(HttpStatus.OK);

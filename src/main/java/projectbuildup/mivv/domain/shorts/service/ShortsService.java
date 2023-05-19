@@ -12,6 +12,9 @@ import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.domain.user.repository.UserRepository;
 import projectbuildup.mivv.global.common.imageStore.Image;
 import projectbuildup.mivv.global.common.imageStore.ImageUploader;
+import projectbuildup.mivv.global.common.videoStore.Video;
+import projectbuildup.mivv.global.common.videoStore.VideoUploader;
+import projectbuildup.mivv.global.constant.ExampleValue;
 import projectbuildup.mivv.global.error.exception.CShortsNotFoundException;
 import projectbuildup.mivv.global.error.exception.CUserExistException;
 
@@ -28,12 +31,16 @@ public class ShortsService {
     private final ShortsRepository shortsRepository;
     private final UserRepository userRepository;
     private final ImageUploader imageUploader;
+    private final VideoUploader videoUploader;
 
     private final LikesShortsRepository likesShortsRepository;
 
     public void createShorts(ShortsDto.creatRequest shortsRequestDto) throws IOException {
+        Video video = videoUploader.upload(shortsRequestDto.getVideo(),"shorts");
+        //Image video = imageUploader.upload(shortsRequestDto.getImage(), "shorts");
         Image image = imageUploader.upload(shortsRequestDto.getImage(), "shorts");
-        Shorts shorts = new Shorts(shortsRequestDto, image.getImagePath());
+
+        Shorts shorts = new Shorts(shortsRequestDto, video.getVideoPath(), image.getImagePath());
         shortsRepository.save(shorts);
     }
     public ShortsDto.shortsResponse getOneShorts(Long shortsId, Long userId){
@@ -64,12 +71,10 @@ public class ShortsService {
     }
     public void updateShorts(Long shortsId, ShortsDto.updateRequest shortsRequestDto) throws IOException {
         Shorts shorts = shortsRepository.findById(shortsId).orElseThrow(CShortsNotFoundException::new);
-        shorts.update(shortsRequestDto);
+        Image image = imageUploader.upload(shortsRequestDto.getImage(), "shorts");
+        Video video = videoUploader.upload(shortsRequestDto.getVideo(),"shorts");
+        shorts.update(shortsRequestDto, image.getImagePath(), video.getVideoPath());
 
-        if(shortsRequestDto.getImage() != null) {
-            Image image = imageUploader.upload(shortsRequestDto.getImage(), "shorts");
-            shorts.updateImage(image.getImagePath());
-        }
         shortsRepository.save(shorts);
     }
     public void deleteShorts(Long shortsId){
