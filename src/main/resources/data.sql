@@ -77,13 +77,13 @@ insert into challenge(id, created_time, modified_time, end_date, store_image_nam
                       limited_number_of_times,
                       max_saving_amount, min_saving_amount, start_date, sub_title)
 values (1, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', '2024-07-13', 'challenge1.png', 'challenge1.png',
-        'http://3.37.5.91/resources/static/images/challenges/challenge1.png', '배달팁 아끼기', 2, 4000, 1000,
+        'http://server.gasomann.com/resources/static/images/challenges/challenge1.png', '배달팁 아끼기', 2, 4000, 1000,
         '2023-03-13', '배달말고 포장, 배달팁 아끼기!'),
        (2, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', '2024-07-13', 'challenge2.png', 'challenge2.png',
-        'http://3.37.5.91/resources/static/images/challenges/challenge2.png', '택시비 아끼기', 3, 6000, 1000,
+        'http://server.gasomann.com/resources/static/images/challenges/challenge2.png', '택시비 아끼기', 3, 6000, 1000,
         '2023-03-13', '걸어서 갈 수 있잖아?'),
        (3, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', '2024-07-13', 'challenge3.png', 'challenge3.png',
-        'http://3.37.5.91/resources/static/images/challenges/challenge3.png', '커피값 아끼기', 3, 5000, 1000,
+        'http://server.gasomann.com/resources/static/images/challenges/challenge3.png', '커피값 아끼기', 3, 5000, 1000,
         '2023-03-13', '그 커피 꼭 사야 해?');
 
 
@@ -144,9 +144,9 @@ values (1, null, '문의 내용입니다.', '2023-04-01 11:31:14.982873', '문�
        (2, null, '문의 내용입니다.', '2023-04-01 11:31:14.982873', '문의 샘플2', 2);
 
 insert into shorts(id, category, content, image_url, title, video_url)
-values (1, 'SAVING', '', 'http://3.37.5.91/resources/static/images/shorts/shortImage1.png', '샘플 비디오1',
+values (1, 'SAVING', '', 'http://server.gasomann.com/resources/static/images/shorts/shortImage1.png', '샘플 비디오1',
         'https://youtu.be/0gY_z7fqPjs'),
-       (2, 'EDUCATION', '', 'http://3.37.5.91/resources/static/images/shorts/shortImage2.png', '샘플 비디오2',
+       (2, 'EDUCATION', '', 'http://server.gasomann.com/resources/static/images/shorts/shortImage2.png', '샘플 비디오2',
         'https://youtu.be/0gY_z7fqPjs');
 
 
@@ -157,10 +157,10 @@ values (1, 'OK', '2023-05-01', '2023-04-01', '10000', '100');
 
 insert into worthy_consumptionurl(worthy_consumption_url_id, detail_background_image_url, detail_image_url, image_url,
                                   place_image_url, video_url)
-values (1, 'http://3.37.5.91/resources/static/images/values/valueDetailBackground1.png',
-        'http://3.37.5.91/resources/static/images/values/valueDetail1.png',
-        'http://3.37.5.91/resources/static/images/values/valueBackground1.png',
-        'http://3.37.5.91/resources/static/images/values/valueDetailMap1.png', 'https://youtu.be/0gY_z7fqPjs');
+values (1, 'http://server.gasomann.com/resources/static/images/values/valueDetailBackground1.png',
+        'http://server.gasomann.com/resources/static/images/values/valueDetail1.png',
+        'http://server.gasomann.com/resources/static/images/values/valueBackground1.png',
+        'http://server.gasomann.com/resources/static/images/values/valueDetailMap1.png', 'https://youtu.be/0gY_z7fqPjs');
 
 insert into worthy_consumption(worthy_consumption_id, created_time, modified_time, original_price, place_tag, price_tag,
                                sale_price, summary, worthy_consumption_title, condition_id, worthy_consumption_url_id)
@@ -171,16 +171,16 @@ values (1, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', 99000, '�
 insert into coupon(coupon_id, created_time, modified_time, image_url, limit_end_date, limit_start_date, pin, title,
                    worthy_consumption_id)
 values (1, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
-        'http://3.37.5.91/resources/static/images/coupons/coupon1.png',
+        'http://server.gasomann.com/resources/static/images/coupons/coupon1.png',
         '2023-08-31', '2023-07-31', '1234', '레드짐 8월 할인권', 1),
        (2, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
-        'http://3.37.5.91/resources/static/images/coupons/coupon1.png',
+        'http://server.gasomann.com/resources/static/images/coupons/coupon1.png',
         '2023-07-31', '2023-06-30', '1234', '레드짐 7월 할인권', 1),
        (3, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
-        'http://3.37.5.91/resources/static/images/coupons/coupon1.png',
+        'http://server.gasomann.com/resources/static/images/coupons/coupon1.png',
         '2023-07-31', '2023-06-30', '1234', '레드짐 7월 할인권', 1),
        (4, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
-        'http://3.37.5.91/resources/static/images/coupons/coupon1.png',
+        'http://server.gasomann.com/resources/static/images/coupons/coupon1.png',
         '2023-07-31', '2023-06-30', '1234', '레드짐 7월 할인권', 1);
 
 insert into coupon_issuance(id, created_time, modified_time, created, used, coupon_coupon_id, user_id)
@@ -190,15 +190,15 @@ values (1, '2023-03-08 11:31:14.982873', '2023-03-08 11:31:14.982873', 1, 0, 1, 
        (4, '2023-05-08 11:31:14.982873', '2023-05-08 11:31:14.982873', 1, 0, 2, 1);
        
 insert into card(d_type, id, kind, title, sub_title, sentence, image_path)
-values ('CardEntity', 1, '종류1', '제목1', '부제목1', '명언1', 'http://3.37.5.91/resources/static/images/cardss/card1.png'),
-       ('CardEntity', 2, '종류2', '제목2', '부제목2', '명언2', 'http://3.37.5.91/resources/static/images/cardss/card2.png'),
-       ('CardEntity', 3, '종류3', '제목3', '부제목3', '명언3', 'http://3.37.5.91/resources/static/images/cardss/card3.png'),
-       ('CardEntity', 4, '종류4', '제목4', '부제목4', '명언4', 'http://3.37.5.91/resources/static/images/cardss/card4.png'),
-       ('CardEntity', 5, '종류5', '제목5', '부제목5', '명언5', 'http://3.37.5.91/resources/static/images/cardss/card5.png'),
-       ('CardEntity', 6, '종류6', '제목6', '부제목6', '명언6', 'http://3.37.5.91/resources/static/images/cardss/card6.png'),
-       ('CardEntity', 7, '종류7', '제목7', '부제목7', '명언7', 'http://3.37.5.91/resources/static/images/cardss/card7.png'),
-       ('CardEntity', 8, '종류8', '제목8', '부제목8', '명언8', 'http://3.37.5.91/resources/static/images/cardss/card8.png'),
-       ('CardEntity', 9, '종류9', '제목9', '부제목9', '명언9', 'http://3.37.5.91/resources/static/images/cardss/card9.png');
+values ('CardEntity', 1, '종류1', '제목1', '부제목1', '명언1', 'http://server.gasomann.com/resources/static/images/cardss/card1.png'),
+       ('CardEntity', 2, '종류2', '제목2', '부제목2', '명언2', 'http://server.gasomann.com/resources/static/images/cardss/card2.png'),
+       ('CardEntity', 3, '종류3', '제목3', '부제목3', '명언3', 'http://server.gasomann.com/resources/static/images/cardss/card3.png'),
+       ('CardEntity', 4, '종류4', '제목4', '부제목4', '명언4', 'http://server.gasomann.com/resources/static/images/cardss/card4.png'),
+       ('CardEntity', 5, '종류5', '제목5', '부제목5', '명언5', 'http://server.gasomann.com/resources/static/images/cardss/card5.png'),
+       ('CardEntity', 6, '종류6', '제목6', '부제목6', '명언6', 'http://server.gasomann.com/resources/static/images/cardss/card6.png'),
+       ('CardEntity', 7, '종류7', '제목7', '부제목7', '명언7', 'http://server.gasomann.com/resources/static/images/cardss/card7.png'),
+       ('CardEntity', 8, '종류8', '제목8', '부제목8', '명언8', 'http://server.gasomann.com/resources/static/images/cardss/card8.png'),
+       ('CardEntity', 9, '종류9', '제목9', '부제목9', '명언9', 'http://server.gasomann.com/resources/static/images/cardss/card9.png');
 
 insert into user_card(id, date, card_id, user_id)
 values (1, '2023-05-18', 1, 1),
