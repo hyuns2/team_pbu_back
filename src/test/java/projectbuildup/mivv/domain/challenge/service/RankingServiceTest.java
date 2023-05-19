@@ -10,6 +10,7 @@ import org.springframework.data.redis.core.ZSetOperations.TypedTuple;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -201,4 +202,16 @@ class RankingServiceTest {
 
         // then
     }
+    @Test
+    @DisplayName("점수가 null이면 0을 반환한다. ")
+    void test12() {
+        // given
+        // when
+        Long score = null;
+
+        // then
+        assertThat(Objects.requireNonNullElse(score, 0L)).isEqualTo(0);
+
+    }
+
 }
