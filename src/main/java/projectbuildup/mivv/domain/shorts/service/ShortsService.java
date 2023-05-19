@@ -37,7 +37,6 @@ public class ShortsService {
 
     public void createShorts(ShortsDto.creatRequest shortsRequestDto) throws IOException {
         Video video = videoUploader.upload(shortsRequestDto.getVideo(),"shorts");
-        //Image video = imageUploader.upload(shortsRequestDto.getImage(), "shorts");
         Image image = imageUploader.upload(shortsRequestDto.getImage(), "shorts");
 
         Shorts shorts = new Shorts(shortsRequestDto, video.getVideoPath(), image.getImagePath());
