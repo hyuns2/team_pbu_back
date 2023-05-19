@@ -143,51 +143,6 @@ insert into inquiry(id, answer, content, time_stamp, title, user_id)
 values (1, null, '문의 내용입니다.', '2023-04-01 11:31:14.982873', '문의 샘플1', 1),
        (2, null, '문의 내용입니다.', '2023-04-01 11:31:14.982873', '문의 샘플2', 2);
 
-insert into shorts(id, category, content, image_url, title, video_url)
-values (1, 'SAVING', '', 'http://server.gasomann.com/resources/static/images/shorts/shortImage1.png', '샘플 비디오1',
-        'https://youtu.be/0gY_z7fqPjs'),
-       (2, 'EDUCATION', '', 'http://server.gasomann.com/resources/static/images/shorts/shortImage2.png', '샘플 비디오2',
-        'https://youtu.be/0gY_z7fqPjs');
-
-
-
-insert into worthy_consumption_condition(id, is_issuable_coupon, issuable_coupon_end_date, issuable_coupon_start_date,
-                                         last_month_amount, max_participants)
-values (1, 'OK', '2023-05-01', '2023-04-01', '10000', '100');
-
-insert into worthy_consumptionurl(worthy_consumption_url_id, detail_background_image_url, detail_image_url, image_url,
-                                  place_image_url, video_url)
-values (1, 'http://server.gasomann.com/resources/static/images/values/valueDetailBackground1.png',
-        'http://server.gasomann.com/resources/static/images/values/valueDetail1.png',
-        'http://server.gasomann.com/resources/static/images/values/valueBackground1.png',
-        'http://server.gasomann.com/resources/static/images/values/valueDetailMap1.png', 'https://youtu.be/0gY_z7fqPjs');
-
-insert into worthy_consumption(worthy_consumption_id, created_time, modified_time, original_price, place_tag, price_tag,
-                               sale_price, summary, worthy_consumption_title, condition_id, worthy_consumption_url_id)
-values (1, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', 99000, '대구 전 지역', '1달 회원권', '55000',
-        '7월 절약 금액 55,000원 달성 시', '레드 짐', 1, 1);
-
-
-insert into coupon(coupon_id, created_time, modified_time, image_url, limit_end_date, limit_start_date, pin, title,
-                   worthy_consumption_id)
-values (1, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
-        'http://server.gasomann.com/resources/static/images/coupons/coupon1.png',
-        '2023-08-31', '2023-07-31', '1234', '레드짐 8월 할인권', 1),
-       (2, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
-        'http://server.gasomann.com/resources/static/images/coupons/coupon1.png',
-        '2023-07-31', '2023-06-30', '1234', '레드짐 7월 할인권', 1),
-       (3, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
-        'http://server.gasomann.com/resources/static/images/coupons/coupon1.png',
-        '2023-07-31', '2023-06-30', '1234', '레드짐 7월 할인권', 1),
-       (4, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
-        'http://server.gasomann.com/resources/static/images/coupons/coupon1.png',
-        '2023-07-31', '2023-06-30', '1234', '레드짐 7월 할인권', 1);
-
-insert into coupon_issuance(id, created_time, modified_time, created, used, coupon_coupon_id, user_id)
-values (1, '2023-03-08 11:31:14.982873', '2023-03-08 11:31:14.982873', 1, 0, 1, 1),
-       (2, '2023-04-08 11:31:14.982873', '2023-04-08 11:31:14.982873', 1, 0, 2, 2),
-       (3, '2023-04-08 11:31:14.982873', '2023-04-08 11:31:14.982873', 1, 0, 3, 1),
-       (4, '2023-05-08 11:31:14.982873', '2023-05-08 11:31:14.982873', 1, 0, 2, 1);
        
 insert into card(d_type, id, kind, title, sub_title, sentence, image_path)
 values ('CardEntity', 1, '종류1', '제목1', '부제목1', '명언1', 'http://server.gasomann.com/resources/static/images/cardss/card1.png'),
@@ -210,3 +165,79 @@ values (1, '2023-05-18', 1, 1),
        (7, '2023-05-18', 7, 1),
        (8, '2023-05-18', 8, 1),
        (9, '2023-05-18', 9, 1);
+       
+-- <Worthy Consumption> --
+insert into worthy_consumption_condition(id, is_issuable_coupon, issuable_coupon_end_date, issuable_coupon_start_date,
+                                         last_month_amount, max_participants)
+values (1, 'OK', '2023-07-01', '2023-04-01', 10000, 100),
+       (2, 'OK', '2023-07-01', '2023-04-01', 10000, 100),
+       (3, 'OK', '2023-07-01', '2023-04-01', 10000, 100);
+
+insert into worthy_consumptionurl(worthy_consumption_url_id, detail_background_image_path, detail_image_path, image_path,
+                                  place_image_path, video_path)
+values (1, 'http://3.37.5.91/resources/static/images/values/valueDetailBackground1.png',
+        'http://3.37.5.91/resources/static/images/values/valueDetail1.png',
+        'http://3.37.5.91/resources/static/images/values/valueBackground1.png',
+        'http://3.37.5.91/resources/static/images/values/valueDetailMap1.png',
+        'http://3.37.5.91/resources/static/videos/values/valuevideo1.mp4'),
+       (2, 'http://3.37.5.91/resources/static/images/values/valueDetailBackground2.png',
+        'http://3.37.5.91/resources/static/images/values/valueDetail2.png',
+        'http://3.37.5.91/resources/static/images/values/valueBackground2.png',
+        'http://3.37.5.91/resources/static/images/values/valueDetailMap2.png',
+        'http://3.37.5.91/resources/static/videos/values/valuevideo2.mp4'),
+       (3, 'http://3.37.5.91/resources/static/images/values/valueDetailBackground3.png',
+        'http://3.37.5.91/resources/static/images/values/valueDetail3.png',
+        'http://3.37.5.91/resources/static/images/values/valueBackground.png',
+        'http://3.37.5.91/resources/static/images/values/valueDetailMap3.png',
+        'http://3.37.5.91/resources/static/videos/values/valuevideo3.mp4');
+
+insert into worthy_consumption(WorthyConsumptionId, created_time, modified_time, place_tag, price_tag,
+                               original_price, sale_price, summary, WorthyConsumptionTitle, condition_id, worthy_consumption_url_id)
+values (1, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', '대구 전 지역', '1달 회원권', 11000, 1000,
+        '1월 절약 금액 11,000원 달성 시', '레드 짐', 1, 1),
+       (2, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', '대구 전 지역', '2달 회원권', 22000, 2000,
+        '2월 절약 금액 22,000원 달성 시', '옐로우 짐', 2, 2),
+       (3, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', '대구 전 지역', '3달 회원권', 33000, 3000,
+        '3월 절약 금액 33,000원 달성 시', '블루 짐', 3, 3);
+
+insert into worthy_consumption_hashtags(worthy_consumption_worthy_consumption_id, hashtags)
+values (1, 'hashtags1'),
+       (2, 'hashtags2'),
+       (3, 'hashtags3');
+
+insert into worthy_consumption_why_recommendation(worthy_consumption_worthy_consumption_id, why_recommendation)
+values (1, 'recommendation reason1'),
+       (2, 'recommendation reason2'),
+       (3, 'recommendation reason3');
+
+-- <Shorts> --
+
+insert into shorts(id, category, title, content, image_url, video_url)
+values (1, 'SAVING', '제목1', '내용1', 'http://3.37.5.91/resources/static/images/shorts/shortImage1.png',
+        'http://3.37.5.91/resources/static/videos/shorts/shortVideo1.mp4'),
+       (2, 'SAVING', '제목2', '내용2', 'http://3.37.5.91/resources/static/images/shorts/shortImage2.png',
+        'http://3.37.5.91/resources/static/videos/shorts/shortVideo2.mp4'),
+       (3, 'EDUCATION', '제목3', '내용3', 'http://3.37.5.91/resources/static/images/shorts/shortImage3.png',
+        'http://3.37.5.91/resources/static/videos/shorts/shortVideo3.mp4');
+-- <Coupon> --
+insert into coupon(coupon_id, created_time, modified_time, image_path, limit_end_date, limit_start_date, pin, title,
+                   worthy_consumption_id)
+values (1, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
+        'http://3.37.5.91/resources/static/images/coupons/coupon1.png',
+        '2023-08-31', '2023-04-30', '1234', '레드짐 1월 할인권', 1),
+       (2, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
+        'http://3.37.5.91/resources/static/images/coupons/coupon1.png',
+        '2023-07-31', '2023-04-30', '1234', '레드짐 2월 할인권', 1),
+       (3, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
+        'http://3.37.5.91/resources/static/images/coupons/coupon1.png',
+        '2023-07-31', '2023-04-30', '1234', '레드짐 3월 할인권', 1),
+       (4, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
+        'http://3.37.5.91/resources/static/images/coupons/coupon1.png',
+        '2023-07-31', '2023-04-30', '1234', '레드짐 4월 할인권', 1);
+
+insert into coupon_issuance(id, created_time, modified_time, created, used, coupon_coupon_id, user_id)
+values (1, '2023-03-08 11:31:14.982873', '2023-03-08 11:31:14.982873', 1, 0, 1, 1),
+       (2, '2023-04-08 11:31:14.982873', '2023-04-08 11:31:14.982873', 1, 0, 2, 2),
+       (3, '2023-04-08 11:31:14.982873', '2023-04-08 11:31:14.982873', 1, 0, 3, 1),
+       (4, '2023-05-08 11:31:14.982873', '2023-05-08 11:31:14.982873', 1, 0, 2, 1);
+
