@@ -4,6 +4,7 @@ package projectbuildup.mivv.domain.challenge.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import projectbuildup.mivv.domain.challenge.dto.ChallengeDto;
+import projectbuildup.mivv.domain.participation.entity.Participation;
 import projectbuildup.mivv.global.common.imageStore.Image;
 import projectbuildup.mivv.global.common.BaseTimeEntity;
 
@@ -34,6 +35,9 @@ public class Challenge extends BaseTimeEntity {
     private LocalDate startDate;
     private LocalDate endDate;
 
+    @OneToMany(mappedBy = "challenge", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    List<Participation> participationList;
+
     public void update(ChallengeDto.UpdateRequest requestDto) {
         this.mainTitle = requestDto.getMainTitle();
         this.subTitle = requestDto.getSubTitle();
@@ -59,5 +63,4 @@ public class Challenge extends BaseTimeEntity {
                 .endDate(requestDto.getEndDate())
                 .build();
     }
-
 }

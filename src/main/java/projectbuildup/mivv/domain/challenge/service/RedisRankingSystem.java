@@ -18,6 +18,7 @@ public class RedisRankingSystem {
     private final StringRedisTemplate redisTemplate;
     private ZSetOperations<String, String> operations;
     private final static int NEARBY_SIZE = 2;
+    private final static String PREFIX = "RANKING_";
 
 
     @PostConstruct
@@ -31,7 +32,7 @@ public class RedisRankingSystem {
      * @param key key
      */
     public void initZero(String key) {
-        redisTemplate.delete(key);
+        redisTemplate.delete(PREFIX + key);
     }
 
     /**
@@ -42,7 +43,7 @@ public class RedisRankingSystem {
      * @param score  점수
      */
     public void incrementScore(String key, String member, double score) {
-        operations.incrementScore(key, member, score);
+        operations.incrementScore(PREFIX + key, member, score);
     }
 
     /**
@@ -52,10 +53,10 @@ public class RedisRankingSystem {
      * @return 1등
      */
     public RankDto.Unit getTheFirst(String key) {
-        ZSetOperations.TypedTuple<String> tuple = Objects.requireNonNull(operations.popMax(key));
+        ZSetOperations.TypedTuple<String> tuple = Objects.requireNonNull(operations.popMax(PREFIX + key));
         String member = Objects.requireNonNull(tuple.getValue());
         Double score = Objects.requireNonNull(tuple.getScore());
-        operations.add(key, member, score);
+        operations.add(PREFIX + key, member, score);
         return new RankDto.Unit(1, Long.parseLong(member));
     }
 
@@ -67,12 +68,12 @@ public class RedisRankingSystem {
      * @return 랭킹 리스트
      */
     public List<RankDto.Unit> getNearbyRanking(String key, String member) {
-        List<String> tupleList = Objects.requireNonNull(operations.reverseRange(key, 0, -1)).stream()
+        List<String> tupleList = Objects.requireNonNull(operations.reverseRange(PREFIX + key, 0, -1)).stream()
                 .toList();
         List<Long> userRanking = getUserRanking(member, tupleList);
 
         List<RankDto.Unit> result = new ArrayList<>();
-        long rank = Objects.requireNonNull(operations.reverseRank(key, member)) + 1 - NEARBY_SIZE;
+        long rank = Objects.requireNonNull(operations.reverseRank(PREFIX + key, member)) + 1 - NEARBY_SIZE;
         for (Long userId : userRanking) {
             addRank(result, rank, userId);
             rank++;
@@ -113,7 +114,7 @@ public class RedisRankingSystem {
      * @return 등수
      */
     public Long getRank(String key, String member) {
-        Long rank = operations.reverseRank(key, member);
+        Long rank = operations.reverseRank(PREFIX + key, member);
         if (rank == null) {
             return null;
         }

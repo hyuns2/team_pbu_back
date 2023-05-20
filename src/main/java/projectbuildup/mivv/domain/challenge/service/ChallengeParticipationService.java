@@ -20,6 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ChallengeParticipationService {
     private final ChallengeRepository challengeRepository;
+    private final ChallengeService challengeService;
     private final UserRepository userRepository;
 
     /**
@@ -28,15 +29,11 @@ public class ChallengeParticipationService {
      * @param userId 회원 아이디넘버
      * @return 참여 중인 챌린지 목록
      */
-    public PagingDto<ChallengeDto.ShortResponse> getOngoingChallenges(Long userId, PageParam pageParam) {
+    public PagingDto<ChallengeDto.Response> getOngoingChallenges(Long userId, PageParam pageParam) {
         Pageable pageable = pageParam.toPageable();
         User user = userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
-
         Page<Challenge> pages = challengeRepository.findOngoingChallenge(user, pageable);
-        List<ChallengeDto.ShortResponse> responseData = pages.getContent().stream()
-                .map(ChallengeDto.ShortResponse::new)
-                .toList();
-        return new PagingDto<>(pages.getNumber(), pages.getTotalPages(), responseData);
+        return challengeService.convertToListResponse(pages);
     }
 
     /**
@@ -45,14 +42,10 @@ public class ChallengeParticipationService {
      * @param userId 사용자 아이디넘버
      * @return 참여 가능한 챌린지 목록
      */
-    public PagingDto<ChallengeDto.ShortResponse> getJoinableChallenges(Long userId, PageParam pageParam) {
+    public PagingDto<ChallengeDto.Response> getJoinableChallenges(Long userId, PageParam pageParam) {
         Pageable pageable = pageParam.toPageable();
         User user = userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
-
         Page<Challenge> pages = challengeRepository.findJoinableChallenge(user, pageable);
-        List<ChallengeDto.ShortResponse> responseData = pages.getContent().stream()
-                .map(ChallengeDto.ShortResponse::new)
-                .toList();
-        return new PagingDto<>(pages.getNumber(), pages.getTotalPages(), responseData);
+        return challengeService.convertToListResponse(pages);
     }
 }

@@ -6,10 +6,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import projectbuildup.mivv.domain.challenge.dto.ChallengeDto;
 import projectbuildup.mivv.domain.challenge.entity.Challenge;
 import projectbuildup.mivv.domain.challenge.repository.ChallengeRepository;
+import projectbuildup.mivv.domain.participation.entity.Participation;
+import projectbuildup.mivv.domain.participation.repository.ParticipationRepository;
+import projectbuildup.mivv.domain.remittance.entity.Remittance;
 import projectbuildup.mivv.global.common.imageStore.Image;
 import projectbuildup.mivv.global.common.imageStore.ImageUploader;
 import projectbuildup.mivv.global.common.pagination.PageParam;
@@ -26,6 +28,8 @@ public class ChallengeService {
 
     private final ChallengeRepository challengeRepository;
     private final ImageUploader imageUploader;
+    private final ParticipationRepository participationRepository;
+
 
     /**
      * 챌린지를 생성합니다.
@@ -44,26 +48,33 @@ public class ChallengeService {
      * @param pageParam 페이지네이션
      * @return 전체 챌린지 목록
      */
-    public PagingDto<ChallengeDto.Response> getChallenges(PageParam pageParam) {
+    public PagingDto<ChallengeDto.Response> getAllChallenges(PageParam pageParam) {
         Pageable pageable = pageParam.toPageable();
         Page<Challenge> pages = challengeRepository.findAll(pageable);
+        return convertToListResponse(pages);
+    }
+
+
+
+    public PagingDto<ChallengeDto.Response> convertToListResponse(Page<Challenge> pages){
         List<ChallengeDto.Response> challenges = pages.getContent().stream()
-                .map(ChallengeDto.Response::new)
+                .map(c -> new ChallengeDto.Response(c, getTotalSavingAmount(c)))
                 .toList();
         return new PagingDto<>(pages.getNumber(), pages.getTotalPages(), challenges);
     }
 
-
-    /**
-     * 챌린지 하나를 조회합니다.
-     *
-     * @param challengeId 챌린지 아이디넘버
-     * @return 챌린지 정보
-     */
-    public ChallengeDto.ShortResponse getChallenge(Long challengeId) {
-        Challenge challenge = challengeRepository.findById(challengeId).orElseThrow(CResourceNotFoundException::new);
-        return new ChallengeDto.ShortResponse(challenge);
+    private long getTotalSavingAmount(Challenge challenge) {
+        long totalAmount = 0;
+        List<Participation> participations = participationRepository.findAllByChallenge(challenge);
+        for (Participation participation : participations) {
+            long sum = participation.getRemittanceList().stream()
+                    .mapToLong(Remittance::getAmount)
+                    .sum();
+            totalAmount += sum;
+        }
+        return totalAmount;
     }
+
 
     /**
      * 챌린지의 정보를 수정합니다.
