@@ -4,10 +4,9 @@ import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
 import projectbuildup.mivv.domain.coupon.entity.Coupon;
-import projectbuildup.mivv.domain.worthyConsumption.dto.request.WorthyConsumptionRequestDto;
+import projectbuildup.mivv.domain.worthyConsumption.dto.WorthyConsumptionDto;
 import projectbuildup.mivv.global.common.BaseTimeEntity;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 @Entity @Table(name = "WorthyConsumption")
@@ -34,45 +33,39 @@ public class WorthyConsumption extends BaseTimeEntity {
 
     @ElementCollection
     @NonNull
-    private List<String> whyRecommendation = new ArrayList<>();
+    private List<String> recommendationReason = new ArrayList<>();
 
     @NonNull
-    private String priceTag;
+    private String availablePrice;
     @NonNull
-    private String placeTag;
+    private String availablePlace;
     @NonNull
     private String summary;
 
     @Nullable
-    @OneToOne(fetch = FetchType.LAZY, cascade =  CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "WorthyConsumptionUrlId")
-    @Setter
     private WorthyConsumptionUrl worthyConsumptionUrl;
 
     @Nullable
-    @OneToOne(fetch = FetchType.LAZY, cascade =  CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "ConditionId")
-    @Setter
     private Condition condition;
 
     //@ElementCollection @Builder.Default
     @OneToMany(mappedBy = "worthyConsumption", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Coupon> coupons = new ArrayList<Coupon>();
 
-    public void updateContent(WorthyConsumptionRequestDto.UpdateContentRequest requestWorthyConsumptionDto){
-        this.title = requestWorthyConsumptionDto.getTitle();
-        this.hashtags = requestWorthyConsumptionDto.getHashtags();
-        this.whyRecommendation = requestWorthyConsumptionDto.getWhyRecommendation();
-        this.summary = requestWorthyConsumptionDto.getSummary();
-    }
 
-    public void updatePrice(WorthyConsumptionRequestDto.UpdatePriceRequest requestWorthyConsumptionDto){
-        this.originalPrice = requestWorthyConsumptionDto.getOriginalPrice();
-        this.salePrice = requestWorthyConsumptionDto.getSalePrice();
-        this.priceTag = requestWorthyConsumptionDto.getPriceTag();
-    }
-    public void updatePlace(WorthyConsumptionRequestDto.UpdatePlaceRequest requestWorthyConsumptionDto){
-        this.placeTag = requestWorthyConsumptionDto.getPlaceTag();
+    public void update(WorthyConsumptionDto.Update worthyConsumptionDto){
+        this.title = worthyConsumptionDto.getTitle();
+        this.hashtags = worthyConsumptionDto.getHashtags();
+        this.recommendationReason = worthyConsumptionDto.getRecommendationReason();
+        this.summary = worthyConsumptionDto.getSummary();
+        this.originalPrice = worthyConsumptionDto.getOriginalPrice();
+        this.salePrice = worthyConsumptionDto.getSalePrice();
+        this.availablePrice = worthyConsumptionDto.getAvailablePrice();
+        this.availablePlace = worthyConsumptionDto.getAvailablePlace();
     }
 
     public void addCoupon(Coupon coupon){

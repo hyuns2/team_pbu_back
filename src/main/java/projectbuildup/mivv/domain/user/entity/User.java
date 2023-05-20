@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import projectbuildup.mivv.domain.account.entity.Account;
 import projectbuildup.mivv.domain.archiving.entity.UserCardEntity;
 import projectbuildup.mivv.domain.auth.dto.AuthDto;
+import projectbuildup.mivv.domain.likes.entity.LikesShorts;
 import projectbuildup.mivv.global.common.imageStore.Image;
 import projectbuildup.mivv.global.common.BaseTimeEntity;
 
@@ -24,7 +25,6 @@ import java.util.stream.Collectors;
 @Entity
 @ToString
 public class User extends BaseTimeEntity implements UserDetails {
-    private final static String DEFAULT_ROLE = "ROLE_USER";
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
@@ -41,17 +41,20 @@ public class User extends BaseTimeEntity implements UserDetails {
     @JoinColumn
     Account account;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<UserCardEntity> userCards = new ArrayList<>();
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+//    private List<UserCardEntity> userCards = new ArrayList<>();
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn
+//    LikesShorts likes;
 
-    public static User of(AuthDto.SignupRequest requestDto, String encodedPassword, IdentityVerification identityVerification) {
+    public static User of (AuthDto.SignupRequest requestDto, String encodedPassword, IdentityVerification identityVerification){
         return User.builder()
                 .email(requestDto.getEmail())
                 .agreement(requestDto.getAgreement())
                 .nickname(requestDto.getNickname())
                 .password(encodedPassword)
                 .identityVerification(identityVerification)
-                .roles(Collections.singletonList(DEFAULT_ROLE))
+                .roles(Collections.singletonList("ROLE_USER"))
                 .build();
     }
 

@@ -191,8 +191,9 @@ values (1, 'http://3.37.5.91/resources/static/images/values/valueDetailBackgroun
         'http://3.37.5.91/resources/static/images/values/valueDetailMap3.png',
         'http://3.37.5.91/resources/static/videos/values/valuevideo3.mp4');
 
-insert into worthy_consumption(WorthyConsumptionId, created_time, modified_time, place_tag, price_tag,
-                               original_price, sale_price, summary, WorthyConsumptionTitle, condition_id, worthy_consumption_url_id)
+
+insert into worthy_consumption(worthy_consumption_id, created_time, modified_time, available_place, available_price,
+                               original_price, sale_price, summary, worthy_consumption_title, condition_id, worthy_consumption_url_id)
 values (1, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', '대구 전 지역', '1달 회원권', 11000, 1000,
         '1월 절약 금액 11,000원 달성 시', '레드 짐', 1, 1),
        (2, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', '대구 전 지역', '2달 회원권', 22000, 2000,
@@ -205,20 +206,21 @@ values (1, 'hashtags1'),
        (2, 'hashtags2'),
        (3, 'hashtags3');
 
-insert into worthy_consumption_why_recommendation(worthy_consumption_worthy_consumption_id, why_recommendation)
+
+insert into worthy_consumption_recommendation_reason(worthy_consumption_worthy_consumption_id, recommendation_reason)
 values (1, 'recommendation reason1'),
        (2, 'recommendation reason2'),
        (3, 'recommendation reason3');
 
 -- <Shorts> --
-
-insert into shorts(id, category, title, content, image_url, video_url)
+insert into shorts(id, category, title, content, image_path, video_path)
 values (1, 'SAVING', '제목1', '내용1', 'http://3.37.5.91/resources/static/images/shorts/shortImage1.png',
         'http://3.37.5.91/resources/static/videos/shorts/shortVideo1.mp4'),
        (2, 'SAVING', '제목2', '내용2', 'http://3.37.5.91/resources/static/images/shorts/shortImage2.png',
         'http://3.37.5.91/resources/static/videos/shorts/shortVideo2.mp4'),
        (3, 'EDUCATION', '제목3', '내용3', 'http://3.37.5.91/resources/static/images/shorts/shortImage3.png',
         'http://3.37.5.91/resources/static/videos/shorts/shortVideo3.mp4');
+
 -- <Coupon> --
 insert into coupon(coupon_id, created_time, modified_time, image_path, limit_end_date, limit_start_date, pin, title,
                    worthy_consumption_id)
@@ -240,4 +242,16 @@ values (1, '2023-03-08 11:31:14.982873', '2023-03-08 11:31:14.982873', 1, 0, 1, 
        (2, '2023-04-08 11:31:14.982873', '2023-04-08 11:31:14.982873', 1, 0, 2, 2),
        (3, '2023-04-08 11:31:14.982873', '2023-04-08 11:31:14.982873', 1, 0, 3, 1),
        (4, '2023-05-08 11:31:14.982873', '2023-05-08 11:31:14.982873', 1, 0, 2, 1);
+
+-- <Likes> --
+insert into likes_shorts(id, created_time, modified_time, likes_category, shorts_id, user_id)
+values (1,'2023-03-08 11:31:14.982873', '2023-03-08 11:31:14.982873', 'SHORTS_SAVING', 1, 1),
+       (2,'2023-03-08 11:31:14.982873', '2023-03-08 11:31:14.982873', 'SHORTS_EDU', 3, 1),
+       (3,'2023-03-08 11:31:14.982873', '2023-03-08 11:31:14.982873', 'SHORTS_SAVING', 2, 1);
+
+insert into likes_worthy_consumption(id, created_time, modified_time, likes_category, user_id, worthy_consumption_worthy_consumption_id)
+values (1,'2023-03-08 11:31:14.982873', '2023-03-08 11:31:14.982873', 'WORTHY_CONSUMPTION', 1, 1),
+       (2,'2023-03-08 11:31:14.982873', '2023-03-08 11:31:14.982873', 'WORTHY_CONSUMPTION', 1, 2),
+       (3,'2023-03-08 11:31:14.982873', '2023-03-08 11:31:14.982873', 'WORTHY_CONSUMPTION', 1, 3);
+
 
