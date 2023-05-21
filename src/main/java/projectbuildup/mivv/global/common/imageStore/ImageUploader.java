@@ -19,6 +19,9 @@ public class ImageUploader {
     @Value("${path.images}")
     String STORE_PATH;
 
+    @Value("${path.ipAddress}")
+    String ipUrl;
+
     private static final String DELIMITER = "/";
 
     public Image upload(MultipartFile multipartFile, String dirName) throws IOException {
@@ -27,7 +30,7 @@ public class ImageUploader {
         String storePath = STORE_PATH + DELIMITER + dirName + DELIMITER + storeName;
         File file = new File(storePath);
         multipartFile.transferTo(file);
-        return new Image(storeName, originalName, storePath);
+        return new Image(storeName, originalName, ipUrl + storePath);
     }
 
     public void delete(Image image) throws IOException {

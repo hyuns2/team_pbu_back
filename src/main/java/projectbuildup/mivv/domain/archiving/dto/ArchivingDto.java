@@ -3,7 +3,6 @@ package projectbuildup.mivv.domain.archiving.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
@@ -23,7 +22,7 @@ public class ArchivingDto {
     public static class createNumericalCardRequestDto {
 
         @NotBlank
-        @Length(min = 1, max = 30)
+        @Length(min = 2, max = 30)
         @Schema(description = "카드 종류")
         private String kind;
 
@@ -75,23 +74,22 @@ public class ArchivingDto {
     @Data
     public static class updateNumericalCardRequestDto {
 
-        @Length(min = 1, max = 30)
+        @Length(max = 30)
         @Schema(description = "카드 종류")
         private String kind;
 
-        @Length(min = 2, max = 30)
+        @Length(max = 30)
         @Schema(description = "카드 제목")
         private String title;
 
-        @Length(min = 2, max = 30)
+        @Length(max = 30)
         @Schema(description = "카드 부제목")
         private String subTitle;
 
-        @Length(min = 2, max = 30)
+        @Length(max = 30)
         @Schema(description = "카드 명언")
         private String sentence;
 
-        @NotNull
         @Schema(description = "카드 이미지 파일")
         private MultipartFile image;
 
@@ -111,7 +109,7 @@ public class ArchivingDto {
     public static class createGeneralCardRequestDto {
 
         @NotBlank
-        @Length(min = 1, max = 30)
+        @Length(min = 2, max = 30)
         @Schema(description = "카드 종류")
         private String kind;
 
@@ -151,19 +149,19 @@ public class ArchivingDto {
     @Data
     public static class updateGeneralCardRequestDto {
 
-        @Length(min = 1, max = 30)
+        @Length(max = 30)
         @Schema(description = "카드 종류")
         private String kind;
 
-        @Length(min = 2, max = 30)
+        @Length(max = 30)
         @Schema(description = "카드 제목")
         private String title;
 
-        @Length(min = 2, max = 30)
+        @Length(max = 30)
         @Schema(description = "카드 부제목")
         private String subTitle;
 
-        @Length(min = 2, max = 30)
+        @Length(max = 30)
         @Schema(description = "카드 명언")
         private String sentence;
 
@@ -189,7 +187,7 @@ public class ArchivingDto {
     public static class createCouponCardRequestDto {
 
         @NotBlank
-        @Length(min = 1, max = 30)
+        @Length(min = 2, max = 30)
         @Schema(description = "카드 종류")
         private String kind;
 
@@ -239,19 +237,19 @@ public class ArchivingDto {
     @Data
     public static class updateCouponCardRequestDto {
 
-        @Length(min = 1, max = 30)
+        @Length(max = 30)
         @Schema(description = "카드 종류")
         private String kind;
 
-        @Length(min = 2, max = 30)
+        @Length(max = 30)
         @Schema(description = "카드 제목")
         private String title;
 
-        @Length(min = 2, max = 30)
+        @Length(max = 30)
         @Schema(description = "카드 부제목")
         private String subTitle;
 
-        @Length(min = 2, max = 30)
+        @Length(max = 30)
         @Schema(description = "카드 명언")
         private String sentence;
 
@@ -290,7 +288,6 @@ public class ArchivingDto {
         @Schema(description = "카드 부제목")
         private String subTitle;
 
-        @Length(min = 2, max = 30)
         @Schema(description = "카드 명언")
         private String sentence;
 
