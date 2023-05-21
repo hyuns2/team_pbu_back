@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import projectbuildup.mivv.domain.account.service.accountdetails.AccountDetailsSystem;
+import projectbuildup.mivv.domain.archiving.service.NumericalArchivingService;
 import projectbuildup.mivv.domain.challenge.entity.Challenge;
 import projectbuildup.mivv.domain.challenge.repository.ChallengeRepository;
 import projectbuildup.mivv.domain.challenge.service.RankScoreCalculator;
@@ -32,7 +33,7 @@ public class RemittanceChecker {
     private final SavingCountService savingCountService;
     private final RankingService rankingService;
     private final RankScoreCalculator rankScoreCalculator;
-    private final ChallengeRepository challengeRepository;
+    private final NumericalArchivingService numericalArchivingService;
 
     private final static long ASYNC_CHECK_TERM_SEC = 60;
     private final static int ASYNC_CHECK_TRY = 5;
@@ -81,6 +82,7 @@ public class RemittanceChecker {
         savingCountService.addCount(participation);
         double score = rankScoreCalculator.calculate(remittance);
         rankingService.updateScore(participation.getUser(), participation.getChallenge(), score);
+        numericalArchivingService.assignNumericalConditionCards(participation.getUser());
     }
 
     /**
