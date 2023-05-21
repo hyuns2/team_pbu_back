@@ -266,14 +266,6 @@ public class ArchivingDto {
 
     @AllArgsConstructor
     @Data
-    public static class AssignCouponCardsRequestDto {
-        @NotNull
-        @Schema(description = "쿠폰 고유번호")
-        private Long couponId;
-    }
-
-    @AllArgsConstructor
-    @Data
     public static class CardResponseDto {
 
         @Schema(description = "카드 Id")

@@ -133,32 +133,12 @@ public class ArchivingController {
         return ResponseEntity.ok().body(responseDto);
     }
 
-    @Operation(summary = "수치 조건의 카드 할당", description = "수치 조건에 만족하는지 체크하고, 만족하면 사용자는 카드를 부여받습니다.")
-    @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
-    @PreAuthorize("hasRole('USER')")
-    @GetMapping("/assign/numerical-cards")
-    public ResponseEntity<?> assignNumericalConditionCards(@AuthenticationPrincipal User user) {
-        nService.assignNumericalConditionCards(user);
-
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
     @Operation(summary = "일반 조건의 카드 할당", description = "관리자가 특정 조건을 달성한 사용자에게 해당하는 카드를 부여합니다.")
     @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/assign/general-cards", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> assignGeneralConditionCards(@AuthenticationPrincipal User user, @ModelAttribute("assignGeneralCards") ArchivingDto.AssignGeneralCardsRequestDto dto) throws IOException {
         gService.assignGeneralConditionCards(dto);
-
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @Operation(summary = "쿠폰 발급 조건의 카드 할당", description = "쿠폰 발급 조건에 만족하는지 체크하고, 만족하면 사용자는 카드를 부여받습니다.")
-    @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
-    @PreAuthorize("hasRole('USER')")
-    @PostMapping(value = "/assign/coupon-cards", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> assignCouponConditionsCards(@AuthenticationPrincipal User user, @ModelAttribute("assignCouponCards") ArchivingDto.AssignCouponCardsRequestDto dto) {
-        cService.assignCouponConditionsCard(user, dto);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
