@@ -10,4 +10,5 @@ import java.lang.annotation.RetentionPolicy;
 @WithSecurityContext(factory = WithAuthUserSecurityContextFactory.class)
 public @interface WithAuthUser {
     String role();
+    String id();
 }

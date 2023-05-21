@@ -54,8 +54,6 @@ public class ChallengeService {
         return convertToListResponse(pages);
     }
 
-
-
     public PagingDto<ChallengeDto.Response> convertToListResponse(Page<Challenge> pages){
         List<ChallengeDto.Response> challenges = pages.getContent().stream()
                 .map(c -> new ChallengeDto.Response(c, getTotalSavingAmount(c)))

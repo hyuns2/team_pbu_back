@@ -17,7 +17,7 @@ import java.util.*;
 public class RedisRankingSystem {
     private final StringRedisTemplate redisTemplate;
     private ZSetOperations<String, String> operations;
-    private final static int NEARBY_SIZE = 2;
+    public final static int NEARBY_SIZE = 2;
     private final static String PREFIX = "RANKING_";
 
 
@@ -74,8 +74,14 @@ public class RedisRankingSystem {
 
         List<RankDto.Unit> result = new ArrayList<>();
         long rank = Objects.requireNonNull(operations.reverseRank(PREFIX + key, member)) + 1 - NEARBY_SIZE;
+        List<Long> upper = userRanking.subList(0, NEARBY_SIZE);
+        Long me = userRanking.get(NEARBY_SIZE);
+        List<Long> lower = userRanking.subList(NEARBY_SIZE + 1, NEARBY_SIZE + 3);
+        log.info("{}", upper);
+        log.info("{}", me);
+        log.info("{}", lower);
         for (Long userId : userRanking) {
-            addRank(result, rank, userId);
+            result.add(addRank(userId, rank));
             rank++;
         }
         return result;
@@ -99,11 +105,11 @@ public class RedisRankingSystem {
         }
     }
 
-    private void addRank(List<RankDto.Unit> result, long rank, Long userId) {
-        if (userId != null) {
-            RankDto.Unit rankData = new RankDto.Unit(rank, userId);
-            result.add(rankData);
+    private RankDto.Unit addRank(Long userId, long rank) {
+        if (userId == null){
+            return null;
         }
+        return new RankDto.Unit(rank, userId);
     }
 
     /**

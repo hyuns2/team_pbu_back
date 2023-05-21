@@ -39,7 +39,9 @@ public class RankDto {
     @AllArgsConstructor
     public static class GroupResponse {
         UnitResponse first;
-        List<UnitResponse> ranking;
+        List<UnitResponse> upper;
+        UnitResponse me;
+        List<UnitResponse> lower;
     }
 
     @Getter

@@ -57,6 +57,7 @@ app:
     enable: false
 
 path:
-  files: C:/workspace_pbu/files
-  images: C:/workspace_pbu/images
+  files: E:\ROOM\Github\mivv-backend\src\test\resources\store\files
+  images: E:\ROOM\Github\mivv-backend\src\test\resources\store\images
+  videos: E:\ROOM\Github\mivv-backend\src\test\resources\store\videos
   ipAddress: http://3.37.5.91

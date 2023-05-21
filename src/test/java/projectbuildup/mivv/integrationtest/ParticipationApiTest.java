@@ -20,12 +20,12 @@ public class ParticipationApiTest extends IntegrationTest {
     private final static String GIVE_UP_API = "/api/give-up/challenges/{challengeId}";
 
     @BeforeEach
-    void setup(){
+    void setup() {
 
     }
 
     @Test
-    @WithAuthUser(role = "USER")
+    @WithAuthUser(role = "USER", id = "1")
     @DisplayName("참여 - 정상")
     void test() throws Exception {
         // given
