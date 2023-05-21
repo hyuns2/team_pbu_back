@@ -52,10 +52,10 @@ public class ChallengeService {
     public PagingDto<ChallengeDto.Response> getAllChallenges(PageParam pageParam) {
         Pageable pageable = pageParam.toPageable();
         Page<Challenge> pages = challengeRepository.findAll(pageable);
-        return convertToListResponse(pages);
+        return convertToResponseDto(pages);
     }
 
-    public PagingDto<ChallengeDto.Response> convertToListResponse(Page<Challenge> pages){
+    public PagingDto<ChallengeDto.Response> convertToResponseDto(Page<Challenge> pages){
         List<ChallengeDto.Response> challenges = pages.getContent().stream()
                 .map(c -> new ChallengeDto.Response(c, getTotalSavingAmount(c)))
                 .toList();
@@ -63,15 +63,18 @@ public class ChallengeService {
     }
 
     private long getTotalSavingAmount(Challenge challenge) {
-        long totalAmount = 0;
+        long sum = 0;
         List<Participation> participations = participationRepository.findAllByChallenge(challenge);
         for (Participation participation : participations) {
-            long sum = participation.getRemittanceList().stream()
-                    .mapToLong(Remittance::getAmount)
-                    .sum();
-            totalAmount += sum;
+            sum += calculateTotal(participation);
         }
-        return totalAmount;
+        return sum;
+    }
+
+    private long calculateTotal(Participation participation) {
+        return participation.getRemittanceList().stream()
+                .mapToLong(Remittance::getAmount)
+                .sum();
     }
 
 
