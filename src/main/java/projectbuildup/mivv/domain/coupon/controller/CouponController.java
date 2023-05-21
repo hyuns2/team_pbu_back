@@ -8,14 +8,19 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import projectbuildup.mivv.domain.coupon.dto.request.CouponRequestDto;
+import projectbuildup.mivv.domain.coupon.dto.CouponDto;
 import projectbuildup.mivv.domain.coupon.dto.response.CouponResponseDto;
 import projectbuildup.mivv.domain.coupon.service.CouponService;
+import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.global.constant.ExampleValue;
 import projectbuildup.mivv.global.constant.Header;
+
+import java.io.IOException;
 
 @Slf4j
 @RestController
@@ -26,31 +31,24 @@ public class CouponController {
 
     private final CouponService couponService;
     @Operation(summary = "쿠폰을 조회합니다.", description = "사용자가 쿠폰을 조회합니다.(단건)")
-    //@PreAuthorize("hasRole('USER')")
+    @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/{couponId}")
-    public ResponseEntity<CouponResponseDto.ReadResponseWithWorthyConsumption> readCouponWithWorthyConsumption(@PathVariable(name = "couponId") Long couponId){
-        CouponResponseDto.ReadResponseWithWorthyConsumption couponResponseDto = couponService.readCouponWithWorthyConsumption(couponId);
+    public ResponseEntity<CouponResponseDto.ReadResponseWithWorthyConsumption> readCouponWithWorthyConsumption(@PathVariable(name = "couponId") Long couponId, @AuthenticationPrincipal User user){
+        CouponResponseDto.ReadResponseWithWorthyConsumption couponResponseDto = couponService.readCouponWithWorthyConsumption(couponId, user.getId());
         return new ResponseEntity<>(couponResponseDto, HttpStatus.OK);
     }
-    @Operation(summary = "쿠폰의 내용을 수정합니다.", description = "관리자가 쿠폰의 title과 imageUrl을 수정합니다.")
-    //@Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
-    //@PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/{couponId}/content")
-    public ResponseEntity<HttpStatus> updateCouponContent(@PathVariable(name = "couponId") Long couponId, @Valid @RequestBody CouponRequestDto.UpdateContentRequest couponRequestDto){
-        couponService.updateCouponContent(couponRequestDto);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-    @Operation(summary = "쿠폰의 날짜를 수정합니다.", description = "관리자가 쿠폰의 사용 기한 날짜를 수정합니다.")
-    //@Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
-    //@PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/{couponId}/date")
-    public ResponseEntity<HttpStatus> updateCouponDate(@PathVariable(name = "couponId") Long couponId, @Valid @RequestBody CouponRequestDto.UpdateDateRequest couponRequestDto){
-        couponService.updateCouponDate(couponRequestDto);
+    @Operation(summary = "쿠폰을 수정합니다.", description = "관리자가 쿠폰을 수정합니다.")
+    @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping(value = "/{couponId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<HttpStatus> updateCoupon(@PathVariable(name = "couponId")Long couponId, @Valid @ModelAttribute("updateCoupon") CouponDto.Update couponDto) throws IOException {
+        couponService.updateCoupon(couponId, couponDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
     @Operation(summary = "쿠폰을 삭제합니다.", description = "관리자가 쿠폰을 삭제합니다.")
-    //@Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
-    //@PreAuthorize("hasRole('ADMIN')")
+    @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{couponId}")
     public ResponseEntity<HttpStatus> deleteCoupon(@PathVariable(name = "couponId") Long couponId){
         couponService.deleteCoupon(couponId);

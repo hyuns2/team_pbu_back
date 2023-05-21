@@ -4,18 +4,26 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import projectbuildup.mivv.domain.couponIssuance.repository.CouponIssuanceRepository;
-import projectbuildup.mivv.domain.couponIssuance.service.CouponIssuanceService;
-import projectbuildup.mivv.domain.worthyConsumption.dto.WorthyConsumptionConditionDto;
-import projectbuildup.mivv.domain.worthyConsumption.dto.request.WorthyConsumptionRequestDto;
+import projectbuildup.mivv.domain.likes.repository.LikesShortsRepository;
+import projectbuildup.mivv.domain.likes.repository.LikesWorthyConsumptionRepository;
+import projectbuildup.mivv.domain.shorts.dto.ShortsDto;
+import projectbuildup.mivv.domain.shorts.entity.ShortsCategory;
+import projectbuildup.mivv.domain.user.entity.User;
+import projectbuildup.mivv.domain.user.repository.UserRepository;
+import projectbuildup.mivv.domain.worthyConsumption.dto.WorthyConsumptionDto;
 import projectbuildup.mivv.domain.worthyConsumption.dto.response.WorthyConsumptionResponseDto;
-import projectbuildup.mivv.domain.worthyConsumption.entity.CheckConditionType;
 import projectbuildup.mivv.domain.worthyConsumption.entity.Condition;
 import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumption;
 import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumptionUrl;
 import projectbuildup.mivv.domain.worthyConsumption.repository.WorthyConsumptionRepository;
-import projectbuildup.mivv.global.error.exception.CBadRequestException;
+import projectbuildup.mivv.global.common.imageStore.Image;
+import projectbuildup.mivv.global.common.imageStore.ImageUploader;
+import projectbuildup.mivv.global.common.videoStore.Video;
+import projectbuildup.mivv.global.common.videoStore.VideoUploader;
+import projectbuildup.mivv.global.error.exception.CUserNotFoundException;
 import projectbuildup.mivv.global.error.exception.CWorthyConsumptionNotFoundException;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,18 +36,29 @@ import static projectbuildup.mivv.domain.worthyConsumption.entity.CheckCondition
 public class WorthyConsumptionService {
     private final WorthyConsumptionRepository worthyConsumptionRepository;
     private final CouponIssuanceRepository couponIssuanceRepository;
+    private final UserRepository userRepository;
+    private final LikesWorthyConsumptionRepository likesWorthyConsumptionRepository;
+    private final LikesShortsRepository likesShortsRepository;
+
+    private final ImageUploader imageUploader;
+    private final VideoUploader videoUploader;
 
     /**
      * 가치소비를 생성하는 로직입니다.
-     * @param worthyConsumptionRequestDto
+     * @param
      */
-    public void createWorthyConsumption(WorthyConsumptionRequestDto.CreationRequest worthyConsumptionRequestDto){
-        WorthyConsumptionUrl worthyConsumptionUrl = new WorthyConsumptionUrl(worthyConsumptionRequestDto.getWorthyConsumptionUrlDto());
-        Condition condition = new Condition(worthyConsumptionRequestDto.getWorthyConsumptionConditionDto());
-        WorthyConsumption worthyConsumption = worthyConsumptionRequestDto.toEntity(worthyConsumptionUrl, condition);
+    public void createWorthyConsumption(WorthyConsumptionDto.Creation worthyConsumptionDto) throws IOException {
+        Video video = videoUploader.upload(worthyConsumptionDto.getVideo(), "values");
+        Image image = imageUploader.upload(worthyConsumptionDto.getImage(), "values");
+        Image detailImage = imageUploader.upload(worthyConsumptionDto.getDetailImage(), "values");
+        Image detailBackgroundImage = imageUploader.upload(worthyConsumptionDto.getDetailBackgroundImage(), "values");
+        Image placeImage = imageUploader.upload(worthyConsumptionDto.getPlaceImage(), "values");
+
+        WorthyConsumptionUrl worthyConsumptionUrl = new WorthyConsumptionUrl(video.getVideoPath(), image.getImagePath(), detailImage.getImagePath(), detailBackgroundImage.getImagePath(), placeImage.getImagePath());
+        Condition condition = new Condition(worthyConsumptionDto);
+        WorthyConsumption worthyConsumption = worthyConsumptionDto.toEntity(worthyConsumptionUrl, condition);
         worthyConsumptionRepository.save(worthyConsumption);
     }
-
     /**
      * 가치소비를 조회하는 로직입니다.
      * @param worthyConsumptionId
@@ -49,59 +68,55 @@ public class WorthyConsumptionService {
         WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionId).orElseThrow(CWorthyConsumptionNotFoundException:: new);
         return new WorthyConsumptionResponseDto.ReadSummaryResponse(worthyConsumption);
     }
-    public WorthyConsumptionResponseDto.ReadBasicResponse readBasicWorthyConsumption(Long worthyConsumptionId){
+    public WorthyConsumptionResponseDto.ReadBasicResponse readBasicWorthyConsumption(Long worthyConsumptionId, Long userId){
         WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionId).orElseThrow(CWorthyConsumptionNotFoundException:: new);
+        User user = userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
+
         checkConditionToIssuableCoupon(worthyConsumption);
-        return new WorthyConsumptionResponseDto.ReadBasicResponse(worthyConsumption);
+
+        Boolean isLiked = likesWorthyConsumptionRepository.findByUserAndWorthyConsumption(user, worthyConsumption).isPresent() ? Boolean.TRUE : Boolean.FALSE;
+        return new WorthyConsumptionResponseDto.ReadBasicResponse(worthyConsumption, isLiked);
     }
     public WorthyConsumptionResponseDto.ReadDetailResponse readDetailWorthyConsumption(Long worthyConsumptionId){
         WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionId).orElseThrow(CWorthyConsumptionNotFoundException:: new);
         return new WorthyConsumptionResponseDto.ReadDetailResponse(worthyConsumption);
     }
-    public List<WorthyConsumptionResponseDto.ReadBasicResponse> readAllWorthyConsumption(){
-        List<WorthyConsumptionResponseDto.ReadBasicResponse> allWorthyConsumptions = worthyConsumptionRepository.findAll().stream().map(WorthyConsumptionResponseDto.ReadBasicResponse::new).collect(Collectors.toList());
-        return allWorthyConsumptions;
+    public List<WorthyConsumptionResponseDto.ReadBasicResponse> readAllWorthyConsumption(Long userId){
+        User user = userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
+        return worthyConsumptionRepository.findAll().stream()
+                .map(worthyConsumption -> {
+                    boolean liked = likesWorthyConsumptionRepository.findByUserAndWorthyConsumption(user, worthyConsumption).isPresent();
+                    return new WorthyConsumptionResponseDto.ReadBasicResponse(worthyConsumption, liked);
+                })
+                .collect(Collectors.toList());
     }
 
     /**
-     * 가치소비를 수정하는 로직입니다.
-     * @param worthyConsumptionRequestDto
+     * 가치소비를 수정하는 로직입니다. Patch 방식으로 수정함
+     * @param
      */
-    public void updateContentWorthyConsumption(WorthyConsumptionRequestDto.UpdateContentRequest worthyConsumptionRequestDto){
-        WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionRequestDto.getId()).orElseThrow(CWorthyConsumptionNotFoundException:: new);
-        worthyConsumption.updateContent(worthyConsumptionRequestDto);
-        worthyConsumptionRepository.save(worthyConsumption);
-    }
-    public void updateUrlWorthyConsumption(WorthyConsumptionRequestDto.UpdateUrlRequest worthyConsumptionRequestDto){
-        WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionRequestDto.getId()).orElseThrow(CWorthyConsumptionNotFoundException:: new);
-        worthyConsumption.getWorthyConsumptionUrl().updateUrl(worthyConsumptionRequestDto);
-        worthyConsumptionRepository.save(worthyConsumption);
-    }
-    public void updatePriceWorthyConsumption(WorthyConsumptionRequestDto.UpdatePriceRequest worthyConsumptionRequestDto){
-        WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionRequestDto.getId()).orElseThrow(CWorthyConsumptionNotFoundException:: new);
-        worthyConsumption.updatePrice(worthyConsumptionRequestDto);
-        worthyConsumptionRepository.save(worthyConsumption);
-    }
-    public void updatePlaceWorthyConsumption(WorthyConsumptionRequestDto.UpdatePlaceRequest worthyConsumptionRequestDto){
-        WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionRequestDto.getId()).orElseThrow(CWorthyConsumptionNotFoundException:: new);
-        worthyConsumption.updatePlace(worthyConsumptionRequestDto);
-        worthyConsumptionRepository.save(worthyConsumption);
-    }
-    public void updateIssuableCouponDate(WorthyConsumptionConditionDto.UpdateIssuableCouponDateRequest worthyConsumptionRequestDto){
-        WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionRequestDto.getId()).orElseThrow(CWorthyConsumptionNotFoundException:: new);
-        worthyConsumption.getCondition().updateIssuableCouponDate(worthyConsumptionRequestDto);
-        worthyConsumptionRepository.save(worthyConsumption);
-    }
-    public void updateCouponCondition(WorthyConsumptionConditionDto.UpdateConditionRequest worthyConsumptionRequestDto){
-        WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionRequestDto.getId()).orElseThrow(CWorthyConsumptionNotFoundException:: new);
-        worthyConsumption.getCondition().updateCondition(worthyConsumptionRequestDto);
-        worthyConsumptionRepository.save(worthyConsumption);
-    }
+    public void updateWorthyConsumption(Long worthyConsumptionId, WorthyConsumptionDto.Update worthyConsumptionDto) throws IOException {
+        WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionId).orElseThrow(CWorthyConsumptionNotFoundException:: new);
 
-    /**
-     * 가치소비를 삭제하는 로직입니다.
-     * @param worthyConsumptionId
-     */
+        updateUrl(worthyConsumption, worthyConsumptionDto);
+        worthyConsumption.getCondition().update(worthyConsumptionDto);
+        worthyConsumption.update(worthyConsumptionDto);
+
+        worthyConsumptionRepository.save(worthyConsumption);
+    }
+    public void updateUrl(WorthyConsumption worthyConsumption, WorthyConsumptionDto.Update worthyConsumptionDto) throws IOException {
+        Video video = videoUploader.upload(worthyConsumptionDto.getVideo(), "values");
+        Image image = imageUploader.upload(worthyConsumptionDto.getImage(), "values");
+        Image detailImage = imageUploader.upload(worthyConsumptionDto.getDetailImage(), "values");
+        Image detailBackgroundImage = imageUploader.upload(worthyConsumptionDto.getDetailBackgroundImage(), "values");
+        Image placeImage = imageUploader.upload(worthyConsumptionDto.getPlaceImage(), "values");
+
+        worthyConsumption.getWorthyConsumptionUrl().update(video.getVideoPath(), image.getImagePath(), detailImage.getImagePath(), detailBackgroundImage.getImagePath(), placeImage.getImagePath());
+    }
+        /**
+         * 가치소비를 삭제하는 로직입니다.
+         * @param worthyConsumptionId
+         */
     public void deleteWorthyConsumption(Long worthyConsumptionId){
         WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionId).orElseThrow(CWorthyConsumptionNotFoundException:: new);
         worthyConsumptionRepository.delete(worthyConsumption);
@@ -115,11 +130,9 @@ public class WorthyConsumptionService {
      */
     public void checkConditionToIssuableCoupon(WorthyConsumption worthyConsumption){
         worthyConsumption.getCondition().checkIssuableCouponStatus(OK);
-        //checkConditionDateForCoupon(worthyConsumption);
-        checkMaxParticipantsForCoupon(worthyConsumption.getCoupons().get(1).getId(), worthyConsumption);//쿠폰이 많을 때, 해당 달에 해당하는 쿠폰을 반환하기 위해 List 말고 Stack 같은 자료구조형을 생각해봅니다..
+        checkMaxParticipantsForCoupon(worthyConsumption.getCoupons().get(0).getId(), worthyConsumption);
         checkConditionDateForCoupon(worthyConsumption);
-        //worthyConsumption.getCondition().checkIssuableCouponStatus(OK);
-        //worthyConsumption.getCondition().setIsIssuableCoupon(OK);
+        worthyConsumptionRepository.save(worthyConsumption);
     }
     public void checkConditionDateForCoupon(WorthyConsumption worthyConsumption){
         if(!(worthyConsumption.getCondition().getIssuableCouponStartDate().isBefore(LocalDate.now())//테스트시 now 설정 X

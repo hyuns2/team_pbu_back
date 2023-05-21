@@ -15,22 +15,34 @@ public class Shorts {
     private Long id;
     @Enumerated(EnumType.STRING)
     private ShortsCategory category;
+    @Setter
     private String title;
+    @Setter
     private String content;
-    private String videoUrl;
-    private String imageUrl;
+    @Setter
+    private String imagePath;
+    @Setter
+    private String videoPath;
 
-    public Shorts(ShortsDto.creatRequest shortsRequestDto){
-        this.title = shortsRequestDto.getTitle();
-        this.content = shortsRequestDto.getContent();
-        this.videoUrl = shortsRequestDto.getVideoUrl();
-        this.imageUrl = shortsRequestDto.getImageUrl();
-        this.category = shortsRequestDto.getCategory();
+    public Shorts(ShortsDto.creatRequest shortsDto, String videoPath, String imagePath){
+        this.title = shortsDto.getTitle();
+        this.content = shortsDto.getContent();
+        this.imagePath = imagePath;
+        this.videoPath = videoPath;
+        this.category = shortsDto.getCategory();
     }
-    public void updateShorts(ShortsDto.updateRequest shortsRequestDto){
-        this.title = shortsRequestDto.getTitle();
-        this.content = shortsRequestDto.getContent();
-        this.videoUrl = shortsRequestDto.getVideoUrl();
-        this.imageUrl = shortsRequestDto.getImageUrl();
+    public void update(ShortsDto.updateRequest shortsDto, String imagePath, String videoPath){
+        this.title = shortsDto.getTitle();
+        this.content = shortsDto.getContent();
+        this.imagePath = imagePath;
+        this.videoPath = videoPath;
+        this.category = shortsDto.getCategory();
+
+    }
+    public void updateImage(String imagePath){
+        this.imagePath = imagePath;
+    }
+    public void updateVideo(String videoPath){
+        this.videoPath = videoPath;
     }
 }

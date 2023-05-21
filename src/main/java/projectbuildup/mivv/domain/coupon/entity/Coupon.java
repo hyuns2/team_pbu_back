@@ -3,7 +3,7 @@ package projectbuildup.mivv.domain.coupon.entity;
 import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
 import lombok.*;
-import projectbuildup.mivv.domain.coupon.dto.request.CouponRequestDto;
+import projectbuildup.mivv.domain.coupon.dto.CouponDto;
 import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumption;
 import projectbuildup.mivv.global.common.BaseTimeEntity;
 
@@ -27,7 +27,7 @@ public class Coupon extends BaseTimeEntity {
     @Nonnull
     private String title;
     @Nonnull
-    private String imageUrl;
+    private String imagePath;
     @Nonnull
     private int pin;
     @Nonnull
@@ -35,22 +35,19 @@ public class Coupon extends BaseTimeEntity {
     @Nonnull
     private LocalDate limitEndDate;
 
-    public Coupon(CouponRequestDto.CreationRequest couponRequestDto) {
-        this.title = couponRequestDto.getTitle();
-        this.imageUrl = couponRequestDto.getImageUrl();
-        this.pin = couponRequestDto.getPin();
-        this.limitStartDate = couponRequestDto.getLimitStartDate();
-        this.limitEndDate = couponRequestDto.getLimitEndDate();
+    public Coupon(CouponDto.Creation couponDto,String imagePath) {
+        this.title = couponDto.getTitle();
+        this.imagePath = imagePath;
+        this.pin = couponDto.getPin();
+        this.limitStartDate = couponDto.getLimitStartDate();
+        this.limitEndDate = couponDto.getLimitEndDate();
     }
-
-    public void updateContent(CouponRequestDto.UpdateContentRequest couponRequestDto){
-        this.title = couponRequestDto.getTitle();
-        this.imageUrl = couponRequestDto.getImageUrl();
-    }
-    public void updateDate(CouponRequestDto.UpdateDateRequest couponRequestDto){
-        this.limitStartDate = couponRequestDto.getLimitStartDate();
-        this.limitEndDate = couponRequestDto.getLimitEndDate();
-
+    public void update(CouponDto.Update couponDto, String imagePath){
+        this.title = couponDto.getTitle();
+        this.imagePath = imagePath;
+        this.pin = couponDto.getPin();
+        this.limitStartDate = couponDto.getLimitStartDate();
+        this.limitEndDate = couponDto.getLimitEndDate();
     }
 
 

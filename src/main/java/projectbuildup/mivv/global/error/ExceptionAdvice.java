@@ -206,4 +206,12 @@ public class ExceptionAdvice {
         e.printStackTrace();
         return new ResponseEntity<>(new ErrorResponseDto(errorCode), errorCode.getStatusCode());
     }
+
+    @ExceptionHandler(CNotificationNotFoundException.class)
+    protected ResponseEntity<ErrorResponseDto> handle(CNotificationNotFoundException e) {
+        ErrorCode errorCode = e.getErrorCode();
+        e.printStackTrace();
+        return new ResponseEntity<>(new ErrorResponseDto(errorCode), errorCode.getStatusCode());
+    }
+
 }

@@ -12,18 +12,18 @@ public class WorthyConsumptionResponseDto {
     @Getter @Setter
     public static class ReadSummaryResponse {
         private String title;
-        private int originalPrice;
-        private int salePrice;
-        private String priceTag;
-        private long lastMonthAmount;
-        private int maxParticipants;
+        private Integer originalPrice;
+        private Integer salePrice;
+        private String availablePrice;
+        private Long lastMonthAmount;
+        private Integer maxParticipants;
         private String summary;
 
         public ReadSummaryResponse(WorthyConsumption worthyConsumption) {
             this.title = worthyConsumption.getTitle();
             this.originalPrice = worthyConsumption.getOriginalPrice();
             this.salePrice = worthyConsumption.getSalePrice();
-            this.priceTag = worthyConsumption.getPriceTag();
+            this.availablePrice = worthyConsumption.getAvailablePrice();
             this.lastMonthAmount = worthyConsumption.getCondition().getLastMonthAmount();
             this.maxParticipants = worthyConsumption.getCondition().getMaxParticipants();
             this.summary = worthyConsumption.getSummary();
@@ -33,19 +33,27 @@ public class WorthyConsumptionResponseDto {
     @Getter @Setter
     public static class ReadBasicResponse extends ReadSummaryResponse{
         private List<String> hashtags;
-        private String videoUrl;
-        private String imageUrl;
+        private String videoPath;
+        private String imagePath;
         private CheckConditionType isIssuableCoupon;
-        private boolean isLiked;//이거 처리 해야 됨
+        private Boolean isLiked;
+
+        public ReadBasicResponse(WorthyConsumption worthyConsumption, Boolean isLiked) {
+            super(worthyConsumption);
+            this.hashtags = worthyConsumption.getHashtags();
+            this.videoPath = worthyConsumption.getWorthyConsumptionUrl().getVideoPath();
+            this.imagePath = worthyConsumption.getWorthyConsumptionUrl().getImagePath();
+            this.isIssuableCoupon = worthyConsumption.getCondition().getIsIssuableCoupon();
+            this.isLiked = isLiked;
+        }
 
         public ReadBasicResponse(WorthyConsumption worthyConsumption) {
             super(worthyConsumption);
             this.hashtags = worthyConsumption.getHashtags();
-            this.videoUrl = worthyConsumption.getWorthyConsumptionUrl().getVideoUrl();
-            this.imageUrl = worthyConsumption.getWorthyConsumptionUrl().getImageUrl();
+            this.videoPath = worthyConsumption.getWorthyConsumptionUrl().getVideoPath();
+            this.imagePath = worthyConsumption.getWorthyConsumptionUrl().getImagePath();
             this.isIssuableCoupon = worthyConsumption.getCondition().getIsIssuableCoupon();
         }
-
     }
     @NoArgsConstructor @AllArgsConstructor
     @Getter @Setter
@@ -56,45 +64,27 @@ public class WorthyConsumptionResponseDto {
         private String detailImageUrl;
         private String detailBackgroundImageUrl;
         private String videoUrl;
-        private List<String> whyRecommendation;
-        private int originalPrice;
-        private int salePrice;
-        private String priceTag;
+        private List<String> recommendationReason;
+        private Integer originalPrice;
+        private Integer salePrice;
+        private String availablePrice;
         private String placeImageUrl;
-        private String placeTag;
+        private String availablePlace;
 
         public ReadDetailResponse(WorthyConsumption worthyConsumption) {
             this.title = worthyConsumption.getTitle();
             this.hashtags = worthyConsumption.getHashtags();
-            this.detailImageUrl = worthyConsumption.getWorthyConsumptionUrl().getDetailImageUrl();
-            this.detailBackgroundImageUrl = worthyConsumption.getWorthyConsumptionUrl().getDetailBackgroundImageUrl();
-            this.videoUrl = worthyConsumption.getWorthyConsumptionUrl().getVideoUrl();
-            this.whyRecommendation = worthyConsumption.getWhyRecommendation();
+            this.detailImageUrl = worthyConsumption.getWorthyConsumptionUrl().getDetailImagePath();
+            this.detailBackgroundImageUrl = worthyConsumption.getWorthyConsumptionUrl().getDetailBackgroundImagePath();
+            this.videoUrl = worthyConsumption.getWorthyConsumptionUrl().getVideoPath();
+            this.recommendationReason = worthyConsumption.getRecommendationReason();
             this.originalPrice = worthyConsumption.getOriginalPrice();
             this.salePrice = worthyConsumption.getSalePrice();
-            this.priceTag = worthyConsumption.getPriceTag();
-            this.placeImageUrl = worthyConsumption.getWorthyConsumptionUrl().getPlaceImageUrl();
-            this.placeTag = worthyConsumption.getPlaceTag();
+            this.availablePrice = worthyConsumption.getAvailablePrice();
+            this.placeImageUrl = worthyConsumption.getWorthyConsumptionUrl().getPlaceImagePath();
+            this.availablePlace = worthyConsumption.getAvailablePlace();
         }
 
 
     }
-//    public static class ReadDetailResponse extends ReadBasicResponse{
-//        private int maxParticipants;
-//        private String detailImageUrl;
-//        private String detailBackgroundImageUrl;
-//        private List<String> whyRecommendation;
-//        private String placeImageUrl;
-//        private String placeTag;
-//
-//        public ReadDetailResponse(WorthyConsumption worthyConsumption) {
-//            super(worthyConsumption);
-//            this.maxParticipants = worthyConsumption.getCondition().getMaxParticipants();
-//            this.detailImageUrl = worthyConsumption.getWorthyConsumptionUrl().getDetailImageUrl();
-//            this.detailBackgroundImageUrl = worthyConsumption.getWorthyConsumptionUrl().getDetailBackgroundImageUrl();
-//            this.whyRecommendation = worthyConsumption.getWhyRecommendation();
-//            this.placeImageUrl = worthyConsumption.getWorthyConsumptionUrl().getPlaceImageUrl();
-//            this.placeTag = worthyConsumption.getPlaceTag();
-//        }
-//    }
 }

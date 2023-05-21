@@ -1,20 +1,29 @@
 package projectbuildup.mivv.domain.worthyConsumption.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import projectbuildup.mivv.domain.coupon.dto.request.CouponRequestDto;
+import projectbuildup.mivv.domain.coupon.dto.CouponDto;
 import projectbuildup.mivv.domain.coupon.service.CouponService;
-import projectbuildup.mivv.domain.worthyConsumption.dto.WorthyConsumptionConditionDto;
-import projectbuildup.mivv.domain.worthyConsumption.dto.request.WorthyConsumptionRequestDto;
+import projectbuildup.mivv.domain.likes.service.LikesService;
+import projectbuildup.mivv.domain.user.entity.User;
+import projectbuildup.mivv.domain.worthyConsumption.dto.WorthyConsumptionDto;
 import projectbuildup.mivv.domain.worthyConsumption.dto.response.WorthyConsumptionResponseDto;
 import projectbuildup.mivv.domain.worthyConsumption.service.WorthyConsumptionService;
+import projectbuildup.mivv.global.constant.ExampleValue;
+import projectbuildup.mivv.global.constant.Header;
 
+import java.io.IOException;
 import java.util.List;
 
 @Slf4j
@@ -25,16 +34,17 @@ import java.util.List;
 public class WorthyConsumptionController {
     private final WorthyConsumptionService worthyConsumptionService;
     private final CouponService couponService;
-
     /**
      * 가치소비를 생성합니다.
-     * @param worthyConsumptionRequestDto
+     * @param
      * @return
      */
     @Operation(summary = "가치소비 생성", description = "가치소비를 등록합니다.")
-    @PostMapping
-    public ResponseEntity<HttpStatus> createWorthyConsumption(@Valid @RequestBody WorthyConsumptionRequestDto.CreationRequest worthyConsumptionRequestDto){
-            worthyConsumptionService.createWorthyConsumption(worthyConsumptionRequestDto);
+    @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<HttpStatus> createWorthyConsumption(@Valid @ModelAttribute("createWorthyConsumptions") WorthyConsumptionDto.Creation worthyConsumptionDto) throws IOException {
+        worthyConsumptionService.createWorthyConsumption(worthyConsumptionDto);
             return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -56,9 +66,11 @@ public class WorthyConsumptionController {
         return new ResponseEntity<>(worthyConsumptionResponseDto, HttpStatus.OK);
     }
     @Operation(summary = "가치소비 조회", description = "가치소비를 조회합니다.")
+    @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/{worthyConsumptionId}/basic")
-    public ResponseEntity<WorthyConsumptionResponseDto.ReadBasicResponse> getWorthyConsumptionBasic(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId){
-        WorthyConsumptionResponseDto.ReadBasicResponse WorthyConsumptionResponseDto = worthyConsumptionService.readBasicWorthyConsumption(worthyConsumptionId);
+    public ResponseEntity<WorthyConsumptionResponseDto.ReadBasicResponse> getWorthyConsumptionBasic(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId, @AuthenticationPrincipal User user){
+        WorthyConsumptionResponseDto.ReadBasicResponse WorthyConsumptionResponseDto = worthyConsumptionService.readBasicWorthyConsumption(worthyConsumptionId, user.getId());
         return new ResponseEntity<>(WorthyConsumptionResponseDto, HttpStatus.OK);
     }
     @Operation(summary = "가치소비 상세 조회", description = "가치소비의 상세 내용을 조회합니다.")
@@ -68,9 +80,11 @@ public class WorthyConsumptionController {
         return new ResponseEntity<>(WorthyConsumptionResponseDto, HttpStatus.OK);
     }
     @Operation(summary = "가치소비 전체 조회", description = "전체 가치소비를 조회합니다.")
+    @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
+    @PreAuthorize("hasRole('USER')")
     @GetMapping
-    public ResponseEntity<List<WorthyConsumptionResponseDto.ReadBasicResponse>> getAllWorthyConsumption(){
-        List<WorthyConsumptionResponseDto.ReadBasicResponse> worthyConsumptionResponseDtos = worthyConsumptionService.readAllWorthyConsumption();
+    public ResponseEntity<List<WorthyConsumptionResponseDto.ReadBasicResponse>> getAllWorthyConsumption(@AuthenticationPrincipal User user){
+        List<WorthyConsumptionResponseDto.ReadBasicResponse> worthyConsumptionResponseDtos = worthyConsumptionService.readAllWorthyConsumption(user.getId());
         return new ResponseEntity<>(worthyConsumptionResponseDtos, HttpStatus.OK);
     }
 
@@ -84,46 +98,17 @@ public class WorthyConsumptionController {
      * date는 가치소비의 날짜에 해당합니다.
      *
      * @param worthyConsumptionId
-     * @param worthyConsumptionRequestDto
+     * @param
      * @return
      */
-    @Operation(summary = "가치소비 설명 수정", description = "가치소비의 설명을 수정합니다.")
-    @PutMapping("/{worthyConsumptionId}/content")
-    public ResponseEntity<HttpStatus> updateWorthyConsumptionContent(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId, @Valid @RequestBody WorthyConsumptionRequestDto.UpdateContentRequest worthyConsumptionRequestDto){
-        worthyConsumptionService.updateContentWorthyConsumption(worthyConsumptionRequestDto);
+    @Operation(summary = "가치소비 수정", description = "가치소비를 수정합니다.")
+    @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping(value = "{worthyConsumptionId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<HttpStatus> updateWorthyConsumption(@PathVariable(name = "worthyConsumptionId")Long worthyConsumptionId, @ModelAttribute("updateWorthyConsumptions") WorthyConsumptionDto.Update worthyConsumptionDto) throws IOException {
+        worthyConsumptionService.updateWorthyConsumption(worthyConsumptionId, worthyConsumptionDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    @Operation(summary = "가치소비의 미디어 url 수정", description = "가치소비의 이미지 및 영상의 url을 수정합니다.")
-    @PutMapping("/{worthyConsumptionId}/url")
-    public ResponseEntity<HttpStatus> updateWorthyConsumptionUrl(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId, @Valid @RequestBody WorthyConsumptionRequestDto.UpdateUrlRequest worthyConsumptionRequestDto){
-        worthyConsumptionService.updateUrlWorthyConsumption(worthyConsumptionRequestDto);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-    @Operation(summary = "가치소비 가격 관련 수정", description = "가치소비의 가격과 가격 태그를 수정합니다.")
-    @PutMapping("/{worthyConsumptionId}/price")
-    public ResponseEntity<HttpStatus> updateWorthyConsumptionPrice(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId, @Valid @RequestBody WorthyConsumptionRequestDto.UpdatePriceRequest worthyConsumptionRequestDto){
-        worthyConsumptionService.updatePriceWorthyConsumption(worthyConsumptionRequestDto);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-    @Operation(summary = "가치소비 장소 관련 수정", description = "가치소비의 장소과 장소 태그를 수정합니다.")
-    @PutMapping("/{worthyConsumptionId}/place")
-    public ResponseEntity<HttpStatus> updateWorthyConsumptionPlace(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId, @Valid @RequestBody WorthyConsumptionRequestDto.UpdatePlaceRequest worthyConsumptionRequestDto){
-        worthyConsumptionService.updatePlaceWorthyConsumption(worthyConsumptionRequestDto);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-    @Operation(summary = "가치소비 날짜 수정", description = "가치소비의 쿠폰 발급 가능 기간을 수정합니다.")
-    @PutMapping("/{worthyConsumptionId}/date")
-    public ResponseEntity<HttpStatus> updateWorthyConsumptionDate(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId, @Valid @RequestBody WorthyConsumptionConditionDto.UpdateIssuableCouponDateRequest worthyConsumptionRequestDto){
-        worthyConsumptionService.updateIssuableCouponDate(worthyConsumptionRequestDto);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-    @Operation(summary = "가치소비 조건 수정", description = "가치소비의 쿠폰 발급시 조건을 수정합니다.")
-    @PutMapping("/{worthyConsumptionId}/condition")
-    public ResponseEntity<HttpStatus> updateWorthyConsumptionCondition(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId, @Valid @RequestBody WorthyConsumptionConditionDto.UpdateConditionRequest worthyConsumptionRequestDto){
-        worthyConsumptionService.updateCouponCondition(worthyConsumptionRequestDto);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
     /**
      * 가치소비를 삭제합니다.
      *
@@ -131,6 +116,8 @@ public class WorthyConsumptionController {
      * @return
      */
     @Operation(summary = "가치소비 삭제", description = "가치소비를 삭제합니다.")
+    @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{worthyConsumptionId}")
     public ResponseEntity<HttpStatus> deleteWorthyConsumption(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId){
         worthyConsumptionService.deleteWorthyConsumption(worthyConsumptionId);
@@ -141,14 +128,15 @@ public class WorthyConsumptionController {
      * 가치소비에서 쿠폰을 생성하는 로직입니다.
      *
      * @param worthyConsumptionId
-     * @param couponRequestDto
+     * @param
      * @return
      */
     @Operation(summary = "가치소비의 쿠폰 등록", description = "가치소비의 쿠폰을 등록합니다.")
-    @PostMapping("/{worthyConsumptionId}")
-    public ResponseEntity<HttpStatus> createCoupon(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId, @Valid @RequestBody CouponRequestDto.CreationRequest couponRequestDto){
-        couponService.createCoupon(worthyConsumptionId, couponRequestDto);
+    @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping(value = "/{worthyConsumptionId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<HttpStatus> createCoupon(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId, @Valid @ModelAttribute("createCoupons") CouponDto.Creation couponDto) throws IOException {
+        couponService.createCoupon(worthyConsumptionId, couponDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
-
 }
