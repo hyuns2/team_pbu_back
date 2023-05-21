@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 import projectbuildup.mivv.domain.auth.dto.AuthDto;
 import projectbuildup.mivv.domain.auth.repository.IdentityVerificationRepository;
 import projectbuildup.mivv.domain.auth.repository.TokenRepository;
+import projectbuildup.mivv.domain.couponIssuance.repository.CouponIssuanceRepository;
+import projectbuildup.mivv.domain.inquiry.repository.InquiryRepository;
+import projectbuildup.mivv.domain.participation.repository.ParticipationRepository;
 import projectbuildup.mivv.domain.user.entity.IdentityVerification;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.domain.user.repository.UserRepository;
@@ -29,6 +32,9 @@ public class AuthService {
     private final JwtProvider jwtProvider;
     private final JwtValidator jwtValidator;
     private final TokenRepository tokenRepository;
+    private final CouponIssuanceRepository issuanceRepository;
+    private final InquiryRepository inquiryRepository;
+    private final ParticipationRepository participationRepository;
 
     /**
      * 회원 가입합니다.
@@ -84,8 +90,15 @@ public class AuthService {
     @Transactional
     public void withdraw(AuthDto.UnlinkRequestDto requestDto) {
         User user = userRepository.findById(requestDto.getUserId()).orElseThrow(CUserNotFoundException::new);
+        deleteRelatedData(user);
         userRepository.delete(user);
         logout(requestDto);
+    }
+
+    private void deleteRelatedData(User user) {
+        issuanceRepository.deleteAllByUser(user);
+        inquiryRepository.deleteAllByUser(user);
+        participationRepository.deleteAllByUser(user);
     }
 
     /**

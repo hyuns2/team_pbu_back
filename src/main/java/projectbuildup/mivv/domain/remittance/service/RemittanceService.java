@@ -58,8 +58,7 @@ public class RemittanceService {
         if (!participation.canRemit()) {
             throw new CSavingCountOverException();
         }
-        Remittance remittance = Remittance.newDeposit(requestDto.getAmount(), participation);
-        return executorService.submit(() -> remittanceChecker.check(remittance, participation, startTime));
+        return executorService.submit(() -> remittanceChecker.check(requestDto.getAmount(), participation, startTime));
     }
 
     /**

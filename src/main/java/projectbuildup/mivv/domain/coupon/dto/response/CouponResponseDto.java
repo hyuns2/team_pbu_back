@@ -15,12 +15,12 @@ public class CouponResponseDto {
     public static class ReadResponse{
         String title;
         String content;
-        String imageUrl;
+        private String imagePath;
         LocalDate limitStartDate;
         LocalDate limitEndDate;
         public ReadResponse(Coupon coupon){
             this.title = coupon.getTitle();
-            this.imageUrl = coupon.getImageUrl();
+            this.imagePath = coupon.getImagePath();
             this.limitStartDate = coupon.getLimitStartDate();
             this.limitEndDate = coupon.getLimitEndDate();
         }
@@ -33,15 +33,15 @@ public class CouponResponseDto {
         int originalPrice;
         int salePrice;
         String priceTag;
-        String imageUrl;
+        private String imagePath;
         LocalDate limitStartDate;
         LocalDate limitEndDate;
         public ReadResponseWithWorthyConsumption(Coupon coupon){
             this.title = coupon.getTitle();
             this.originalPrice = coupon.getWorthyConsumption().getOriginalPrice();
             this.salePrice = coupon.getWorthyConsumption().getSalePrice();
-            this.priceTag = coupon.getWorthyConsumption().getPriceTag();
-            this.imageUrl = coupon.getImageUrl();
+            this.priceTag = coupon.getWorthyConsumption().getAvailablePrice();
+            this.imagePath = coupon.getImagePath();
             this.limitStartDate = coupon.getLimitStartDate();
             this.limitEndDate = coupon.getLimitEndDate();
         }

@@ -21,4 +21,5 @@ public interface CouponIssuanceRepository extends JpaRepository<CouponIssuance, 
     @Query("select c.createdTime from CouponIssuance c where c.user = ?1 order by c.createdTime DESC")
     List<LocalDateTime> findCreatedTimeByUserId(User user);
 
+    void deleteAllByUser(User user);
 }

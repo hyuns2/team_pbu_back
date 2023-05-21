@@ -15,6 +15,7 @@ import projectbuildup.mivv.global.error.exception.CUserNotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @RequiredArgsConstructor
 @Service
@@ -64,25 +65,25 @@ public class RankingService {
 
     private RankDto.UnitResponse toResponseDto(RankDto.Unit rank, Challenge challenge) {
         User user = userRepository.findById(rank.getUserId()).orElseThrow(CUserNotFoundException::new);
-        long sumAmount = remittanceRepository.findSumAmountByUserAndChallenge(user, challenge);
+        Long sumAmount = remittanceRepository.findSumAmountByUserAndChallenge(user, challenge);
         return RankDto.UnitResponse.builder()
                 .rank(rank.getRank())
                 .userId(user.getId())
                 .nickname(user.getNickname())
                 .profileImage(user.getProfileImage())
-                .amount(sumAmount)
+                .amount(Objects.requireNonNullElse(sumAmount, 0L))
                 .build();
     }
 
     private RankDto.UnitResponse toResponseDto(RankDto.Unit rank) {
         User user = userRepository.findById(rank.getUserId()).orElseThrow(CUserNotFoundException::new);
-        long sumAmount = remittanceRepository.findSumAmountByUser(user);
+        Long sumAmount = remittanceRepository.findSumAmountByUser(user);
         return RankDto.UnitResponse.builder()
                 .rank(rank.getRank())
                 .userId(user.getId())
                 .nickname(user.getNickname())
                 .profileImage(user.getProfileImage())
-                .amount(sumAmount)
+                .amount(Objects.requireNonNullElse(sumAmount, 0L))
                 .build();
     }
 

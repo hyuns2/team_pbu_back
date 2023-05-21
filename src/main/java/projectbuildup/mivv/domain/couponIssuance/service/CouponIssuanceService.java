@@ -69,13 +69,9 @@ public class CouponIssuanceService {
     }
     private void isAchievedLastAmount(User user, Coupon coupon){
         long userLastSumAmount = remittanceRepository.findSumAmountByUser(user);
-        log.info("사용자 전월 총 금액 {}", userLastSumAmount);
-
         long limitLastSumAmount = coupon.getWorthyConsumption().getCondition().getLastMonthAmount();
-        log.info("전월 한도 금액 {}", limitLastSumAmount);
         if(userLastSumAmount < limitLastSumAmount)
             throw new CBadRequestException("전월 달성 금액 미달입니다.");
-
     }
     /**
      * 사용자가 쿠폰을 발급합니다.
@@ -95,14 +91,11 @@ public class CouponIssuanceService {
         userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
 
         List<CouponIssuance> couponIssuances = couponIssuanceRepository.findAllByUserId(userId).stream().toList();
-        log.info("사용자가 발급한 쿠폰 개수 {}", couponIssuances.stream().count());
-
         List<Coupon> coupons = couponIssuances.stream()
                 .filter(couponIssuance ->
                         ((couponIssuance.isCreated()==true)&&(couponIssuance.isUsed()==false)))
                 .map(CouponIssuance::getCoupon)
                 .collect(Collectors.toList());
-        log.info("사용자가 발급한 쿠폰 중 미사용 쿠폰 개수 {}", coupons.stream().count());
 
         return coupons.stream()
                 .map(CouponResponseDto.ReadResponseWithWorthyConsumption::new)
@@ -123,7 +116,6 @@ public class CouponIssuanceService {
                         ((couponIssuance.isCreated()==true)&&(couponIssuance.isUsed()==true)))
                 .map(CouponIssuance::getCoupon)
                 .collect(Collectors.toList());
-        log.info("사용자가 발급한 쿠폰 중 사용 완료 쿠폰 개수 {}", coupons.stream().count());
 
         return coupons.stream()
                 .map(CouponResponseDto.ReadResponseWithWorthyConsumption::new)
@@ -144,7 +136,6 @@ public class CouponIssuanceService {
         isCorrectPinNumber(coupon, pinDto.getPin());
 
         couponIssuance.useCoupon();
-
         couponIssuanceRepository.save(couponIssuance);
     }
     /**
@@ -154,23 +145,12 @@ public class CouponIssuanceService {
      * @param couponIssuance
      * @return
      */
-    /*public Boolean isUsable(CouponIssuance couponIssuance){
-        if((couponIssuance.getIsCreated()==true) && (couponIssuance.getIsUsed() == false))
-            return true;
-        else
-            return false;
-
-    }*/
     private void isUsableCoupon(CouponIssuance couponIssuance){
         if(! ((couponIssuance.isCreated()==true)
                 && (couponIssuance.isUsed()==false)) )
             throw new CBadRequestException("사용 불가능한 쿠폰입니다.");
     }
     private void isUsableCouponDate(Coupon coupon){
-        /*if(! ((coupon.getLimitStartDate().isBefore(LocalDate.now())) || coupon.getLimitStartDate().isEqual(LocalDate.now())
-                && (coupon.getLimitEndDate().isAfter(LocalDate.now())) || coupon.getLimitStartDate().isEqual(LocalDate.now())
-        ))
-            throw new CBadRequestException("사용 가능한 날짜가 지난 쿠폰입니다.");*/
         if(coupon.getLimitStartDate().isAfter(LocalDate.now())||coupon.getLimitEndDate().isBefore(LocalDate.now()))
             throw new CBadRequestException("사용 가능한 날짜가 지난 쿠폰입니다.");
     }
@@ -180,9 +160,6 @@ public class CouponIssuanceService {
      * @param pin
      */
     private void isCorrectPinNumber(Coupon coupon, int pin){
-
-        log.info("쿠폰의 핀 번호 {} 입력받은 핀 번호 {}", coupon.getPin(), pin);
-
         if(coupon.getPin() != pin)
             throw new CBadRequestException("핀 번호가 일치하지 않습니다.");
     }

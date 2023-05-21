@@ -3,9 +3,7 @@ package projectbuildup.mivv.domain.worthyConsumption.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
-import projectbuildup.mivv.domain.worthyConsumption.dto.WorthyConsumptionConditionDto;
-import projectbuildup.mivv.domain.worthyConsumption.dto.request.WorthyConsumptionRequestDto;
-import projectbuildup.mivv.global.error.exception.CBadRequestException;
+import projectbuildup.mivv.domain.worthyConsumption.dto.WorthyConsumptionDto;
 
 import java.time.LocalDate;
 @Entity @Table(name = "WorthyConsumptionCondition")
@@ -22,24 +20,20 @@ public class Condition {
     private LocalDate issuableCouponEndDate;
     @NonNull
     private long lastMonthAmount;
-    //@OneToOne(mappedBy = "Condition", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    //private WorthyConsumption worthyConsumption;
-    @Setter
     @Enumerated(EnumType.STRING)
     private CheckConditionType isIssuableCoupon;
-    public void updateCondition(WorthyConsumptionConditionDto.UpdateConditionRequest worthyConsumptionRequestDto){
-        this.maxParticipants = worthyConsumptionRequestDto.getMaxParticipants();
-        this.lastMonthAmount = worthyConsumptionRequestDto.getLastMonthAmount();
+
+    public Condition(WorthyConsumptionDto.Creation worthyConsumptionDto){
+        this.maxParticipants= worthyConsumptionDto.getMaxParticipants();
+        this.lastMonthAmount = worthyConsumptionDto.getLastMonthAmount();
+        this.issuableCouponStartDate = worthyConsumptionDto.getIssuableCouponStartDate();
+        this.issuableCouponEndDate = worthyConsumptionDto.getIssuableCouponEndDate();
     }
-    public void updateIssuableCouponDate(WorthyConsumptionConditionDto.UpdateIssuableCouponDateRequest requestWorthyConsumptionDto){
-        this.issuableCouponStartDate = requestWorthyConsumptionDto.getIssuableCouponStartDate();
-        this.issuableCouponEndDate = requestWorthyConsumptionDto.getIssuableCouponEndDate();
-    }
-    public Condition(WorthyConsumptionConditionDto.CreationRequest conditionDto){
-        this.maxParticipants= conditionDto.getMaxParticipants();
-        this.lastMonthAmount = conditionDto.getLastMonthAmount();
-        this.issuableCouponStartDate = conditionDto.getIssuableCouponStartDate();
-        this.issuableCouponEndDate = conditionDto.getIssuableCouponEndDate();
+    public void update(WorthyConsumptionDto.Update worthyConsumptionDto){
+        this.maxParticipants= worthyConsumptionDto.getMaxParticipants();
+        this.lastMonthAmount = worthyConsumptionDto.getLastMonthAmount();
+        this.issuableCouponStartDate = worthyConsumptionDto.getIssuableCouponStartDate();
+        this.issuableCouponEndDate = worthyConsumptionDto.getIssuableCouponEndDate();
     }
     public void checkIssuableCouponStatus(CheckConditionType conditionType){
         this.isIssuableCoupon = conditionType;
