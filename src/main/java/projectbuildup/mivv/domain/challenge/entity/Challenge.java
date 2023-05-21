@@ -50,7 +50,7 @@ public class Challenge extends BaseTimeEntity {
         this.image = image;
     }
 
-    public static Challenge from(ChallengeDto.CreationRequest requestDto, Image image) {
+    public static Challenge of(ChallengeDto.CreationRequest requestDto, Image image) {
         return Challenge.builder()
                 .mainTitle(requestDto.getMainTitle())
                 .subTitle(requestDto.getSubTitle())

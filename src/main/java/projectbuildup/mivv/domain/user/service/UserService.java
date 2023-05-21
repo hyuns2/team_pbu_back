@@ -3,6 +3,7 @@ package projectbuildup.mivv.domain.user.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import projectbuildup.mivv.global.common.imageStore.Image;
+import projectbuildup.mivv.global.common.imageStore.ImageType;
 import projectbuildup.mivv.global.common.imageStore.ImageUploader;
 import projectbuildup.mivv.domain.user.dto.ProfileDto;
 import projectbuildup.mivv.domain.user.entity.User;
@@ -38,7 +39,7 @@ public class UserService {
     public void updateProfile(Long userId, ProfileDto.UpdateRequest requestDto) throws IOException {
         User user = userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
         deleteExistingImage(user);
-        Image image = imageUploader.upload(requestDto.getImageFile(), "profiles");
+        Image image = imageUploader.upload(requestDto.getImageFile(), ImageType.USER_PROFILE);
         user.updateProfile(requestDto.getNickname(), image);
         userRepository.save(user);
     }

@@ -35,7 +35,7 @@ public class ChallengeCrudController {
     @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/challenges", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Void> createChallenge(@Valid @ModelAttribute("createChallenge") ChallengeDto.CreationRequest requestDto) throws IOException {
+    public ResponseEntity<Void> createChallenge(@Valid @ModelAttribute ChallengeDto.CreationRequest requestDto) throws IOException {
         challengeService.createChallenge(requestDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -48,12 +48,11 @@ public class ChallengeCrudController {
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
-
     @Operation(summary = "챌린지 정보 수정", description = "")
     @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('ADMIN')")
-    @PatchMapping(value = "/challenges/{challengeId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<HttpStatus> updateChallenge(@PathVariable Long challengeId, @Valid @ModelAttribute("updateChallenge") ChallengeDto.UpdateRequest requestDto) throws IOException {
+    @PutMapping(value = "/challenges/{challengeId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<HttpStatus> updateChallenge(@PathVariable Long challengeId, @Valid @ModelAttribute ChallengeDto.UpdateRequest requestDto) throws IOException {
         requestDto.setChallengeId(challengeId);
         challengeService.updateChallenge(requestDto);
         return new ResponseEntity<>(HttpStatus.OK);

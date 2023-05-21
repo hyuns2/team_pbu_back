@@ -11,6 +11,7 @@ import projectbuildup.mivv.domain.archiving.repository.UserCardRepository;
 import projectbuildup.mivv.domain.remittance.repository.RemittanceRepository;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.global.common.imageStore.Image;
+import projectbuildup.mivv.global.common.imageStore.ImageType;
 import projectbuildup.mivv.global.common.imageStore.ImageUploader;
 import projectbuildup.mivv.global.error.exception.CCardNotFoundException;
 import projectbuildup.mivv.global.error.exception.CInvalidCardConditionException;
@@ -38,7 +39,7 @@ public class RemittanceArchivingService {
             throw new CInvalidCardConditionException();
         }
 
-        Image image = imageUploader.upload(dto.getImage(), "cards");
+        Image image = imageUploader.upload(dto.getImage(), ImageType.CARD);
 
         RemittanceConditionCardEntity entity = ArchivingDto.createRemittanceCardRequestDto.toEntity(dto, image.getImagePath());
 
@@ -53,7 +54,7 @@ public class RemittanceArchivingService {
             throw new CCardNotFoundException();
         }
 
-        Image image = imageUploader.upload(dto.getImage(), "cards");
+        Image image = imageUploader.upload(dto.getImage(), ImageType.CARD);
 
         RemittanceConditionCardEntity result = target.get();
         result.updateCard(dto, image.getImagePath());

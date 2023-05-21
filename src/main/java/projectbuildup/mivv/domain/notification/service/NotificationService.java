@@ -7,6 +7,7 @@ import projectbuildup.mivv.domain.notification.entity.NotificationEntity;
 import projectbuildup.mivv.domain.notification.entity.NotificationType;
 import projectbuildup.mivv.domain.notification.repository.NotificationRepository;
 import projectbuildup.mivv.global.common.imageStore.Image;
+import projectbuildup.mivv.global.common.imageStore.ImageType;
 import projectbuildup.mivv.global.common.imageStore.ImageUploader;
 import projectbuildup.mivv.global.error.exception.CNotificationNotFoundException;
 
@@ -24,7 +25,7 @@ public class NotificationService {
 
     public void createEventNotification(final NotificationDto.NotificationRequestDto dto) throws IOException {
 
-        Image image = imageUploader.upload(dto.getImage(), "notifications");
+        Image image = imageUploader.upload(dto.getImage(), ImageType.NOTIFICATION);
 
         NotificationEntity entity = NotificationDto.NotificationRequestDto.toEntity(dto, image.getImagePath(), NotificationType.EVENT);
 
@@ -34,7 +35,7 @@ public class NotificationService {
 
     public void createNoticeNotification(final NotificationDto.NotificationRequestDto dto) throws IOException {
 
-        Image image = imageUploader.upload(dto.getImage(), "notifications");
+        Image image = imageUploader.upload(dto.getImage(), ImageType.NOTIFICATION);
 
         NotificationEntity entity = NotificationDto.NotificationRequestDto.toEntity(dto, image.getImagePath(), NotificationType.NOTICE);
 

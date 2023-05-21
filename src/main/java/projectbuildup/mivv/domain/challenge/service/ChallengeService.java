@@ -13,6 +13,7 @@ import projectbuildup.mivv.domain.participation.entity.Participation;
 import projectbuildup.mivv.domain.participation.repository.ParticipationRepository;
 import projectbuildup.mivv.domain.remittance.entity.Remittance;
 import projectbuildup.mivv.global.common.imageStore.Image;
+import projectbuildup.mivv.global.common.imageStore.ImageType;
 import projectbuildup.mivv.global.common.imageStore.ImageUploader;
 import projectbuildup.mivv.global.common.pagination.PageParam;
 import projectbuildup.mivv.global.common.pagination.PagingDto;
@@ -37,8 +38,8 @@ public class ChallengeService {
      * @param requestDto 생성할 챌린지 정보
      */
     public void createChallenge(ChallengeDto.CreationRequest requestDto) throws IOException {
-        Image image = imageUploader.upload(requestDto.getImageFile(), "challenges");
-        Challenge challenge = Challenge.from(requestDto, image);
+        Image image = imageUploader.upload(requestDto.getImageFile(), ImageType.CHALLENGE);
+        Challenge challenge = Challenge.of(requestDto, image);
         challengeRepository.save(challenge);
     }
 
@@ -84,7 +85,7 @@ public class ChallengeService {
         challenge.update(requestDto);
         if (requestDto.getImageFile() != null) {
             imageUploader.delete(challenge.getImage());
-            Image image = imageUploader.upload(requestDto.getImageFile(), "challenges");
+            Image image = imageUploader.upload(requestDto.getImageFile(), ImageType.CHALLENGE);
             challenge.updateImage(image);
         }
         challengeRepository.save(challenge);

@@ -15,6 +15,7 @@ import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.domain.user.repository.UserRepository;
 import projectbuildup.mivv.global.common.fileStore.FileUploader;
 import projectbuildup.mivv.global.common.fileStore.File;
+import projectbuildup.mivv.global.common.imageStore.ImageType;
 import projectbuildup.mivv.global.common.imageStore.ImageUploader;
 import projectbuildup.mivv.global.error.exception.CCardNotFoundException;
 import projectbuildup.mivv.global.error.exception.CInvalidCellException;
@@ -43,7 +44,7 @@ public class GeneralArchivingService {
 
     public void createGeneralConditionCard(final ArchivingDto.createGeneralCardRequestDto dto) throws IOException {
 
-        Image image = imageUploader.upload(dto.getImage(), "cards");
+        Image image = imageUploader.upload(dto.getImage(), ImageType.CARD);
 
         CardEntity entity = ArchivingDto.createGeneralCardRequestDto.toEntity(dto, image.getImagePath());
         cardRepo.save(entity);
@@ -57,7 +58,7 @@ public class GeneralArchivingService {
             throw new CCardNotFoundException();
         }
 
-        Image image = imageUploader.upload(dto.getImage(), "cards");
+        Image image = imageUploader.upload(dto.getImage(), ImageType.CARD);
 
         CardEntity result = target.get();
         result.updateCard(dto, image.getImagePath());

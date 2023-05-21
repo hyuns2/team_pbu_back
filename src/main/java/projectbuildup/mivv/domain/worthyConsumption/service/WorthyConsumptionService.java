@@ -17,6 +17,7 @@ import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumption;
 import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumptionUrl;
 import projectbuildup.mivv.domain.worthyConsumption.repository.WorthyConsumptionRepository;
 import projectbuildup.mivv.global.common.imageStore.Image;
+import projectbuildup.mivv.global.common.imageStore.ImageType;
 import projectbuildup.mivv.global.common.imageStore.ImageUploader;
 import projectbuildup.mivv.global.common.videoStore.Video;
 import projectbuildup.mivv.global.common.videoStore.VideoUploader;
@@ -49,10 +50,10 @@ public class WorthyConsumptionService {
      */
     public void createWorthyConsumption(WorthyConsumptionDto.Creation worthyConsumptionDto) throws IOException {
         Video video = videoUploader.upload(worthyConsumptionDto.getVideo(), "values");
-        Image image = imageUploader.upload(worthyConsumptionDto.getImage(), "values");
-        Image detailImage = imageUploader.upload(worthyConsumptionDto.getDetailImage(), "values");
-        Image detailBackgroundImage = imageUploader.upload(worthyConsumptionDto.getDetailBackgroundImage(), "values");
-        Image placeImage = imageUploader.upload(worthyConsumptionDto.getPlaceImage(), "values");
+        Image image = imageUploader.upload(worthyConsumptionDto.getImage(), ImageType.VALUE);
+        Image detailImage = imageUploader.upload(worthyConsumptionDto.getDetailImage(), ImageType.VALUE);
+        Image detailBackgroundImage = imageUploader.upload(worthyConsumptionDto.getDetailBackgroundImage(), ImageType.VALUE);
+        Image placeImage = imageUploader.upload(worthyConsumptionDto.getPlaceImage(), ImageType.VALUE);
 
         WorthyConsumptionUrl worthyConsumptionUrl = new WorthyConsumptionUrl(video.getVideoPath(), image.getImagePath(), detailImage.getImagePath(), detailBackgroundImage.getImagePath(), placeImage.getImagePath());
         Condition condition = new Condition(worthyConsumptionDto);
@@ -106,10 +107,10 @@ public class WorthyConsumptionService {
     }
     public void updateUrl(WorthyConsumption worthyConsumption, WorthyConsumptionDto.Update worthyConsumptionDto) throws IOException {
         Video video = videoUploader.upload(worthyConsumptionDto.getVideo(), "values");
-        Image image = imageUploader.upload(worthyConsumptionDto.getImage(), "values");
-        Image detailImage = imageUploader.upload(worthyConsumptionDto.getDetailImage(), "values");
-        Image detailBackgroundImage = imageUploader.upload(worthyConsumptionDto.getDetailBackgroundImage(), "values");
-        Image placeImage = imageUploader.upload(worthyConsumptionDto.getPlaceImage(), "values");
+        Image image = imageUploader.upload(worthyConsumptionDto.getImage(), ImageType.VALUE);
+        Image detailImage = imageUploader.upload(worthyConsumptionDto.getDetailImage(), ImageType.VALUE);
+        Image detailBackgroundImage = imageUploader.upload(worthyConsumptionDto.getDetailBackgroundImage(), ImageType.VALUE);
+        Image placeImage = imageUploader.upload(worthyConsumptionDto.getPlaceImage(), ImageType.VALUE);
 
         worthyConsumption.getWorthyConsumptionUrl().update(video.getVideoPath(), image.getImagePath(), detailImage.getImagePath(), detailBackgroundImage.getImagePath(), placeImage.getImagePath());
     }
