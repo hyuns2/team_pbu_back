@@ -1,6 +1,5 @@
 package projectbuildup.mivv.domain.coupon.entity;
 
-import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
 import lombok.*;
 import projectbuildup.mivv.domain.coupon.dto.CouponDto;
@@ -8,7 +7,7 @@ import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumption;
 import projectbuildup.mivv.global.common.BaseTimeEntity;
 
 import java.time.LocalDate;
-@Entity @Table
+@Entity @Table(name = "coupon")
 @Getter
 @AllArgsConstructor @NoArgsConstructor
 @Builder
@@ -16,33 +15,33 @@ public class Coupon extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "CouponId")
+    @Column(name = "coupon_id")
     private Long id;
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "worthyConsumptionId")
+    @JoinColumn(name = "worthyConsumption_id")
     @Setter
     private WorthyConsumption worthyConsumption;
-
-    @Nonnull
+    @Column(name = "title", nullable = false, length = 30)
     private String title;
-    @Nonnull
+    @Column(name = "image_path", nullable = false)
     private String imagePath;
-    @Nonnull
+    @Column(name = "pin", nullable = false, length = 10)
     private int pin;
-    @Nonnull
+    @Column(name = "limit_start_date", nullable = false)
     private LocalDate limitStartDate;
-    @Nonnull
+    @Column(name = "limit_end_date", nullable = false)
     private LocalDate limitEndDate;
 
-    public Coupon(CouponDto.Creation couponDto,String imagePath) {
-        this.title = couponDto.getTitle();
-        this.imagePath = imagePath;
-        this.pin = couponDto.getPin();
-        this.limitStartDate = couponDto.getLimitStartDate();
-        this.limitEndDate = couponDto.getLimitEndDate();
+    public static Coupon toEntity(CouponDto.Request couponDto,String imagePath){
+        return Coupon.builder()
+                .title(couponDto.getTitle())
+                .imagePath(imagePath)
+                .pin(couponDto.getPin())
+                .limitStartDate(couponDto.getLimitStartDate())
+                .limitEndDate(couponDto.getLimitEndDate())
+                .build();
     }
-    public void update(CouponDto.Update couponDto, String imagePath){
+    public void update(CouponDto.Request couponDto, String imagePath){
         this.title = couponDto.getTitle();
         this.imagePath = imagePath;
         this.pin = couponDto.getPin();

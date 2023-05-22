@@ -15,7 +15,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import projectbuildup.mivv.domain.coupon.dto.CouponDto;
 import projectbuildup.mivv.domain.coupon.service.CouponService;
-import projectbuildup.mivv.domain.likes.service.LikesService;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.domain.worthyConsumption.dto.WorthyConsumptionDto;
 import projectbuildup.mivv.domain.worthyConsumption.dto.response.WorthyConsumptionResponseDto;
@@ -135,7 +134,7 @@ public class WorthyConsumptionController {
     @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/{worthyConsumptionId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<HttpStatus> createCoupon(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId, @Valid @ModelAttribute("createCoupons") CouponDto.Creation couponDto) throws IOException {
+    public ResponseEntity<HttpStatus> createCoupon(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId, @Valid @ModelAttribute("createCoupons") CouponDto.Request couponDto) throws IOException {
         couponService.createCoupon(worthyConsumptionId, couponDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
