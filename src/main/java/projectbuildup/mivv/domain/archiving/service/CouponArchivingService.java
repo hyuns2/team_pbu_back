@@ -128,10 +128,10 @@ public class CouponArchivingService {
     }
 
     @Transactional
-    public void assignCouponConditionsCard(final User user, final ArchivingDto.AssignCouponCardsRequestDto dto) {
+    public void assignCouponConditionsCard(final User user, final Long couponId) {
 
         // 쿠폰 객체 불러오기
-        Optional<Coupon> target = couponRepo.findById(dto.getCouponId());
+        Optional<Coupon> target = couponRepo.findById(couponId);
         if (target.isEmpty()) {
             throw new CCouponNotFoundException();
         }
