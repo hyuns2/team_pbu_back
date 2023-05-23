@@ -11,6 +11,7 @@ import projectbuildup.mivv.domain.archiving.entity.*;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Optional;
 
 public class ArchivingDto {
 
@@ -49,7 +50,7 @@ public class ArchivingDto {
         public static RemittanceConditionCardEntity toEntity(final createNumericalCardRequestDto dto, String imagePath) throws IOException {
 
             return RemittanceConditionCardEntity.builder()
-                    .kind(CardType.Remittance)
+                    .kind(CardType.REMITTANCE)
                     .title(dto.getTitle())
                     .subTitle(dto.getSubTitle())
                     .sentence(dto.getSentence())
@@ -118,7 +119,7 @@ public class ArchivingDto {
         public static CardEntity toEntity(final ArchivingDto.createGeneralCardRequestDto dto, String imagePath) throws IOException {
 
             return CardEntity.builder()
-                    .kind(CardType.General)
+                    .kind(CardType.GENERAL)
                     .title(dto.getTitle())
                     .subTitle(dto.getSubTitle())
                     .sentence(dto.getSentence())
@@ -195,7 +196,7 @@ public class ArchivingDto {
         public static CouponConditionCardEntity toEntity(final ArchivingDto.createCouponCardRequestDto dto, String imagePath) throws IOException {
 
             return CouponConditionCardEntity.builder()
-                    .kind(CardType.Coupon)
+                    .kind(CardType.COUPON)
                     .title(dto.getTitle())
                     .subTitle(dto.getSubTitle())
                     .sentence(dto.getSentence())
@@ -269,7 +270,7 @@ public class ArchivingDto {
 
     @AllArgsConstructor
     @Data
-    public static class UserCardResponseDto {
+    public static class UserCardResponseDto1 {
 
         @Schema(description = "UserCard Id")
         private Long id;
@@ -283,11 +284,53 @@ public class ArchivingDto {
         @Schema(description = "신규 여부")
         private boolean isNew;
 
-        public UserCardResponseDto(final UserCardEntity entity) {
+        public UserCardResponseDto1(final UserCardEntity entity) {
             this.id = entity.getId();
             this.cardResponseDto = new CardResponseDto(entity.getCardEntity());
             this.date = entity.getDate();
             this.isNew = entity.isNew();
+        }
+
+    }
+
+    @AllArgsConstructor
+    @Data
+    public static class UserCardResponseDto2 {
+
+        @Schema(description = "UserCard Id")
+        private Long id;
+
+        @Schema(description = "발급 일자")
+        private LocalDate date;
+
+        @Schema(description = "신규 여부")
+        private boolean isNew;
+
+        public UserCardResponseDto2(final UserCardEntity entity) {
+            this.id = entity.getId();
+            this.date = entity.getDate();
+            this.isNew = entity.isNew();
+        }
+
+    }
+
+    @Data
+    public static class CardAndUserCardResponseDto {
+
+        @Schema(description = "카드 정보")
+        private CardResponseDto cardDto;
+
+        @Schema(description = "유저카드 정보")
+        private UserCardResponseDto2 userCardDto;
+
+        public CardAndUserCardResponseDto(final CardEntity cardEntity) {
+            this.cardDto = new CardResponseDto(cardEntity);
+            this.userCardDto = null;
+        }
+
+        public CardAndUserCardResponseDto(final CardEntity cardEntity, final UserCardEntity userCardEntity) {
+            this.cardDto = new CardResponseDto(cardEntity);
+            this.userCardDto = new UserCardResponseDto2(userCardEntity);
         }
 
     }

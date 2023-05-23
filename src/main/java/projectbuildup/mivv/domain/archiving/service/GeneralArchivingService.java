@@ -2,11 +2,13 @@ package projectbuildup.mivv.domain.archiving.service;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.xmlbeans.impl.xb.xsdschema.Attribute;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import projectbuildup.mivv.domain.archiving.dto.ArchivingDto;
 import projectbuildup.mivv.domain.archiving.entity.CardEntity;
+import projectbuildup.mivv.domain.archiving.entity.CardType;
 import projectbuildup.mivv.domain.archiving.entity.UserCardEntity;
 import projectbuildup.mivv.domain.archiving.repository.CardRepository;
 import projectbuildup.mivv.domain.archiving.repository.UserCardRepository;
@@ -170,11 +172,31 @@ public class GeneralArchivingService {
 
     }
 
-    public List<ArchivingDto.UserCardResponseDto> retrieveUserNewCards(final User user) {
+    public List<ArchivingDto.UserCardResponseDto1> retrieveUserNewCards(final User user) {
 
         List<UserCardEntity> result = userCardRepo.findUserNewCards(user);
 
-        return result.stream().map(ArchivingDto.UserCardResponseDto::new).collect(Collectors.toList());
+        return result.stream().map(ArchivingDto.UserCardResponseDto1::new).collect(Collectors.toList());
+
+    }
+
+    public List<ArchivingDto.CardAndUserCardResponseDto> retrieveUserGeneralCards(final User user) {
+
+        List<Object[]> userGeneralCards = cardRepo.findUserGeneralCards(user, CardType.GENERAL);
+        List<ArchivingDto.CardAndUserCardResponseDto> dtos = new ArrayList<ArchivingDto.CardAndUserCardResponseDto>();
+
+        for (Object[] userGeneralCard: userGeneralCards) {
+            ArchivingDto.CardAndUserCardResponseDto dto;
+
+            if (userGeneralCard[1] == null)
+                dto = new ArchivingDto.CardAndUserCardResponseDto((CardEntity) userGeneralCard[0]);
+            else
+                dto = new ArchivingDto.CardAndUserCardResponseDto((CardEntity) userGeneralCard[0], (UserCardEntity) userGeneralCard[1]);
+
+            dtos.add(dto);
+        }
+
+        return dtos;
 
     }
 

@@ -14,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder
 @DiscriminatorColumn(name = "dType")
+@DiscriminatorValue("GeneralCondition")
 @Table(name="Card")
 public class CardEntity {
 
@@ -22,6 +23,7 @@ public class CardEntity {
     protected Long id;
 
     @Column(nullable = false, length = 30)
+    @Enumerated(EnumType.STRING)
     protected CardType kind;
 
     @Column(nullable = false, length = 30)
@@ -40,6 +42,7 @@ public class CardEntity {
     private List<UserCardEntity> userCards = new ArrayList<>();
 
     public void updateCard(ArchivingDto.updateGeneralCardRequestDto dto, String imagePath) throws IOException {
+
         if (dto.getTitle() != null) {
             this.title = dto.getTitle();
         }

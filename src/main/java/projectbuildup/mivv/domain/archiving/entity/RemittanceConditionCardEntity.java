@@ -19,7 +19,7 @@ public class RemittanceConditionCardEntity extends CardEntity {
     protected Integer count;
     protected Integer term;
 
-    public void updateCard(ArchivingDto.updateNumericalCardRequestDto dto, String imagePath) throws IOException {
+    public void updateCard(ArchivingDto.updateNumericalCardRequestDto dto, String imagePath) {
         if (dto.getTitle() != null) {
             this.title = dto.getTitle();
         }
