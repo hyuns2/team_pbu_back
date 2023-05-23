@@ -1,5 +1,6 @@
 package projectbuildup.mivv.domain.challenge.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -37,6 +38,7 @@ public class ChallengeService {
      *
      * @param requestDto 생성할 챌린지 정보
      */
+    @Transactional
     public void createChallenge(ChallengeDto.CreationRequest requestDto) throws IOException {
         Image image = imageUploader.upload(requestDto.getImageFile(), ImageType.CHALLENGE);
         Challenge challenge = Challenge.of(requestDto, image);
@@ -89,6 +91,7 @@ public class ChallengeService {
      *
      * @param requestDto 수정할 항목
      */
+    @Transactional
     public void updateChallenge(ChallengeDto.UpdateRequest requestDto) throws IOException {
         Challenge challenge = challengeRepository.findById(requestDto.getChallengeId()).orElseThrow(CResourceNotFoundException::new);
         challenge.update(requestDto);
@@ -105,6 +108,7 @@ public class ChallengeService {
      *
      * @param challengeId 챌린지 아이디넘버
      */
+    @Transactional
     public void deleteChallenge(Long challengeId) {
         challengeRepository.deleteById(challengeId);
     }

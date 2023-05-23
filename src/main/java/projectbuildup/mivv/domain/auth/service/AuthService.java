@@ -59,6 +59,7 @@ public class AuthService {
      * @param requestDto 본인인증 코드, 로그인 비밀번호
      * @return 서비스 토큰 (액세스 토큰, 리프레시 토큰)
      */
+    @Transactional
     public TokenDto login(AuthDto.LoginRequest requestDto) {
         IdentityVerification identityVerification = identityVerificationRepository.findByCode(requestDto.getVerificationCode()).orElseThrow(CVerificationNotFoundException::new);
         User user = userRepository.findByIdentityVerification(identityVerification).orElseThrow(CUserNotFoundException::new);
@@ -76,6 +77,7 @@ public class AuthService {
      *
      * @param requestDto 어세스토큰, 리프레시토큰
      */
+    @Transactional
     public void logout(AuthDto.UnlinkRequestDto requestDto) {
 //        tokenRepository.saveBlockedToken(requestDto.getAccessToken());
         tokenRepository.deleteRefreshToken(requestDto.getRefreshToken());
@@ -95,6 +97,12 @@ public class AuthService {
         logout(requestDto);
     }
 
+    /**
+     * 사용자와 연관된 데이터를 제거합니다.
+     *
+     * @param user 사용자
+     */
+    @Transactional
     private void deleteRelatedData(User user) {
         issuanceRepository.deleteAllByUser(user);
         inquiryRepository.deleteAllByUser(user);
@@ -108,6 +116,7 @@ public class AuthService {
      * @param requestDto 어세스토큰, 리프레시토큰
      * @return 재발급한 어세스토큰, 리프레시토큰
      */
+    @Transactional
     public TokenDto reissue(AuthDto.ReissueRequest requestDto) {
         isReissueAvailable(requestDto.getAccessToken(), requestDto.getRefreshToken());
         Claims claims = jwtValidator.validateAccessToken(requestDto.getAccessToken());

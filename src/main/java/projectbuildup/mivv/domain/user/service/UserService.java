@@ -1,5 +1,6 @@
 package projectbuildup.mivv.domain.user.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import projectbuildup.mivv.global.common.imageStore.Image;
@@ -36,6 +37,7 @@ public class UserService {
      * @param requestDto 수정할 닉네임, 프로필 이미지
      * @throws IOException
      */
+    @Transactional
     public void updateProfile(Long userId, ProfileDto.UpdateRequest requestDto) throws IOException {
         User user = userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
         deleteExistingImage(user);
@@ -43,7 +45,6 @@ public class UserService {
         user.updateProfile(requestDto.getNickname(), image);
         userRepository.save(user);
     }
-
     private void deleteExistingImage(User user) throws IOException {
         if (user.getProfileImage() != null) {
             imageUploader.delete(user.getProfileImage());
