@@ -19,24 +19,29 @@ public class ParticipationApiTest extends IntegrationTest {
     private final static String JOIN_API = "/api/join/challenges/{challengeId}";
     private final static String GIVE_UP_API = "/api/give-up/challenges/{challengeId}";
 
-    @BeforeEach
-    void setup() {
+    @Test
+    @WithAuthUser(role = "USER", id = "2")
+    @DisplayName("참여 - 정상 로직 : 2번 회원이 2번 챌린지에 참여하는 경우")
+    void test() throws Exception {
+        // given
 
+        // when
+        ResultActions actions = mvc.perform(post(JOIN_API, 2L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(csrf()));
+
+        // then
+        actions.andExpect(status().isOk());
     }
 
     @Test
     @WithAuthUser(role = "USER", id = "1")
-    @DisplayName("참여 - 정상")
-    void test() throws Exception {
+    @DisplayName("포기 - 정상 로직 : 1번 회원이 1번 챌린지에 참여하는 경우")
+    void test1() throws Exception {
         // given
-        User user = MockEntityFactory.mockUser(MockEntityFactory.mockIdentityVerification());
-
-        mvc.perform(post(LOGIN_API, 1L)
-                .contentType(MediaType.APPLICATION_JSON)
-                .with(csrf()));
 
         // when
-        ResultActions actions = mvc.perform(post(JOIN_API, 1L)
+        ResultActions actions = mvc.perform(post(GIVE_UP_API, 1L)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(csrf()));
 

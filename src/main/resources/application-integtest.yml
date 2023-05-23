@@ -22,7 +22,7 @@ spring:
   sql: #더미데이터 용
     init:
       mode: always
-      data-locations: classpath:integdata.sql
+      data-locations: classpath:data.sql
       encoding: UTF-8
   data:
     redis:
