@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import projectbuildup.mivv.domain.coupon.dto.response.CouponResponseDto;
+import projectbuildup.mivv.domain.coupon.dto.CouponDto;
 import projectbuildup.mivv.domain.couponIssuance.dto.CouponIssuanceDto;
 import projectbuildup.mivv.domain.couponIssuance.service.CouponIssuanceService;
 import projectbuildup.mivv.domain.user.entity.User;
@@ -46,7 +46,7 @@ public class CouponIssuanceController {
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/issue/coupons/usable")
     public ResponseEntity<?> getUsableCouponList(@AuthenticationPrincipal User user){
-        List<CouponResponseDto.ReadResponseWithWorthyConsumption> usableCouponList = couponIssuanceService.getUsableCouponList(user.getId());
+        List<CouponDto.Response> usableCouponList = couponIssuanceService.getUsableCouponList(user.getId());
         return new ResponseEntity<>(usableCouponList, HttpStatus.OK);
     }
 
@@ -55,7 +55,7 @@ public class CouponIssuanceController {
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/issue/coupons/used")
     public ResponseEntity<?> getUsedCouponList(@AuthenticationPrincipal User user){
-        List<CouponResponseDto.ReadResponseWithWorthyConsumption> usableCouponList = couponIssuanceService.getUsedCouponList(user.getId());
+        List<CouponDto.Response> usableCouponList = couponIssuanceService.getUsedCouponList(user.getId());
         return new ResponseEntity<>(usableCouponList, HttpStatus.OK);
     }
 
