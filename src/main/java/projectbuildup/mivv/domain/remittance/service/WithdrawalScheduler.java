@@ -37,7 +37,8 @@ public class WithdrawalScheduler {
      * 매일마다 출금액을 반영합니다.
      * (출금 총액 / 참여중인 챌린지 수)의 금액이 각 챌린지 절약 내역에 마이너스로 저장됩니다.
      */
-    @Scheduled(cron = CRON_DAYBREAK)
+//    @Scheduled(cron = CRON_DAYBREAK)
+    @Scheduled(fixedRate = FIXED_ONE_DAY)
     private void renewWithdraw() {
         log.info("출금액 동기화 시작");
         long renewed = 0;
