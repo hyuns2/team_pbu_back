@@ -7,10 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.web.multipart.MultipartFile;
-import projectbuildup.mivv.domain.archiving.entity.CardEntity;
-import projectbuildup.mivv.domain.archiving.entity.CouponConditionCardEntity;
-import projectbuildup.mivv.domain.archiving.entity.NumericalConditionCardEntity;
-import projectbuildup.mivv.domain.archiving.entity.UserCardEntity;
+import projectbuildup.mivv.domain.archiving.entity.*;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -20,11 +17,6 @@ public class ArchivingDto {
     @AllArgsConstructor
     @Data
     public static class createNumericalCardRequestDto {
-
-        @NotBlank
-        @Length(min = 2, max = 30)
-        @Schema(description = "카드 종류")
-        private String kind;
 
         @NotBlank
         @Length(min = 2, max = 30)
@@ -54,10 +46,10 @@ public class ArchivingDto {
         @Schema(description = "발급조건 일수")
         private Integer term;
 
-        public static NumericalConditionCardEntity toEntity(final createNumericalCardRequestDto dto, String imagePath) throws IOException {
+        public static RemittanceConditionCardEntity toEntity(final createNumericalCardRequestDto dto, String imagePath) throws IOException {
 
-            return NumericalConditionCardEntity.builder()
-                    .kind(dto.getKind())
+            return RemittanceConditionCardEntity.builder()
+                    .kind(CardType.Remittance)
                     .title(dto.getTitle())
                     .subTitle(dto.getSubTitle())
                     .sentence(dto.getSentence())
@@ -73,10 +65,6 @@ public class ArchivingDto {
     @AllArgsConstructor
     @Data
     public static class updateNumericalCardRequestDto {
-
-        @Length(max = 30)
-        @Schema(description = "카드 종류")
-        private String kind;
 
         @Length(max = 30)
         @Schema(description = "카드 제목")
@@ -110,11 +98,6 @@ public class ArchivingDto {
 
         @NotBlank
         @Length(min = 2, max = 30)
-        @Schema(description = "카드 종류")
-        private String kind;
-
-        @NotBlank
-        @Length(min = 2, max = 30)
         @Schema(description = "카드 제목")
         private String title;
 
@@ -135,7 +118,7 @@ public class ArchivingDto {
         public static CardEntity toEntity(final ArchivingDto.createGeneralCardRequestDto dto, String imagePath) throws IOException {
 
             return CardEntity.builder()
-                    .kind(dto.getKind())
+                    .kind(CardType.General)
                     .title(dto.getTitle())
                     .subTitle(dto.getSubTitle())
                     .sentence(dto.getSentence())
@@ -148,10 +131,6 @@ public class ArchivingDto {
     @AllArgsConstructor
     @Data
     public static class updateGeneralCardRequestDto {
-
-        @Length(max = 30)
-        @Schema(description = "카드 종류")
-        private String kind;
 
         @Length(max = 30)
         @Schema(description = "카드 제목")
@@ -188,11 +167,6 @@ public class ArchivingDto {
 
         @NotBlank
         @Length(min = 2, max = 30)
-        @Schema(description = "카드 종류")
-        private String kind;
-
-        @NotBlank
-        @Length(min = 2, max = 30)
         @Schema(description = "카드 제목")
         private String title;
 
@@ -221,7 +195,7 @@ public class ArchivingDto {
         public static CouponConditionCardEntity toEntity(final ArchivingDto.createCouponCardRequestDto dto, String imagePath) throws IOException {
 
             return CouponConditionCardEntity.builder()
-                    .kind(dto.getKind())
+                    .kind(CardType.Coupon)
                     .title(dto.getTitle())
                     .subTitle(dto.getSubTitle())
                     .sentence(dto.getSentence())
@@ -236,10 +210,6 @@ public class ArchivingDto {
     @AllArgsConstructor
     @Data
     public static class updateCouponCardRequestDto {
-
-        @Length(max = 30)
-        @Schema(description = "카드 종류")
-        private String kind;
 
         @Length(max = 30)
         @Schema(description = "카드 제목")
@@ -288,7 +258,7 @@ public class ArchivingDto {
 
         public CardResponseDto(final CardEntity entity) {
             this.id = entity.getId();
-            this.kind = entity.getKind();
+            this.kind = entity.getKind().name();
             this.title = entity.getTitle();
             this.subTitle = entity.getSubTitle();
             this.sentence = entity.getSentence();

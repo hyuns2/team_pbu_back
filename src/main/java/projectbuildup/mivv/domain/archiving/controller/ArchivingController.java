@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import projectbuildup.mivv.domain.archiving.dto.ArchivingDto;
 import projectbuildup.mivv.domain.archiving.service.CouponArchivingService;
 import projectbuildup.mivv.domain.archiving.service.GeneralArchivingService;
-import projectbuildup.mivv.domain.archiving.service.NumericalArchivingService;
+import projectbuildup.mivv.domain.archiving.service.RemittanceArchivingService;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.global.constant.ExampleValue;
 import projectbuildup.mivv.global.constant.Header;
@@ -29,7 +29,7 @@ import java.util.List;
 @RequestMapping("/api/archiving")
 public class ArchivingController {
 
-    private final NumericalArchivingService nService;
+    private final RemittanceArchivingService nService;
     private final GeneralArchivingService gService;
     private final CouponArchivingService cService;
 

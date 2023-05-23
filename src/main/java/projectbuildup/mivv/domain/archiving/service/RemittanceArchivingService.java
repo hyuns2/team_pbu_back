@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import projectbuildup.mivv.domain.archiving.dto.ArchivingDto;
-import projectbuildup.mivv.domain.archiving.entity.NumericalConditionCardEntity;
+import projectbuildup.mivv.domain.archiving.entity.RemittanceConditionCardEntity;
 import projectbuildup.mivv.domain.archiving.entity.UserCardEntity;
 import projectbuildup.mivv.domain.archiving.repository.CardRepository;
 import projectbuildup.mivv.domain.archiving.repository.UserCardRepository;
@@ -22,7 +22,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
-public class NumericalArchivingService {
+public class RemittanceArchivingService {
 
     private final CardRepository cardRepo;
     private final UserCardRepository userCardRepo;
@@ -34,7 +34,7 @@ public class NumericalArchivingService {
 
         Image image = imageUploader.upload(dto.getImage(), "cards");
 
-        NumericalConditionCardEntity entity = ArchivingDto.createNumericalCardRequestDto.toEntity(dto, image.getImagePath());
+        RemittanceConditionCardEntity entity = ArchivingDto.createNumericalCardRequestDto.toEntity(dto, image.getImagePath());
 
         cardRepo.save(entity);
 
@@ -42,21 +42,21 @@ public class NumericalArchivingService {
 
     public void updateNumericalConditionCard(final Long id, final ArchivingDto.updateNumericalCardRequestDto dto) throws IOException {
 
-        Optional<NumericalConditionCardEntity> target = (Optional<NumericalConditionCardEntity>) cardRepo.findById(id);
+        Optional<RemittanceConditionCardEntity> target = (Optional<RemittanceConditionCardEntity>) cardRepo.findById(id);
         if (target.isEmpty()) {
             throw new CCardNotFoundException();
         }
 
         Image image = imageUploader.upload(dto.getImage(), "cards");
 
-        NumericalConditionCardEntity result = target.get();
+        RemittanceConditionCardEntity result = target.get();
         result.updateCard(dto, image.getImagePath());
 
         cardRepo.save(result);
 
     }
 
-    private void ifNumericalConditionCardHasNotTerm(User user, Integer charge, Integer count, Integer term, NumericalConditionCardEntity element) {
+    private void ifNumericalConditionCardHasNotTerm(User user, Integer charge, Integer count, Integer term, RemittanceConditionCardEntity element) {
         Integer chargeSum = remittanceRepo.findChargeSum(user);
         Integer countSum = remittanceRepo.findCountSum(user);
 
@@ -69,7 +69,7 @@ public class NumericalArchivingService {
         }
     }
 
-    private void ifNumericalConditionCardHasTerm(User user, Integer charge, Integer count, Integer term, NumericalConditionCardEntity element) {
+    private void ifNumericalConditionCardHasTerm(User user, Integer charge, Integer count, Integer term, RemittanceConditionCardEntity element) {
         Integer chargeSum = remittanceRepo.findChargeSumBetweenTerm(user, LocalDateTime.now().minusDays(term), LocalDateTime.now());
         Integer countSum = remittanceRepo.findCountSumBetweenTerm(user, LocalDateTime.now().minusDays(term), LocalDateTime.now());
 
@@ -82,8 +82,8 @@ public class NumericalArchivingService {
         }
     }
 
-    private void checkAndAssignNumericalConditionCards(User user, List<NumericalConditionCardEntity> cardsToCheck) {
-        for (NumericalConditionCardEntity element: cardsToCheck) {
+    private void checkAndAssignNumericalConditionCards(User user, List<RemittanceConditionCardEntity> cardsToCheck) {
+        for (RemittanceConditionCardEntity element: cardsToCheck) {
             Integer charge = element.getCharge();
             Integer count = element.getCount();
             Integer term = element.getTerm();
@@ -102,13 +102,13 @@ public class NumericalArchivingService {
 
         List<UserCardEntity> alreadyExistings = userCardRepo.findUserCardEntitiesByUser(user);
 
-        List<NumericalConditionCardEntity> allCards = (List<NumericalConditionCardEntity>) cardRepo.findAll();
+        List<RemittanceConditionCardEntity> allCards = (List<RemittanceConditionCardEntity>) cardRepo.findAll();
 
         for (UserCardEntity element: alreadyExistings) {
             allCards.remove(element.getCardEntity());
         }
 
-        List<NumericalConditionCardEntity> cardsToCheck = allCards;
+        List<RemittanceConditionCardEntity> cardsToCheck = allCards;
 
         checkAndAssignNumericalConditionCards(user, cardsToCheck);
 

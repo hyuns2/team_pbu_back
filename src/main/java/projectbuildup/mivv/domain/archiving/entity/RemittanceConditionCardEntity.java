@@ -11,18 +11,15 @@ import java.io.IOException;
 @SuperBuilder
 @Getter
 @Entity
-@DiscriminatorValue("NumericalCondition")
-@Table(name = "NumericalConditionCard")
-public class NumericalConditionCardEntity extends CardEntity {
+@DiscriminatorValue("RemittanceCondition")
+@Table(name = "RemittanceConditionCard")
+public class RemittanceConditionCardEntity extends CardEntity {
 
     protected Integer charge;
     protected Integer count;
     protected Integer term;
 
     public void updateCard(ArchivingDto.updateNumericalCardRequestDto dto, String imagePath) throws IOException {
-        if (dto.getKind() != null) {
-            this.kind = dto.getKind();
-        }
         if (dto.getTitle() != null) {
             this.title = dto.getTitle();
         }
@@ -46,16 +43,16 @@ public class NumericalConditionCardEntity extends CardEntity {
         }
     }
 
-    public boolean equals(NumericalConditionCardEntity numericalConditionCardEntity) {
-        return this.id.equals(numericalConditionCardEntity.getId()) &&
-                this.kind.equals(numericalConditionCardEntity.getKind()) &&
-                this.title.equals(numericalConditionCardEntity.getTitle()) &&
-                this.subTitle.equals(numericalConditionCardEntity.getSubTitle()) &&
-                this.sentence.equals(numericalConditionCardEntity.getSentence()) &&
-                this.imagePath.equals(numericalConditionCardEntity.getImagePath()) &&
-                this.charge.equals(numericalConditionCardEntity.getCharge()) &&
-                this.count.equals(numericalConditionCardEntity.getCount()) &&
-                this.term.equals(numericalConditionCardEntity.getTerm());
+    public boolean equals(RemittanceConditionCardEntity remittanceConditionCardEntity) {
+        return this.id.equals(remittanceConditionCardEntity.getId()) &&
+                this.kind.equals(remittanceConditionCardEntity.getKind()) &&
+                this.title.equals(remittanceConditionCardEntity.getTitle()) &&
+                this.subTitle.equals(remittanceConditionCardEntity.getSubTitle()) &&
+                this.sentence.equals(remittanceConditionCardEntity.getSentence()) &&
+                this.imagePath.equals(remittanceConditionCardEntity.getImagePath()) &&
+                this.charge.equals(remittanceConditionCardEntity.getCharge()) &&
+                this.count.equals(remittanceConditionCardEntity.getCount()) &&
+                this.term.equals(remittanceConditionCardEntity.getTerm());
     }
 
 }

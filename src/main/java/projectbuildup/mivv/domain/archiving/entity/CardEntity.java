@@ -22,7 +22,7 @@ public class CardEntity {
     protected Long id;
 
     @Column(nullable = false, length = 30)
-    protected String kind;
+    protected CardType kind;
 
     @Column(nullable = false, length = 30)
     protected String title;
@@ -40,9 +40,6 @@ public class CardEntity {
     private List<UserCardEntity> userCards = new ArrayList<>();
 
     public void updateCard(ArchivingDto.updateGeneralCardRequestDto dto, String imagePath) throws IOException {
-        if (dto.getKind() != null) {
-            this.kind = dto.getKind();
-        }
         if (dto.getTitle() != null) {
             this.title = dto.getTitle();
         }
