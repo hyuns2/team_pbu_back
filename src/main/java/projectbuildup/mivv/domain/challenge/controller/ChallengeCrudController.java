@@ -59,7 +59,7 @@ public class ChallengeCrudController {
     }
 
     @Operation(summary = "챌린지 삭제", description = "")
-    @PreAuthorize("permitAll()")
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/challenges/{challengeId}")
     public ResponseEntity<HttpStatus> deleteChallenge(@PathVariable Long challengeId) {
         challengeService.deleteChallenge(challengeId);

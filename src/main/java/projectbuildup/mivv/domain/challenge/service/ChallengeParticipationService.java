@@ -30,7 +30,7 @@ public class ChallengeParticipationService {
         Pageable pageable = pageParam.toPageable();
         User user = userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
         Page<Challenge> pages = challengeRepository.findOngoingChallenge(user, pageable);
-        return challengeService.convertToResponseDto(pages);
+        return challengeService.mapToResponseDto(pages);
     }
 
     /**
@@ -43,6 +43,6 @@ public class ChallengeParticipationService {
         Pageable pageable = pageParam.toPageable();
         User user = userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
         Page<Challenge> pages = challengeRepository.findJoinableChallenge(user, pageable);
-        return challengeService.convertToResponseDto(pages);
+        return challengeService.mapToResponseDto(pages);
     }
 }
