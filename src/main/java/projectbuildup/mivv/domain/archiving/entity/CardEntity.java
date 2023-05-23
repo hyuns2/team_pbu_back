@@ -24,7 +24,7 @@ public class CardEntity {
 
     @Column(nullable = false, length = 30)
     @Enumerated(EnumType.STRING)
-    protected CardType kind;
+    protected CardType cardType;
 
     @Column(nullable = false, length = 30)
     protected String title;

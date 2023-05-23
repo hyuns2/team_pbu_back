@@ -45,7 +45,7 @@ public class RemittanceConditionCardEntity extends CardEntity {
 
     public boolean equals(RemittanceConditionCardEntity remittanceConditionCardEntity) {
         return this.id.equals(remittanceConditionCardEntity.getId()) &&
-                this.kind.equals(remittanceConditionCardEntity.getKind()) &&
+                this.cardType.equals(remittanceConditionCardEntity.getCardType()) &&
                 this.title.equals(remittanceConditionCardEntity.getTitle()) &&
                 this.subTitle.equals(remittanceConditionCardEntity.getSubTitle()) &&
                 this.sentence.equals(remittanceConditionCardEntity.getSentence()) &&

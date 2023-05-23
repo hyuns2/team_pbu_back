@@ -11,7 +11,6 @@ import projectbuildup.mivv.domain.archiving.entity.*;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.Optional;
 
 public class ArchivingDto {
 
@@ -50,7 +49,7 @@ public class ArchivingDto {
         public static RemittanceConditionCardEntity toEntity(final createNumericalCardRequestDto dto, String imagePath) throws IOException {
 
             return RemittanceConditionCardEntity.builder()
-                    .kind(CardType.REMITTANCE)
+                    .cardType(CardType.REMITTANCE)
                     .title(dto.getTitle())
                     .subTitle(dto.getSubTitle())
                     .sentence(dto.getSentence())
@@ -119,7 +118,7 @@ public class ArchivingDto {
         public static CardEntity toEntity(final ArchivingDto.createGeneralCardRequestDto dto, String imagePath) throws IOException {
 
             return CardEntity.builder()
-                    .kind(CardType.GENERAL)
+                    .cardType(CardType.GENERAL)
                     .title(dto.getTitle())
                     .subTitle(dto.getSubTitle())
                     .sentence(dto.getSentence())
@@ -196,7 +195,7 @@ public class ArchivingDto {
         public static CouponConditionCardEntity toEntity(final ArchivingDto.createCouponCardRequestDto dto, String imagePath) throws IOException {
 
             return CouponConditionCardEntity.builder()
-                    .kind(CardType.COUPON)
+                    .cardType(CardType.COUPON)
                     .title(dto.getTitle())
                     .subTitle(dto.getSubTitle())
                     .sentence(dto.getSentence())
@@ -259,7 +258,7 @@ public class ArchivingDto {
 
         public CardResponseDto(final CardEntity entity) {
             this.id = entity.getId();
-            this.kind = entity.getKind().name();
+            this.kind = entity.getCardType().name();
             this.title = entity.getTitle();
             this.subTitle = entity.getSubTitle();
             this.sentence = entity.getSentence();

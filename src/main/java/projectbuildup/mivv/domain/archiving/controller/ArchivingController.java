@@ -13,6 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import projectbuildup.mivv.domain.archiving.dto.ArchivingDto;
+import projectbuildup.mivv.domain.archiving.entity.CardType;
 import projectbuildup.mivv.domain.archiving.service.CouponArchivingService;
 import projectbuildup.mivv.domain.archiving.service.GeneralArchivingService;
 import projectbuildup.mivv.domain.archiving.service.RemittanceArchivingService;
@@ -143,12 +144,12 @@ public class ArchivingController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @Operation(summary = "사용자의 일반 카드 조회", description = "사용자가 보유한 일반 카드 전체를 조회합니다.")
+    @Operation(summary = "사용자의 조건별 카드 조회", description = "조건을 선택해, 사용자가 보유한 해당 조건 카드 전체를 조회합니다.")
     @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('USER')")
-    @GetMapping("/general-cards")
-    public ResponseEntity<?> retrieveUserGeneralCards(@AuthenticationPrincipal User user) {
-        List<ArchivingDto.CardAndUserCardResponseDto> responseDto = gService.retrieveUserGeneralCards(user);
+    @GetMapping("/cards/{card-type}")
+    public ResponseEntity<?> retrieveUserCards(@AuthenticationPrincipal User user, @PathVariable(value="card-type")CardType cardType) {
+        List<ArchivingDto.CardAndUserCardResponseDto> responseDto = gService.retrieveUserCards(user, cardType);
 
         return ResponseEntity.ok().body(responseDto);
     }

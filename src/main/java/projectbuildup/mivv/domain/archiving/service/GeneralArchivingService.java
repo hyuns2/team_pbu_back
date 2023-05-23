@@ -2,7 +2,6 @@ package projectbuildup.mivv.domain.archiving.service;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.xmlbeans.impl.xb.xsdschema.Attribute;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -187,9 +186,9 @@ public class GeneralArchivingService {
 
     }
 
-    public List<ArchivingDto.CardAndUserCardResponseDto> retrieveUserGeneralCards(final User user) {
+    public List<ArchivingDto.CardAndUserCardResponseDto> retrieveUserCards(final User user, final CardType cardType) {
 
-        List<Object[]> userGeneralCards = cardRepo.findUserGeneralCards(user, CardType.GENERAL);
+        List<Object[]> userGeneralCards = cardRepo.findUserGeneralCards(user, cardType);
         List<ArchivingDto.CardAndUserCardResponseDto> dtos = new ArrayList<ArchivingDto.CardAndUserCardResponseDto>();
 
         for (Object[] userGeneralCard: userGeneralCards) {
