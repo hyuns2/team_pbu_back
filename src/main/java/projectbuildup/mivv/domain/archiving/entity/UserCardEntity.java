@@ -28,10 +28,14 @@ public class UserCardEntity {
     @Temporal(value = TemporalType.DATE)
     private LocalDate date;
 
+    @Column(nullable = false)
+    private boolean isNew;
+
     public UserCardEntity(User user, CardEntity cardEntity, LocalDate date) {
         this.user = user;
         this.cardEntity = cardEntity;
         this.date = date;
+        this.isNew = true;
     }
 
 }

@@ -123,12 +123,12 @@ public class ArchivingController {
         return ResponseEntity.ok().body(responseDto);
     }
 
-    @Operation(summary = "사용자의 모든 카드 조회", description = "사용자가 보유한 카드 전체를 조회합니다.")
+    @Operation(summary = "사용자의 신규 카드 조회", description = "사용자가 보유한 신규 카드 전체를 조회합니다.")
     @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('USER')")
-    @GetMapping("/cards")
-    public ResponseEntity<?> retrieveUserCard(@AuthenticationPrincipal User user) {
-        List<ArchivingDto.UserCardResponseDto> responseDto = gService.retrieveUserCards(user);
+    @GetMapping("/new-cards")
+    public ResponseEntity<?> retrieveUserNewCards(@AuthenticationPrincipal User user) {
+        List<ArchivingDto.UserCardResponseDto> responseDto = gService.retrieveUserNewCards(user);
 
         return ResponseEntity.ok().body(responseDto);
     }

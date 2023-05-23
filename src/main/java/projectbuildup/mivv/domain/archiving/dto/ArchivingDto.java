@@ -310,10 +310,14 @@ public class ArchivingDto {
         @Schema(description = "발급 일자")
         private LocalDate date;
 
+        @Schema(description = "신규 여부")
+        private boolean isNew;
+
         public UserCardResponseDto(final UserCardEntity entity) {
             this.id = entity.getId();
             this.cardResponseDto = new CardResponseDto(entity.getCardEntity());
             this.date = entity.getDate();
+            this.isNew = entity.isNew();
         }
 
     }

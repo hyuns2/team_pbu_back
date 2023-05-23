@@ -98,14 +98,6 @@ public class GeneralArchivingService {
 
     }
 
-    public List<ArchivingDto.UserCardResponseDto> retrieveUserCards(final User user) {
-
-        List<UserCardEntity> result = userCardRepo.findUserCardEntitiesByUser(user);
-
-        return result.stream().map(ArchivingDto.UserCardResponseDto::new).collect(Collectors.toList());
-
-    }
-
     private void assignGeneralConditionCards(CardEntity cardEntity, String name, String mobile) {
         // 이름과 전화번호로 사용자 알아내기
         Optional<User> targetUser = userRepo.findByNameAndMobile(name, mobile);
@@ -176,6 +168,14 @@ public class GeneralArchivingService {
         CardEntity cardEntity = targetCard.get();
 
         checkAndAssignGeneralConditionCards(dto.getFile(), cardEntity);
+
+    }
+
+    public List<ArchivingDto.UserCardResponseDto> retrieveUserNewCards(final User user) {
+
+        List<UserCardEntity> result = userCardRepo.findUserNewCards(user);
+
+        return result.stream().map(ArchivingDto.UserCardResponseDto::new).collect(Collectors.toList());
 
     }
 
