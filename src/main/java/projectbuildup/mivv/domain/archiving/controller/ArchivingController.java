@@ -133,6 +133,16 @@ public class ArchivingController {
         return ResponseEntity.ok().body(responseDto);
     }
 
+    @Operation(summary = "사용자 카드의 신규 여부 갱신", description = "사용자가 보유한 신규 카드를 신규가 아닌 카드로 갱신합니다.")
+    @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
+    @PreAuthorize("hasRole('USER')")
+    @PutMapping("/new-cards")
+    public ResponseEntity<?> updateUserNewCards(@AuthenticationPrincipal User user) {
+        gService.updateUserNewCards(user);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @Operation(summary = "사용자의 일반 카드 조회", description = "사용자가 보유한 일반 카드 전체를 조회합니다.")
     @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('USER')")

@@ -25,7 +25,6 @@ public interface InquiryRepository extends JpaRepository<InquiryEntity, Long> {
     void deleteById(Long id);
 
     @Modifying(clearAutomatically = true)
-    @Transactional
     @Query("update InquiryEntity i set i.answer=?1 where i.id=?2")
     void updateAnswer(String answer, Long id);
 

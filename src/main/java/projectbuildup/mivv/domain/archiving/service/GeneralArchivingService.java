@@ -180,6 +180,13 @@ public class GeneralArchivingService {
 
     }
 
+    @Transactional
+    public void updateUserNewCards(final User user) {
+
+        userCardRepo.updateUserNewCards(user);
+
+    }
+
     public List<ArchivingDto.CardAndUserCardResponseDto> retrieveUserGeneralCards(final User user) {
 
         List<Object[]> userGeneralCards = cardRepo.findUserGeneralCards(user, CardType.GENERAL);
