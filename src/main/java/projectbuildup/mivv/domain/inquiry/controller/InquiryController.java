@@ -23,7 +23,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@Tag(name = "[5-1. Inquiry]", description = "문의와 관련된 API입니다.")
+@Tag(name = "[Inquiry]", description = "문의와 관련된 API입니다.")
 @RequestMapping("/api/inquiry")
 public class InquiryController {
 
@@ -34,7 +34,7 @@ public class InquiryController {
     @PreAuthorize("hasRole('USER')")
     @PostMapping
     public ResponseEntity<?> createInquiry(@AuthenticationPrincipal User user, @Valid @RequestBody InquiryDto.InquiryRequestDto dto) {
-        service.registerInquiry(dto, user);
+        service.createInquiry(dto, user);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -44,7 +44,7 @@ public class InquiryController {
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/admin/answer")
     public ResponseEntity<?> createAnswer(@AuthenticationPrincipal User user, @Valid @RequestBody InquiryDto.AnswerRequestDto dto) {
-        service.registerAnswer(dto);
+        service.createAnswer(dto);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -65,15 +65,6 @@ public class InquiryController {
     @GetMapping("/admin/inquiries")
     public ResponseEntity<?> retrieveForAdmin(@AuthenticationPrincipal User user) {
         List<InquiryDto.InquiryResponseDto> resultDto = service.retrieveForAdmin();
-
-        return ResponseEntity.ok().body(resultDto);
-    }
-
-    @Operation(summary = "문의 상세 조회", description = "문의의 상세내역을 조회합니다.")
-    @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
-    @GetMapping("/{id}")
-    public ResponseEntity<?> retrieveDetails(@AuthenticationPrincipal User user, @PathVariable Long id) {
-        InquiryDto.InquiryResponseDto resultDto = service.retrieveDetails(id);
 
         return ResponseEntity.ok().body(resultDto);
     }
