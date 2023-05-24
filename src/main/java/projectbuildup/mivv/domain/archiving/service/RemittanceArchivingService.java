@@ -28,7 +28,7 @@ public class RemittanceArchivingService {
     private final UserCardRepository userCardRepo;
     private final RemittanceRepository remittanceRepo;
 
-    private final ImageUploader imageUploader = new ImageUploader();
+    private final ImageUploader imageUploader;
 
     public void createNumericalConditionCard(final ArchivingDto.createNumericalCardRequestDto dto) throws IOException {
 
