@@ -1,13 +1,10 @@
 package projectbuildup.mivv.domain.couponIssuance.entity;
 
 import jakarta.persistence.*;
-import jakarta.xml.bind.annotation.XmlID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 import projectbuildup.mivv.domain.coupon.entity.Coupon;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.global.common.BaseTimeEntity;
@@ -17,17 +14,19 @@ import projectbuildup.mivv.global.common.BaseTimeEntity;
 public class CouponIssuance extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn
+    @JoinColumn(name = "coupon_id")
     private Coupon coupon;
-
+    @Column(name = "created")
     private boolean created = false;
+    @Column(name = "used")
     private boolean used = false;
     public CouponIssuance(User user, Coupon coupon){
         this.user = user;

@@ -35,7 +35,7 @@ public class WorthyConsumptionResponseDto {
         private List<String> hashtags;
         private String videoPath;
         private String imagePath;
-        private CheckConditionType isIssuableCoupon;
+        private CheckConditionType checkConditionType;
         private Boolean isLiked;
 
         public ReadBasicResponse(WorthyConsumption worthyConsumption, Boolean isLiked) {
@@ -43,7 +43,7 @@ public class WorthyConsumptionResponseDto {
             this.hashtags = worthyConsumption.getHashtags();
             this.videoPath = worthyConsumption.getWorthyConsumptionUrl().getVideoPath();
             this.imagePath = worthyConsumption.getWorthyConsumptionUrl().getImagePath();
-            this.isIssuableCoupon = worthyConsumption.getCondition().getIsIssuableCoupon();
+            this.checkConditionType = worthyConsumption.getCondition().getCheckConditionType();
             this.isLiked = isLiked;
         }
 
@@ -52,7 +52,7 @@ public class WorthyConsumptionResponseDto {
             this.hashtags = worthyConsumption.getHashtags();
             this.videoPath = worthyConsumption.getWorthyConsumptionUrl().getVideoPath();
             this.imagePath = worthyConsumption.getWorthyConsumptionUrl().getImagePath();
-            this.isIssuableCoupon = worthyConsumption.getCondition().getIsIssuableCoupon();
+            this.checkConditionType = worthyConsumption.getCondition().getCheckConditionType();
         }
     }
     @NoArgsConstructor @AllArgsConstructor

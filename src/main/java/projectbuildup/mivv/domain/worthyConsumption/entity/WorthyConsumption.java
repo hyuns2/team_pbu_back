@@ -3,53 +3,61 @@ package projectbuildup.mivv.domain.worthyConsumption.entity;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
+import org.checkerframework.checker.units.qual.C;
 import projectbuildup.mivv.domain.coupon.entity.Coupon;
 import projectbuildup.mivv.domain.worthyConsumption.dto.WorthyConsumptionDto;
 import projectbuildup.mivv.global.common.BaseTimeEntity;
 
 import java.util.ArrayList;
 import java.util.List;
-@Entity @Table(name = "WorthyConsumption")
+@Entity @Table(name = "worthy_consumption")
 @NoArgsConstructor(force = true)
 @AllArgsConstructor
 @Getter @Builder
 public class WorthyConsumption extends BaseTimeEntity {
 
-    @Id @Column(name = "WorthyConsumptionId")
+    @Id @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NonNull @Column(name = "WorthyConsumptionTitle")
+    @NonNull @Column(name = "title")
     private String title;
 
     @ElementCollection
     @NonNull
+    @Column(name = "worthy_consumption_hashtags")
     private List<String> hashtags = new ArrayList<>();
 
     @NonNull
+    @Column(name = "original_price")
     private int originalPrice;
     @NonNull
+    @Column(name = "sale_price")
     private int salePrice;
 
     @ElementCollection
     @NonNull
+    @Column(name = "worthy_consumption_recommendation_reason")
     private List<String> recommendationReason = new ArrayList<>();
 
     @NonNull
+    @Column(name = "available_price")
     private String availablePrice;
     @NonNull
+    @Column(name = "available_place")
     private String availablePlace;
     @NonNull
+    @Column(name = "summary")
     private String summary;
 
     @Nullable
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "WorthyConsumptionUrlId")
+    @JoinColumn(name = "worthy_consumption_url_id")
     private WorthyConsumptionUrl worthyConsumptionUrl;
 
     @Nullable
     @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    @JoinColumn(name = "ConditionId")
+    @JoinColumn(name = "condition_id")
     private Condition condition;
 
     //@ElementCollection @Builder.Default

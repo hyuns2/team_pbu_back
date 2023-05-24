@@ -13,13 +13,14 @@ import projectbuildup.mivv.global.common.BaseTimeEntity;
 public class LikesWorthyConsumption extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "user_id")
     private User user;
-    @ManyToOne @JoinColumn
+    @ManyToOne @JoinColumn(name = "worthy_consumption_id")
     private WorthyConsumption worthyConsumption;
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING) @Column(name = "likes_category")
     private LikesCategory likesCategory = LikesCategory.WORTHY_CONSUMPTION;
     public LikesWorthyConsumption(User user, WorthyConsumption worthyConsumption){
         this.user = user;

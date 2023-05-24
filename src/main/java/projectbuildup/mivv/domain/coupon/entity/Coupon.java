@@ -15,10 +15,10 @@ public class Coupon extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "coupon_id")
+    @Column(name = "id")
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "worthyConsumption_id")
+    @JoinColumn(name = "worthy_consumption_id")
     @Setter
     private WorthyConsumption worthyConsumption;
     @Column(name = "title", nullable = false, length = 30)
