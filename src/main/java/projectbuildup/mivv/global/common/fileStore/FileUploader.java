@@ -15,6 +15,9 @@ public class FileUploader {
     @Value("${path.files}")
     String STORE_PATH;
 
+    @Value("{path.ipUrl}")
+    String ipUrl;
+
     // 엑셀파일만 저장하는 메소드
     public File storeExcelFile(MultipartFile multipartFile) throws IOException {
 
@@ -30,7 +33,7 @@ public class FileUploader {
         String storeFullPath = STORE_PATH + "/excels/" + storeFileName;
 
         multipartFile.transferTo(new java.io.File(storeFullPath));
-        return new File(uploadFileName, storeFileName, storeFullPath);
+        return new File(uploadFileName, storeFileName, ipUrl + storeFullPath);
 
     }
 

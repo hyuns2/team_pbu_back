@@ -17,11 +17,11 @@ public class UserCardEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cardId")
+    @JoinColumn(name = "card_id")
     private CardEntity cardEntity;
 
     @Column(nullable = false)
@@ -29,13 +29,13 @@ public class UserCardEntity {
     private LocalDate date;
 
     @Column(nullable = false)
-    private boolean isNew;
+    private boolean is_new;
 
     public UserCardEntity(User user, CardEntity cardEntity, LocalDate date) {
         this.user = user;
         this.cardEntity = cardEntity;
         this.date = date;
-        this.isNew = true;
+        this.is_new = true;
     }
 
 }

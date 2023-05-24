@@ -19,7 +19,7 @@ public class InquiryEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="userId")
+    @JoinColumn(name="user_id")
     private User user;
 
     @Column(nullable = false, length = 30)
@@ -33,6 +33,6 @@ public class InquiryEntity {
 
     @Column(nullable = false)
     @Temporal(value = TemporalType.TIMESTAMP)
-    private LocalDateTime timeStamp;
+    private LocalDateTime time_stamp;
 
 }

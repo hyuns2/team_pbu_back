@@ -2,6 +2,7 @@ package projectbuildup.mivv.domain.inquiry.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import projectbuildup.mivv.domain.inquiry.dto.InquiryDto;
@@ -51,7 +52,7 @@ public class InquiryService {
     }
 
     public List<InquiryDto.InquiryResponseDto> retrieveForAdmin() {
-        List<InquiryEntity> resultEntity = repo.findAllByOrderByTimeStampDesc();
+        List<InquiryEntity> resultEntity = repo.findAll(Sort.by(Sort.Direction.DESC, "time_stamp"));
 
         return resultEntity.stream().map(InquiryDto.InquiryResponseDto::new).collect(Collectors.toList());
     }

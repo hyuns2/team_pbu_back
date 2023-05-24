@@ -22,13 +22,13 @@ public class RemittanceConditionCardEntity extends CardEntity {
             this.title = dto.getTitle();
         }
         if (dto.getSubTitle() != null) {
-            this.subTitle = dto.getSubTitle();
+            this.sub_title = dto.getSubTitle();
         }
         if (dto.getSentence() != null) {
             this.sentence = dto.getSentence();
         }
         if (dto.getImage() != null) {
-            this.imagePath = imagePath;
+            this.image_path = imagePath;
         }
         if (dto.getCharge() != null) {
             this.charge = dto.getCharge();
@@ -43,11 +43,11 @@ public class RemittanceConditionCardEntity extends CardEntity {
 
     public boolean equals(RemittanceConditionCardEntity remittanceConditionCardEntity) {
         return this.id.equals(remittanceConditionCardEntity.getId()) &&
-                this.cardType.equals(remittanceConditionCardEntity.getCardType()) &&
+                this.type.equals(remittanceConditionCardEntity.getType()) &&
                 this.title.equals(remittanceConditionCardEntity.getTitle()) &&
-                this.subTitle.equals(remittanceConditionCardEntity.getSubTitle()) &&
+                this.sub_title.equals(remittanceConditionCardEntity.getSub_title()) &&
                 this.sentence.equals(remittanceConditionCardEntity.getSentence()) &&
-                this.imagePath.equals(remittanceConditionCardEntity.getImagePath()) &&
+                this.image_path.equals(remittanceConditionCardEntity.getImage_path()) &&
                 this.charge.equals(remittanceConditionCardEntity.getCharge()) &&
                 this.count.equals(remittanceConditionCardEntity.getCount()) &&
                 this.term.equals(remittanceConditionCardEntity.getTerm());

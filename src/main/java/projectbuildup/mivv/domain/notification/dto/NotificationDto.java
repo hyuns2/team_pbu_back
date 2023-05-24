@@ -8,6 +8,7 @@ import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.web.multipart.MultipartFile;
 import projectbuildup.mivv.domain.notification.entity.NotificationEntity;
+import projectbuildup.mivv.domain.notification.entity.NotificationType;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -32,13 +33,13 @@ public class NotificationDto {
         @Schema(description = "로고 이미지 파일")
         private MultipartFile image;
 
-        public static NotificationEntity toEntity(final NotificationRequestDto dto, String imagePath, String type) throws IOException {
+        public static NotificationEntity toEntity(final NotificationRequestDto dto, String imagePath, NotificationType type) throws IOException {
             return NotificationEntity.builder()
-                    .kind(type)
+                    .type(type)
                     .title(dto.getTitle())
                     .content(dto.getContent())
-                    .imagePath(imagePath)
-                    .timeStamp(LocalDateTime.now())
+                    .image_path(imagePath)
+                    .time_stamp(LocalDateTime.now())
                     .build();
         }
 
@@ -51,7 +52,7 @@ public class NotificationDto {
         private Long id;
 
         @Schema(description = "알림 종류")
-        private String kind;
+        private String type;
 
         @Schema(description = "알림 제목")
         private String title;
@@ -67,11 +68,11 @@ public class NotificationDto {
 
         public NotificationResponseDto(final NotificationEntity entity) {
             this.id = entity.getId();
-            this.kind = entity.getKind();
+            this.type = entity.getType().name();
             this.title = entity.getTitle();
             this.content = entity.getContent();
-            this.imagePath = entity.getImagePath();
-            this.timeStamp = entity.getTimeStamp();
+            this.imagePath = entity.getImage_path();
+            this.timeStamp = entity.getTime_stamp();
         }
     }
 

@@ -80,13 +80,13 @@ public class CouponArchivingService {
 
         for (CouponConditionCardEntity element: cardsToCheck) {
             // 연속 발급 조건만 만족
-            if (element.getWhatNumber() == 0 && element.getHowSuccessive() <= howSuccessive)
+            if (element.getWhat_number() == 0 && element.getHow_successive() <= howSuccessive)
                 userCardRepo.save(new UserCardEntity(user, element, LocalDate.now()));
                 // 발급 순서 조건만 만족
-            else if (element.getHowSuccessive() == 0 && element.getWhatNumber() == whatNumber)
+            else if (element.getHow_successive() == 0 && element.getWhat_number() == whatNumber)
                 userCardRepo.save(new UserCardEntity(user, element, LocalDate.now()));
                 // 둘다 만족
-            else if (element.getWhatNumber() == whatNumber && element.getHowSuccessive() <= howSuccessive)
+            else if (element.getWhat_number() == whatNumber && element.getHow_successive() <= howSuccessive)
                 userCardRepo.save(new UserCardEntity(user, element, LocalDate.now()));
         }
     }
