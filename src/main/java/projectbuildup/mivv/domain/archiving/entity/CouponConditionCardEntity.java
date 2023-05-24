@@ -16,7 +16,7 @@ import java.io.IOException;
 @Getter
 @Entity
 @DiscriminatorValue("CouponCondition")
-@Table(name = "CouponConditionCard")
+@Table(name = "coupon_card")
 public class CouponConditionCardEntity extends CardEntity {
 
     // 몇번째 발급자인지

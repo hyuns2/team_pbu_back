@@ -13,9 +13,9 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.JOINED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder
-@DiscriminatorColumn(name = "dType")
+@DiscriminatorColumn(name = "d_type")
 @DiscriminatorValue("GeneralCondition")
-@Table(name="Card")
+@Table(name="card")
 public class CardEntity {
 
     @Id

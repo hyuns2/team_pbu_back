@@ -5,21 +5,19 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 import projectbuildup.mivv.domain.archiving.dto.ArchivingDto;
 
-import java.io.IOException;
-
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder
 @Getter
 @Entity
 @DiscriminatorValue("RemittanceCondition")
-@Table(name = "RemittanceConditionCard")
+@Table(name = "remittance_card")
 public class RemittanceConditionCardEntity extends CardEntity {
 
     protected Integer charge;
     protected Integer count;
     protected Integer term;
 
-    public void updateCard(ArchivingDto.updateNumericalCardRequestDto dto, String imagePath) {
+    public void updateCard(ArchivingDto.updateRemittanceCardRequestDto dto, String imagePath) {
         if (dto.getTitle() != null) {
             this.title = dto.getTitle();
         }

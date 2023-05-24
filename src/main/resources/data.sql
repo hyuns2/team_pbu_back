@@ -153,20 +153,20 @@ values ('GeneralCondition', 1, 'GENERAL', '제목1', '부제목1', '명언1', 'h
        ('GeneralCondition', 7, 'GENERAL', '제목7', '부제목7', '명언7', 'http://server.gasomann.com/resources/static/images/cardss/card1.png'),
        ('GeneralCondition', 8, 'GENERAL', '제목8', '부제목8', '명언8', 'http://server.gasomann.com/resources/static/images/cardss/card1.png'),
        ('GeneralCondition', 9, 'GENERAL', '제목9', '부제목9', '명언9', 'http://server.gasomann.com/resources/static/images/cardss/card1.png'),
-       ('RemittanceCondition', 10, 'REMITTANCE', '제목10', '부제목9', '명언9', 'http://server.gasomann.com/resources/static/images/cardss/card1.png'),
-       ('RemittanceCondition', 11, 'REMITTANCE', '제목11', '부제목9', '명언9', 'http://server.gasomann.com/resources/static/images/cardss/card1.png'),
-       ('CouponCondition', 12, 'COUPON', '제목12', '부제목9', '명언9', 'http://server.gasomann.com/resources/static/images/cardss/card1.png');
+       ('RemittanceCondition', 10, 'REMITTANCE', '제목10', '부제목10', '명언10', 'http://server.gasomann.com/resources/static/images/cardss/card1.png'),
+       ('RemittanceCondition', 11, 'REMITTANCE', '제목11', '부제목11', '명언11', 'http://server.gasomann.com/resources/static/images/cardss/card1.png'),
+       ('CouponCondition', 12, 'COUPON', '제목12', '부제목12', '명언12', 'http://server.gasomann.com/resources/static/images/cardss/card1.png');
 
 insert into user_card(id, date, card_id, user_id, is_new)
 values (1, '2023-05-18', 1, 2, 0),
        (2, '2023-05-18', 2, 2, 1),
        (3, '2023-05-18', 3, 2, 0),
        (4, '2023-05-18', 4, 1, 1),
-       (5, '2023-05-18', 5, 1, 1),
-       (6, '2023-05-18', 10, 1, 1),
-       (7, '2023-05-18', 7, 1, 1),
-       (8, '2023-05-18', 12, 1, 1),
-       (9, '2023-05-18', 9, 1, 1);
+       (5, '2023-05-18', 5, 1, 0),
+       (6, '2023-05-18', 7, 1, 1),
+       (7, '2023-05-18', 9, 1, 0),
+       (8, '2023-05-18', 11, 1, 1),
+       (9, '2023-05-18', 12, 1, 1);
 
 
 -- <Worthy Consumption> --

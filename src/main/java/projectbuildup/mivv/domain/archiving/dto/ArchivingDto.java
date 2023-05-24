@@ -16,7 +16,7 @@ public class ArchivingDto {
 
     @AllArgsConstructor
     @Data
-    public static class createNumericalCardRequestDto {
+    public static class createRemittanceCardRequestDto {
 
         @NotBlank
         @Length(min = 2, max = 30)
@@ -37,16 +37,19 @@ public class ArchivingDto {
         @Schema(description = "카드 이미지 파일")
         private MultipartFile image;
 
+        @NotNull
         @Schema(description = "발급조건 금액")
         private Integer charge;
 
+        @NotNull
         @Schema(description = "발급조건 횟수")
         private Integer count;
 
+        @NotNull
         @Schema(description = "발급조건 일수")
         private Integer term;
 
-        public static RemittanceConditionCardEntity toEntity(final createNumericalCardRequestDto dto, String imagePath) throws IOException {
+        public static RemittanceConditionCardEntity toEntity(final createRemittanceCardRequestDto dto, String imagePath) throws IOException {
 
             return RemittanceConditionCardEntity.builder()
                     .cardType(CardType.REMITTANCE)
@@ -64,7 +67,7 @@ public class ArchivingDto {
 
     @AllArgsConstructor
     @Data
-    public static class updateNumericalCardRequestDto {
+    public static class updateRemittanceCardRequestDto {
 
         @Length(max = 30)
         @Schema(description = "카드 제목")
@@ -157,7 +160,7 @@ public class ArchivingDto {
         private Long id;
 
         @NotNull
-        @Schema(description = "첨부 파일")
+        @Schema(description = "첨부 엑셀파일")
         private MultipartFile file;
     }
 
@@ -242,7 +245,7 @@ public class ArchivingDto {
         private Long id;
 
         @Schema(description = "카드 종류")
-        private String kind;
+        private String cardType;
 
         @Schema(description = "카드 제목")
         private String title;
@@ -258,7 +261,7 @@ public class ArchivingDto {
 
         public CardResponseDto(final CardEntity entity) {
             this.id = entity.getId();
-            this.kind = entity.getCardType().name();
+            this.cardType = entity.getCardType().name();
             this.title = entity.getTitle();
             this.subTitle = entity.getSubTitle();
             this.sentence = entity.getSentence();

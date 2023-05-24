@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 @Entity
-@Table(name = "UserCard")
+@Table(name = "user_card")
 public class UserCardEntity {
 
     @Id
