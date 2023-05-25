@@ -30,7 +30,7 @@ public class WorthyConsumptionDto {
         String availablePrice;
         String availablePlace;
         @NotNull
-        String summary;
+        List<String> summary;
         private Integer maxParticipants;
 
         @NotNull(message = "가치소비의 쿠폰 발급 가능 시작 날짜를 입력해주세요")
@@ -70,7 +70,7 @@ public class WorthyConsumptionDto {
         List<String> recommendationReason;
         String availablePrice;
         String availablePlace;
-        String summary;
+        List<String> summary;
         private Integer maxParticipants;
 
         @Schema(example = "2001-03-02")

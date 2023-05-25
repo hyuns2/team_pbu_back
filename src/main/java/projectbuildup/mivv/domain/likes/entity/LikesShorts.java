@@ -14,9 +14,9 @@ public class LikesShorts extends BaseTimeEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @ManyToOne @JoinColumn(name = "user_id")
+    @ManyToOne(cascade = CascadeType.ALL) @JoinColumn(name = "user_id")
     private User user;
-    @ManyToOne @JoinColumn(name = "shorts_id")
+    @ManyToOne(cascade = CascadeType.ALL) @JoinColumn(name = "shorts_id")
     private Shorts shorts;
     @Enumerated(EnumType.STRING)
     @Column(name = "likes_category")

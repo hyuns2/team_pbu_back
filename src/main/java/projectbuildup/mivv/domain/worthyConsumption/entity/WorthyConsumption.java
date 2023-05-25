@@ -46,9 +46,10 @@ public class WorthyConsumption extends BaseTimeEntity {
     @NonNull
     @Column(name = "available_place")
     private String availablePlace;
+    @ElementCollection
     @NonNull
-    @Column(name = "summary")
-    private String summary;
+    @Column(name = "worthy_consumption_summary")
+    private List<String> summary = new ArrayList<>();
 
     @Nullable
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

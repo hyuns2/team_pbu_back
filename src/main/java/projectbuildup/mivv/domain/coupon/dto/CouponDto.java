@@ -40,6 +40,7 @@ public class CouponDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Response{
+        private Long id;
         String title;
         int originalPrice;
         int salePrice;
@@ -48,6 +49,7 @@ public class CouponDto {
         LocalDate limitStartDate;
         LocalDate limitEndDate;
         public Response(Coupon coupon){
+            this.id = coupon.getId();
             this.title = coupon.getTitle();
             this.originalPrice = coupon.getWorthyConsumption().getOriginalPrice();
             this.salePrice = coupon.getWorthyConsumption().getSalePrice();
