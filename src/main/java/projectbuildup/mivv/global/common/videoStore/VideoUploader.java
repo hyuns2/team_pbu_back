@@ -18,6 +18,9 @@ import java.util.UUID;
 public class VideoUploader {
     @Value("${path.videos}")
     String STORE_PATH;
+    
+    @Value("{path.ipUrl}")
+    String ipUrl;
 
     private static final String DELIMITER = "/";
 
@@ -27,7 +30,7 @@ public class VideoUploader {
         String storePath = STORE_PATH + DELIMITER + dirName + DELIMITER + storeName;
         File file = new File(storePath);
         multipartFile.transferTo(file);
-        return new Video(storeName, originalName, storePath);
+        return new Video(storeName, originalName, ipUrl + storePath);
     }
 
     public void delete(Video video) throws IOException {
