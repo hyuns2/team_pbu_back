@@ -13,9 +13,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import projectbuildup.mivv.domain.archiving.dto.ArchivingDto;
+import projectbuildup.mivv.domain.archiving.entity.CardType;
 import projectbuildup.mivv.domain.archiving.service.CouponArchivingService;
 import projectbuildup.mivv.domain.archiving.service.GeneralArchivingService;
-import projectbuildup.mivv.domain.archiving.service.NumericalArchivingService;
+import projectbuildup.mivv.domain.archiving.service.RemittanceArchivingService;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.global.constant.ExampleValue;
 import projectbuildup.mivv.global.constant.Header;
@@ -29,7 +30,7 @@ import java.util.List;
 @RequestMapping("/api/archiving")
 public class ArchivingController {
 
-    private final NumericalArchivingService nService;
+    private final RemittanceArchivingService nService;
     private final GeneralArchivingService gService;
     private final CouponArchivingService cService;
 
@@ -123,12 +124,32 @@ public class ArchivingController {
         return ResponseEntity.ok().body(responseDto);
     }
 
-    @Operation(summary = "사용자의 모든 카드 조회", description = "사용자가 보유한 카드 전체를 조회합니다.")
+    @Operation(summary = "사용자의 신규 카드 조회", description = "사용자가 보유한 신규 카드 전체를 조회합니다.")
     @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('USER')")
-    @GetMapping("/cards")
-    public ResponseEntity<?> retrieveUserCard(@AuthenticationPrincipal User user) {
-        List<ArchivingDto.UserCardResponseDto> responseDto = gService.retrieveUserCards(user);
+    @GetMapping("/new-cards")
+    public ResponseEntity<?> retrieveUserNewCards(@AuthenticationPrincipal User user) {
+        List<ArchivingDto.UserCardResponseDto1> responseDto = gService.retrieveUserNewCards(user);
+
+        return ResponseEntity.ok().body(responseDto);
+    }
+
+    @Operation(summary = "사용자 카드의 신규 여부 갱신", description = "사용자가 보유한 신규 카드를 신규가 아닌 카드로 갱신합니다.")
+    @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
+    @PreAuthorize("hasRole('USER')")
+    @PutMapping("/new-cards")
+    public ResponseEntity<?> updateUserNewCards(@AuthenticationPrincipal User user) {
+        gService.updateUserNewCards(user);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Operation(summary = "사용자의 조건별 카드 조회", description = "조건을 선택해, 사용자가 보유한 해당 조건 카드 전체를 조회합니다.")
+    @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/cards/{card-type}")
+    public ResponseEntity<?> retrieveUserCards(@AuthenticationPrincipal User user, @PathVariable(value="card-type")CardType cardType) {
+        List<ArchivingDto.CardAndUserCardResponseDto> responseDto = gService.retrieveUserCards(user, cardType);
 
         return ResponseEntity.ok().body(responseDto);
     }

@@ -142,30 +142,33 @@ values (1, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873', '배달�
 insert into inquiry(id, answer, content, time_stamp, title, user_id)
 values (1, null, '문의 내용입니다.', '2023-04-01 11:31:14.982873', '문의 샘플1', 1),
        (2, null, '문의 내용입니다.', '2023-04-01 11:31:14.982873', '문의 샘플2', 2);
-
        
-insert into card(d_type, id, kind, title, sub_title, sentence, image_path)
-values ('CardEntity', 1, '종류1', '제목1', '부제목1', '명언1', 'http://server.gasomann.com/resources/static/images/cardss/card1.png'),
-       ('CardEntity', 2, '종류2', '제목2', '부제목2', '명언2', 'http://server.gasomann.com/resources/static/images/cardss/card1.png'),
-       ('CardEntity', 3, '종류3', '제목3', '부제목3', '명언3', 'http://server.gasomann.com/resources/static/images/cardss/card1.png'),
-       ('CardEntity', 4, '종류4', '제목4', '부제목4', '명언4', 'http://server.gasomann.com/resources/static/images/cardss/card1.png'),
-       ('CardEntity', 5, '종류5', '제목5', '부제목5', '명언5', 'http://server.gasomann.com/resources/static/images/cardss/card1.png'),
-       ('CardEntity', 6, '종류6', '제목6', '부제목6', '명언6', 'http://server.gasomann.com/resources/static/images/cardss/card1.png'),
-       ('CardEntity', 7, '종류7', '제목7', '부제목7', '명언7', 'http://server.gasomann.com/resources/static/images/cardss/card1.png'),
-       ('CardEntity', 8, '종류8', '제목8', '부제목8', '명언8', 'http://server.gasomann.com/resources/static/images/cardss/card1.png'),
-       ('CardEntity', 9, '종류9', '제목9', '부제목9', '명언9', 'http://server.gasomann.com/resources/static/images/cardss/card1.png');
+insert into card(d_type, id, card_type, title, sub_title, sentence, image_path)
+values ('GeneralCondition', 1, 'GENERAL', '제목1', '부제목1', '명언1', 'http://server.gasomann.com/resources/static/images/cardss/card1.png'),
+       ('GeneralCondition', 2, 'GENERAL', '제목2', '부제목2', '명언2', 'http://server.gasomann.com/resources/static/images/cardss/card1.png'),
+       ('GeneralCondition', 3, 'GENERAL', '제목3', '부제목3', '명언3', 'http://server.gasomann.com/resources/static/images/cardss/card1.png'),
+       ('GeneralCondition', 4, 'GENERAL', '제목4', '부제목4', '명언4', 'http://server.gasomann.com/resources/static/images/cardss/card1.png'),
+       ('GeneralCondition', 5, 'GENERAL', '제목5', '부제목5', '명언5', 'http://server.gasomann.com/resources/static/images/cardss/card1.png'),
+       ('GeneralCondition', 6, 'GENERAL', '제목6', '부제목6', '명언6', 'http://server.gasomann.com/resources/static/images/cardss/card1.png'),
+       ('GeneralCondition', 7, 'GENERAL', '제목7', '부제목7', '명언7', 'http://server.gasomann.com/resources/static/images/cardss/card1.png'),
+       ('GeneralCondition', 8, 'GENERAL', '제목8', '부제목8', '명언8', 'http://server.gasomann.com/resources/static/images/cardss/card1.png'),
+       ('GeneralCondition', 9, 'GENERAL', '제목9', '부제목9', '명언9', 'http://server.gasomann.com/resources/static/images/cardss/card1.png'),
+       ('RemittanceCondition', 10, 'REMITTANCE', '제목10', '부제목9', '명언9', 'http://server.gasomann.com/resources/static/images/cardss/card1.png'),
+       ('RemittanceCondition', 11, 'REMITTANCE', '제목11', '부제목9', '명언9', 'http://server.gasomann.com/resources/static/images/cardss/card1.png'),
+       ('CouponCondition', 12, 'COUPON', '제목12', '부제목9', '명언9', 'http://server.gasomann.com/resources/static/images/cardss/card1.png');
 
-insert into user_card(id, date, card_id, user_id)
-values (1, '2023-05-18', 1, 1),
-       (2, '2023-05-18', 2, 1),
-       (3, '2023-05-18', 3, 1),
-       (4, '2023-05-18', 4, 1),
-       (5, '2023-05-18', 5, 1),
-       (6, '2023-05-18', 6, 1),
-       (7, '2023-05-18', 7, 1),
-       (8, '2023-05-18', 8, 1),
-       (9, '2023-05-18', 9, 1);
-       
+insert into user_card(id, date, card_id, user_id, is_new)
+values (1, '2023-05-18', 1, 2, 0),
+       (2, '2023-05-18', 2, 2, 1),
+       (3, '2023-05-18', 3, 2, 0),
+       (4, '2023-05-18', 4, 1, 1),
+       (5, '2023-05-18', 5, 1, 1),
+       (6, '2023-05-18', 10, 1, 1),
+       (7, '2023-05-18', 7, 1, 1),
+       (8, '2023-05-18', 12, 1, 1),
+       (9, '2023-05-18', 9, 1, 1);
+
+
 -- <Worthy Consumption> --
 insert into worthy_consumption_condition(id, is_issuable_coupon, issuable_coupon_end_date, issuable_coupon_start_date,
                                          last_month_amount, max_participants)

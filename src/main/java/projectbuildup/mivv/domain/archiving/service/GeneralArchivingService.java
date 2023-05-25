@@ -2,12 +2,12 @@ package projectbuildup.mivv.domain.archiving.service;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import projectbuildup.mivv.domain.archiving.dto.ArchivingDto;
 import projectbuildup.mivv.domain.archiving.entity.CardEntity;
+import projectbuildup.mivv.domain.archiving.entity.CardType;
 import projectbuildup.mivv.domain.archiving.entity.UserCardEntity;
 import projectbuildup.mivv.domain.archiving.repository.CardRepository;
 import projectbuildup.mivv.domain.archiving.repository.UserCardRepository;
@@ -98,14 +98,6 @@ public class GeneralArchivingService {
 
     }
 
-    public List<ArchivingDto.UserCardResponseDto> retrieveUserCards(final User user) {
-
-        List<UserCardEntity> result = userCardRepo.findUserCardEntitiesByUser(user);
-
-        return result.stream().map(ArchivingDto.UserCardResponseDto::new).collect(Collectors.toList());
-
-    }
-
     private void assignGeneralConditionCards(CardEntity cardEntity, String name, String mobile) {
         // 이름과 전화번호로 사용자 알아내기
         Optional<User> targetUser = userRepo.findByNameAndMobile(name, mobile);
@@ -176,6 +168,41 @@ public class GeneralArchivingService {
         CardEntity cardEntity = targetCard.get();
 
         checkAndAssignGeneralConditionCards(dto.getFile(), cardEntity);
+
+    }
+
+    public List<ArchivingDto.UserCardResponseDto1> retrieveUserNewCards(final User user) {
+
+        List<UserCardEntity> result = userCardRepo.findUserNewCards(user);
+
+        return result.stream().map(ArchivingDto.UserCardResponseDto1::new).collect(Collectors.toList());
+
+    }
+
+    @Transactional
+    public void updateUserNewCards(final User user) {
+
+        userCardRepo.updateUserNewCards(user);
+
+    }
+
+    public List<ArchivingDto.CardAndUserCardResponseDto> retrieveUserCards(final User user, final CardType cardType) {
+
+        List<Object[]> userGeneralCards = cardRepo.findUserGeneralCards(user, cardType);
+        List<ArchivingDto.CardAndUserCardResponseDto> dtos = new ArrayList<ArchivingDto.CardAndUserCardResponseDto>();
+
+        for (Object[] userGeneralCard: userGeneralCards) {
+            ArchivingDto.CardAndUserCardResponseDto dto;
+
+            if (userGeneralCard[1] == null)
+                dto = new ArchivingDto.CardAndUserCardResponseDto((CardEntity) userGeneralCard[0]);
+            else
+                dto = new ArchivingDto.CardAndUserCardResponseDto((CardEntity) userGeneralCard[0], (UserCardEntity) userGeneralCard[1]);
+
+            dtos.add(dto);
+        }
+
+        return dtos;
 
     }
 

@@ -26,9 +26,6 @@ public class CouponConditionCardEntity extends CardEntity {
     protected Integer howSuccessive;
 
     public void updateCard(ArchivingDto.updateCouponCardRequestDto dto, String imagePath) throws IOException {
-        if (dto.getKind() != null) {
-            this.kind = dto.getKind();
-        }
         if (dto.getTitle() != null) {
             this.title = dto.getTitle();
         }

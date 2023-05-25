@@ -19,9 +19,6 @@ public class VideoUploader {
     @Value("${path.videos}")
     String STORE_PATH;
 
-    @Value("${path.ipAddress}")
-    String ipUrl;
-
     private static final String DELIMITER = "/";
 
     public Video upload(MultipartFile multipartFile, String dirName) throws IOException {
@@ -30,7 +27,7 @@ public class VideoUploader {
         String storePath = STORE_PATH + DELIMITER + dirName + DELIMITER + storeName;
         File file = new File(storePath);
         multipartFile.transferTo(file);
-        return new Video(storeName, originalName, ipUrl + storePath);
+        return new Video(storeName, originalName, storePath);
     }
 
     public void delete(Video video) throws IOException {
