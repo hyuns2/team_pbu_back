@@ -186,21 +186,21 @@ values (1, 'OK', '2023-07-01', '2023-04-01', 10000, 100),
 
 insert into worthy_consumptionurl(worthy_consumption_url_id, detail_background_image_path, detail_image_path, image_path,
                                   place_image_path, video_path)
-values (1, 'https://3.37.5.91/resources/static/images/values/valueDetailBackground1.png',
-        'https://3.37.5.91/resources/static/images/values/valueDetail1.png',
-        'https://3.37.5.91/resources/static/images/values/valueBackground1.png',
-        'https://3.37.5.91/resources/static/images/values/valueDetailMap1.png',
-        'https://3.37.5.91/resources/static/videos/values/valuevideo1.mp4'),
-       (2, 'https://3.37.5.91/resources/static/images/values/valueDetailBackground2.png',
-        'https://3.37.5.91/resources/static/images/values/valueDetail2.png',
-        'https://3.37.5.91/resources/static/images/values/valueBackground2.png',
-        'https://3.37.5.91/resources/static/images/values/valueDetailMap2.png',
-        'https://3.37.5.91/resources/static/videos/values/valuevideo2.mp4'),
-       (3, 'https://3.37.5.91/resources/static/images/values/valueDetailBackground3.png',
-        'https://3.37.5.91/resources/static/images/values/valueDetail3.png',
-        'https://3.37.5.91/resources/static/images/values/valueBackground.png',
-        'https://3.37.5.91/resources/static/images/values/valueDetailMap3.png',
-        'https://3.37.5.91/resources/static/videos/values/valuevideo3.mp4');
+values (1, 'https://server.gasomann.com/resources/static/images/values/valueDetailBackground1.png',
+        'https://server.gasomann.com/resources/static/images/values/valueDetail1.png',
+        'https://server.gasomann.com/resources/static/images/values/valueBackground1.png',
+        'https://server.gasomann.com/resources/static/images/values/valueDetailMap1.png',
+        'https://server.gasomann.com/resources/static/videos/values/valuevideo1.mp4'),
+       (2, 'https://server.gasomann.com/resources/static/images/values/valueDetailBackground2.png',
+        'https://server.gasomann.com/resources/static/images/values/valueDetail2.png',
+        'https://server.gasomann.com/resources/static/images/values/valueBackground2.png',
+        'https://server.gasomann.com/resources/static/images/values/valueDetailMap2.png',
+        'https://server.gasomann.com/resources/static/videos/values/valuevideo2.mp4'),
+       (3, 'https://server.gasomann.com/resources/static/images/values/valueDetailBackground3.png',
+        'https://server.gasomann.com/resources/static/images/values/valueDetail3.png',
+        'https://server.gasomann.com/resources/static/images/values/valueBackground.png',
+        'https://server.gasomann.com/resources/static/images/values/valueDetailMap3.png',
+        'https://server.gasomann.com/resources/static/videos/values/valuevideo3.mp4');
 
 
 insert into worthy_consumption(worthy_consumption_id, created_time, modified_time, available_place, available_price,
@@ -226,26 +226,26 @@ values (1, 'recommendation reason1'),
 -- <Shorts> --
 insert into shorts(id, category, title, content, image_path, video_path)
 values (1, 'SAVING', '제목1', '내용1', 'https://3.37.5.91/resources/static/images/shorts/shortImage1.png',
-        'https://3.37.5.91/resources/static/videos/shorts/shortVideo1.mp4'),
+        'https://server.gasomann.com/resources/static/videos/shorts/shortVideo1.mp4'),
        (2, 'SAVING', '제목2', '내용2', 'https://3.37.5.91/resources/static/images/shorts/shortImage2.png',
-        'https://3.37.5.91/resources/static/videos/shorts/shortVideo2.mp4'),
+        'https://server.gasomann.com/resources/static/videos/shorts/shortVideo2.mp4'),
        (3, 'EDUCATION', '제목3', '내용3', 'https://3.37.5.91/resources/static/images/shorts/shortImage3.png',
-        'https://3.37.5.91/resources/static/videos/shorts/shortVideo3.mp4');
+        'https://server.gasomann.com/resources/static/videos/shorts/shortVideo3.mp4');
 
 -- <Coupon> --
 insert into coupon(coupon_id, created_time, modified_time, image_path, limit_end_date, limit_start_date, pin, title,
                    worthy_consumption_id)
 values (1, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
-        'https://3.37.5.91/resources/static/images/coupons/coupon1.png',
+        'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',
         '2023-08-31', '2023-04-30', '1234', '레드짐 1월 할인권', 1),
        (2, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
-        'https://3.37.5.91/resources/static/images/coupons/coupon1.png',
+        'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',
         '2023-07-31', '2023-04-30', '1234', '레드짐 2월 할인권', 1),
        (3, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
-        'https://3.37.5.91/resources/static/images/coupons/coupon1.png',
+        'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',
         '2023-07-31', '2023-04-30', '1234', '레드짐 3월 할인권', 1),
        (4, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
-        'https://3.37.5.91/resources/static/images/coupons/coupon1.png',
+        'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',
         '2023-07-31', '2023-04-30', '1234', '레드짐 4월 할인권', 1);
 
 insert into coupon_issuance(id, created_time, modified_time, created, used, coupon_coupon_id, user_id)
