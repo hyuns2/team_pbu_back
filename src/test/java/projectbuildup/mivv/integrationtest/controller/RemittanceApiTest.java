@@ -10,12 +10,16 @@ import projectbuildup.mivv.domain.saving_count.entity.SavingCount;
 import projectbuildup.mivv.domain.saving_count.repository.SavingCountRepository;
 import projectbuildup.mivv.integrationtest.setting.IntegrationTest;
 import projectbuildup.mivv.integrationtest.setting.WithAuthUser;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class RemittanceApiTest extends IntegrationTest {
 
     final static String REMIT_API = "/api/remittance/challenges/{challengeId}";
+    final static String STATUS_API = "/api/remittance/status";
+
     @Autowired
     SavingCountRepository savingCountRepository;
 
@@ -83,5 +87,18 @@ public class RemittanceApiTest extends IntegrationTest {
 
         // then
         actions.andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @WithAuthUser(role = "USER", id = "1")
+    @DisplayName("사용자의 절약 상태를 조회한다.")
+    void test4() throws Exception {
+        // given
+
+        // when
+        ResultActions actions = mvc.perform(get(STATUS_API));
+
+        // then
+        actions.andExpect(status().isOk());
     }
 }

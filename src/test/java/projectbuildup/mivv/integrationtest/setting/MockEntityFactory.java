@@ -21,11 +21,11 @@ public class MockEntityFactory {
                 .build();
     }
 
-    public static User mockUser(IdentityVerification identityVerification) {
+    public static User mockUser(IdentityVerification identityVerification, String nickname) {
         return User.builder()
                 .email("test@email.com")
                 .agreement(true)
-                .nickname("test")
+                .nickname(nickname)
                 .password("{bcrypt}$2a$10$yQZvUKRebIw8NcO8bRsuiewJib4zZQ5Pi.GTbodIjDHK5h3icbzrO") //123456
                 .identityVerification(identityVerification)
                 .roles(Collections.singletonList("ROLE_USER"))
@@ -36,9 +36,9 @@ public class MockEntityFactory {
         return new Image("original_name", UUID.randomUUID().toString(), "./../files/mock-image1.jpg");
     }
 
-    public static Challenge mockChallenge(Image image) {
+    public static Challenge mockChallenge(Image image, String title) {
         return Challenge.builder()
-                .mainTitle("test_title")
+                .mainTitle(title)
                 .subTitle("test_subtitle")
                 .description(List.of("test_description1", "test_description2"))
                 .maxSavingAmount(10000)
