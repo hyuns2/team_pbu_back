@@ -22,9 +22,6 @@ public class VideoUploader {
     @Value("{path.ipUrl}")
     String ipUrl;
 
-    @Value("{path.ipUrl}")
-    String ipUrl;
-
     private static final String DELIMITER = "/";
 
     public Video upload(MultipartFile multipartFile, String dirName) throws IOException {
