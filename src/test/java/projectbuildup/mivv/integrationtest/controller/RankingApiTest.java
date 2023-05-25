@@ -1,4 +1,4 @@
-package projectbuildup.mivv.integrationtest;
+package projectbuildup.mivv.integrationtest.controller;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

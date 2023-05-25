@@ -19,15 +19,15 @@ public class ImageUploader {
     @Value("${path.images}")
     String STORE_PATH;
     
-    @Value("{path.ipUrl}")
+    @Value("${path.ipUrl}")
     String ipUrl;
 
     private static final String DELIMITER = "/";
 
-    public Image upload(MultipartFile multipartFile, String dirName) throws IOException {
+    public Image upload(MultipartFile multipartFile, ImageType imageType) throws IOException {
         String originalName = Objects.requireNonNull(multipartFile.getOriginalFilename());
         String storeName = makeRandomName(originalName);
-        String storePath = STORE_PATH + DELIMITER + dirName + DELIMITER + storeName;
+        String storePath = STORE_PATH + DELIMITER + imageType.getDirectoryName() + DELIMITER + storeName;
         log.warn("{}", storePath);
         File file = new File(storePath);
         multipartFile.transferTo(file);

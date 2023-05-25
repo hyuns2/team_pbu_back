@@ -12,4 +12,5 @@ public interface SavingCountRepository {
     SavingCount save(SavingCount savingCount);
     Optional<SavingCount> findByParticipation(Participation participation);
     List<SavingCount> findAll();
+    Optional<SavingCount> findById(Long id);
 }

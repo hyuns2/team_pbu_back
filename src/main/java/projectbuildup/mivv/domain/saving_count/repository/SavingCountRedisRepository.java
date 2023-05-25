@@ -24,4 +24,9 @@ public class SavingCountRedisRepository implements SavingCountRepository {
     public List<SavingCount> findAll() {
         return null;
     }
+
+    @Override
+    public Optional<SavingCount> findById(Long id) {
+        return Optional.empty();
+    }
 }

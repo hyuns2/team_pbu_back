@@ -1,5 +1,6 @@
 package projectbuildup.mivv.domain.remittance.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -51,12 +52,16 @@ public class RemittanceService {
      *
      * @param requestDto 회원 아이디넘버, 챌린지 아이디넘버, 절약금액
      */
+    @Transactional
     public Future<Boolean> remit(RemittanceDto.RemitRequest requestDto, LocalDateTime startTime) {
         Challenge challenge = challengeRepository.findById(requestDto.getChallengeId()).orElseThrow(CResourceNotFoundException::new);
         User user = userRepository.findById(requestDto.getUserId()).orElseThrow(CUserNotFoundException::new);
         Participation participation = participationRepository.findByChallengeAndUser(challenge, user).orElseThrow(() -> new CBadRequestException("참여 중인 챌린지에만 송금할 수 있습니다."));
         if (!participation.canRemit()) {
             throw new CSavingCountOverException();
+        }
+        if (!challenge.canRemit(requestDto.getAmount())) {
+            throw new CIllegalArgumentException("송금할 수 있는 금액의 범위를 벗어났습니다.");
         }
         return executorService.submit(() -> remittanceChecker.check(requestDto.getAmount(), participation, startTime));
     }

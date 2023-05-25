@@ -1,4 +1,4 @@
-package projectbuildup.mivv.integrationtest;
+package projectbuildup.mivv.integrationtest.controller;
 
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;

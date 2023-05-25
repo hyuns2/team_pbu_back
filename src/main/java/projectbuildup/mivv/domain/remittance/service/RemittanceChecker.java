@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import projectbuildup.mivv.domain.account.entity.TransactionDetail;
 import projectbuildup.mivv.domain.account.service.accountdetails.AccountDetailsSystem;
-import projectbuildup.mivv.domain.archiving.service.NumericalArchivingService;
+import projectbuildup.mivv.domain.archiving.service.RemittanceArchivingService;
 import projectbuildup.mivv.domain.challenge.service.RankScoreCalculator;
 import projectbuildup.mivv.domain.challenge.service.RankingService;
 import projectbuildup.mivv.domain.participation.entity.Participation;
@@ -15,7 +15,6 @@ import projectbuildup.mivv.domain.saving_count.service.SavingCountService;
 import projectbuildup.mivv.domain.user.entity.User;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -31,7 +30,7 @@ public class RemittanceChecker {
     private final SavingCountService savingCountService;
     private final RankingService rankingService;
     private final RankScoreCalculator rankScoreCalculator;
-    private final NumericalArchivingService numericalArchivingService;
+    private final RemittanceArchivingService remittanceArchivingService;
 
     private final static long ASYNC_CHECK_TERM_SEC = 60;
     private final static int ASYNC_CHECK_TRY = 5;
@@ -79,7 +78,7 @@ public class RemittanceChecker {
         savingCountService.addCount(participation);
         double score = rankScoreCalculator.calculate(remittance);
         rankingService.updateScore(participation.getUser(), participation.getChallenge(), score);
-        numericalArchivingService.assignNumericalConditionCards(participation.getUser());
+        remittanceArchivingService.assignNumericalConditionCards(participation.getUser());
     }
 
     /**

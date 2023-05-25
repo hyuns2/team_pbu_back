@@ -1,6 +1,6 @@
 spring:
   datasource:  # mysql 사용
-    url: jdbc:mysql://localhost:3306/testdb?validationQuery="select 1"&useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=UTF-8&serverTimezone=UTC&useLegacyDatetimeCode=false
+    url: jdbc:mysql://localhost:3306/inttestdb?validationQuery="select 1"&useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=UTF-8&serverTimezone=UTC&useLegacyDatetimeCode=false
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -17,7 +17,13 @@ spring:
         format_sql: true
         hbm2ddl:
           auto: create
+    defer-datasource-initialization: true #더미데이터 용
     show-sql: true
+  sql: #더미데이터 용
+    init:
+      mode: always
+      data-locations: classpath:data.sql
+      encoding: UTF-8
   data:
     redis:
       host: localhost
@@ -51,6 +57,7 @@ app:
     enable: false
 
 path:
-  files: C:/workspace_pbu/files
-  images: C:/workspace_pbu/images
-  videos: C:/workspace_pbu/videos
+  files: classpath:store/files
+  images: classpath:store/images
+  videos: classpath:store/videos
+  ipUrl:

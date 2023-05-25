@@ -32,5 +32,10 @@ public class SavingCountJpaRepositoryAdapter implements SavingCountRepository{
         return savingCountJpaRepository.findAll();
     }
 
+    @Override
+    public Optional<SavingCount> findById(Long id) {
+        return savingCountJpaRepository.findById(id);
+    }
+
 
 }
