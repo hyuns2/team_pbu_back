@@ -1,6 +1,5 @@
 -- <IdentityVerification> --
-
-insert into identity_verification (id, birth_date, code, mobile, name, created_time, modified_time)  -- 비밀번호 모두 123456으로 동일 --
+insert into identity_verification (id, birth_date, code, mobile, name, created_time, modified_time)
 values (1, '19990101', 'abcxxxxxabc', '01012345671', '김철수', '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873'),
        (2, '19990101', 'defxxxxxdef', '01012345672', '홍길동', '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873'),
        (3, '19990101', 'ghixxxxxghi', '01099998883', '박지원', '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873'),

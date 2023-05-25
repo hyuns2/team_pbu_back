@@ -54,4 +54,4 @@ path:
   files: classpath:store/files
   images: classpath:store/images
   videos: classpath:store/videos
-  ipUrl:
+  ipUrl: classpath:testdata.sql
