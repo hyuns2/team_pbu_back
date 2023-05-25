@@ -4,10 +4,10 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import projectbuildup.mivv.domain.shorts.entity.Shorts;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumption;
 import projectbuildup.mivv.global.common.BaseTimeEntity;
+
 @Entity @AllArgsConstructor @NoArgsConstructor
 @Getter
 public class LikesWorthyConsumption extends BaseTimeEntity {

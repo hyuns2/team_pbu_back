@@ -6,8 +6,8 @@ import lombok.*;
 import org.hibernate.annotations.Columns;
 import projectbuildup.mivv.domain.challenge.dto.ChallengeDto;
 import projectbuildup.mivv.domain.participation.entity.Participation;
-import projectbuildup.mivv.global.common.imageStore.Image;
 import projectbuildup.mivv.global.common.BaseTimeEntity;
+import projectbuildup.mivv.global.common.imageStore.Image;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
