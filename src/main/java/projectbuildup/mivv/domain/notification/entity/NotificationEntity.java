@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Getter
 @Entity
-@Table(name="NOTIFICATION")
+@Table(name="notification")
 public class NotificationEntity {
 
     @Id
@@ -21,7 +21,8 @@ public class NotificationEntity {
     private Long id;
 
     @Column(nullable = false, length = 10)
-    private String kind;
+    @Enumerated(EnumType.STRING)
+    private NotificationType type;
 
     @Column(nullable = false, length = 30)
     private String title;
@@ -30,10 +31,10 @@ public class NotificationEntity {
     private String content;
 
     @Column(nullable = false, length = 1000)
-    private String imagePath;
+    private String image_path;
 
     @Column(nullable = false)
     @Temporal(value = TemporalType.TIMESTAMP)
-    private LocalDateTime timeStamp;
+    private LocalDateTime time_stamp;
 
 }

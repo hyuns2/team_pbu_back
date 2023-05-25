@@ -16,33 +16,33 @@ import java.io.IOException;
 @Getter
 @Entity
 @DiscriminatorValue("CouponCondition")
-@Table(name = "CouponConditionCard")
+@Table(name = "coupon_card")
 public class CouponConditionCardEntity extends CardEntity {
 
     // 몇번째 발급자인지
-    protected Integer whatNumber;
+    protected Integer what_number;
 
     // 몇번 이상 연속 발급 성공자인지
-    protected Integer howSuccessive;
+    protected Integer how_successive;
 
     public void updateCard(ArchivingDto.updateCouponCardRequestDto dto, String imagePath) throws IOException {
         if (dto.getTitle() != null) {
             this.title = dto.getTitle();
         }
         if (dto.getSubTitle() != null) {
-            this.subTitle = dto.getSubTitle();
+            this.sub_title = dto.getSubTitle();
         }
         if (dto.getSentence() != null) {
             this.sentence = dto.getSentence();
         }
         if (dto.getImage() != null) {
-            this.imagePath = imagePath;
+            this.image_path = imagePath;
         }
         if (dto.getWhatNumber() != null) {
-            this.whatNumber = dto.getWhatNumber();
+            this.what_number = dto.getWhatNumber();
         }
         if (dto.getHowSuccessive() != null) {
-            this.howSuccessive = dto.getHowSuccessive();
+            this.how_successive = dto.getHowSuccessive();
         }
     }
 

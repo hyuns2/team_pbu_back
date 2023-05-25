@@ -22,6 +22,9 @@ public class ImageUploader {
     @Value("{path.ipUrl}")
     String ipUrl;
 
+    @Value("{path.ipUrl}")
+    String ipUrl;
+
     private static final String DELIMITER = "/";
 
     public Image upload(MultipartFile multipartFile, String dirName) throws IOException {

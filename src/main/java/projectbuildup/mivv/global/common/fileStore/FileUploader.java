@@ -18,6 +18,9 @@ public class FileUploader {
     @Value("{path.ipUrl}")
     String ipUrl;
 
+    @Value("{path.ipUrl}")
+    String ipUrl;
+
     // 엑셀파일만 저장하는 메소드
     public File storeExcelFile(MultipartFile multipartFile) throws IOException {
 

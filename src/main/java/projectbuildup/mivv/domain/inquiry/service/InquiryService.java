@@ -2,7 +2,9 @@ package projectbuildup.mivv.domain.inquiry.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import projectbuildup.mivv.domain.inquiry.dto.InquiryDto;
 import projectbuildup.mivv.domain.inquiry.entity.InquiryEntity;
 import projectbuildup.mivv.domain.inquiry.repository.InquiryRepository;
@@ -21,7 +23,7 @@ public class InquiryService {
 
     private final InquiryRepository repo;
 
-    public void registerInquiry(final InquiryDto.InquiryRequestDto dto, final User user) {
+    public void createInquiry(final InquiryDto.InquiryRequestDto dto, final User user) {
         InquiryEntity entity = InquiryDto.InquiryRequestDto.toEntity(dto, user);
 
         //사용자가 문의가능한 상태인지 확인(최대 2개)
@@ -32,7 +34,8 @@ public class InquiryService {
         repo.save(entity);
     }
 
-    public void registerAnswer(final InquiryDto.AnswerRequestDto dto) {
+    @Transactional
+    public void createAnswer(final InquiryDto.AnswerRequestDto dto) {
         Optional<InquiryEntity> target = repo.findById(dto.getId());
         if (target.isEmpty()) {
             throw new CInquiryNotFoundException();
@@ -49,19 +52,9 @@ public class InquiryService {
     }
 
     public List<InquiryDto.InquiryResponseDto> retrieveForAdmin() {
-        List<InquiryEntity> resultEntity = repo.findAllByOrderByTimeStampDesc();
+        List<InquiryEntity> resultEntity = repo.findAll(Sort.by(Sort.Direction.DESC, "time_stamp"));
 
         return resultEntity.stream().map(InquiryDto.InquiryResponseDto::new).collect(Collectors.toList());
-    }
-
-    public InquiryDto.InquiryResponseDto retrieveDetails(final Long id) {
-        Optional<InquiryEntity> result= repo.findById(id);
-        if (result.isEmpty()) {
-            throw new CInquiryNotFoundException();
-        }
-
-        InquiryEntity resultEntity = result.get();
-        return new InquiryDto.InquiryResponseDto(resultEntity);
     }
 
     public void deleteInquiry(final Long id) {

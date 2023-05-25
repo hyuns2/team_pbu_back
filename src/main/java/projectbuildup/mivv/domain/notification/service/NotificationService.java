@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import projectbuildup.mivv.domain.notification.dto.NotificationDto;
 import projectbuildup.mivv.domain.notification.entity.NotificationEntity;
+import projectbuildup.mivv.domain.notification.entity.NotificationType;
 import projectbuildup.mivv.domain.notification.repository.NotificationRepository;
 import projectbuildup.mivv.global.common.imageStore.Image;
 import projectbuildup.mivv.global.common.imageStore.ImageUploader;
@@ -25,7 +26,7 @@ public class NotificationService {
 
         Image image = imageUploader.upload(dto.getImage(), "notifications");
 
-        NotificationEntity entity = NotificationDto.NotificationRequestDto.toEntity(dto, image.getImagePath(), "이벤트");
+        NotificationEntity entity = NotificationDto.NotificationRequestDto.toEntity(dto, image.getImagePath(), NotificationType.EVENT);
 
         repo.save(entity);
 
@@ -35,7 +36,7 @@ public class NotificationService {
 
         Image image = imageUploader.upload(dto.getImage(), "notifications");
 
-        NotificationEntity entity = NotificationDto.NotificationRequestDto.toEntity(dto, image.getImagePath(), "공지사항");
+        NotificationEntity entity = NotificationDto.NotificationRequestDto.toEntity(dto, image.getImagePath(), NotificationType.NOTICE);
 
         repo.save(entity);
 

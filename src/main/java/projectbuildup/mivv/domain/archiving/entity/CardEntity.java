@@ -13,9 +13,9 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.JOINED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder
-@DiscriminatorColumn(name = "dType")
+@DiscriminatorColumn(name = "d_type")
 @DiscriminatorValue("GeneralCondition")
-@Table(name="Card")
+@Table(name="card")
 public class CardEntity {
 
     @Id
@@ -24,19 +24,19 @@ public class CardEntity {
 
     @Column(nullable = false, length = 30)
     @Enumerated(EnumType.STRING)
-    protected CardType cardType;
+    protected CardType type;
 
     @Column(nullable = false, length = 30)
     protected String title;
 
     @Column(nullable = false, length = 30)
-    protected String subTitle;
+    protected String sub_title;
 
     @Column(nullable = false, length = 30)
     protected String sentence;
 
     @Column(nullable = false, length = 5000)
-    protected String imagePath;
+    protected String image_path;
 
     @OneToMany(mappedBy = "cardEntity", cascade = CascadeType.ALL)
     private List<UserCardEntity> userCards = new ArrayList<>();
@@ -47,13 +47,13 @@ public class CardEntity {
             this.title = dto.getTitle();
         }
         if (dto.getSubTitle() != null) {
-            this.subTitle = dto.getSubTitle();
+            this.sub_title = dto.getSubTitle();
         }
         if (dto.getSentence() != null) {
             this.sentence = dto.getSentence();
         }
         if (dto.getImage() != null) {
-            this.imagePath = imagePath;
+            this.image_path = imagePath;
         }
     }
 
