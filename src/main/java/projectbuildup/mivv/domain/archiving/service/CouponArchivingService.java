@@ -53,7 +53,7 @@ public class CouponArchivingService {
 
     public void updateCouponConditionCard(final Long id, final ArchivingDto.updateCouponCardRequestDto dto) throws IOException {
 
-        Optional<CouponConditionCardEntity> target = (Optional<CouponConditionCardEntity>)cardRepo.findById(id);
+        Optional<CouponConditionCardEntity> target = (Optional<CouponConditionCardEntity>) cardRepo.findById(id);
         if (target.isEmpty()) {
             throw new CCardNotFoundException();
         }
@@ -72,21 +72,21 @@ public class CouponArchivingService {
 
         List<CouponConditionCardEntity> allCards = (List<CouponConditionCardEntity>) cardRepo.findAll();
 
-        for (UserCardEntity element: alreadyExistings) {
+        for (UserCardEntity element : alreadyExistings) {
             allCards.remove(element.getCardEntity());
         }
 
         List<CouponConditionCardEntity> cardsToCheck = allCards;
 
-        for (CouponConditionCardEntity element: cardsToCheck) {
+        for (CouponConditionCardEntity element : cardsToCheck) {
             // 연속 발급 조건만 만족
-            if (element.getWhat_number() == 0 && element.getHow_successive() <= howSuccessive)
+            if (element.getWhatNumber() == 0 && element.getHowSuccessive() <= howSuccessive)
                 userCardRepo.save(new UserCardEntity(user, element, LocalDate.now()));
                 // 발급 순서 조건만 만족
-            else if (element.getHow_successive() == 0 && element.getWhat_number() == whatNumber)
+            else if (element.getHowSuccessive() == 0 && element.getWhatNumber() == whatNumber)
                 userCardRepo.save(new UserCardEntity(user, element, LocalDate.now()));
                 // 둘다 만족
-            else if (element.getWhat_number() == whatNumber && element.getHow_successive() <= howSuccessive)
+            else if (element.getWhatNumber() == whatNumber && element.getHowSuccessive() <= howSuccessive)
                 userCardRepo.save(new UserCardEntity(user, element, LocalDate.now()));
         }
     }
@@ -96,7 +96,7 @@ public class CouponArchivingService {
 
         List<LocalDateTime> createdTimesByUserId = couponIssuanceRepo.findCreatedTimeByUserId(user);
         LocalDateTime before = LocalDateTime.now();
-        for (LocalDateTime element: createdTimesByUserId) {
+        for (LocalDateTime element : createdTimesByUserId) {
             // 마지막 발급이 이번달인가?
             if (createdTimesByUserId.indexOf(element) == 0 && Math.abs(ChronoUnit.MONTHS.between(LocalDateTime.now(), element)) > 0)
                 break;
@@ -105,8 +105,7 @@ public class CouponArchivingService {
             diffMonths = Math.abs(diffMonths);
             if (diffMonths == 1) {
                 howSuccessive++;
-            }
-            else if (diffMonths > 1) {
+            } else if (diffMonths > 1) {
                 break;
             }
 
@@ -118,7 +117,7 @@ public class CouponArchivingService {
     private int checkWhatNumber(User user, Coupon coupon) {
         List<CouponIssuance> issuancesByCouponId = couponIssuanceRepo.findAllByCoupon(coupon);
         int whatNumber = 0;
-        for (CouponIssuance element: issuancesByCouponId) {
+        for (CouponIssuance element : issuancesByCouponId) {
             if (element.getUser().getId().equals(user.getId())) {
                 whatNumber = issuancesByCouponId.indexOf(element) + 1;
                 break;
@@ -127,6 +126,12 @@ public class CouponArchivingService {
         return whatNumber;
     }
 
+    /**
+     * sdjflsjdlf벨라 바보
+     *
+     * @param user     사용자
+     * @param couponId 쿠폰 아이디
+     */
     @Transactional
     public void assignCouponConditionsCard(final User user, final Long couponId) {
 
