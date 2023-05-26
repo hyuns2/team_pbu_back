@@ -79,15 +79,10 @@ public class CouponArchivingService {
         List<CouponConditionCardEntity> cardsToCheck = allCards;
 
         for (CouponConditionCardEntity element : cardsToCheck) {
-            // 연속 발급 조건만 만족
-            if (element.getWhatNumber() == 0 && element.getHowSuccessive() <= howSuccessive)
-                userCardRepo.save(new UserCardEntity(user, element, LocalDate.now()));
-                // 발급 순서 조건만 만족
-            else if (element.getHowSuccessive() == 0 && element.getWhatNumber() == whatNumber)
-                userCardRepo.save(new UserCardEntity(user, element, LocalDate.now()));
-                // 둘다 만족
-            else if (element.getWhatNumber() == whatNumber && element.getHowSuccessive() <= howSuccessive)
-                userCardRepo.save(new UserCardEntity(user, element, LocalDate.now()));
+            if (element.getWhatNumber() != whatNumber && element.getHowSuccessive() > howSuccessive)
+                continue;
+
+            userCardRepo.save(new UserCardEntity(user, element, LocalDate.now()));
         }
     }
 
