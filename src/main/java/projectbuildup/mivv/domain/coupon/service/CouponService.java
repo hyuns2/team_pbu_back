@@ -10,7 +10,6 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 import projectbuildup.mivv.domain.coupon.dto.CouponDto;
-import projectbuildup.mivv.domain.coupon.dto.response.CouponResponseDto;
 import projectbuildup.mivv.domain.coupon.entity.Coupon;
 import projectbuildup.mivv.domain.coupon.repository.CouponRepository;
 import projectbuildup.mivv.domain.couponIssuance.repository.CouponIssuanceRepository;
@@ -48,11 +47,11 @@ public class CouponService {
      * @param
      * @param
      */
-    public void createCoupon(Long worthyConsumptionId, CouponDto.Creation couponDto) throws IOException {
+    public void createCoupon(Long worthyConsumptionId, CouponDto.Request couponDto) throws IOException {
         WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionId).orElseThrow(CWorthyConsumptionNotFoundException::new);
 
         Image image = imageUploader.upload(couponDto.getImage(), "coupons");
-        Coupon coupon = new Coupon(couponDto, image.getImagePath());
+        Coupon coupon = Coupon.toEntity(couponDto, image.getImagePath());
         worthyConsumption.addCoupon(coupon);
         worthyConsumption.getCondition().checkIssuableCouponStatus(CheckConditionType.OK);
         worthyConsumptionRepository.save(worthyConsumption);
@@ -62,16 +61,16 @@ public class CouponService {
      * @param
      * @return
      */
-    public CouponResponseDto.ReadResponseWithWorthyConsumption readCouponWithWorthyConsumption(Long couponId, Long userId){
+    public CouponDto.Response readCouponWithWorthyConsumption(Long couponId, Long userId){
         Coupon coupon = couponRepository.findById(couponId).orElseThrow(CCouponNotFoundException::new);
         User user = userRepository.findById(userId).orElseThrow(CUserExistException::new);
 
         if(couponIssuanceRepository.findByUserAndCoupon(user, coupon).isEmpty())
             throw new CBadRequestException("유저가 보유한 쿠폰이 아닙니다.");
 
-        return new CouponResponseDto.ReadResponseWithWorthyConsumption(coupon);
+        return new CouponDto.Response(coupon);
     }
-    public void updateCoupon(Long couponId, CouponDto.Update couponDto) throws IOException {
+    public void updateCoupon(Long couponId, CouponDto.Request couponDto) throws IOException {
         Coupon coupon = couponRepository.findById(couponId).orElseThrow(CCouponNotFoundException::new);
         Image image = imageUploader.upload(couponDto.getImage(), "coupons");
         String imagePath = image.getImagePath();

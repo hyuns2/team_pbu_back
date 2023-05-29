@@ -3,7 +3,7 @@ package projectbuildup.mivv.domain.couponIssuance.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import projectbuildup.mivv.domain.coupon.dto.response.CouponResponseDto;
+import projectbuildup.mivv.domain.coupon.dto.CouponDto;
 import projectbuildup.mivv.domain.coupon.entity.Coupon;
 import projectbuildup.mivv.domain.coupon.repository.CouponRepository;
 import projectbuildup.mivv.domain.couponIssuance.dto.CouponIssuanceDto;
@@ -87,7 +87,7 @@ public class CouponIssuanceService {
      * @param
      * @return
      */
-    public List<CouponResponseDto.ReadResponseWithWorthyConsumption> getUsableCouponList(Long userId){
+    public List<CouponDto.Response> getUsableCouponList(Long userId){
         userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
 
         List<CouponIssuance> couponIssuances = couponIssuanceRepository.findAllByUserId(userId).stream().toList();
@@ -98,7 +98,7 @@ public class CouponIssuanceService {
                 .collect(Collectors.toList());
 
         return coupons.stream()
-                .map(CouponResponseDto.ReadResponseWithWorthyConsumption::new)
+                .map(CouponDto.Response::new)
                 .collect(Collectors.toList());
     }
 
@@ -107,7 +107,7 @@ public class CouponIssuanceService {
      * @param
      * @return
      */
-    public List<CouponResponseDto.ReadResponseWithWorthyConsumption> getUsedCouponList(Long userId){
+    public List<CouponDto.Response> getUsedCouponList(Long userId){
         userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
 
         List<CouponIssuance> couponIssuances = couponIssuanceRepository.findAllByUserId(userId).stream().toList();
@@ -118,7 +118,7 @@ public class CouponIssuanceService {
                 .collect(Collectors.toList());
 
         return coupons.stream()
-                .map(CouponResponseDto.ReadResponseWithWorthyConsumption::new)
+                .map(CouponDto.Response::new)
                 .collect(Collectors.toList());
     }
     /***

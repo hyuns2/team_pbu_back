@@ -15,7 +15,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import projectbuildup.mivv.domain.coupon.dto.CouponDto;
-import projectbuildup.mivv.domain.coupon.dto.response.CouponResponseDto;
 import projectbuildup.mivv.domain.coupon.service.CouponService;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.global.constant.ExampleValue;
@@ -35,15 +34,15 @@ public class CouponController {
     @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/{couponId}")
-    public ResponseEntity<CouponResponseDto.ReadResponseWithWorthyConsumption> readCouponWithWorthyConsumption(@PathVariable(name = "couponId") Long couponId, @AuthenticationPrincipal User user){
-        CouponResponseDto.ReadResponseWithWorthyConsumption couponResponseDto = couponService.readCouponWithWorthyConsumption(couponId, user.getId());
+    public ResponseEntity<CouponDto.Response> readCouponWithWorthyConsumption(@PathVariable(name = "couponId") Long couponId, @AuthenticationPrincipal User user){
+        CouponDto.Response couponResponseDto = couponService.readCouponWithWorthyConsumption(couponId, user.getId());
         return new ResponseEntity<>(couponResponseDto, HttpStatus.OK);
     }
     @Operation(summary = "쿠폰을 수정합니다.", description = "관리자가 쿠폰을 수정합니다.")
     @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping(value = "/{couponId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<HttpStatus> updateCoupon(@PathVariable(name = "couponId")Long couponId, @Valid @ModelAttribute("updateCoupon") CouponDto.Update couponDto) throws IOException {
+    public ResponseEntity<HttpStatus> updateCoupon(@PathVariable(name = "couponId")Long couponId, @Valid @ModelAttribute("updateCoupon") CouponDto.Request couponDto) throws IOException {
         couponService.updateCoupon(couponId, couponDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
