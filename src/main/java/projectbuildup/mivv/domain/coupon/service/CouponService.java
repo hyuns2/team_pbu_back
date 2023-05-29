@@ -50,7 +50,7 @@ public class CouponService {
      */
     public void createCoupon(Long worthyConsumptionId, CouponDto.Request couponDto) throws IOException {
         WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionId).orElseThrow(CWorthyConsumptionNotFoundException::new);
-        Image image = imageUploader.upload(couponDto.getImage(), "coupons");
+        Image image = imageUploader.upload(couponDto.getImage(), ImageType.COUPON);
         Coupon coupon = Coupon.toEntity(couponDto, image.getImagePath());
         worthyConsumption.addCoupon(coupon);
         worthyConsumption.getCondition().checkIssuableCouponStatus(CheckConditionType.OK);
