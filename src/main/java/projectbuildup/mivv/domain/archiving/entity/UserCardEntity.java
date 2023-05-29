@@ -12,6 +12,7 @@ import java.time.LocalDate;
 @Table(name = "user_card")
 public class UserCardEntity {
 
+    @Column(name = "id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,18 +25,18 @@ public class UserCardEntity {
     @JoinColumn(name = "card_id")
     private CardEntity cardEntity;
 
-    @Column(nullable = false)
+    @Column(name = "date", nullable = false)
     @Temporal(value = TemporalType.DATE)
     private LocalDate date;
 
-    @Column(nullable = false)
-    private boolean is_new;
+    @Column(name = "is_new", nullable = false)
+    private boolean isNew;
 
     public UserCardEntity(User user, CardEntity cardEntity, LocalDate date) {
         this.user = user;
         this.cardEntity = cardEntity;
         this.date = date;
-        this.is_new = true;
+        this.isNew = true;
     }
 
 }

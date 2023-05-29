@@ -29,7 +29,7 @@ import static org.apache.commons.collections4.CollectionUtils.collect;
 
 @Service
 @RequiredArgsConstructor
-public class LikesService extends BaseTimeEntity {
+public class LikesService {
 
     private final UserRepository userRepository;
     private final ShortsRepository shortsRepository;

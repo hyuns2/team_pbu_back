@@ -11,15 +11,17 @@ public class WorthyConsumptionResponseDto {
     @NoArgsConstructor @AllArgsConstructor
     @Getter @Setter
     public static class ReadSummaryResponse {
+        private Long id;
         private String title;
         private Integer originalPrice;
         private Integer salePrice;
         private String availablePrice;
         private Long lastMonthAmount;
         private Integer maxParticipants;
-        private String summary;
+        private List<String> summary;
 
         public ReadSummaryResponse(WorthyConsumption worthyConsumption) {
+            this.id = worthyConsumption.getId();
             this.title = worthyConsumption.getTitle();
             this.originalPrice = worthyConsumption.getOriginalPrice();
             this.salePrice = worthyConsumption.getSalePrice();
@@ -35,30 +37,34 @@ public class WorthyConsumptionResponseDto {
         private List<String> hashtags;
         private String videoPath;
         private String imagePath;
-        private CheckConditionType isIssuableCoupon;
+        private CheckConditionType checkConditionType;
         private Boolean isLiked;
+        private Long couponId;
 
-        public ReadBasicResponse(WorthyConsumption worthyConsumption, Boolean isLiked) {
+        public ReadBasicResponse(WorthyConsumption worthyConsumption, Boolean isLiked, Long couponId) {
             super(worthyConsumption);
             this.hashtags = worthyConsumption.getHashtags();
             this.videoPath = worthyConsumption.getWorthyConsumptionUrl().getVideoPath();
             this.imagePath = worthyConsumption.getWorthyConsumptionUrl().getImagePath();
-            this.isIssuableCoupon = worthyConsumption.getCondition().getIsIssuableCoupon();
+            this.checkConditionType = worthyConsumption.getCondition().getCheckConditionType();
             this.isLiked = isLiked;
+            this.couponId = couponId;
         }
 
-        public ReadBasicResponse(WorthyConsumption worthyConsumption) {
+        public ReadBasicResponse(WorthyConsumption worthyConsumption, Long couponId) {
             super(worthyConsumption);
             this.hashtags = worthyConsumption.getHashtags();
             this.videoPath = worthyConsumption.getWorthyConsumptionUrl().getVideoPath();
             this.imagePath = worthyConsumption.getWorthyConsumptionUrl().getImagePath();
-            this.isIssuableCoupon = worthyConsumption.getCondition().getIsIssuableCoupon();
+            this.checkConditionType = worthyConsumption.getCondition().getCheckConditionType();
+            this.couponId = couponId;
         }
     }
     @NoArgsConstructor @AllArgsConstructor
     @Getter @Setter
     @Builder
     public static class ReadDetailResponse{
+        private Long id;
         private String title;
         private List<String> hashtags;
         private String detailImageUrl;
@@ -72,6 +78,7 @@ public class WorthyConsumptionResponseDto {
         private String availablePlace;
 
         public ReadDetailResponse(WorthyConsumption worthyConsumption) {
+            this.id = worthyConsumption.getId();
             this.title = worthyConsumption.getTitle();
             this.hashtags = worthyConsumption.getHashtags();
             this.detailImageUrl = worthyConsumption.getWorthyConsumptionUrl().getDetailImagePath();

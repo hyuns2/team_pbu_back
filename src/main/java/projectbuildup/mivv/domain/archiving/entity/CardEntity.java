@@ -18,25 +18,26 @@ import java.util.List;
 @Table(name="card")
 public class CardEntity {
 
+    @Column(name = "id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
 
-    @Column(nullable = false, length = 30)
+    @Column(name = "type", nullable = false, length = 30)
     @Enumerated(EnumType.STRING)
     protected CardType type;
 
-    @Column(nullable = false, length = 30)
+    @Column(name = "title", nullable = false, length = 30)
     protected String title;
 
-    @Column(nullable = false, length = 30)
-    protected String sub_title;
+    @Column(name = "sub_title", nullable = false, length = 30)
+    protected String subTitle;
 
-    @Column(nullable = false, length = 30)
+    @Column(name = "sentence", nullable = false, length = 30)
     protected String sentence;
 
-    @Column(nullable = false, length = 5000)
-    protected String image_path;
+    @Column(name = "image_path", nullable = false, length = 5000)
+    protected String imagePath;
 
     @OneToMany(mappedBy = "cardEntity", cascade = CascadeType.ALL)
     private List<UserCardEntity> userCards = new ArrayList<>();
@@ -47,13 +48,13 @@ public class CardEntity {
             this.title = dto.getTitle();
         }
         if (dto.getSubTitle() != null) {
-            this.sub_title = dto.getSubTitle();
+            this.subTitle = dto.getSubTitle();
         }
         if (dto.getSentence() != null) {
             this.sentence = dto.getSentence();
         }
         if (dto.getImage() != null) {
-            this.image_path = imagePath;
+            this.imagePath = imagePath;
         }
     }
 

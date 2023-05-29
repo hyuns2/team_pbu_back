@@ -1,5 +1,6 @@
 package projectbuildup.mivv.domain.archiving.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -19,30 +20,30 @@ import java.io.IOException;
 @Table(name = "coupon_card")
 public class CouponConditionCardEntity extends CardEntity {
 
-    // 몇번째 발급자인지
-    protected Integer what_number;
+    @Column(name = "what_number")
+    protected Integer whatNumber;
 
-    // 몇번 이상 연속 발급 성공자인지
-    protected Integer how_successive;
+    @Column(name = "how_successive")
+    protected Integer howSuccessive;
 
     public void updateCard(ArchivingDto.updateCouponCardRequestDto dto, String imagePath) throws IOException {
         if (dto.getTitle() != null) {
             this.title = dto.getTitle();
         }
         if (dto.getSubTitle() != null) {
-            this.sub_title = dto.getSubTitle();
+            this.subTitle = dto.getSubTitle();
         }
         if (dto.getSentence() != null) {
             this.sentence = dto.getSentence();
         }
         if (dto.getImage() != null) {
-            this.image_path = imagePath;
+            this.imagePath = imagePath;
         }
         if (dto.getWhatNumber() != null) {
-            this.what_number = dto.getWhatNumber();
+            this.whatNumber = dto.getWhatNumber();
         }
         if (dto.getHowSuccessive() != null) {
-            this.how_successive = dto.getHowSuccessive();
+            this.howSuccessive = dto.getHowSuccessive();
         }
     }
 

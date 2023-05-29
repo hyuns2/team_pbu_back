@@ -13,8 +13,13 @@ import projectbuildup.mivv.domain.archiving.dto.ArchivingDto;
 @Table(name = "remittance_card")
 public class RemittanceConditionCardEntity extends CardEntity {
 
+    @Column(name = "charge")
     protected Integer charge;
+
+    @Column(name = "count")
     protected Integer count;
+
+    @Column(name = "term")
     protected Integer term;
 
     public void updateCard(ArchivingDto.updateRemittanceCardRequestDto dto, String imagePath) {
@@ -22,13 +27,13 @@ public class RemittanceConditionCardEntity extends CardEntity {
             this.title = dto.getTitle();
         }
         if (dto.getSubTitle() != null) {
-            this.sub_title = dto.getSubTitle();
+            this.subTitle = dto.getSubTitle();
         }
         if (dto.getSentence() != null) {
             this.sentence = dto.getSentence();
         }
         if (dto.getImage() != null) {
-            this.image_path = imagePath;
+            this.imagePath = imagePath;
         }
         if (dto.getCharge() != null) {
             this.charge = dto.getCharge();
@@ -45,9 +50,9 @@ public class RemittanceConditionCardEntity extends CardEntity {
         return this.id.equals(remittanceConditionCardEntity.getId()) &&
                 this.type.equals(remittanceConditionCardEntity.getType()) &&
                 this.title.equals(remittanceConditionCardEntity.getTitle()) &&
-                this.sub_title.equals(remittanceConditionCardEntity.getSub_title()) &&
+                this.subTitle.equals(remittanceConditionCardEntity.getSubTitle()) &&
                 this.sentence.equals(remittanceConditionCardEntity.getSentence()) &&
-                this.image_path.equals(remittanceConditionCardEntity.getImage_path()) &&
+                this.imagePath.equals(remittanceConditionCardEntity.getImagePath()) &&
                 this.charge.equals(remittanceConditionCardEntity.getCharge()) &&
                 this.count.equals(remittanceConditionCardEntity.getCount()) &&
                 this.term.equals(remittanceConditionCardEntity.getTerm());

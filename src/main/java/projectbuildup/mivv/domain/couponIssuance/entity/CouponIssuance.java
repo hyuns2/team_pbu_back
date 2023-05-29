@@ -15,17 +15,19 @@ import projectbuildup.mivv.global.common.BaseTimeEntity;
 public class CouponIssuance extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn
+    @JoinColumn(name = "coupon_id")
     private Coupon coupon;
-
+    @Column(name = "created")
     private boolean created = false;
+    @Column(name = "used")
     private boolean used = false;
     public CouponIssuance(User user, Coupon coupon){
         this.user = user;

@@ -1,4 +1,4 @@
-package projectbuildup.mivv.domain.archiving.dto;
+package projectbuildup.mivv.global.common.fileStore;
 
 import lombok.Data;
 

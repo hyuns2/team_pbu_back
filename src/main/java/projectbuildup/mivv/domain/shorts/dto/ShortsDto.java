@@ -38,20 +38,22 @@ public class ShortsDto {
     @Data
     @AllArgsConstructor
     public static class shortsResponse {
-    String title;
-    String content;
-    String videoPath;
-    String imagePath;
-    @Enumerated(EnumType.STRING)
-    ShortsCategory category;
-    Boolean liked;
+        private Long id;
+        String title;
+        String content;
+        String videoPath;
+        String imagePath;
+        @Enumerated(EnumType.STRING)
+        ShortsCategory category;
+        Boolean liked;
     public shortsResponse(Shorts shorts, Boolean liked){
-            this.title = shorts.getTitle();
-            this.content = shorts.getContent();
-            this.videoPath = shorts.getVideoPath();
-            this.imagePath= shorts.getImagePath();
-            this.category = shorts.getCategory();
-            this.liked = liked;
+        this.id = shorts.getId();
+        this.title = shorts.getTitle();
+        this.content = shorts.getContent();
+        this.videoPath = shorts.getVideoPath();
+        this.imagePath= shorts.getImagePath();
+        this.category = shorts.getCategory();
+        this.liked = liked;
         }
     }
 }

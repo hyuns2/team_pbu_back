@@ -38,8 +38,8 @@ public class NotificationDto {
                     .type(type)
                     .title(dto.getTitle())
                     .content(dto.getContent())
-                    .image_path(imagePath)
-                    .time_stamp(LocalDateTime.now())
+                    .imagePath(imagePath)
+                    .timeStamp(LocalDateTime.now())
                     .build();
         }
 
@@ -71,8 +71,8 @@ public class NotificationDto {
             this.type = entity.getType().name();
             this.title = entity.getTitle();
             this.content = entity.getContent();
-            this.imagePath = entity.getImage_path();
-            this.timeStamp = entity.getTime_stamp();
+            this.imagePath = entity.getImagePath();
+            this.timeStamp = entity.getTimeStamp();
         }
     }
 

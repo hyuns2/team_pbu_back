@@ -3,6 +3,7 @@ package projectbuildup.mivv.domain.worthyConsumption.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import projectbuildup.mivv.domain.coupon.entity.Coupon;
 import projectbuildup.mivv.domain.couponIssuance.repository.CouponIssuanceRepository;
 import projectbuildup.mivv.domain.likes.repository.LikesShortsRepository;
 import projectbuildup.mivv.domain.likes.repository.LikesWorthyConsumptionRepository;
@@ -74,9 +75,10 @@ public class WorthyConsumptionService {
         User user = userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
 
         checkConditionToIssuableCoupon(worthyConsumption);
+        Long couponId = getCouponForMonth(worthyConsumption);
 
         Boolean isLiked = likesWorthyConsumptionRepository.findByUserAndWorthyConsumption(user, worthyConsumption).isPresent() ? Boolean.TRUE : Boolean.FALSE;
-        return new WorthyConsumptionResponseDto.ReadBasicResponse(worthyConsumption, isLiked);
+        return new WorthyConsumptionResponseDto.ReadBasicResponse(worthyConsumption, isLiked, couponId);
     }
     public WorthyConsumptionResponseDto.ReadDetailResponse readDetailWorthyConsumption(Long worthyConsumptionId){
         WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionId).orElseThrow(CWorthyConsumptionNotFoundException:: new);
@@ -87,7 +89,8 @@ public class WorthyConsumptionService {
         return worthyConsumptionRepository.findAll().stream()
                 .map(worthyConsumption -> {
                     boolean liked = likesWorthyConsumptionRepository.findByUserAndWorthyConsumption(user, worthyConsumption).isPresent();
-                    return new WorthyConsumptionResponseDto.ReadBasicResponse(worthyConsumption, liked);
+                    Long couponId = getCouponForMonth(worthyConsumption);
+                    return new WorthyConsumptionResponseDto.ReadBasicResponse(worthyConsumption, liked, couponId);
                 })
                 .collect(Collectors.toList());
     }
@@ -144,5 +147,21 @@ public class WorthyConsumptionService {
         int nowParticipants = couponIssuanceRepository.countByCouponId(couponId);
         if(nowParticipants>=worthyConsumption.getCondition().getMaxParticipants())
             worthyConsumption.getCondition().checkIssuableCouponStatus(ALREADY_SPEND);
+    }
+
+    /**
+     * 해당 월에 맞는 쿠폰을 조회합니다.
+     * @param worthyConsumption
+     * @return
+     */
+    public Long getCouponForMonth(WorthyConsumption worthyConsumption){
+        List<Coupon> couponList = worthyConsumption.getCoupons().stream().filter(coupon -> checkCouponDate(coupon)==true).toList();
+
+        return couponList.get(0).getId();
+    }
+    public boolean checkCouponDate(Coupon coupon){
+        if(coupon.getLimitStartDate().isBefore(LocalDate.now())&&coupon.getLimitEndDate().isAfter(LocalDate.now()))
+            return true;
+        return false;
     }
 }
