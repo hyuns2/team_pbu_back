@@ -9,29 +9,34 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 @Entity
-@Table(name = "UserCard")
+@Table(name = "user_card")
 public class UserCardEntity {
 
+    @Column(name = "id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId")
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cardId")
+    @JoinColumn(name = "card_id")
     private CardEntity cardEntity;
 
-    @Column(nullable = false)
+    @Column(name = "date", nullable = false)
     @Temporal(value = TemporalType.DATE)
     private LocalDate date;
+
+    @Column(name = "is_new", nullable = false)
+    private boolean isNew;
 
     public UserCardEntity(User user, CardEntity cardEntity, LocalDate date) {
         this.user = user;
         this.cardEntity = cardEntity;
         this.date = date;
+        this.isNew = true;
     }
 
 }

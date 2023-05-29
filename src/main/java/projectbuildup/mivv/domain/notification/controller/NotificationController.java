@@ -23,7 +23,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@Tag(name = "[10. Notification]", description = "알림 페이지와 관련된 API입니다.")
+@Tag(name = "[Notification]", description = "알림 페이지와 관련된 API입니다.")
 @RequestMapping("/api/notification")
 public class NotificationController {
 
@@ -39,7 +39,7 @@ public class NotificationController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @Operation(summary = "공지사항 알림글 생성", description = "관리자가 공지사항 알림글을 생성합니다.")
+    @Operation(summary = "공지 알림글 생성", description = "관리자가 공지 알림글을 생성합니다.")
     @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/notice", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

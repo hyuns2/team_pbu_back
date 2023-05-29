@@ -13,36 +13,37 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.JOINED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder
-@DiscriminatorColumn(name = "dType")
-@Table(name="Card")
+@DiscriminatorColumn(name = "d_type")
+@DiscriminatorValue("GeneralCondition")
+@Table(name="card")
 public class CardEntity {
 
+    @Column(name = "id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
 
-    @Column(nullable = false, length = 30)
-    protected String kind;
+    @Column(name = "type", nullable = false, length = 30)
+    @Enumerated(EnumType.STRING)
+    protected CardType type;
 
-    @Column(nullable = false, length = 30)
+    @Column(name = "title", nullable = false, length = 30)
     protected String title;
 
-    @Column(nullable = false, length = 30)
+    @Column(name = "sub_title", nullable = false, length = 30)
     protected String subTitle;
 
-    @Column(nullable = false, length = 30)
+    @Column(name = "sentence", nullable = false, length = 30)
     protected String sentence;
 
-    @Column(nullable = false, length = 5000)
+    @Column(name = "image_path", nullable = false, length = 5000)
     protected String imagePath;
 
     @OneToMany(mappedBy = "cardEntity", cascade = CascadeType.ALL)
     private List<UserCardEntity> userCards = new ArrayList<>();
 
     public void updateCard(ArchivingDto.updateGeneralCardRequestDto dto, String imagePath) throws IOException {
-        if (dto.getKind() != null) {
-            this.kind = dto.getKind();
-        }
+
         if (dto.getTitle() != null) {
             this.title = dto.getTitle();
         }

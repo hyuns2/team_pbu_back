@@ -7,10 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.web.multipart.MultipartFile;
-import projectbuildup.mivv.domain.archiving.entity.CardEntity;
-import projectbuildup.mivv.domain.archiving.entity.CouponConditionCardEntity;
-import projectbuildup.mivv.domain.archiving.entity.NumericalConditionCardEntity;
-import projectbuildup.mivv.domain.archiving.entity.UserCardEntity;
+import projectbuildup.mivv.domain.archiving.entity.*;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -19,12 +16,7 @@ public class ArchivingDto {
 
     @AllArgsConstructor
     @Data
-    public static class createNumericalCardRequestDto {
-
-        @NotBlank
-        @Length(min = 2, max = 30)
-        @Schema(description = "카드 종류")
-        private String kind;
+    public static class createRemittanceCardRequestDto {
 
         @NotBlank
         @Length(min = 2, max = 30)
@@ -45,19 +37,22 @@ public class ArchivingDto {
         @Schema(description = "카드 이미지 파일")
         private MultipartFile image;
 
+        @NotNull
         @Schema(description = "발급조건 금액")
         private Integer charge;
 
+        @NotNull
         @Schema(description = "발급조건 횟수")
         private Integer count;
 
+        @NotNull
         @Schema(description = "발급조건 일수")
         private Integer term;
 
-        public static NumericalConditionCardEntity toEntity(final createNumericalCardRequestDto dto, String imagePath) throws IOException {
+        public static RemittanceConditionCardEntity toEntity(final createRemittanceCardRequestDto dto, String imagePath) throws IOException {
 
-            return NumericalConditionCardEntity.builder()
-                    .kind(dto.getKind())
+            return RemittanceConditionCardEntity.builder()
+                    .type(CardType.REMITTANCE)
                     .title(dto.getTitle())
                     .subTitle(dto.getSubTitle())
                     .sentence(dto.getSentence())
@@ -72,11 +67,7 @@ public class ArchivingDto {
 
     @AllArgsConstructor
     @Data
-    public static class updateNumericalCardRequestDto {
-
-        @Length(max = 30)
-        @Schema(description = "카드 종류")
-        private String kind;
+    public static class updateRemittanceCardRequestDto {
 
         @Length(max = 30)
         @Schema(description = "카드 제목")
@@ -110,11 +101,6 @@ public class ArchivingDto {
 
         @NotBlank
         @Length(min = 2, max = 30)
-        @Schema(description = "카드 종류")
-        private String kind;
-
-        @NotBlank
-        @Length(min = 2, max = 30)
         @Schema(description = "카드 제목")
         private String title;
 
@@ -135,7 +121,7 @@ public class ArchivingDto {
         public static CardEntity toEntity(final ArchivingDto.createGeneralCardRequestDto dto, String imagePath) throws IOException {
 
             return CardEntity.builder()
-                    .kind(dto.getKind())
+                    .type(CardType.GENERAL)
                     .title(dto.getTitle())
                     .subTitle(dto.getSubTitle())
                     .sentence(dto.getSentence())
@@ -148,10 +134,6 @@ public class ArchivingDto {
     @AllArgsConstructor
     @Data
     public static class updateGeneralCardRequestDto {
-
-        @Length(max = 30)
-        @Schema(description = "카드 종류")
-        private String kind;
 
         @Length(max = 30)
         @Schema(description = "카드 제목")
@@ -178,18 +160,13 @@ public class ArchivingDto {
         private Long id;
 
         @NotNull
-        @Schema(description = "첨부 파일")
+        @Schema(description = "첨부 엑셀파일")
         private MultipartFile file;
     }
 
     @AllArgsConstructor
     @Data
     public static class createCouponCardRequestDto {
-
-        @NotBlank
-        @Length(min = 2, max = 30)
-        @Schema(description = "카드 종류")
-        private String kind;
 
         @NotBlank
         @Length(min = 2, max = 30)
@@ -221,7 +198,7 @@ public class ArchivingDto {
         public static CouponConditionCardEntity toEntity(final ArchivingDto.createCouponCardRequestDto dto, String imagePath) throws IOException {
 
             return CouponConditionCardEntity.builder()
-                    .kind(dto.getKind())
+                    .type(CardType.COUPON)
                     .title(dto.getTitle())
                     .subTitle(dto.getSubTitle())
                     .sentence(dto.getSentence())
@@ -236,10 +213,6 @@ public class ArchivingDto {
     @AllArgsConstructor
     @Data
     public static class updateCouponCardRequestDto {
-
-        @Length(max = 30)
-        @Schema(description = "카드 종류")
-        private String kind;
 
         @Length(max = 30)
         @Schema(description = "카드 제목")
@@ -272,7 +245,7 @@ public class ArchivingDto {
         private Long id;
 
         @Schema(description = "카드 종류")
-        private String kind;
+        private String cardType;
 
         @Schema(description = "카드 제목")
         private String title;
@@ -288,7 +261,7 @@ public class ArchivingDto {
 
         public CardResponseDto(final CardEntity entity) {
             this.id = entity.getId();
-            this.kind = entity.getKind();
+            this.cardType = entity.getType().name();
             this.title = entity.getTitle();
             this.subTitle = entity.getSubTitle();
             this.sentence = entity.getSentence();
@@ -299,7 +272,7 @@ public class ArchivingDto {
 
     @AllArgsConstructor
     @Data
-    public static class UserCardResponseDto {
+    public static class UserCardResponseDto1 {
 
         @Schema(description = "UserCard Id")
         private Long id;
@@ -310,10 +283,56 @@ public class ArchivingDto {
         @Schema(description = "발급 일자")
         private LocalDate date;
 
-        public UserCardResponseDto(final UserCardEntity entity) {
+        @Schema(description = "신규 여부")
+        private boolean isNew;
+
+        public UserCardResponseDto1(final UserCardEntity entity) {
             this.id = entity.getId();
             this.cardResponseDto = new CardResponseDto(entity.getCardEntity());
             this.date = entity.getDate();
+            this.isNew = entity.isNew();
+        }
+
+    }
+
+    @AllArgsConstructor
+    @Data
+    public static class UserCardResponseDto2 {
+
+        @Schema(description = "UserCard Id")
+        private Long id;
+
+        @Schema(description = "발급 일자")
+        private LocalDate date;
+
+        @Schema(description = "신규 여부")
+        private boolean isNew;
+
+        public UserCardResponseDto2(final UserCardEntity entity) {
+            this.id = entity.getId();
+            this.date = entity.getDate();
+            this.isNew = entity.isNew();
+        }
+
+    }
+
+    @Data
+    public static class CardAndUserCardResponseDto {
+
+        @Schema(description = "카드 정보")
+        private CardResponseDto cardDto;
+
+        @Schema(description = "유저카드 정보")
+        private UserCardResponseDto2 userCardDto;
+
+        public CardAndUserCardResponseDto(final CardEntity cardEntity) {
+            this.cardDto = new CardResponseDto(cardEntity);
+            this.userCardDto = null;
+        }
+
+        public CardAndUserCardResponseDto(final CardEntity cardEntity, final UserCardEntity userCardEntity) {
+            this.cardDto = new CardResponseDto(cardEntity);
+            this.userCardDto = new UserCardResponseDto2(userCardEntity);
         }
 
     }

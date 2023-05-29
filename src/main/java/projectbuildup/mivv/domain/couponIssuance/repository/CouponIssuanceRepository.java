@@ -22,4 +22,10 @@ public interface CouponIssuanceRepository extends JpaRepository<CouponIssuance, 
     List<LocalDateTime> findCreatedTimeByUserId(User user);
 
     void deleteAllByUser(User user);
+
+    @Query("select u from CouponIssuance c left join User u on c.user = u where c.coupon.id = ?1")
+    List<User> findUsersByCouponId(Long couponId);
+
+    @Query("select u from CouponIssuance c left join User u on c.user = u where c.createdTime between ?1 and ?2 order by c.createdTime")
+    List<User> findUsersByCouponDate(LocalDateTime start, LocalDateTime end);
 }

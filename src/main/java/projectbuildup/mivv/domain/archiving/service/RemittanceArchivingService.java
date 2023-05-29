@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import projectbuildup.mivv.domain.archiving.dto.ArchivingDto;
-import projectbuildup.mivv.domain.archiving.entity.NumericalConditionCardEntity;
+import projectbuildup.mivv.domain.archiving.entity.RemittanceConditionCardEntity;
 import projectbuildup.mivv.domain.archiving.entity.UserCardEntity;
 import projectbuildup.mivv.domain.archiving.repository.CardRepository;
 import projectbuildup.mivv.domain.archiving.repository.UserCardRepository;
@@ -13,6 +13,7 @@ import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.global.common.imageStore.Image;
 import projectbuildup.mivv.global.common.imageStore.ImageUploader;
 import projectbuildup.mivv.global.error.exception.CCardNotFoundException;
+import projectbuildup.mivv.global.error.exception.CInvalidCardConditionException;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -22,68 +23,65 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
-public class NumericalArchivingService {
+public class RemittanceArchivingService {
 
     private final CardRepository cardRepo;
     private final UserCardRepository userCardRepo;
     private final RemittanceRepository remittanceRepo;
 
-    private final ImageUploader imageUploader = new ImageUploader();
+    private final ImageUploader imageUploader;
 
-    public void createNumericalConditionCard(final ArchivingDto.createNumericalCardRequestDto dto) throws IOException {
+    public void createRemittanceConditionCard(final ArchivingDto.createRemittanceCardRequestDto dto) throws IOException {
+
+        // 조건이 하나도 안주어져 있는 경우
+        if (dto.getCharge() == 0 && dto.getCount() == 0 && dto.getTerm() == 0) {
+            throw new CInvalidCardConditionException();
+        }
 
         Image image = imageUploader.upload(dto.getImage(), "cards");
 
-        NumericalConditionCardEntity entity = ArchivingDto.createNumericalCardRequestDto.toEntity(dto, image.getImagePath());
+        RemittanceConditionCardEntity entity = ArchivingDto.createRemittanceCardRequestDto.toEntity(dto, image.getImagePath());
 
         cardRepo.save(entity);
 
     }
 
-    public void updateNumericalConditionCard(final Long id, final ArchivingDto.updateNumericalCardRequestDto dto) throws IOException {
+    public void updateRemittanceConditionCard(final Long id, final ArchivingDto.updateRemittanceCardRequestDto dto) throws IOException {
 
-        Optional<NumericalConditionCardEntity> target = (Optional<NumericalConditionCardEntity>) cardRepo.findById(id);
+        Optional<RemittanceConditionCardEntity> target = (Optional<RemittanceConditionCardEntity>) cardRepo.findById(id);
         if (target.isEmpty()) {
             throw new CCardNotFoundException();
         }
 
         Image image = imageUploader.upload(dto.getImage(), "cards");
 
-        NumericalConditionCardEntity result = target.get();
+        RemittanceConditionCardEntity result = target.get();
         result.updateCard(dto, image.getImagePath());
 
         cardRepo.save(result);
 
     }
 
-    private void ifNumericalConditionCardHasNotTerm(User user, Integer charge, Integer count, Integer term, NumericalConditionCardEntity element) {
+    private void ifNumericalConditionCardHasNotTerm(User user, Integer charge, Integer count, Integer term, RemittanceConditionCardEntity element) {
         Integer chargeSum = remittanceRepo.findChargeSum(user);
         Integer countSum = remittanceRepo.findCountSum(user);
 
-        if (chargeSum == null) {
-            chargeSum = 0;
-        }
-
         if (chargeSum >= charge && countSum >= count) {
             userCardRepo.save(new UserCardEntity(user, element, LocalDate.now()));
         }
     }
 
-    private void ifNumericalConditionCardHasTerm(User user, Integer charge, Integer count, Integer term, NumericalConditionCardEntity element) {
+    private void ifNumericalConditionCardHasTerm(User user, Integer charge, Integer count, Integer term, RemittanceConditionCardEntity element) {
         Integer chargeSum = remittanceRepo.findChargeSumBetweenTerm(user, LocalDateTime.now().minusDays(term), LocalDateTime.now());
         Integer countSum = remittanceRepo.findCountSumBetweenTerm(user, LocalDateTime.now().minusDays(term), LocalDateTime.now());
 
-        if (chargeSum == null) {
-            chargeSum = 0;
-        }
-
         if (chargeSum >= charge && countSum >= count) {
             userCardRepo.save(new UserCardEntity(user, element, LocalDate.now()));
         }
     }
 
-    private void checkAndAssignNumericalConditionCards(User user, List<NumericalConditionCardEntity> cardsToCheck) {
-        for (NumericalConditionCardEntity element: cardsToCheck) {
+    private void checkAndAssignNumericalConditionCards(User user, List<RemittanceConditionCardEntity> cardsToCheck) {
+        for (RemittanceConditionCardEntity element: cardsToCheck) {
             Integer charge = element.getCharge();
             Integer count = element.getCount();
             Integer term = element.getTerm();
@@ -102,13 +100,13 @@ public class NumericalArchivingService {
 
         List<UserCardEntity> alreadyExistings = userCardRepo.findUserCardEntitiesByUser(user);
 
-        List<NumericalConditionCardEntity> allCards = (List<NumericalConditionCardEntity>) cardRepo.findAll();
+        List<RemittanceConditionCardEntity> allCards = (List<RemittanceConditionCardEntity>) cardRepo.findAll();
 
         for (UserCardEntity element: alreadyExistings) {
             allCards.remove(element.getCardEntity());
         }
 
-        List<NumericalConditionCardEntity> cardsToCheck = allCards;
+        List<RemittanceConditionCardEntity> cardsToCheck = allCards;
 
         checkAndAssignNumericalConditionCards(user, cardsToCheck);
 

@@ -18,8 +18,8 @@ import java.util.UUID;
 public class VideoUploader {
     @Value("${path.videos}")
     String STORE_PATH;
-
-    @Value("${path.ipAddress}")
+    
+    @Value("{path.ipUrl}")
     String ipUrl;
 
     private static final String DELIMITER = "/";

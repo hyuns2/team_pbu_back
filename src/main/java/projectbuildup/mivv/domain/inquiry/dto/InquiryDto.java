@@ -56,15 +56,6 @@ public class InquiryDto {
 
     @AllArgsConstructor
     @Data
-    public static class SimpleRequestDto {
-        @NotBlank
-        @Schema(description = "문의 고유번호")
-        private Long id;
-
-    }
-
-    @AllArgsConstructor
-    @Data
     public static class InquiryResponseDto {
         @Schema(description = "문의 고유번호")
         private Long id;
