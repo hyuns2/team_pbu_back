@@ -16,25 +16,26 @@ import java.time.LocalDateTime;
 @Table(name="notification")
 public class NotificationEntity {
 
+    @Column(name = "id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 10)
+    @Column(name = "type", nullable = false, length = 10)
     @Enumerated(EnumType.STRING)
     private NotificationType type;
 
-    @Column(nullable = false, length = 30)
+    @Column(name = "title", nullable = false, length = 30)
     private String title;
 
-    @Column(nullable = false, length = 1000)
+    @Column(name = "content", nullable = false, length = 1000)
     private String content;
 
-    @Column(nullable = false, length = 1000)
-    private String image_path;
+    @Column(name = "image_path", nullable = false, length = 1000)
+    private String imagePath;
 
-    @Column(nullable = false)
+    @Column(name = "time_stamp", nullable = false)
     @Temporal(value = TemporalType.TIMESTAMP)
-    private LocalDateTime time_stamp;
+    private LocalDateTime timeStamp;
 
 }

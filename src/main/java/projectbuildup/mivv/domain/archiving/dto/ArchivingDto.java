@@ -54,9 +54,9 @@ public class ArchivingDto {
             return RemittanceConditionCardEntity.builder()
                     .type(CardType.REMITTANCE)
                     .title(dto.getTitle())
-                    .sub_title(dto.getSubTitle())
+                    .subTitle(dto.getSubTitle())
                     .sentence(dto.getSentence())
-                    .image_path(imagePath)
+                    .imagePath(imagePath)
                     .charge(dto.getCharge())
                     .count(dto.getCount())
                     .term(dto.getTerm())
@@ -123,9 +123,9 @@ public class ArchivingDto {
             return CardEntity.builder()
                     .type(CardType.GENERAL)
                     .title(dto.getTitle())
-                    .sub_title(dto.getSubTitle())
+                    .subTitle(dto.getSubTitle())
                     .sentence(dto.getSentence())
-                    .image_path(imagePath)
+                    .imagePath(imagePath)
                     .build();
 
         }
@@ -200,11 +200,11 @@ public class ArchivingDto {
             return CouponConditionCardEntity.builder()
                     .type(CardType.COUPON)
                     .title(dto.getTitle())
-                    .sub_title(dto.getSubTitle())
+                    .subTitle(dto.getSubTitle())
                     .sentence(dto.getSentence())
-                    .image_path(imagePath)
-                    .what_number(dto.getWhatNumber())
-                    .how_successive(dto.getHowSuccessive())
+                    .imagePath(imagePath)
+                    .whatNumber(dto.getWhatNumber())
+                    .howSuccessive(dto.getHowSuccessive())
                     .build();
 
         }
@@ -263,9 +263,9 @@ public class ArchivingDto {
             this.id = entity.getId();
             this.cardType = entity.getType().name();
             this.title = entity.getTitle();
-            this.subTitle = entity.getSub_title();
+            this.subTitle = entity.getSubTitle();
             this.sentence = entity.getSentence();
-            this.imagePath = entity.getImage_path();
+            this.imagePath = entity.getImagePath();
         }
 
     }
@@ -290,7 +290,7 @@ public class ArchivingDto {
             this.id = entity.getId();
             this.cardResponseDto = new CardResponseDto(entity.getCardEntity());
             this.date = entity.getDate();
-            this.isNew = entity.is_new();
+            this.isNew = entity.isNew();
         }
 
     }
@@ -311,7 +311,7 @@ public class ArchivingDto {
         public UserCardResponseDto2(final UserCardEntity entity) {
             this.id = entity.getId();
             this.date = entity.getDate();
-            this.isNew = entity.is_new();
+            this.isNew = entity.isNew();
         }
 
     }

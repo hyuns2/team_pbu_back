@@ -34,7 +34,7 @@ public class InquiryDto {
                     title(irDto.getTitle()).
                     content(irDto.getContent()).
                     answer(null).
-                    time_stamp(localDateTime).build();
+                    timeStamp(localDateTime).build();
 
         }
     }
@@ -77,7 +77,7 @@ public class InquiryDto {
             this.title = entity.getTitle();
             this.content = entity.getContent();
             this.answer = entity.getAnswer();
-            this.timeStamp = entity.getTime_stamp();
+            this.timeStamp = entity.getTimeStamp();
         }
     }
 
