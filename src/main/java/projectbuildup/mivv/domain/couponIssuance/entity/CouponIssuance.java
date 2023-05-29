@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import projectbuildup.mivv.domain.coupon.entity.Coupon;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.global.common.BaseTimeEntity;
+
 @Entity @Builder
 @Getter
 @AllArgsConstructor @NoArgsConstructor

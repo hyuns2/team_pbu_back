@@ -23,6 +23,7 @@ import projectbuildup.mivv.domain.remittance.repository.RemittanceRepository;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.domain.user.repository.UserRepository;
 import projectbuildup.mivv.global.config.JpaAuditingConfig;
+import projectbuildup.mivv.integrationtest.setting.MockEntityFactory;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -62,9 +63,9 @@ class RemittanceRepositoryTest {
         LocalDateTime createdDateTime = LocalDateTime.of(2023, 4, 6, 1, 1, 1);
 
         given(dateTimeProvider.getNow()).willReturn(Optional.of(createdDateTime));
-        User user = new User();
+        User user = MockEntityFactory.mockUser(MockEntityFactory.mockIdentityVerification(), "유저");
         userRepository.save(user);
-        Challenge challenge = new Challenge();
+        Challenge challenge = MockEntityFactory.mockChallenge(MockEntityFactory.mockImage(), "챌린지");
         challengeRepository.save(challenge);
         Participation participation = new Participation(user, challenge);
         participationRepository.save(participation);
@@ -87,9 +88,9 @@ class RemittanceRepositoryTest {
     @DisplayName("사용자의 총 절약 금액을 조회한다.")
     void test2() {
         // given
-        User user = new User();
+        User user = MockEntityFactory.mockUser(MockEntityFactory.mockIdentityVerification(), "유저");
         userRepository.save(user);
-        Challenge challenge = new Challenge();
+        Challenge challenge = MockEntityFactory.mockChallenge(MockEntityFactory.mockImage(), "챌린지");
         Challenge saved = challengeRepository.save(challenge);
         log.info("{}", saved);
         List<Challenge> found = challengeRepository.findAll();

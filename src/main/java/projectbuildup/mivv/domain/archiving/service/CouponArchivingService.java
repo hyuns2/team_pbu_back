@@ -14,6 +14,7 @@ import projectbuildup.mivv.domain.couponIssuance.entity.CouponIssuance;
 import projectbuildup.mivv.domain.couponIssuance.repository.CouponIssuanceRepository;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.global.common.imageStore.Image;
+import projectbuildup.mivv.global.common.imageStore.ImageType;
 import projectbuildup.mivv.global.common.imageStore.ImageUploader;
 import projectbuildup.mivv.global.error.exception.CCardNotFoundException;
 import projectbuildup.mivv.global.error.exception.CCouponNotFoundException;
@@ -43,7 +44,7 @@ public class CouponArchivingService {
             throw new CInvalidCardConditionException();
         }
 
-        Image image = imageUploader.upload(dto.getImage(), "cards");
+        Image image = imageUploader.upload(dto.getImage(), ImageType.CARD);
 
         CouponConditionCardEntity entity = ArchivingDto.createCouponCardRequestDto.toEntity(dto, image.getImagePath());
 
@@ -58,7 +59,7 @@ public class CouponArchivingService {
             throw new CCardNotFoundException();
         }
 
-        Image image = imageUploader.upload(dto.getImage(), "cards");
+        Image image = imageUploader.upload(dto.getImage(), ImageType.CARD);
 
         CouponConditionCardEntity result = target.get();
         result.updateCard(dto, image.getImagePath());

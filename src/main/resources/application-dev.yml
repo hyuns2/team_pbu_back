@@ -57,4 +57,4 @@ path:
   files: /resources/static/files
   images: /resources/static/images
   videos: /resources/static/videos
-  ipAddress: https://server.gasomann.com
+  ipUrl: https://server.gasomann.com

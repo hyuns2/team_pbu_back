@@ -37,6 +37,7 @@ public class AuthDto {
 
     @Getter
     @NoArgsConstructor
+    @AllArgsConstructor
     public static class LoginRequest {
         @NotBlank
         @Schema(description = "본인인증 코드", example = ExampleValue.User.VERIFICATION_CODE)

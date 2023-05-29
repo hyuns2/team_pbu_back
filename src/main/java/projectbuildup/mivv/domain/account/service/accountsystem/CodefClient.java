@@ -1,5 +1,6 @@
 package projectbuildup.mivv.domain.account.service.accountsystem;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.codef.api.EasyCodef;
 import io.codef.api.EasyCodefServiceType;
@@ -9,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import projectbuildup.mivv.domain.account.dto.AccountRegisterDto;
+import projectbuildup.mivv.global.error.exception.CIllegalArgumentException;
 import projectbuildup.mivv.global.error.exception.CInternalServerException;
 
 import javax.crypto.BadPaddingException;
@@ -70,13 +72,19 @@ public class CodefClient {
         accountMap.put("loginType", "1");
         accountMap.put("id", id);
         accountMap.put("password", encodedPassword);
-        if (accountDto.getOrganizationCode().equals(DAEGU_BANK)){
+        if (accountDto.getOrganizationCode().equals(DAEGU_BANK)) {
             accountMap.put("withdrawAccountNo", accountDto.getAccountNumbers());
             accountMap.put("withdrawAccountPassword", accountDto.getAccountPassword());
         }
     }
 
-    public String createConnectedId(AccountRegisterDto accountDto) {
+    /**
+     * 커넥티드 아이디를 발급합니다.
+     *
+     * @param accountDto 입력 파라미터
+     * @return 응답값의 data 필드
+     */
+    public Map<String, Object> createConnectedId(AccountRegisterDto accountDto) {
         List<HashMap<String, Object>> accountList = new ArrayList<>();
         HashMap<String, Object> accountMap = new HashMap<>();
         HashMap<String, Object> parameterMap = new HashMap<>();
@@ -85,10 +93,7 @@ public class CodefClient {
             accountList.add(accountMap);
             parameterMap.put("accountList", accountList);
             String result = codef.createAccount(EasyCodefServiceType.DEMO, parameterMap);
-            log.info(result);
-            HashMap<String, Object> responseMap = new ObjectMapper().readValue(result, HashMap.class);
-            HashMap<String, Object> resultMap = (HashMap<String, Object>) responseMap.get("data");
-            return (String) resultMap.get("connectedId");
+            return getDataField(result);
         } catch (Exception e) {
             e.printStackTrace();
             throw new CInternalServerException();
@@ -102,12 +107,13 @@ public class CodefClient {
      * @param connectedId 커넥티드 아이디
      * @return 보유 계좌 목록 (코드에프 테스트 계정의 경우 accountList = [06170204000000, 23850204000000, 54780300000000])
      */
-    public String getOwnAccounts(String bankType, String connectedId) {
+    public Map<String, Object> getOwnAccounts(String bankType, String connectedId) {
         HashMap<String, Object> parameterMap = new HashMap<>();
         try {
             parameterMap.put("organization", bankType);
             parameterMap.put("connectedId", connectedId);
-            return codef.requestProduct(CODEF_OWN_ACCOUNT_API, EasyCodefServiceType.DEMO, parameterMap);
+            String result = codef.requestProduct(CODEF_OWN_ACCOUNT_API, EasyCodefServiceType.DEMO, parameterMap);
+            return getDataField(result);
         } catch (Exception e) {
             e.printStackTrace();
             throw new CInternalServerException();
@@ -122,9 +128,9 @@ public class CodefClient {
      * @param bankCode       은행 코드
      * @param accountNumbers 계좌 번호
      * @param startDate      조회 시작 날짜
-     * @return (거래 일자, 거래시간, 거래 금액) 리스트
+     * @return 응답값의 data 필드
      */
-    public Map<String, Object> getHistory(String connectedId, String bankCode, String accountNumbers, LocalDate startDate) {
+    public Map<String, Object> getTransactionList(String connectedId, String bankCode, String accountNumbers, LocalDate startDate) {
         LocalDate endDate = LocalDate.now();
         String startDateStr = startDate.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         String endDateStr = endDate.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
@@ -137,23 +143,51 @@ public class CodefClient {
         parameterMap.put("orderBy", "0");
         try {
             String result = codef.requestProduct(CODEF_TRANSACTION_LIST_API, EasyCodefServiceType.DEMO, parameterMap);
-            return new ObjectMapper().readValue(result, HashMap.class);
+            return getDataField(result);
         } catch (Exception e) {
             e.printStackTrace();
             throw new CInternalServerException();
         }
     }
 
-    public String certifyTransfer(String organizationCode, String accountNumbers) {
+    /**
+     * 1원 인증을 수행합니다.
+     * data 필드로 사용자에게 전송된 인증코드가 전달됩니다.
+     *
+     * @param organizationCode 은행코드
+     * @param accountNumbers   계좌번호
+     * @return 응답값의 data 필드
+     */
+    public Map<String, Object> certifyTransfer(String organizationCode, String accountNumbers) {
         HashMap<String, Object> parameterMap = new HashMap<>();
         parameterMap.put("organization", organizationCode);
         parameterMap.put("account", accountNumbers);
         parameterMap.put("inPrintType", "1");
         try {
             String result = codef.requestProduct(CODEF_TRANSFER_AUTHENTICATION_API, EasyCodefServiceType.DEMO, parameterMap);
-            return result;
+            return getDataField(result);
         } catch (Exception e) {
             e.printStackTrace();
+            log.error("API 통신 중 오류가 발생했습니다.");
+            throw new CInternalServerException();
+        }
+    }
+
+    /**
+     * 에러 코드를 확인하고, 정상 응답인 경우, data 필드를 리턴합니다.
+     *
+     * @param result JSON 응답 원본
+     * @return 응답값의 data 필드
+     */
+    private Map<String, Object> getDataField(String result) {
+        try {
+            Map<String, Object> resultMap = new ObjectMapper().readValue(result, HashMap.class);
+            String code = (String) resultMap.get("code");
+            if (code.equals("CF-00000")) {
+                return (HashMap<String, Object>) resultMap.get("data");
+            }
+            throw new CIllegalArgumentException("인증 과정에서 오류가 발생했습니다. 코드에프 에러코드: " + code);
+        } catch (JsonProcessingException e) {
             throw new CInternalServerException();
         }
     }

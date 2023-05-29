@@ -37,17 +37,14 @@ public class ChallengeDto {
         @Schema(description = "하루 송금 횟수 제한")
         @Min(1)
         private int limitedNumberOfTimes;
-
         @Schema(description = "시작일자", example = "yyyy-MM-dd")
         @FutureOrPresent
         @DateTimeFormat(pattern = "yyyy-MM-dd")
         LocalDate startDate;
-
         @Schema(description = "종료일자", example = "yyyy-MM-dd")
         @Future
         @DateTimeFormat(pattern = "yyyy-MM-dd")
         LocalDate endDate;
-
         @Schema(description = "이미지")
         @NotNull
         MultipartFile imageFile;

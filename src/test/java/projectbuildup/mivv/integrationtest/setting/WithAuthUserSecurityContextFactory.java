@@ -16,8 +16,9 @@ public class WithAuthUserSecurityContextFactory implements WithSecurityContextFa
     @Override
     public SecurityContext createSecurityContext(WithAuthUser annotation) {
         String role = annotation.role();
+        Long id = Long.parseLong(annotation.id());
         User authUser = User.builder()
-                .id(1L)
+                .id(id)
                 .build();
 
         UsernamePasswordAuthenticationToken token =

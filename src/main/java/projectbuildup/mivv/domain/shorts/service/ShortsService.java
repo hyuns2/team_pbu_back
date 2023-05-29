@@ -11,6 +11,7 @@ import projectbuildup.mivv.domain.shorts.repository.ShortsRepository;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.domain.user.repository.UserRepository;
 import projectbuildup.mivv.global.common.imageStore.Image;
+import projectbuildup.mivv.global.common.imageStore.ImageType;
 import projectbuildup.mivv.global.common.imageStore.ImageUploader;
 import projectbuildup.mivv.global.common.videoStore.Video;
 import projectbuildup.mivv.global.common.videoStore.VideoUploader;
@@ -37,7 +38,7 @@ public class ShortsService {
 
     public void createShorts(ShortsDto.creatRequest shortsRequestDto) throws IOException {
         Video video = videoUploader.upload(shortsRequestDto.getVideo(),"shorts");
-        Image image = imageUploader.upload(shortsRequestDto.getImage(), "shorts");
+        Image image = imageUploader.upload(shortsRequestDto.getImage(), ImageType.SHORTS);
 
         Shorts shorts = new Shorts(shortsRequestDto, video.getVideoPath(), image.getImagePath());
         shortsRepository.save(shorts);
@@ -70,7 +71,7 @@ public class ShortsService {
     }
     public void updateShorts(Long shortsId, ShortsDto.updateRequest shortsRequestDto) throws IOException {
         Shorts shorts = shortsRepository.findById(shortsId).orElseThrow(CShortsNotFoundException::new);
-        Image image = imageUploader.upload(shortsRequestDto.getImage(), "shorts");
+        Image image = imageUploader.upload(shortsRequestDto.getImage(), ImageType.SHORTS);
         Video video = videoUploader.upload(shortsRequestDto.getVideo(),"shorts");
         shorts.update(shortsRequestDto, image.getImagePath(), video.getVideoPath());
 

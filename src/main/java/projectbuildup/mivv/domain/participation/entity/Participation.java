@@ -17,22 +17,24 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity
+@Table(name = "participation")
 public class Participation extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "challenge_id")
     private Challenge challenge;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn
+    @JoinColumn(name = "saving_count_id")
     SavingCount savingCount;
 
     @OneToMany(mappedBy = "participation", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

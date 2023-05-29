@@ -11,15 +11,18 @@ import projectbuildup.mivv.global.error.exception.CBadRequestException;
 @Getter
 @ToString
 @AllArgsConstructor
+@Table(name = "remittance")
 public class Remittance extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
+    @Column(name = "amount")
     private long amount;
-
+    @Column(name = "title")
     private String title;
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "participation_id")
     Participation participation;
 
     public Remittance(long amount, Participation participation) {
@@ -40,10 +43,11 @@ public class Remittance extends BaseTimeEntity {
         }
         return new Remittance(amount, participation);
     }
-    public static Remittance newWithdrawal(long amount, Participation participation){
-        if (amount > 0 ){
+
+    public static Remittance newWithdrawal(long amount, Participation participation) {
+        if (amount > 0) {
             throw new CBadRequestException("출금액은 양수일 수 없습니다.");
         }
         return new Remittance(amount, participation, "출금");
-   }
+    }
 }

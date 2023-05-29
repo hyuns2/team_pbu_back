@@ -1,5 +1,6 @@
 package projectbuildup.mivv.domain.challenge.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -13,6 +14,7 @@ import projectbuildup.mivv.domain.participation.entity.Participation;
 import projectbuildup.mivv.domain.participation.repository.ParticipationRepository;
 import projectbuildup.mivv.domain.remittance.entity.Remittance;
 import projectbuildup.mivv.global.common.imageStore.Image;
+import projectbuildup.mivv.global.common.imageStore.ImageType;
 import projectbuildup.mivv.global.common.imageStore.ImageUploader;
 import projectbuildup.mivv.global.common.pagination.PageParam;
 import projectbuildup.mivv.global.common.pagination.PagingDto;
@@ -36,9 +38,10 @@ public class ChallengeService {
      *
      * @param requestDto 생성할 챌린지 정보
      */
+    @Transactional
     public void createChallenge(ChallengeDto.CreationRequest requestDto) throws IOException {
-        Image image = imageUploader.upload(requestDto.getImageFile(), "challenges");
-        Challenge challenge = Challenge.from(requestDto, image);
+        Image image = imageUploader.upload(requestDto.getImageFile(), ImageType.CHALLENGE);
+        Challenge challenge = Challenge.of(requestDto, image);
         challengeRepository.save(challenge);
     }
 
@@ -51,12 +54,16 @@ public class ChallengeService {
     public PagingDto<ChallengeDto.Response> getAllChallenges(PageParam pageParam) {
         Pageable pageable = pageParam.toPageable();
         Page<Challenge> pages = challengeRepository.findAll(pageable);
-        return convertToListResponse(pages);
+        return mapToResponseDto(pages);
     }
 
-
-
-    public PagingDto<ChallengeDto.Response> convertToListResponse(Page<Challenge> pages){
+    /**
+     * Page 형식을 응답 DTO로 매핑합니다.
+     *
+     * @param pages pages
+     * @return response dto
+     */
+    public PagingDto<ChallengeDto.Response> mapToResponseDto(Page<Challenge> pages) {
         List<ChallengeDto.Response> challenges = pages.getContent().stream()
                 .map(c -> new ChallengeDto.Response(c, getTotalSavingAmount(c)))
                 .toList();
@@ -64,15 +71,18 @@ public class ChallengeService {
     }
 
     private long getTotalSavingAmount(Challenge challenge) {
-        long totalAmount = 0;
+        long sum = 0;
         List<Participation> participations = participationRepository.findAllByChallenge(challenge);
         for (Participation participation : participations) {
-            long sum = participation.getRemittanceList().stream()
-                    .mapToLong(Remittance::getAmount)
-                    .sum();
-            totalAmount += sum;
+            sum += calculateTotal(participation);
         }
-        return totalAmount;
+        return sum;
+    }
+
+    private long calculateTotal(Participation participation) {
+        return participation.getRemittanceList().stream()
+                .mapToLong(Remittance::getAmount)
+                .sum();
     }
 
 
@@ -81,12 +91,13 @@ public class ChallengeService {
      *
      * @param requestDto 수정할 항목
      */
+    @Transactional
     public void updateChallenge(ChallengeDto.UpdateRequest requestDto) throws IOException {
         Challenge challenge = challengeRepository.findById(requestDto.getChallengeId()).orElseThrow(CResourceNotFoundException::new);
         challenge.update(requestDto);
         if (requestDto.getImageFile() != null) {
             imageUploader.delete(challenge.getImage());
-            Image image = imageUploader.upload(requestDto.getImageFile(), "challenges");
+            Image image = imageUploader.upload(requestDto.getImageFile(), ImageType.CHALLENGE);
             challenge.updateImage(image);
         }
         challengeRepository.save(challenge);
@@ -97,6 +108,7 @@ public class ChallengeService {
      *
      * @param challengeId 챌린지 아이디넘버
      */
+    @Transactional
     public void deleteChallenge(Long challengeId) {
         challengeRepository.deleteById(challengeId);
     }

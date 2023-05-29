@@ -8,7 +8,9 @@ import projectbuildup.mivv.domain.shorts.entity.Shorts;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.global.common.BaseTimeEntity;
 
-@Entity @AllArgsConstructor @NoArgsConstructor
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 public class LikesShorts extends BaseTimeEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +23,8 @@ public class LikesShorts extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "likes_category")
     private LikesCategory likesCategory;
-    public LikesShorts(User user, Shorts shorts, LikesCategory likesCategory){
+
+    public LikesShorts(User user, Shorts shorts, LikesCategory likesCategory) {
         this.user = user;
         this.shorts = shorts;
         this.likesCategory = likesCategory;

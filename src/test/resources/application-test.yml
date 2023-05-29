@@ -51,6 +51,7 @@ app:
     enable: false
 
 path:
-  files: C:/workspace_pbu/files
-  images: C:/workspace_pbu/images
-  videos: C:/workspace_pbu/videos
+  files: classpath:store/files
+  images: classpath:store/images
+  videos: classpath:store/videos
+  ipUrl: classpath:testdata.sql

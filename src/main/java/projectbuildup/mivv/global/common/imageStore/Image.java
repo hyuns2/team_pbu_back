@@ -1,5 +1,6 @@
 package projectbuildup.mivv.global.common.imageStore;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

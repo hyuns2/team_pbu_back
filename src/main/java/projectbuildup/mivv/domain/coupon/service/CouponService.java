@@ -19,6 +19,7 @@ import projectbuildup.mivv.domain.worthyConsumption.entity.CheckConditionType;
 import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumption;
 import projectbuildup.mivv.domain.worthyConsumption.repository.WorthyConsumptionRepository;
 import projectbuildup.mivv.global.common.imageStore.Image;
+import projectbuildup.mivv.global.common.imageStore.ImageType;
 import projectbuildup.mivv.global.common.imageStore.ImageUploader;
 import projectbuildup.mivv.global.error.exception.CBadRequestException;
 import projectbuildup.mivv.global.error.exception.CCouponNotFoundException;
@@ -49,7 +50,6 @@ public class CouponService {
      */
     public void createCoupon(Long worthyConsumptionId, CouponDto.Request couponDto) throws IOException {
         WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionId).orElseThrow(CWorthyConsumptionNotFoundException::new);
-
         Image image = imageUploader.upload(couponDto.getImage(), "coupons");
         Coupon coupon = Coupon.toEntity(couponDto, image.getImagePath());
         worthyConsumption.addCoupon(coupon);
@@ -72,7 +72,7 @@ public class CouponService {
     }
     public void updateCoupon(Long couponId, CouponDto.Request couponDto) throws IOException {
         Coupon coupon = couponRepository.findById(couponId).orElseThrow(CCouponNotFoundException::new);
-        Image image = imageUploader.upload(couponDto.getImage(), "coupons");
+        Image image = imageUploader.upload(couponDto.getImage(), ImageType.COUPON);
         String imagePath = image.getImagePath();
         coupon.update(couponDto, imagePath);
         couponRepository.save(coupon);

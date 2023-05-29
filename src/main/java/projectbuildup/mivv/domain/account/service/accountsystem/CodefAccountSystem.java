@@ -20,6 +20,7 @@ import projectbuildup.mivv.global.error.exception.CResourceNotFoundException;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Primary
 @Component
@@ -40,42 +41,22 @@ public class CodefAccountSystem implements AccountSystem {
     }
 
     private String issueConnectedId(AccountRegisterDto accountDto, User user) {
-        return codefClient.createConnectedId(accountDto);
+        Map<String, Object> dataMap = codefClient.createConnectedId(accountDto);
+        return (String) dataMap.get("connectedId");
     }
 
     private OwnAccounts findAllAccountNumbers(String connectedId, String bankType) {
-        String result = codefClient.getOwnAccounts(bankType, connectedId);
-        log.info(result);
-        try {
-            HashMap<String, Object> responseMap = new ObjectMapper().readValue(result, HashMap.class);
-            HashMap<String, Object> dataMap = (HashMap<String, Object>) responseMap.get("data");
-            List<HashMap<String, Object>> list = (List<HashMap<String, Object>>) dataMap.get("resDepositTrust");
-            List<String> accounts = list.stream()
-                    .map(elem -> (String) elem.get("resAccount"))
-                    .toList();
-            return new OwnAccounts(accounts);
-        } catch (JsonProcessingException e) {
-            throw new CInternalServerException();
-        }
+        Map<String, Object> dataMap = codefClient.getOwnAccounts(bankType, connectedId);
+        List<HashMap<String, Object>> list = (List<HashMap<String, Object>>) dataMap.get("resDepositTrust");
+        List<String> accounts = list.stream()
+                .map(elem -> (String) elem.get("resAccount"))
+                .toList();
+        return new OwnAccounts(accounts);
     }
 
     @Override
     public String certifyTransfer(AccountCertifyTransferDto requestDto) {
-        String result = codefClient.certifyTransfer(requestDto.getOrganizationCode(), requestDto.getAccountNumbers());
-        try {
-            HashMap<String, Object> responseMap = new ObjectMapper().readValue(result, HashMap.class);
-            if (!doesSucceed((HashMap<String, Object>) responseMap.get("result"))){
-                throw new CIllegalArgumentException("인증 과정에서 오류가 발생했습니다.");
-            }
-            HashMap<String, Object> dataMap = (HashMap<String, Object>) responseMap.get("data");
-            return (String) dataMap.get("authCode");
-        } catch (JsonProcessingException e) {
-            throw new CInternalServerException();
-        }
-    }
-
-    private boolean doesSucceed(HashMap<String, Object> resultMap){
-        String code = (String) resultMap.get("code");
-        return code.equals("CF-00000");
+        Map<String, Object> dataMap = codefClient.certifyTransfer(requestDto.getOrganizationCode(), requestDto.getAccountNumbers());
+        return (String) dataMap.get("authCode");
     }
 }

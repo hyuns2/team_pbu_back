@@ -16,6 +16,9 @@ import projectbuildup.mivv.global.error.exception.CUserNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
+
+import static projectbuildup.mivv.domain.challenge.service.RedisRankingSystem.*;
 
 @RequiredArgsConstructor
 @Service
@@ -26,6 +29,22 @@ public class RankingService {
     private final RemittanceRepository remittanceRepository;
     private final ParticipationRepository participationRepository;
     public final static String TOTAL_RANKING_KEY = "TOTAL";
+
+    /**
+     * 전체 랭킹을 조회합니다.
+     * 현재 1등과 사용자의 위 아래 (NEARBY_SIZE) 만큼의 랭킹을 반환합니다.
+     *
+     * @param userId 사용자 아이디넘버
+     * @return 전체 랭킹 목록
+     */
+    public RankDto.GroupResponse getTotalRanking(Long userId) {
+        String member = String.valueOf(userId);
+        RankDto.UnitResponse theFirst = toResponseDto(rankingSystem.getTheFirst(TOTAL_RANKING_KEY));
+        List<RankDto.UnitResponse> userRanking = rankingSystem.getNearbyRanking(TOTAL_RANKING_KEY, member).stream()
+                .map(this::toResponseDto)
+                .toList();
+        return generateResponse(theFirst, userRanking);
+    }
 
     /**
      * 챌린지 랭킹을 조회합니다.
@@ -43,24 +62,14 @@ public class RankingService {
         List<RankDto.UnitResponse> userRanking = rankingSystem.getNearbyRanking(key, member).stream()
                 .map(r -> toResponseDto(r, challenge))
                 .toList();
-        return new RankDto.GroupResponse(theFirst, userRanking);
+        return generateResponse(theFirst, userRanking);
     }
 
-
-    /**
-     * 전체 랭킹을 조회합니다.
-     * 현재 1등과 사용자의 위 아래 (NEARBY_SIZE) 만큼의 랭킹을 반환합니다.
-     *
-     * @param userId 사용자 아이디넘버
-     * @return 전체 랭킹 목록
-     */
-    public RankDto.GroupResponse getTotalRanking(Long userId) {
-        String member = String.valueOf(userId);
-        RankDto.UnitResponse theFirst = toResponseDto(rankingSystem.getTheFirst(TOTAL_RANKING_KEY));
-        List<RankDto.UnitResponse> userRanking = rankingSystem.getNearbyRanking(TOTAL_RANKING_KEY, member).stream()
-                .map(this::toResponseDto)
-                .toList();
-        return new RankDto.GroupResponse(theFirst, userRanking);
+    private RankDto.GroupResponse generateResponse(RankDto.UnitResponse theFirst, List<RankDto.UnitResponse> userRanking) {
+        List<RankDto.UnitResponse> upper = userRanking.subList(0, NEARBY_SIZE).stream().filter(Objects::nonNull).toList();
+        RankDto.UnitResponse me = userRanking.get(NEARBY_SIZE);
+        List<RankDto.UnitResponse> lower = userRanking.subList(NEARBY_SIZE + 1, NEARBY_SIZE + 3).stream().filter(Objects::nonNull).toList();
+        return new RankDto.GroupResponse(theFirst, upper, me, lower);
     }
 
     private RankDto.UnitResponse toResponseDto(RankDto.Unit rank, Challenge challenge) {
@@ -76,6 +85,9 @@ public class RankingService {
     }
 
     private RankDto.UnitResponse toResponseDto(RankDto.Unit rank) {
+        if (rank == null) {
+            return null;
+        }
         User user = userRepository.findById(rank.getUserId()).orElseThrow(CUserNotFoundException::new);
         Long sumAmount = remittanceRepository.findSumAmountByUser(user);
         return RankDto.UnitResponse.builder()

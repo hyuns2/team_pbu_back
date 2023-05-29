@@ -85,7 +85,6 @@ public class TokenRepository {
      * @param refreshToken 리프레시토큰
      */
     public void deleteRefreshToken(String refreshToken) {
-        ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
         String key = PREFIX_REFRESH + refreshToken;
         redisTemplate.delete(key);
     }

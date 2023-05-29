@@ -6,6 +6,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
-@WithAuthUser(role = "ADMIN")
+@WithAuthUser(role = "ADMIN", id = "1")
 public @interface WithAuthAdmin {
 }

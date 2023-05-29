@@ -19,6 +19,7 @@ import projectbuildup.mivv.domain.participation.repository.ParticipationReposito
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.domain.user.repository.UserRepository;
 import projectbuildup.mivv.global.config.JpaAuditingConfig;
+import projectbuildup.mivv.integrationtest.setting.MockEntityFactory;
 
 import java.util.List;
 
@@ -42,11 +43,11 @@ class ChallengeRepositoryTest {
     @DisplayName("참여중인 챌린지(제목, ASC/DESC) 조회")
     void test1() {
         // given
-        User user = new User();
-        Challenge challenge1 = Challenge.builder().mainTitle("가나다").build();
-        Challenge challenge2 = Challenge.builder().mainTitle("라마바").build();
-        Challenge challenge3 = Challenge.builder().mainTitle("아자차").build();
-        Challenge challenge4 = Challenge.builder().mainTitle("카타파").build();
+        User user = MockEntityFactory.mockUser(MockEntityFactory.mockIdentityVerification(), "유저1");
+        Challenge challenge1 = MockEntityFactory.mockChallenge(MockEntityFactory.mockImage(), "챌린지1");
+        Challenge challenge2 = MockEntityFactory.mockChallenge(MockEntityFactory.mockImage(), "챌린지2");
+        Challenge challenge3 = MockEntityFactory.mockChallenge(MockEntityFactory.mockImage(), "챌린지3");
+        Challenge challenge4 = MockEntityFactory.mockChallenge(MockEntityFactory.mockImage(), "챌린지4");
         Participation participation1 = new Participation(user, challenge1);
         Participation participation2 = new Participation(user, challenge2);
         userRepository.save(user);
@@ -72,11 +73,11 @@ class ChallengeRepositoryTest {
     @DisplayName("참여가능한 챌린지(제목, ASC/DESC) 조회")
     void test2() {
         // given
-        User user = new User();
-        Challenge challenge1 = Challenge.builder().mainTitle("가나다").build();
-        Challenge challenge2 = Challenge.builder().mainTitle("라마바").build();
-        Challenge challenge3 = Challenge.builder().mainTitle("아자차").build();
-        Challenge challenge4 = Challenge.builder().mainTitle("카타파").build();
+        User user = MockEntityFactory.mockUser(MockEntityFactory.mockIdentityVerification(), "유저1");
+        Challenge challenge1 = MockEntityFactory.mockChallenge(MockEntityFactory.mockImage(), "챌린지1");
+        Challenge challenge2 = MockEntityFactory.mockChallenge(MockEntityFactory.mockImage(), "챌린지2");
+        Challenge challenge3 = MockEntityFactory.mockChallenge(MockEntityFactory.mockImage(), "챌린지3");
+        Challenge challenge4 = MockEntityFactory.mockChallenge(MockEntityFactory.mockImage(), "챌린지4");
         Participation participation1 = new Participation(user, challenge1);
         Participation participation2 = new Participation(user, challenge2);
         userRepository.save(user);

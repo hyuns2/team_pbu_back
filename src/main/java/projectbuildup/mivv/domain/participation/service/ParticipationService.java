@@ -29,6 +29,7 @@ public class ParticipationService {
      * @param challengeId 챌린지 아이디넘버
      * @param userId      회원 아이디넘버
      */
+    @Transactional
     public void joinChallenge(Long challengeId, Long userId) {
         User user = userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
         Challenge challenge = challengeRepository.findById(challengeId).orElseThrow(CResourceNotFoundException::new);

@@ -3,9 +3,9 @@ package projectbuildup.mivv.domain.remittance.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import projectbuildup.mivv.domain.account.entity.TransactionDetail;
 import projectbuildup.mivv.domain.account.service.accountdetails.AccountDetailsSystem;
-import projectbuildup.mivv.domain.challenge.entity.Challenge;
-import projectbuildup.mivv.domain.challenge.repository.ChallengeRepository;
+import projectbuildup.mivv.domain.archiving.service.RemittanceArchivingService;
 import projectbuildup.mivv.domain.challenge.service.RankScoreCalculator;
 import projectbuildup.mivv.domain.challenge.service.RankingService;
 import projectbuildup.mivv.domain.participation.entity.Participation;
@@ -15,9 +15,7 @@ import projectbuildup.mivv.domain.saving_count.service.SavingCountService;
 import projectbuildup.mivv.domain.user.entity.User;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import static java.lang.Thread.sleep;
@@ -32,18 +30,17 @@ public class RemittanceChecker {
     private final SavingCountService savingCountService;
     private final RankingService rankingService;
     private final RankScoreCalculator rankScoreCalculator;
-    private final ChallengeRepository challengeRepository;
+    private final RemittanceArchivingService remittanceArchivingService;
 
     private final static long ASYNC_CHECK_TERM_SEC = 60;
     private final static int ASYNC_CHECK_TRY = 5;
-    private final static String DATE_TIME_PATTERN = "yyyyMMddHHmmss";
 
     /**
      * 비동기로 동작하는 작업입니다.
      * 'ASYNC_CHECK_TERM_SEC'간격으로 'ASYNC_CHECK_TRY'횟수만큼 계좌 내역 조회 API를 호출합니다.
      * 송금이 확인된 경우, 송금 정보를 DB에 저장하고, 금일 참여 횟수를 증가시킵니다.
      *
-     * @param amount    송금 금액
+     * @param amount        송금 금액
      * @param participation 참여 정보
      * @throws InterruptedException exception
      */
@@ -72,7 +69,7 @@ public class RemittanceChecker {
      * - 랭킹 점수를 증가시킵니다.
      * - 챌린지의 총 절약 금액 정보를 갱신합니다.
      *
-     * @param amount 송금 정보
+     * @param amount        송금 정보
      * @param participation 참여 정보
      */
     private void updateRemittance(long amount, Participation participation) {
@@ -81,28 +78,21 @@ public class RemittanceChecker {
         savingCountService.addCount(participation);
         double score = rankScoreCalculator.calculate(remittance);
         rankingService.updateScore(participation.getUser(), participation.getChallenge(), score);
+        remittanceArchivingService.assignNumericalConditionCards(participation.getUser());
     }
 
     /**
      * 조회한 거래 내역 중에서, 사용자가 '절약하기' 버튼을 누른 이후에 송금한 금액이 있는지 확인합니다.
      *
-     * @param amount 절약 금액
-     * @param user       사용자
-     * @param startTime  시작시간
+     * @param amount    절약 금액
+     * @param user      사용자
+     * @param startTime 시작시간
      * @return true/false
      */
     private boolean hasRecord(long amount, User user, LocalDateTime startTime) {
-        List<Map<String, String>> history = accountDetailsSystem.getDepositHistory(user, startTime.toLocalDate());
-        return history.stream()
-                .filter(map -> {
-                    String date = map.get(accountDetailsSystem.getDateField());
-                    String time = map.get(accountDetailsSystem.getTimeField());
-                    LocalDateTime transferTime = LocalDateTime.parse(date + time, DateTimeFormatter.ofPattern(DATE_TIME_PATTERN));
-                    return transferTime.isAfter(startTime);
-                })
-                .anyMatch(map -> {
-                    long transferAmount = Long.parseLong(map.get(accountDetailsSystem.getInAmountField()));
-                    return transferAmount == amount;
-                });
+        List<TransactionDetail> transactionDetails = accountDetailsSystem.getDepositHistory(user, startTime.toLocalDate());
+        return transactionDetails.stream()
+                .filter(t -> t.getTime().isAfter(startTime))
+                .anyMatch(t -> t.getAmount() == amount);
     }
 }

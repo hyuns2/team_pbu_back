@@ -28,13 +28,15 @@ class AccountRepositoryTest {
     void 계좌_저장시_커넥티드아이디를_함께_저장한다() {
         // given
         Map<OpenBanking, String> connectionMap = Map.of(OpenBanking.CODEF, "0123456789");
-        Account account = Account.builder().connectionMap(connectionMap).build();
+        Account account = Account.builder()
+                .connectionMap(connectionMap)
+                .build();
 
         // when
         Account saved = accountRepository.save(account);
 
         // then
         log.info("{}",saved);
-        assertThat(saved.getAccountNumbers()).isEqualTo("0123456789");
+        assertThat(saved.getConnectionMap().get(OpenBanking.CODEF)).isEqualTo("0123456789");
     }
 }

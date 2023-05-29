@@ -22,7 +22,7 @@ spring:
   sql: #더미데이터 용
     init:
       mode: always
-      data-locations: classpath:integdata.sql
+      data-locations: classpath:testdata.sql
       encoding: UTF-8
   data:
     redis:
@@ -57,6 +57,7 @@ app:
     enable: false
 
 path:
-  files: C:/workspace_pbu/files
-  images: C:/workspace_pbu/images
-  ipAddress: http://3.37.5.91
+  files: classpath:store/files
+  images: classpath:store/images
+  videos: classpath:store/videos
+  ipUrl:

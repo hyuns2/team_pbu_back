@@ -3,7 +3,6 @@ package projectbuildup.mivv.domain.likes.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import projectbuildup.mivv.domain.challenge.dto.ChallengeDto;
 import projectbuildup.mivv.domain.likes.entity.LikesShorts;
 import projectbuildup.mivv.domain.likes.entity.LikesCategory;
 import projectbuildup.mivv.domain.likes.entity.LikesWorthyConsumption;
@@ -23,13 +22,9 @@ import projectbuildup.mivv.global.error.exception.CShortsNotFoundException;
 import projectbuildup.mivv.global.error.exception.CUserExistException;
 import projectbuildup.mivv.global.error.exception.CWorthyConsumptionNotFoundException;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.toList;
 import static org.apache.commons.collections4.CollectionUtils.collect;
 
 @Service

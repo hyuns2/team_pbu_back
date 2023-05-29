@@ -10,11 +10,8 @@ import projectbuildup.mivv.domain.challenge.repository.ChallengeRepository;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.domain.user.repository.UserRepository;
 import projectbuildup.mivv.global.common.pagination.PageParam;
-import projectbuildup.mivv.global.common.pagination.PageSortGroup;
 import projectbuildup.mivv.global.common.pagination.PagingDto;
 import projectbuildup.mivv.global.error.exception.CUserNotFoundException;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -33,7 +30,7 @@ public class ChallengeParticipationService {
         Pageable pageable = pageParam.toPageable();
         User user = userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
         Page<Challenge> pages = challengeRepository.findOngoingChallenge(user, pageable);
-        return challengeService.convertToListResponse(pages);
+        return challengeService.mapToResponseDto(pages);
     }
 
     /**
@@ -46,6 +43,6 @@ public class ChallengeParticipationService {
         Pageable pageable = pageParam.toPageable();
         User user = userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
         Page<Challenge> pages = challengeRepository.findJoinableChallenge(user, pageable);
-        return challengeService.convertToListResponse(pages);
+        return challengeService.mapToResponseDto(pages);
     }
 }

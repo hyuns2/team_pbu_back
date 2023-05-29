@@ -12,7 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
 @Disabled
-@ActiveProfiles("test")
+@ActiveProfiles("integtest")
 @AutoConfigureMockMvc
 @Transactional
 public class IntegrationTest {
