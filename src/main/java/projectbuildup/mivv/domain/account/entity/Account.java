@@ -44,6 +44,7 @@ public class Account {
     @MapKeyColumn(name = "bank_type", length = 30)
     @Column(name = "connection_code", length = 30, nullable = false)
     Map<OpenBanking, String> connectionMap = new HashMap<>();
+    LocalDateTime deletedAt;
 
     @Column(name = "deleted_at")
     LocalDateTime deletedAt;
