@@ -20,6 +20,7 @@ import projectbuildup.mivv.integrationtest.setting.WithAuthUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -33,6 +34,7 @@ public class AuthApiTest extends IntegrationTest {
     private final static String LOGOUT_API = "/api/auth/logout";
     private final static String WITHDRAW_API = "/api/auth/withdraw";
     private final static String REISSUE_API = "/api/auth/reissue";
+    private final static String CHECK_NICKNAME_API = "/api/auth/check-nickname";
 
     @Autowired
     DatabaseCleanUp databaseCleanUp;
@@ -153,5 +155,31 @@ public class AuthApiTest extends IntegrationTest {
         // then
         actions.andExpect(status().isOk());
         assertThat(userRepository.findById(1L)).isEmpty();
+    }
+
+    @Test
+    @DisplayName("닉네임이 중복인 경우 False를 반환한다.")
+    void test6() throws Exception {
+        // given
+        // when
+        ResultActions actions = mvc.perform(get(CHECK_NICKNAME_API)
+                .param("nickname", "철수"));
+
+        // then
+        actions.andExpect(status().isOk())
+                .andExpect(jsonPath("available").value(false));
+    }
+
+    @Test
+    @DisplayName("닉네임이 중복이 아닌 경우 True를 반환한다.")
+    void test7() throws Exception {
+        // given
+        // when
+        ResultActions actions = mvc.perform(get(CHECK_NICKNAME_API)
+                .param("nickname", "new_nickname"));
+
+        // then
+        actions.andExpect(status().isOk())
+                .andExpect(jsonPath("available").value(true));
     }
 }

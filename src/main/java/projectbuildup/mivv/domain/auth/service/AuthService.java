@@ -135,4 +135,8 @@ public class AuthService {
             throw new CReissueFailedException();
         }
     }
+
+    public boolean checkNickname(String nickname) {
+        return userRepository.findByNickname(nickname).isEmpty();
+    }
 }
