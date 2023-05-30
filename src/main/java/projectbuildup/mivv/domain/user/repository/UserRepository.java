@@ -15,4 +15,5 @@ public interface UserRepository extends JpaRepository<User, Long>{
     @Query("select u from User u left join u.identityVerification i where i.name = ?1 and i.mobile = ?2")
     Optional<User> findByNameAndMobile(String name, String mobile);
 
+    Optional<User> findByNickname(String nickname);
 }
