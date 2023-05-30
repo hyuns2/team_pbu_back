@@ -12,6 +12,7 @@ import projectbuildup.mivv.global.common.BaseTimeEntity;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Table(name = "likes_shorts")
 public class LikesShorts extends BaseTimeEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

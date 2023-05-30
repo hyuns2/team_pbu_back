@@ -7,11 +7,13 @@ import projectbuildup.mivv.domain.shorts.dto.ShortsDto;
 
 @Entity
 @Slf4j
-@AllArgsConstructor @NoArgsConstructor(force = true)
-//@RequiredArgsConstructor
-@Getter @Builder
+@AllArgsConstructor
+@NoArgsConstructor(force = true)
+@Getter
+@Builder
 public class Shorts {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
     @Enumerated(EnumType.STRING)
@@ -30,14 +32,15 @@ public class Shorts {
     @Column(name = "video_path")
     private String videoPath;
 
-    public Shorts(ShortsDto.creatRequest shortsDto, String videoPath, String imagePath){
+    public Shorts(ShortsDto.creatRequest shortsDto, String videoPath, String imagePath) {
         this.title = shortsDto.getTitle();
         this.content = shortsDto.getContent();
         this.imagePath = imagePath;
         this.videoPath = videoPath;
         this.category = shortsDto.getCategory();
     }
-    public void update(ShortsDto.updateRequest shortsDto, String imagePath, String videoPath){
+
+    public void update(ShortsDto.updateRequest shortsDto, String imagePath, String videoPath) {
         this.title = shortsDto.getTitle();
         this.content = shortsDto.getContent();
         this.imagePath = imagePath;
@@ -45,10 +48,12 @@ public class Shorts {
         this.category = shortsDto.getCategory();
 
     }
-    public void updateImage(String imagePath){
+
+    public void updateImage(String imagePath) {
         this.imagePath = imagePath;
     }
-    public void updateVideo(String videoPath){
+
+    public void updateVideo(String videoPath) {
         this.videoPath = videoPath;
     }
 }

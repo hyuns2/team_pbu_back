@@ -8,8 +8,11 @@ import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumption;
 import projectbuildup.mivv.global.common.BaseTimeEntity;
 
-@Entity @AllArgsConstructor @NoArgsConstructor
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
+@Table(name = "likes_worthy_consumption")
 public class LikesWorthyConsumption extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,11 +21,14 @@ public class LikesWorthyConsumption extends BaseTimeEntity {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-    @ManyToOne @JoinColumn(name = "worthy_consumption_id")
+    @ManyToOne
+    @JoinColumn(name = "worthy_consumption_id")
     private WorthyConsumption worthyConsumption;
-    @Enumerated(EnumType.STRING) @Column(name = "likes_category")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "likes_category")
     private LikesCategory likesCategory = LikesCategory.WORTHY_CONSUMPTION;
-    public LikesWorthyConsumption(User user, WorthyConsumption worthyConsumption){
+
+    public LikesWorthyConsumption(User user, WorthyConsumption worthyConsumption) {
         this.user = user;
         this.worthyConsumption = worthyConsumption;
     }
