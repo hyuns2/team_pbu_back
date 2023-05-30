@@ -1,12 +1,10 @@
 package projectbuildup.mivv.domain.user.entity;
 
 import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Table;
 import lombok.*;
-import org.hibernate.annotations.Columns;
-import org.hibernate.annotations.Filter;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
-import org.springframework.cglib.core.Local;
+import org.hibernate.annotations.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -57,7 +55,18 @@ public class User extends BaseTimeEntity implements UserDetails {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "account_id")
     Account account;
-    LocalDateTime deletedAt;
+
+    @Column(name = "deleted_at")
+    protected LocalDateTime deletedAt;
+
+    @CollectionTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id")
+    )
+    @Column(name = "roles")
+    @ElementCollection(fetch = FetchType.LAZY)
+    @Builder.Default
+    private List<String> roles = new ArrayList<>();
 
     public static User of(AuthDto.SignupRequest requestDto, String encodedPassword, IdentityVerification identityVerification) {
         return User.builder()
@@ -69,15 +78,6 @@ public class User extends BaseTimeEntity implements UserDetails {
                 .roles(Collections.singletonList(DEFAULT_ROLE))
                 .build();
     }
-
-    @CollectionTable(
-            name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id")
-    )
-    @Column(name = "roles")
-    @ElementCollection(fetch = FetchType.LAZY)
-    @Builder.Default
-    private List<String> roles = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
