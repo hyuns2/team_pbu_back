@@ -3,6 +3,10 @@ package projectbuildup.mivv.domain.user.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Columns;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+import org.springframework.cglib.core.Local;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,6 +15,7 @@ import projectbuildup.mivv.domain.auth.dto.AuthDto;
 import projectbuildup.mivv.global.common.BaseTimeEntity;
 import projectbuildup.mivv.global.common.imageStore.Image;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -23,6 +28,8 @@ import java.util.stream.Collectors;
 @Builder
 @Entity
 @ToString
+@Where(clause = "deleted_at IS NULL")
+@SQLDelete(sql = "UPDATE user SET deleted_at = CURRENT_TIMESTAMP where id = ?")
 @Table(name = "user")
 public class User extends BaseTimeEntity implements UserDetails {
     private final static String DEFAULT_ROLE = "ROLE_USER";
@@ -50,12 +57,7 @@ public class User extends BaseTimeEntity implements UserDetails {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "account_id")
     Account account;
-
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-//    private List<UserCardEntity> userCards = new ArrayList<>();
-//    @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn
-//    LikesShorts likes;
+    LocalDateTime deletedAt;
 
     public static User of(AuthDto.SignupRequest requestDto, String encodedPassword, IdentityVerification identityVerification) {
         return User.builder()

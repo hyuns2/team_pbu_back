@@ -4,8 +4,11 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.Columns;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import projectbuildup.mivv.global.error.exception.CInternalServerException;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,6 +18,8 @@ import java.util.Map;
 @AllArgsConstructor
 @Builder
 @ToString
+@Where(clause = "deleted_at IS NULL")
+@SQLDelete(sql = "UPDATE account SET deleted_at = CURRENT_TIMESTAMP where id = ?")
 @Table(name = "account")
 public class Account {
     @Id
@@ -35,6 +40,7 @@ public class Account {
     @MapKeyColumn(name = "bank_type")
     @Column(name = "connection_code")
     Map<OpenBanking, String> connectionMap = new HashMap<>();
+    LocalDateTime deletedAt;
 
     public Account(String accountNumbers, BankType bankType, OpenBanking platform, String connectionId) {
         if (connectionId == null || platform == null) {

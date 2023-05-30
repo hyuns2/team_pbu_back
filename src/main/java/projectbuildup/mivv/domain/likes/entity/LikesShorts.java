@@ -14,12 +14,15 @@ import projectbuildup.mivv.global.common.BaseTimeEntity;
 @Getter
 @Table(name = "likes_shorts")
 public class LikesShorts extends BaseTimeEntity {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @ManyToOne(cascade = CascadeType.ALL) @JoinColumn(name = "user_id")
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
-    @ManyToOne(cascade = CascadeType.ALL) @JoinColumn(name = "shorts_id")
+    @ManyToOne
+    @JoinColumn(name = "shorts_id")
     private Shorts shorts;
     @Enumerated(EnumType.STRING)
     @Column(name = "likes_category")
