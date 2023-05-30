@@ -2,15 +2,21 @@ package projectbuildup.mivv.domain.remittance.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import projectbuildup.mivv.domain.participation.entity.Participation;
 import projectbuildup.mivv.global.common.BaseTimeEntity;
 import projectbuildup.mivv.global.error.exception.CBadRequestException;
+
+import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
 @Getter
 @ToString
 @AllArgsConstructor
+@Where(clause = "deleted_at IS NULL")
+@SQLDelete(sql = "UPDATE remittance SET deleted_at = CURRENT_TIMESTAMP where id = ?")
 @Table(name = "remittance")
 public class Remittance extends BaseTimeEntity {
     @Id
@@ -24,6 +30,9 @@ public class Remittance extends BaseTimeEntity {
     @ManyToOne
     @JoinColumn(name = "participation_id")
     Participation participation;
+
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
 
     public Remittance(long amount, Participation participation) {
         this.amount = amount;
