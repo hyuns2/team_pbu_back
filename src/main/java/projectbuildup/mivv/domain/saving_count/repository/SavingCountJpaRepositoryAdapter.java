@@ -23,11 +23,6 @@ public class SavingCountJpaRepositoryAdapter implements SavingCountRepository{
     }
 
     @Override
-    public Optional<SavingCount> findByParticipation(Participation participation) {
-        return savingCountJpaRepository.findByParticipation(participation);
-    }
-
-    @Override
     public List<SavingCount> findAll() {
         return savingCountJpaRepository.findAll();
     }
@@ -35,6 +30,11 @@ public class SavingCountJpaRepositoryAdapter implements SavingCountRepository{
     @Override
     public Optional<SavingCount> findById(Long id) {
         return savingCountJpaRepository.findById(id);
+    }
+
+    @Override
+    public void delete(SavingCount savingCount) {
+        savingCountJpaRepository.delete(savingCount);
     }
 
 

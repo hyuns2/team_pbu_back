@@ -1,10 +1,14 @@
 package projectbuildup.mivv.domain.saving_count.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import projectbuildup.mivv.domain.participation.entity.Participation;
 import projectbuildup.mivv.domain.user.entity.User;
+import projectbuildup.mivv.global.common.BaseTimeEntity;
 
 @Getter
 @Entity
@@ -16,8 +20,6 @@ public class SavingCount {
     Long id;
     @Column(name = "count")
     int count;
-    @OneToOne(mappedBy = "savingCount", fetch = FetchType.LAZY)
-    Participation participation;
 
     public SavingCount() {
         this.count = 0;
