@@ -29,16 +29,23 @@ public class IdentityVerification extends BaseTimeEntity {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    @Column(name = "name")
+
+    @Column(name = "name", length = 50, nullable = false)
     String name;
-    @Column(name = "birth_date")
+
+    @Column(name = "birth_date", length = 20, nullable = false)
     String birthDate;
-    @Column(name = "mobile")
+
+    @Column(name = "mobile", length = 20, nullable = false)
     String mobile;
-    @Column(name = "code")
+
+    @Column(name = "code", length = 20, nullable = false)
     String code;
+
     @OneToOne(mappedBy = "identityVerification", fetch = FetchType.LAZY)
     User user;
+
+    @Column(name = "deleted_at")
     LocalDateTime deletedAt;
     public static IdentityVerification generateDummyVerification(){
         String dummyCode = RandomStringUtils.randomAlphabetic(16);
