@@ -30,15 +30,15 @@ public class Participation extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "fk_participation_to_user"), nullable = false)
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "challenge_id")
+    @JoinColumn(name = "challenge_id", foreignKey = @ForeignKey(name = "fk_participation_to_challenge"), nullable = false)
     private Challenge challenge;
 
     @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "saving_count_id")
+    @JoinColumn(name = "saving_count_id", foreignKey = @ForeignKey(name = "fk_participation_to_count"), nullable = false)
     private SavingCount savingCount;
 
     @OneToMany(mappedBy = "participation", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -47,7 +47,7 @@ public class Participation extends BaseTimeEntity {
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
-    public Participation(User user, Challenge challenge){
+    public Participation(User user, Challenge challenge) {
         this.user = user;
         this.challenge = challenge;
         this.savingCount = new SavingCount();

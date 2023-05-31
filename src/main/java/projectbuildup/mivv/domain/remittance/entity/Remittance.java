@@ -23,12 +23,12 @@ public class Remittance extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @Column(name = "amount")
+    @Column(name = "amount", nullable = false)
     private long amount;
-    @Column(name = "title")
+    @Column(name = "title", nullable = false)
     private String title;
     @ManyToOne
-    @JoinColumn(name = "participation_id")
+    @JoinColumn(name = "participation_id", foreignKey = @ForeignKey(name = "fk_remittance_to_participation"))
     Participation participation;
 
     @Column(name = "deleted_at")
