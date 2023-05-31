@@ -30,15 +30,15 @@ public class Challenge extends BaseTimeEntity {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "main_title")
+    @Column(name = "main_title", nullable = false)
     private String mainTitle;
     @Column(name = "sub_title")
     private String subTitle;
     @CollectionTable(
             name = "challenge_description",
-            joinColumns = @JoinColumn(name = "challenge_id", referencedColumnName = "id")
+            joinColumns = @JoinColumn(name = "challenge_id", foreignKey = @ForeignKey(name = "fk_challenge_to_description"))
     )
-    @Column(name = "description")
+    @Column(name = "description", nullable = false)
     @ElementCollection
     private List<String> description = new ArrayList<>();
     @Column(name = "max_saving_amount")

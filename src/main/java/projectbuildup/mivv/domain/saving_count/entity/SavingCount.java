@@ -18,7 +18,7 @@ public class SavingCount {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     Long id;
-    @Column(name = "count")
+    @Column(name = "count", nullable = false)
     int count;
 
     public SavingCount() {
