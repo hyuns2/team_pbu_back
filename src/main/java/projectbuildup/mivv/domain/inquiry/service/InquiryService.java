@@ -105,6 +105,7 @@ public class InquiryService {
      * @param id 문의 id
      * @throws CInquiryNotFoundException 문의 찾기 실패시
      */
+    @Transactional
     public void deleteAnswer(final Long id) {
         Optional<InquiryEntity> target = repo.findById(id);
         if (target.isEmpty()) {
