@@ -36,4 +36,8 @@ public class InquiryEntity {
     @Temporal(value = TemporalType.TIMESTAMP)
     private LocalDateTime timeStamp;
 
+    public void updateAnswer(final String answer) {
+        this.answer = answer;
+    }
+
 }

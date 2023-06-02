@@ -151,7 +151,7 @@ values (1, '이벤트내용', 'https://server.gasomann.com/resources/static/imag
        (2, '이벤트내용', 'https://server.gasomann.com/resources/static/images/cardss/card1.png', 'EVENT', '2023-05-24 11:00:14.982873', '이벤트2'),
        (3, '공지내용', 'https://server.gasomann.com/resources/static/images/cardss/card1.png', 'NOTICE', '2023-05-24 11:00:14.982873', '공지사항1'),
        (4, '공지내용', 'https://server.gasomann.com/resources/static/images/cardss/card1.png', 'NOTICE', '2023-05-24 11:00:14.982873', '공지사항2');
-       
+
 insert into card(d_type, id, type, title, sub_title, sentence, image_path)
 values ('GeneralCondition', 1, 'GENERAL', '제목1', '부제목1', '명언1', 'https://server.gasomann.com/resources/static/images/cardss/card1.png'),
        ('GeneralCondition', 2, 'GENERAL', '제목2', '부제목2', '명언2', 'https://server.gasomann.com/resources/static/images/cardss/card1.png'),
@@ -186,7 +186,7 @@ values (1, 'OK', '2023-07-01', '2023-04-01', 10000, 100),
        (3, 'OK', '2023-07-01', '2023-04-01', 10000, 100);
 
 insert into worthy_consumption_url(id, detail_background_image_path, detail_image_path, image_path,
-                                  place_image_path, video_path)
+                                   place_image_path, video_path)
 
 values (1, 'http://server.gasomann.com/resources/static/images/values/valueDetailBackground1.png',
         'http://server.gasomann.com/resources/static/images/values/valueDetail1.png',
@@ -294,3 +294,5 @@ insert into likes_worthy_consumption(id, created_time, modified_time, likes_cate
 values (1,'2023-03-08 11:31:14.982873', '2023-03-08 11:31:14.982873', 'WORTHY_CONSUMPTION', 1, 1),
        (2,'2023-03-08 11:31:14.982873', '2023-03-08 11:31:14.982873', 'WORTHY_CONSUMPTION', 1, 2),
        (3,'2023-03-08 11:31:14.982873', '2023-03-08 11:31:14.982873', 'WORTHY_CONSUMPTION', 1, 3);
+
+SET FOREIGN_KEY_CHECKS = 0;
