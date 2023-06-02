@@ -42,6 +42,12 @@ public class GeneralArchivingService {
     private final ImageUploader imageUploader;
     private final FileUploader fileUploader;
 
+    /**
+     * 관리자가 일반 카드 생성
+     * 
+     * @param dto 카드 제목, 부제목, 명언, 이미지파일
+     * @throws IOException
+     */
     public void createGeneralConditionCard(final ArchivingDto.createGeneralCardRequestDto dto) throws IOException {
 
         Image image = imageUploader.upload(dto.getImage(), ImageType.CARD);
@@ -51,6 +57,15 @@ public class GeneralArchivingService {
 
     }
 
+    /**
+     * 관리자가 일반 카드 수정
+     *
+     * @param id 일반 카드 Id
+     * @param dto 카드 제목, 부제목, 명언, 이미지파일 중 수정항목
+     * @throws IOException
+     * @throws CCardNotFoundException 카드 찾기 실패시
+     */
+    @Transactional
     public void updateGeneralConditionCard(final Long id, final ArchivingDto.updateGeneralCardRequestDto dto) throws IOException {
 
         Optional<CardEntity> target = cardRepo.findById(id);
@@ -63,10 +78,14 @@ public class GeneralArchivingService {
         CardEntity result = target.get();
         result.updateCard(dto, image.getImagePath());
 
-        cardRepo.save(result);
-
     }
 
+    /**
+     * 관리자가 카드 삭제
+     *
+     * @param id 카드 Id
+     * @throws CCardNotFoundException 카드 찾기 실패시
+     */
     public void deleteCard(final Long id) {
 
         Optional<CardEntity> target = cardRepo.findById(id);
@@ -79,6 +98,13 @@ public class GeneralArchivingService {
 
     }
 
+    /**
+     * 카드 단건 조회
+     *
+     * @param id 카드 Id
+     * @return ArchivingDto.CardResponseDto 카드 정보 전체
+     * @throws CCardNotFoundException 카드 찾기 실패시
+     */
     public ArchivingDto.CardResponseDto retrieveCard(final Long id) {
 
         Optional<CardEntity> target = cardRepo.findById(id);
@@ -91,6 +117,11 @@ public class GeneralArchivingService {
 
     }
 
+    /**
+     * 카드 전체 조회
+     *
+     * @return List<ArchivingDto.CardResponseDto> 카드들의 정보 전체
+     */
     public List<ArchivingDto.CardResponseDto> retrieveCards() {
 
         List<CardEntity> result = cardRepo.findAll();
@@ -99,16 +130,48 @@ public class GeneralArchivingService {
 
     }
 
-    private void assignGeneralConditionCards(CardEntity cardEntity, String name, String mobile) {
-        // 이름과 전화번호로 사용자 알아내기
-        Optional<User> targetUser = userRepo.findByNameAndMobile(name, mobile);
-        if (targetUser.isEmpty()) {
-            throw new CUserNotFoundException();
-        }
+    /**
+     * 관리자가 일반 카드 할당
+     *
+     * @param dto 카드 Id, 엑셀파일
+     * @throws IOException
+     * @throws CCardNotFoundException 카드 찾기 실패시
+     * @throws CInvalidCellException 엑셀의 셀이 유효하지 않을시
+     * @throws CUserNotFoundException 유저 찾기 실패시
+     */
+    @Transactional
+    public void assignGeneralConditionCards(final ArchivingDto.AssignGeneralCardsRequestDto dto) throws IOException {
 
-        // 사용자와 카드 연결
-        User userEntity = targetUser.get();
-        userCardRepo.save(new UserCardEntity(userEntity, cardEntity, LocalDate.now()));
+        // id에 맞는 카드 조회
+        Optional<CardEntity> targetCard = cardRepo.findById(dto.getId());
+        if (targetCard.isEmpty()) {
+            throw new CCardNotFoundException();
+        }
+        CardEntity cardEntity = targetCard.get();
+
+        checkAndAssignGeneralConditionCards(dto.getFile(), cardEntity);
+
+    }
+
+    private void checkAndAssignGeneralConditionCards(MultipartFile dtoFile, CardEntity cardEntity) throws IOException {
+        File file = fileUploader.storeExcelFile(dtoFile);
+
+        InputStream inputStream = new FileInputStream(file.getFilePath());
+        Workbook workBook = WorkbookFactory.create(inputStream);
+        Sheet sheet = workBook.getSheetAt(0);
+
+        int totalRow = sheet.getPhysicalNumberOfRows();
+        for (int rowIndex = 0; rowIndex < totalRow; rowIndex++) {
+            Row row = sheet.getRow(rowIndex);
+
+            if (row == null)
+                throw new CInvalidCellException((rowIndex+1) + "행의 문제");
+
+            List<String> result = checkRowData(row, rowIndex);
+
+            assignGeneralConditionCards(cardEntity, result.get(0), result.get(1));
+
+        }
     }
 
     private List<String> checkRowData(Row row, int rowIndex) {
@@ -133,60 +196,54 @@ public class GeneralArchivingService {
         return result;
     }
 
-    private void checkAndAssignGeneralConditionCards(MultipartFile dtoFile, CardEntity cardEntity) throws IOException {
-        // 엑셀파일이면, 프로젝트 바로 안의 files 폴더에 저장
-        File file = fileUploader.storeExcelFile(dtoFile);
-
-        // 엑셀파일 읽어서, 이름과 전화번호 빼내기
-        InputStream inputStream = new FileInputStream(file.getFilePath());
-        Workbook workBook = WorkbookFactory.create(inputStream);
-        Sheet sheet = workBook.getSheetAt(0);
-
-        int totalRow = sheet.getPhysicalNumberOfRows();
-        for (int rowIndex = 0; rowIndex < totalRow; rowIndex++) {
-            Row row = sheet.getRow(rowIndex);
-
-            if (row == null)
-                throw new CInvalidCellException((rowIndex+1) + "행의 문제");
-
-            // rowIndex 행의 두가지 데이터 받아오기
-            List<String> result = checkRowData(row, rowIndex);
-
-            // 사용자 알아내서 카드 할당
-            assignGeneralConditionCards(cardEntity, result.get(0), result.get(1));
-
+    private void assignGeneralConditionCards(CardEntity cardEntity, String name, String mobile) {
+        Optional<User> targetUser = userRepo.findByNameAndMobile(name, mobile);
+        if (targetUser.isEmpty()) {
+            throw new CUserNotFoundException();
         }
+
+        User userEntity = targetUser.get();
+        userCardRepo.save(new UserCardEntity(userEntity, cardEntity, LocalDate.now()));
     }
 
-    @Transactional
-    public void assignGeneralConditionCards(final ArchivingDto.AssignGeneralCardsRequestDto dto) throws IOException {
 
-        // id에 맞는 카드 조회
-        Optional<CardEntity> targetCard = cardRepo.findById(dto.getId());
-        if (targetCard.isEmpty()) {
-            throw new CCardNotFoundException();
-        }
-        CardEntity cardEntity = targetCard.get();
-
-        checkAndAssignGeneralConditionCards(dto.getFile(), cardEntity);
-
-    }
-
-    public List<ArchivingDto.UserCardResponseDto1> retrieveUserNewCards(final User user) {
+    /**
+     * 사용자의 새로 부여받은 카드들 조회
+     *
+     * @param user 유저 정보
+     * @return List<ArchivingDto.UserCardResponseDto> 유저카드들 정보 전체
+     */
+    public List<ArchivingDto.UserCardResponseDto> retrieveUserNewCards(final User user) {
 
         List<UserCardEntity> result = userCardRepo.findUserNewCards(user);
 
-        return result.stream().map(ArchivingDto.UserCardResponseDto1::new).collect(Collectors.toList());
+        return result.stream().map(ArchivingDto.UserCardResponseDto::new).collect(Collectors.toList());
 
     }
 
+    /**
+     * 사용자의 뉴카드를 1에서 0으로
+     *
+     * @param user 유저 정보
+     */
     @Transactional
     public void updateUserNewCards(final User user) {
 
-        userCardRepo.updateUserNewCards(user);
+        List<UserCardEntity> result = userCardRepo.findUserNewCards(user);
+
+        for (UserCardEntity entity: result) {
+            entity.updateIsNew();
+        }
 
     }
 
+    /**
+     * 사용자가 보유한 카드라면 그 정보까지 카드 전체 정보를 반환
+     *
+     * @param user 유저 정보
+     * @param cardType 카드 타입
+     * @return List<ArchivingDto.CardAndUserCardResponseDto> 카드와 사용자카드 정보 전체
+     */
     public List<ArchivingDto.CardAndUserCardResponseDto> retrieveUserCards(final User user, final CardType cardType) {
 
         List<Object[]> userGeneralCards = cardRepo.findUserGeneralCards(user, cardType);

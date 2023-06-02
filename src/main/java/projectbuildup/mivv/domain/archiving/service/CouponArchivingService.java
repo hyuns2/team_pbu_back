@@ -37,10 +37,16 @@ public class CouponArchivingService {
     private final CouponRepository couponRepo;
     private final ImageUploader imageUploader;
 
+    /**
+     * 소비 카드 생성
+     *
+     * @param dto 소비 정보, 발급 조건
+     * @throws IOException
+     * @throws CInvalidCardConditionException 카드 조건이 없을 시
+     */
     public void createCouponConditionCard(final ArchivingDto.createCouponCardRequestDto dto) throws IOException {
 
-        // 조건이 하나도 안주어져 있는 경우
-        if (dto.getWhatNumber() == 0 && dto.getHowSuccessive() == 0) {
+        if (dontHaveAnyConditions(dto)) {
             throw new CInvalidCardConditionException();
         }
 
@@ -52,6 +58,19 @@ public class CouponArchivingService {
 
     }
 
+    private boolean dontHaveAnyConditions(ArchivingDto.createCouponCardRequestDto dto) {
+        return (dto.getWhatNumber() == 0 && dto.getHowSuccessive() == 0);
+    }
+
+    /**
+     * 소비 카드 수정
+     *
+     * @param id 카드 Id
+     * @param dto 수정하려는 정보
+     * @throws IOException
+     * @throws CCardNotFoundException 카드 찾기 실패시
+     */
+    @Transactional
     public void updateCouponConditionCard(final Long id, final ArchivingDto.updateCouponCardRequestDto dto) throws IOException {
 
         Optional<CouponConditionCardEntity> target = (Optional<CouponConditionCardEntity>) cardRepo.findById(id);
@@ -64,8 +83,73 @@ public class CouponArchivingService {
         CouponConditionCardEntity result = target.get();
         result.updateCard(dto, image.getImagePath());
 
-        cardRepo.save(result);
+    }
 
+    /**
+     * 소비 카드 발급
+     *
+     * @param user     유저 정보
+     * @param couponId 쿠폰 Id
+     * @throws CCouponNotFoundException 쿠폰 찾기 실패시
+     */
+    @Transactional
+    public void assignCouponConditionsCard(final User user, final Long couponId) {
+
+        Optional<Coupon> target = couponRepo.findById(couponId);
+        if (target.isEmpty()) {
+            throw new CCouponNotFoundException();
+        }
+        Coupon coupon = target.get();
+
+        int whatNumber = checkWhatNumber(user, coupon);
+
+        int howSuccessive = checkHowSuccessive(user);
+
+        assignCards(user, whatNumber, howSuccessive);
+
+    }
+
+    private int checkWhatNumber(User user, Coupon coupon) {
+        List<CouponIssuance> issuancesByCouponId = couponIssuanceRepo.findAllByCoupon(coupon);
+        int whatNumber = 0;
+        for (CouponIssuance element : issuancesByCouponId) {
+            if (isEqualUserId(element, user)) {
+                whatNumber = issuancesByCouponId.indexOf(element) + 1;
+                break;
+            }
+        }
+        return whatNumber;
+    }
+
+    private boolean isEqualUserId(CouponIssuance element, User user) {
+        return (element.getUser().getId().equals(user.getId()));
+    }
+
+    private int checkHowSuccessive(User user) {
+        int howSuccessive = 0;
+
+        List<LocalDateTime> createdTimesByUserId = couponIssuanceRepo.findCreatedTimeByUserId(user);
+        LocalDateTime before = LocalDateTime.now();
+        for (LocalDateTime element : createdTimesByUserId) {
+            if (isNotLastCouponAssignedInThisMonth(createdTimesByUserId, element))
+                break;
+
+            long diffMonths = ChronoUnit.MONTHS.between(before, element);
+            diffMonths = Math.abs(diffMonths);
+
+            if (diffMonths == 1) {
+                howSuccessive++;
+            } else if (diffMonths > 1) {
+                break;
+            }
+
+            before = element;
+        }
+        return howSuccessive;
+    }
+
+    private boolean isNotLastCouponAssignedInThisMonth(List<LocalDateTime> createdTimesByUserId, LocalDateTime element) {
+        return (createdTimesByUserId.indexOf(element) == 0 && Math.abs(ChronoUnit.MONTHS.between(LocalDateTime.now(), element)) > 0);
     }
 
     private void assignCards(User user, int whatNumber, int howSuccessive) {
@@ -80,73 +164,15 @@ public class CouponArchivingService {
         List<CouponConditionCardEntity> cardsToCheck = allCards;
 
         for (CouponConditionCardEntity element : cardsToCheck) {
-            if (element.getWhatNumber() != whatNumber && element.getHowSuccessive() > howSuccessive)
+            if (isUnsatisfiedWithCondition(element, whatNumber, howSuccessive))
                 continue;
 
             userCardRepo.save(new UserCardEntity(user, element, LocalDate.now()));
         }
     }
 
-    private int checkHowSuccessive(User user) {
-        int howSuccessive = 0;
-
-        List<LocalDateTime> createdTimesByUserId = couponIssuanceRepo.findCreatedTimeByUserId(user);
-        LocalDateTime before = LocalDateTime.now();
-        for (LocalDateTime element : createdTimesByUserId) {
-            // 마지막 발급이 이번달인가?
-            if (createdTimesByUserId.indexOf(element) == 0 && Math.abs(ChronoUnit.MONTHS.between(LocalDateTime.now(), element)) > 0)
-                break;
-
-            long diffMonths = ChronoUnit.MONTHS.between(before, element);
-            diffMonths = Math.abs(diffMonths);
-            if (diffMonths == 1) {
-                howSuccessive++;
-            } else if (diffMonths > 1) {
-                break;
-            }
-
-            before = element;
-        }
-        return howSuccessive;
-    }
-
-    private int checkWhatNumber(User user, Coupon coupon) {
-        List<CouponIssuance> issuancesByCouponId = couponIssuanceRepo.findAllByCoupon(coupon);
-        int whatNumber = 0;
-        for (CouponIssuance element : issuancesByCouponId) {
-            if (element.getUser().getId().equals(user.getId())) {
-                whatNumber = issuancesByCouponId.indexOf(element) + 1;
-                break;
-            }
-        }
-        return whatNumber;
-    }
-
-    /**
-     * sdjflsjdlf벨라 바보
-     *
-     * @param user     사용자
-     * @param couponId 쿠폰 아이디
-     */
-    @Transactional
-    public void assignCouponConditionsCard(final User user, final Long couponId) {
-
-        // 쿠폰 객체 불러오기
-        Optional<Coupon> target = couponRepo.findById(couponId);
-        if (target.isEmpty()) {
-            throw new CCouponNotFoundException();
-        }
-        Coupon coupon = target.get();
-
-        // 해당 쿠폰에서 몇번째 발급자에 해당하는지 체크
-        int whatNumber = checkWhatNumber(user, coupon);
-
-        // 몇달째 연속으로 발급했는지 체크
-        int howSuccessive = checkHowSuccessive(user);
-
-        // 쿠폰 발급 카드 조건 사항에 맞다면 카드 부여
-        assignCards(user, whatNumber, howSuccessive);
-
+    private boolean isUnsatisfiedWithCondition(CouponConditionCardEntity element, int whatNumber, int howSuccessive) {
+        return (element.getWhatNumber() != whatNumber && element.getHowSuccessive() > howSuccessive);
     }
 
 }

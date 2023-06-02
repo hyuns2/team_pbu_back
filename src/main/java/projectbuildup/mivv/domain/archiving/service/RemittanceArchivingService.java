@@ -32,10 +32,16 @@ public class RemittanceArchivingService {
 
     private final ImageUploader imageUploader;
 
+    /**
+     * 절약 카드 생성
+     *
+     * @param dto 카드 정보, 발급 조건
+     * @throws IOException
+     * @throws CInvalidCardConditionException 카드 조건이 없을 시
+     */
     public void createRemittanceConditionCard(final ArchivingDto.createRemittanceCardRequestDto dto) throws IOException {
 
-        // 조건이 하나도 안주어져 있는 경우
-        if (dto.getCharge() == 0 && dto.getCount() == 0 && dto.getTerm() == 0) {
+        if (dontHaveAnyConditions(dto)) {
             throw new CInvalidCardConditionException();
         }
 
@@ -47,6 +53,19 @@ public class RemittanceArchivingService {
 
     }
 
+    private boolean dontHaveAnyConditions(ArchivingDto.createRemittanceCardRequestDto dto) {
+        return (dto.getCharge() == 0 && dto.getCount() == 0 && dto.getTerm() == 0);
+    }
+
+    /**
+     * 절약 카드 수정
+     *
+     * @param id 카드 Id
+     * @param dto 수정하려는 정보
+     * @throws IOException
+     * @throws CCardNotFoundException 카드 찾기 실패시
+     */
+    @Transactional
     public void updateRemittanceConditionCard(final Long id, final ArchivingDto.updateRemittanceCardRequestDto dto) throws IOException {
 
         Optional<RemittanceConditionCardEntity> target = (Optional<RemittanceConditionCardEntity>) cardRepo.findById(id);
@@ -59,45 +78,15 @@ public class RemittanceArchivingService {
         RemittanceConditionCardEntity result = target.get();
         result.updateCard(dto, image.getImagePath());
 
-        cardRepo.save(result);
-
     }
 
-    private void ifNumericalConditionCardHasNotTerm(User user, Integer charge, Integer count, Integer term, RemittanceConditionCardEntity element) {
-        Integer chargeSum = remittanceRepo.findChargeSum(user);
-        Integer countSum = remittanceRepo.findCountSum(user);
-
-        if (chargeSum >= charge && countSum >= count) {
-            userCardRepo.save(new UserCardEntity(user, element, LocalDate.now()));
-        }
-    }
-
-    private void ifNumericalConditionCardHasTerm(User user, Integer charge, Integer count, Integer term, RemittanceConditionCardEntity element) {
-        Integer chargeSum = remittanceRepo.findChargeSumBetweenTerm(user, LocalDateTime.now().minusDays(term), LocalDateTime.now());
-        Integer countSum = remittanceRepo.findCountSumBetweenTerm(user, LocalDateTime.now().minusDays(term), LocalDateTime.now());
-
-        if (chargeSum >= charge && countSum >= count) {
-            userCardRepo.save(new UserCardEntity(user, element, LocalDate.now()));
-        }
-    }
-
-    private void checkAndAssignNumericalConditionCards(User user, List<RemittanceConditionCardEntity> cardsToCheck) {
-        for (RemittanceConditionCardEntity element: cardsToCheck) {
-            Integer charge = element.getCharge();
-            Integer count = element.getCount();
-            Integer term = element.getTerm();
-
-            if (term == 0) {
-                ifNumericalConditionCardHasNotTerm(user, charge, count, term, element);
-            }
-            else {
-                ifNumericalConditionCardHasTerm(user, charge, count, term, element);
-            }
-        }
-    }
-
+    /**
+     * 절약 카드 발급
+     *
+     * @param user 유저 정보
+     */
     @Transactional
-    public void assignNumericalConditionCards(final User user) {
+    public void assignRemittanceConditionCards(final User user) {
 
         List<UserCardEntity> alreadyExistings = userCardRepo.findUserCardEntitiesByUser(user);
 
@@ -109,8 +98,41 @@ public class RemittanceArchivingService {
 
         List<RemittanceConditionCardEntity> cardsToCheck = allCards;
 
-        checkAndAssignNumericalConditionCards(user, cardsToCheck);
+        checkAndAssignRemittanceConditionCards(user, cardsToCheck);
 
+    }
+
+    private void checkAndAssignRemittanceConditionCards(User user, List<RemittanceConditionCardEntity> cardsToCheck) {
+        for (RemittanceConditionCardEntity element: cardsToCheck) {
+            Integer charge = element.getCharge();
+            Integer count = element.getCount();
+            Integer term = element.getTerm();
+
+            if (term == 0) {
+                ifRemittanceConditionCardHasNotTerm(user, charge, count, element);
+            }
+            else {
+                ifRemittanceConditionCardHasTerm(user, charge, count, term, element);
+            }
+        }
+    }
+
+    private void ifRemittanceConditionCardHasNotTerm(User user, Integer charge, Integer count, RemittanceConditionCardEntity element) {
+        Integer chargeSum = remittanceRepo.findChargeSum(user);
+        Integer countSum = remittanceRepo.findCountSum(user);
+
+        if (chargeSum >= charge && countSum >= count) {
+            userCardRepo.save(new UserCardEntity(user, element, LocalDate.now()));
+        }
+    }
+
+    private void ifRemittanceConditionCardHasTerm(User user, Integer charge, Integer count, Integer term, RemittanceConditionCardEntity element) {
+        Integer chargeSum = remittanceRepo.findChargeSumBetweenTerm(user, LocalDateTime.now().minusDays(term), LocalDateTime.now());
+        Integer countSum = remittanceRepo.findCountSumBetweenTerm(user, LocalDateTime.now().minusDays(term), LocalDateTime.now());
+
+        if (chargeSum >= charge && countSum >= count) {
+            userCardRepo.save(new UserCardEntity(user, element, LocalDate.now()));
+        }
     }
 
 }

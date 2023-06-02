@@ -272,7 +272,7 @@ public class ArchivingDto {
 
     @AllArgsConstructor
     @Data
-    public static class UserCardResponseDto1 {
+    public static class UserCardResponseDto {
 
         @Schema(description = "UserCard Id")
         private Long id;
@@ -286,7 +286,7 @@ public class ArchivingDto {
         @Schema(description = "신규 여부")
         private boolean isNew;
 
-        public UserCardResponseDto1(final UserCardEntity entity) {
+        public UserCardResponseDto(final UserCardEntity entity) {
             this.id = entity.getId();
             this.cardResponseDto = new CardResponseDto(entity.getCardEntity());
             this.date = entity.getDate();
@@ -297,7 +297,7 @@ public class ArchivingDto {
 
     @AllArgsConstructor
     @Data
-    public static class UserCardResponseDto2 {
+    public static class SimpleUserCardResponseDto {
 
         @Schema(description = "UserCard Id")
         private Long id;
@@ -308,7 +308,7 @@ public class ArchivingDto {
         @Schema(description = "신규 여부")
         private boolean isNew;
 
-        public UserCardResponseDto2(final UserCardEntity entity) {
+        public SimpleUserCardResponseDto(final UserCardEntity entity) {
             this.id = entity.getId();
             this.date = entity.getDate();
             this.isNew = entity.isNew();
@@ -323,7 +323,7 @@ public class ArchivingDto {
         private CardResponseDto cardDto;
 
         @Schema(description = "유저카드 정보")
-        private UserCardResponseDto2 userCardDto;
+        private SimpleUserCardResponseDto userCardDto;
 
         public CardAndUserCardResponseDto(final CardEntity cardEntity) {
             this.cardDto = new CardResponseDto(cardEntity);
@@ -332,7 +332,7 @@ public class ArchivingDto {
 
         public CardAndUserCardResponseDto(final CardEntity cardEntity, final UserCardEntity userCardEntity) {
             this.cardDto = new CardResponseDto(cardEntity);
-            this.userCardDto = new UserCardResponseDto2(userCardEntity);
+            this.userCardDto = new SimpleUserCardResponseDto(userCardEntity);
         }
 
     }

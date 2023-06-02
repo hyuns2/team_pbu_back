@@ -129,7 +129,7 @@ public class ArchivingController {
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/new-cards")
     public ResponseEntity<?> retrieveUserNewCards(@AuthenticationPrincipal User user) {
-        List<ArchivingDto.UserCardResponseDto1> responseDto = gService.retrieveUserNewCards(user);
+        List<ArchivingDto.UserCardResponseDto> responseDto = gService.retrieveUserNewCards(user);
 
         return ResponseEntity.ok().body(responseDto);
     }
