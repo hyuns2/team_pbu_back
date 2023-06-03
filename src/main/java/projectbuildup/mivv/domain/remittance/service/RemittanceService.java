@@ -66,6 +66,7 @@ public class RemittanceService {
         return executorService.submit(() -> remittanceChecker.check(requestDto.getAmount(), participation, startTime));
     }
 
+
     /**
      * 해당 연월에 기록된 절약 내역을 모두 조회합니다.
      *
@@ -75,8 +76,7 @@ public class RemittanceService {
      */
     public List<RemittanceDto.DetailsResponse> getRemittanceDetails(Long userId, String yearMonthStr) {
         User user = userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
-        LocalDate localDate = LocalDate.parse(yearMonthStr + "01", DateTimeFormatter.ofPattern("yyyyMMdd"));
-        YearMonth yearMonth = YearMonth.from(localDate);
+        YearMonth yearMonth = YearMonth.parse(yearMonthStr, DateTimeFormatter.ofPattern("yyyyMM"));
         LocalDateTime startTime = yearMonth.atDay(1).atStartOfDay();
         LocalDateTime endTime = yearMonth.atEndOfMonth().atTime(LocalTime.MAX);
         return remittanceRepository.findByUserAndCreatedTimeBetween(user, startTime, endTime).stream()
