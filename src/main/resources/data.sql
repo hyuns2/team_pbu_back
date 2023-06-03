@@ -231,11 +231,11 @@ values (1, 'summary1'), (1, 'summary1'), (1, 'summary1'),
 
 -- <Shorts> --
 insert into shorts(id, category, title, content, image_path, video_path)
-values (1, 'SAVING', '제목1', '내용1', 'https://3.37.5.91/resources/static/images/shorts/shortImage1.png',
+values (1, 'SAVING', '제목1', '내용1', 'https://server.gasomann.com/resources/static/images/shorts/shortImage1.png',
         'https://server.gasomann.com/resources/static/videos/shorts/shortVideo1.mp4'),
-       (2, 'SAVING', '제목2', '내용2', 'https://3.37.5.91/resources/static/images/shorts/shortImage2.png',
+       (2, 'SAVING', '제목2', '내용2', 'https://server.gasomann.com/resources/static/images/shorts/shortImage2.png',
         'https://server.gasomann.com/resources/static/videos/shorts/shortVideo2.mp4'),
-       (3, 'EDUCATION', '제목3', '내용3', 'https://3.37.5.91/resources/static/images/shorts/shortImage3.png',
+       (3, 'EDUCATION', '제목3', '내용3', 'https://server.gasomann.com/resources/static/images/shorts/shortImage3.png',
         'https://server.gasomann.com/resources/static/videos/shorts/shortVideo3.mp4');
 
 -- <Coupon> --
