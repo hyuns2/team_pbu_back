@@ -1,7 +1,6 @@
 package projectbuildup.mivv.domain.challenge.service;
 
 import jakarta.annotation.PostConstruct;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -61,56 +60,58 @@ public class RedisRankingSystem {
     }
 
     /**
+     * 자신의 순위를 조회합니다.
+     *
+     * @param key    ranking key
+     * @param member userId
+     * @return 순위
+     */
+    public long getUserRank(String key, String member) {
+        return Objects.requireNonNull(operations.reverseRank(PREFIX + key, member)) + 1;
+    }
+
+    /**
      * 본인의 랭킹 +- (NEARBY_SIZE)명의 순위를 조회합니다.
+     * 위/아래에 순위가 없는 경우 null이 채워져 반환됩니다.
      *
      * @param key    key
      * @param member member
      * @return 랭킹 리스트
      */
     public List<RankDto.Unit> getNearbyRanking(String key, String member) {
-        List<String> tupleList = Objects.requireNonNull(operations.reverseRange(PREFIX + key, 0, -1)).stream()
-                .toList();
-        List<Long> userRanking = getUserRanking(member, tupleList);
-
         List<RankDto.Unit> result = new ArrayList<>();
-        long rank = Objects.requireNonNull(operations.reverseRank(PREFIX + key, member)) + 1 - NEARBY_SIZE;
-        List<Long> upper = userRanking.subList(0, NEARBY_SIZE);
-        Long me = userRanking.get(NEARBY_SIZE);
-        List<Long> lower = userRanking.subList(NEARBY_SIZE + 1, NEARBY_SIZE + 3);
-        log.info("{}", upper);
-        log.info("{}", me);
-        log.info("{}", lower);
-        for (Long userId : userRanking) {
-            result.add(addRank(userId, rank));
-            rank++;
-        }
-        return result;
-    }
 
-    private List<Long> getUserRanking(String member, List<String> tupleList) {
-        int targetIdx = tupleList.indexOf(member);
-
-        List<Long> result = new ArrayList<>();
+        List<String> totalUserRanking = Objects.requireNonNull(operations.reverseRange(PREFIX + key, 0, -1)).stream()
+                .toList();
+        log.info(">>{}", totalUserRanking);
+        long currentRank = getUserRank(key, member) - NEARBY_SIZE;
+        int targetIdx = totalUserRanking.indexOf(member);
         for (int i = targetIdx - NEARBY_SIZE; i <= targetIdx + NEARBY_SIZE; i++) {
-            result.add(getLong(tupleList, i));
+            long finalCurrentRank = currentRank++;
+            Optional<Long> userId = getUserOptional(totalUserRanking, i);
+            result.add(userId.map(u -> new RankDto.Unit(finalCurrentRank, u)).orElse(null));
         }
+        log.info("{}", result);
         return result;
     }
 
-    private Long getLong(List<String> list, int idx) {
-        try {
-            return Long.parseLong(list.get(idx));
-        } catch (IndexOutOfBoundsException e) {
-            return null;
+
+    /**
+     * 유효한 인덱스라면 원소를 반환하고, 그렇지 않다면 null을 반환합니다.
+     *
+     * @param list 리스트
+     * @param idx  인덱스
+     * @return 데이터 or null
+     */
+    private Optional<Long> getUserOptional(List<String> list, int idx) {
+        final int START_IDX = 0;
+        final int END_IDX = list.size();
+        if (START_IDX <= idx && idx < END_IDX) {
+            return Optional.of(Long.parseLong(list.get(idx)));
         }
+        return Optional.empty();
     }
 
-    private RankDto.Unit addRank(Long userId, long rank) {
-        if (userId == null){
-            return null;
-        }
-        return new RankDto.Unit(rank, userId);
-    }
 
     /**
      * 해당 챌린지의 등수를 조회합니다.
