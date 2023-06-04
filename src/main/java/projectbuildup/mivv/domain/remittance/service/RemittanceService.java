@@ -28,6 +28,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -117,4 +118,19 @@ public class RemittanceService {
         return new RemittanceCount(now, count);
     }
 
+    /**
+     * 지날 달의 절약 금액을 조회합니다.
+     * prevMonth가 empty인 경우, 현재 시각을 기준으로 이전 달을 설정합니다.
+     *
+     * @param userId    사용자 아이디넘버
+     * @param prevMonth yyyyMM 형식
+     * @return 지난 달의 절약 금액
+     */
+    public long getPreviousSavingAmount(Long userId, Optional<YearMonth> prevMonth) {
+        User user = userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
+        YearMonth yearMonth = prevMonth.orElse(YearMonth.now().minusMonths(1));
+        LocalDateTime startTime = yearMonth.atDay(1).atStartOfDay();
+        LocalDateTime endTime = yearMonth.atEndOfMonth().atTime(LocalTime.MAX);
+        return remittanceRepository.findSumAmountByUserAndCreatedTimeBetween(user, startTime, endTime);
+    }
 }

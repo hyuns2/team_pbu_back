@@ -21,6 +21,7 @@ import projectbuildup.mivv.global.constant.Header;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Tag(name = "[4. Remittance]", description = "송금 관련 API입니다.")
 @RequiredArgsConstructor
@@ -68,5 +69,14 @@ public class RemittanceController {
     public ResponseEntity<RemittanceDto.StatusResponse> getRemittanceStatus(@AuthenticationPrincipal User user) {
         RemittanceDto.StatusResponse responseDto = remittanceService.getBriefStatus(user);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+
+    @Operation(summary = "지난 달 총 절약 금액 조회", description = "")
+    @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/remittance/prev-month")
+    public ResponseEntity<Long> getPreviousSavingAmount(@AuthenticationPrincipal User user) {
+        long response = remittanceService.getPreviousSavingAmount(user.getId(), Optional.empty());
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
