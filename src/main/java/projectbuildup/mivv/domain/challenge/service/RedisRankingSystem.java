@@ -83,7 +83,6 @@ public class RedisRankingSystem {
 
         List<String> totalUserRanking = Objects.requireNonNull(operations.reverseRange(PREFIX + key, 0, -1)).stream()
                 .toList();
-        log.info(">>{}", totalUserRanking);
         long currentRank = getUserRank(key, member) - NEARBY_SIZE;
         int targetIdx = totalUserRanking.indexOf(member);
         for (int i = targetIdx - NEARBY_SIZE; i <= targetIdx + NEARBY_SIZE; i++) {
@@ -91,7 +90,6 @@ public class RedisRankingSystem {
             Optional<Long> userId = getUserOptional(totalUserRanking, i);
             result.add(userId.map(u -> new RankDto.Unit(finalCurrentRank, u)).orElse(null));
         }
-        log.info("{}", result);
         return result;
     }
 

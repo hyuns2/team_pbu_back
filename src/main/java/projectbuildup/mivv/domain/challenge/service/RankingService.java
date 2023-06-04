@@ -17,7 +17,6 @@ import projectbuildup.mivv.global.error.exception.CUserNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import static projectbuildup.mivv.domain.challenge.service.RedisRankingSystem.*;
 
@@ -65,6 +64,17 @@ public class RankingService {
                 .map(r -> toResponseDto(r, challenge))
                 .toList();
         return generateResponse(theFirst, userRanking);
+    }
+
+    /**
+     * 사용자의 전체 랭킹 순위를 조회합니다.
+     *
+     * @param user 사용자
+     * @return 전체 랭킹 순위
+     */
+    public long getTotalRank(User user) {
+        String member = String.valueOf(user.getId());
+        return rankingSystem.getUserRank(TOTAL_RANKING_KEY, member);
     }
 
     /**

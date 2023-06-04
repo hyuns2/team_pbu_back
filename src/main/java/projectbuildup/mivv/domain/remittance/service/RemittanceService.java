@@ -25,6 +25,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -88,12 +89,17 @@ public class RemittanceService {
      * 사용자의 절약 상태를 조회합니다.
      *
      * @param user 사용자
-     * @return 총 절약 금액, 현재 달의 절약 횟수
+     * @return 총 절약 금액, 현재 달의 절약 횟수, 랭킹 정보 (전체 랭킹 + 챌린지별 랭킹)
      */
     public RemittanceDto.StatusResponse getBriefStatus(User user) {
         long totalAmount = getTotalAmount(user);
         RemittanceCount monthlyCount = getMonthlyCount(user, null);
-        List<RankDto.ShortResponse> ranks = rankingService.getUserRanks(user);
+
+        List<RankDto.ShortResponse> ranks = new ArrayList<>();
+        RankDto.ShortResponse totalRank = new RankDto.ShortResponse(0L, "전체", rankingService.getTotalRank(user));
+        List<RankDto.ShortResponse> challengeRanks = rankingService.getUserRanks(user);
+        ranks.add(totalRank);
+        ranks.addAll(challengeRanks);
         return new RemittanceDto.StatusResponse(totalAmount, monthlyCount, ranks);
     }
 
