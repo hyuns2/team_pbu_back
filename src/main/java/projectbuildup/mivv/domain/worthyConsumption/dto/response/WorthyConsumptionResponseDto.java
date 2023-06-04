@@ -35,6 +35,8 @@ public class WorthyConsumptionResponseDto {
     @Getter @Setter
     public static class ReadBasicResponse extends ReadSummaryResponse{
         private List<String> hashtags;
+        private String logoPath;
+        private String videoThumbNailPath;
         private String videoPath;
         private String imagePath;
         private CheckConditionType checkConditionType;
@@ -43,20 +45,13 @@ public class WorthyConsumptionResponseDto {
 
         public ReadBasicResponse(WorthyConsumption worthyConsumption, Boolean isLiked, Long couponId) {
             super(worthyConsumption);
+            this.logoPath = worthyConsumption.getWorthyConsumptionUrl().getLogoPath();
+            this.videoThumbNailPath = worthyConsumption.getWorthyConsumptionUrl().getVideoThumbNailPath();
             this.hashtags = worthyConsumption.getHashtags();
             this.videoPath = worthyConsumption.getWorthyConsumptionUrl().getVideoPath();
             this.imagePath = worthyConsumption.getWorthyConsumptionUrl().getImagePath();
             this.checkConditionType = worthyConsumption.getCondition().getCheckConditionType();
             this.isLiked = isLiked;
-            this.couponId = couponId;
-        }
-
-        public ReadBasicResponse(WorthyConsumption worthyConsumption, Long couponId) {
-            super(worthyConsumption);
-            this.hashtags = worthyConsumption.getHashtags();
-            this.videoPath = worthyConsumption.getWorthyConsumptionUrl().getVideoPath();
-            this.imagePath = worthyConsumption.getWorthyConsumptionUrl().getImagePath();
-            this.checkConditionType = worthyConsumption.getCondition().getCheckConditionType();
             this.couponId = couponId;
         }
     }
@@ -67,6 +62,8 @@ public class WorthyConsumptionResponseDto {
         private Long id;
         private String title;
         private List<String> hashtags;
+        private String logoPath;
+        private String videoThumbNailPath;
         private String detailImageUrl;
         private String detailBackgroundImageUrl;
         private String videoUrl;
@@ -81,6 +78,8 @@ public class WorthyConsumptionResponseDto {
             this.id = worthyConsumption.getId();
             this.title = worthyConsumption.getTitle();
             this.hashtags = worthyConsumption.getHashtags();
+            this.logoPath = worthyConsumption.getWorthyConsumptionUrl().getLogoPath();
+            this.videoThumbNailPath = worthyConsumption.getWorthyConsumptionUrl().getVideoThumbNailPath();
             this.detailImageUrl = worthyConsumption.getWorthyConsumptionUrl().getDetailImagePath();
             this.detailBackgroundImageUrl = worthyConsumption.getWorthyConsumptionUrl().getDetailBackgroundImagePath();
             this.videoUrl = worthyConsumption.getWorthyConsumptionUrl().getVideoPath();

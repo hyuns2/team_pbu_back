@@ -12,8 +12,12 @@ public class WorthyConsumptionUrl {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+    @Column(name = "logo_path")
+    private String logoPath;
     @Column(name = "video_path")
     private String videoPath;
+    @Column(name = "video_thumbnail_path")
+    private String videoThumbNailPath;
     @Column(name = "image_path")
     private String imagePath;
     @Column(name = "detail_image_path")
@@ -22,8 +26,10 @@ public class WorthyConsumptionUrl {
     private String detailBackgroundImagePath;
     @Column(name = "place_image_path")
     private String placeImagePath;
-    public WorthyConsumptionUrl(String videoPath,
+    public WorthyConsumptionUrl(String logoPath, String videoPath, String videoThumbNailPath,
                                 String imagePath, String detailImagePath, String detailBackgroundImagePath, String placeImagePath) {
+        this.logoPath = logoPath;
+        this.videoThumbNailPath = videoThumbNailPath;
         this.videoPath = videoPath;
         this.imagePath = imagePath;
         this.detailImagePath = detailImagePath;
@@ -31,8 +37,10 @@ public class WorthyConsumptionUrl {
         this.placeImagePath = placeImagePath;
     }
 
-    public void update(String videoPath,
+    public void update(String logoPath, String videoPath, String videoThumbNailPath,
                           String imagePath, String detailImagePath, String detailBackgroundImagePath, String placeImagePath){
+        this.logoPath = logoPath;
+        this.videoThumbNailPath = videoThumbNailPath;
         this.videoPath = videoPath;
         this.imagePath = imagePath;
         this.detailImagePath = detailImagePath;

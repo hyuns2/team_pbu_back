@@ -14,10 +14,12 @@ import projectbuildup.mivv.domain.shorts.entity.ShortsCategory;
 import projectbuildup.mivv.domain.shorts.repository.ShortsRepository;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.domain.user.repository.UserRepository;
+import projectbuildup.mivv.domain.worthyConsumption.dto.WorthyConsumptionDto;
 import projectbuildup.mivv.domain.worthyConsumption.dto.response.WorthyConsumptionResponseDto;
 import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumption;
 import projectbuildup.mivv.domain.worthyConsumption.repository.WorthyConsumptionRepository;
 import projectbuildup.mivv.global.common.BaseTimeEntity;
+import projectbuildup.mivv.global.error.exception.CBadRequestException;
 import projectbuildup.mivv.global.error.exception.CShortsNotFoundException;
 import projectbuildup.mivv.global.error.exception.CUserExistException;
 import projectbuildup.mivv.global.error.exception.CWorthyConsumptionNotFoundException;
@@ -47,6 +49,8 @@ public class LikesService {
         else
             likesCategory = LikesCategory.SHORTS_EDU;
 
+        checkDuplicateShorts(user, shorts);
+
         LikesShorts likesShorts = new LikesShorts(user, shorts, likesCategory);
         likesShortsRepository.save(likesShorts);
     }
@@ -54,10 +58,18 @@ public class LikesService {
         User user = userRepository.findById(userId).orElseThrow(CUserExistException::new);
         WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionId).orElseThrow(CWorthyConsumptionNotFoundException::new);
 
+        checkDuplicateWorthyConsumption(user, worthyConsumption);
         LikesWorthyConsumption likesWorthyConsumption = new LikesWorthyConsumption(user, worthyConsumption);
         likesWorthyConsumptionRepository.save(likesWorthyConsumption);
     }
-
+    public void checkDuplicateShorts(User user, Shorts shorts){
+        if(likesShortsRepository.findByUserAndShorts(user, shorts).isPresent())
+            throw new CBadRequestException("이미 찜한 쇼츠입니다.");
+    }
+    public void checkDuplicateWorthyConsumption(User user, WorthyConsumption worthyConsumption){
+        if(likesWorthyConsumptionRepository.findByUserAndWorthyConsumption(user, worthyConsumption).isPresent())
+            throw new CBadRequestException("이미 찜한 가치소비입니다.");
+    }
     @Transactional
     public void deleteLikesWorthyConsumption(Long userId, Long worthyConsumptionId){
         User user = userRepository.findById(userId).orElseThrow(CUserExistException::new);
@@ -112,5 +124,4 @@ public class LikesService {
                 .map(likesShorts -> new ShortsDto.shortsResponse(likesShorts.getShorts(), true))
                 .collect(Collectors.toList());
     }
-
 }
