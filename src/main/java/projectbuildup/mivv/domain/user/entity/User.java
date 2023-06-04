@@ -4,8 +4,10 @@ import jakarta.persistence.*;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.AssertTrue;
 import lombok.*;
 import org.hibernate.annotations.*;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -36,6 +38,7 @@ public class User extends BaseTimeEntity implements UserDetails {
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+    @Length(min = 2, max = 30)
     @Column(name = "nickname", nullable = false, length = 50)
     String nickname;
     @Column(name = "email", nullable = false, length = 50)
@@ -48,6 +51,7 @@ public class User extends BaseTimeEntity implements UserDetails {
             @Column(name = "store_image_name")
     })
     Image profileImage;
+    @AssertTrue
     @Column(name = "agreement", nullable = false, length = 1)
     boolean agreement;
     @OneToOne(cascade = CascadeType.ALL)

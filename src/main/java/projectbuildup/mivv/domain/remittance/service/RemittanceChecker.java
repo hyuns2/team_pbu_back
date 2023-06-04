@@ -51,6 +51,7 @@ public class RemittanceChecker {
      * @param participation 참여 정보
      * @throws InterruptedException exception
      */
+    @Transactional
     public boolean check(long amount, Participation participation, LocalDateTime startTime) throws InterruptedException {
         for (int i = 0; i < ASYNC_CHECK_TRY; i++) {
             sleep(TimeUnit.MILLISECONDS.convert(ASYNC_CHECK_TERM_SEC, TimeUnit.SECONDS));
