@@ -14,6 +14,7 @@ import projectbuildup.mivv.domain.user.repository.UserRepository;
 import projectbuildup.mivv.domain.worthyConsumption.dto.WorthyConsumptionDto;
 import projectbuildup.mivv.domain.worthyConsumption.dto.response.WorthyConsumptionResponseDto;
 import projectbuildup.mivv.domain.worthyConsumption.entity.Condition;
+import projectbuildup.mivv.domain.worthyConsumption.entity.RecommendationReason;
 import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumption;
 import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumptionUrl;
 import projectbuildup.mivv.domain.worthyConsumption.repository.WorthyConsumptionRepository;
@@ -60,9 +61,19 @@ public class WorthyConsumptionService {
 
         WorthyConsumptionUrl worthyConsumptionUrl = new WorthyConsumptionUrl(logo.getImagePath(), videoThumbNail.getImagePath(), video.getVideoPath(), image.getImagePath(), detailImage.getImagePath(), detailBackgroundImage.getImagePath(), placeImage.getImagePath());
         Condition condition = new Condition(worthyConsumptionDto);
-        WorthyConsumption worthyConsumption = worthyConsumptionDto.toEntity(worthyConsumptionUrl, condition);
+        List<RecommendationReason> recommendationReasons = worthyConsumptionDto.getRecommendationReasons().stream()
+                .map(dto -> mapToRecommendationReason(dto.getTitle(), dto.getDescription()))
+                .collect(Collectors.toList());
+        WorthyConsumption worthyConsumption = worthyConsumptionDto.toEntity(worthyConsumptionUrl, condition, recommendationReasons);
         worthyConsumptionRepository.save(worthyConsumption);
     }
+    private RecommendationReason mapToRecommendationReason(String title, String description) {
+        return RecommendationReason.builder()
+                .title(title)
+                .description(description)
+                .build();
+    }
+
     /**
      * 가치소비를 조회하는 로직입니다.
      * @param worthyConsumptionId

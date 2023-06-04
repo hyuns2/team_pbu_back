@@ -16,7 +16,7 @@ public class WorthyConsumptionUrl {
     private String logoPath;
     @Column(name = "video_path")
     private String videoPath;
-    @Column(name = "video_thumbnail_path")
+    @Column(name = "video_thumb_nail_path")
     private String videoThumbNailPath;
     @Column(name = "image_path")
     private String imagePath;
