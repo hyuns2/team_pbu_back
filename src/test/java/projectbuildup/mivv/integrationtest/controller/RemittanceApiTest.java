@@ -13,6 +13,7 @@ import projectbuildup.mivv.integrationtest.setting.WithAuthUser;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class RemittanceApiTest extends IntegrationTest {
@@ -99,6 +100,10 @@ public class RemittanceApiTest extends IntegrationTest {
         ResultActions actions = mvc.perform(get(STATUS_API));
 
         // then
-        actions.andExpect(status().isOk());
+        actions.andExpect(status().isOk())
+                .andExpect(jsonPath("total").value(16000)) // 총 절약 금액 16000원
+                .andExpect(jsonPath("ranks[0].rank").value(1)) // 전체 챌린지 순위 - 1등
+                .andExpect(jsonPath("ranks[1].rank").value(4)) // 1번 챌린지 순위 - 4등
+                .andExpect(jsonPath("ranks[2].rank").value(1)); // 2번 챌린지 순위 - 1등
     }
 }

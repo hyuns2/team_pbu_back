@@ -45,20 +45,13 @@ public class RemittanceChecker {
      * @throws InterruptedException exception
      */
     public boolean check(long amount, Participation participation, LocalDateTime startTime) throws InterruptedException {
-        log.info("5분간 조회 시작");
-        if (startTime == null) {
-            startTime = LocalDateTime.now();
-        }
         for (int i = 0; i < ASYNC_CHECK_TRY; i++) {
             sleep(TimeUnit.MILLISECONDS.convert(ASYNC_CHECK_TERM_SEC, TimeUnit.SECONDS));
-            log.info("{}초 경과, 조회 중...", (i + 1) * ASYNC_CHECK_TERM_SEC);
             if (hasRecord(amount, participation.getUser(), startTime)) {
                 updateRemittance(amount, participation);
-                log.info("송금액 확인 성공");
                 return true;
             }
         }
-        log.info("송금액 확인 실패");
         return false;
     }
 
@@ -68,6 +61,7 @@ public class RemittanceChecker {
      * - 금일 절약 횟수를 1 증가시킵니다.
      * - 랭킹 점수를 증가시킵니다.
      * - 챌린지의 총 절약 금액 정보를 갱신합니다.
+     * - 수치 조건 카드의 발급을 확인합니다.
      *
      * @param amount        송금 정보
      * @param participation 참여 정보

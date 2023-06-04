@@ -37,7 +37,7 @@ public class RemittanceController {
     public ResponseEntity<Void> remit(@PathVariable Long challengeId, @RequestBody RemittanceDto.RemitRequest requestDto, @AuthenticationPrincipal User user) {
         requestDto.setUserId(user.getId());
         requestDto.setChallengeId(challengeId);
-        remittanceService.remit(requestDto, null);
+        remittanceService.remit(requestDto, Optional.empty());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -49,7 +49,7 @@ public class RemittanceController {
         requestDto.setUserId(user.getId());
         requestDto.setChallengeId(challengeId);
         requestDto.setAmount(600000L);
-        remittanceService.remit(requestDto, LocalDateTime.of(2019, 5, 1, 1, 1, 1));
+        remittanceService.remit(requestDto, Optional.of(LocalDateTime.of(2019, 5, 1, 1, 1, 1)));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
