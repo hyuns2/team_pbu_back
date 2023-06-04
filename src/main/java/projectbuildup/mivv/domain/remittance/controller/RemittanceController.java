@@ -67,7 +67,7 @@ public class RemittanceController {
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/remittance/status")
     public ResponseEntity<RemittanceDto.StatusResponse> getRemittanceStatus(@AuthenticationPrincipal User user) {
-        RemittanceDto.StatusResponse responseDto = remittanceService.getBriefStatus(user);
+        RemittanceDto.StatusResponse responseDto = remittanceService.getBriefStatus(user, Optional.empty());
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 

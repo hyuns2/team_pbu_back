@@ -59,19 +59,27 @@ public class RemittanceService {
         Challenge challenge = challengeRepository.findById(requestDto.getChallengeId()).orElseThrow(CResourceNotFoundException::new);
         User user = userRepository.findById(requestDto.getUserId()).orElseThrow(CUserNotFoundException::new);
         Participation participation = participationRepository.findByChallengeAndUser(challenge, user).orElseThrow(() -> new CBadRequestException("참여 중인 챌린지에만 송금할 수 있습니다."));
-        validate(requestDto, challenge, participation);
+        validate(challenge, participation, requestDto.getAmount());
         return executorService.submit(() -> remittanceChecker.check(requestDto.getAmount(), participation, startTime.orElse(LocalDateTime.now())));
     }
 
-    private void validate(RemittanceDto.RemitRequest requestDto, Challenge challenge, Participation participation) {
+    /**
+     * 송금할 수 있는 상태인지 검증합니다.
+     * 참여 중인 챌린지가 아닌 경우 CSavingCountOverException을 던집니다.
+     * 챌린지의 최소 송금 금액과 최대 송금 금액을 만족하지 않는 경우 CIllegalArgumentException을 던집니다.
+     *
+     * @param challenge     챌린지
+     * @param participation 참여 정보
+     * @param amount        송금 금액
+     */
+    private void validate(Challenge challenge, Participation participation, long amount) {
         if (!participation.canRemit()) {
             throw new CSavingCountOverException();
         }
-        if (!challenge.canRemit(requestDto.getAmount())) {
+        if (!challenge.canRemit(amount)) {
             throw new CIllegalArgumentException("송금할 수 있는 금액의 범위를 벗어났습니다.");
         }
     }
-
 
     /**
      * 해당 연월에 기록된 절약 내역을 모두 조회합니다.
@@ -92,34 +100,57 @@ public class RemittanceService {
 
     /**
      * 사용자의 절약 상태를 조회합니다.
+     * yearMonth가 empty인 경우, 현재 달을 설정합니다.
      *
      * @param user 사용자
      * @return 총 절약 금액, 현재 달의 절약 횟수, 랭킹 정보 (전체 랭킹 + 챌린지별 랭킹)
      */
-    public RemittanceDto.StatusResponse getBriefStatus(User user) {
+    public RemittanceDto.StatusResponse getBriefStatus(User user, Optional<YearMonth> yearMonth) {
         long totalAmount = getTotalAmount(user);
-        RemittanceCount monthlyCount = getMonthlyCount(user, null);
+        RemittanceCount monthlyCount = getMonthlyCount(user, yearMonth.orElse(YearMonth.now()));
+        List<RankDto.ShortResponse> ranks = getUserRanks(user);
+        return new RemittanceDto.StatusResponse(totalAmount, monthlyCount, ranks);
+    }
 
+    /**
+     * 사용자의 총 절약 금액을 반환합니다.
+     *
+     * @param user 사용자
+     * @return 총 절약 금액
+     */
+    private long getTotalAmount(User user) {
+        return remittanceRepository.findSumAmountByUser(user);
+    }
+
+    /**
+     * 사용자가 특정 월에 절약한 횟수를 반환합니다.
+     *
+     * @param user 사용자
+     * @param now  월 (yyyy-MM)
+     * @return 특정 월에 절약한 횟수
+     */
+    private RemittanceCount getMonthlyCount(User user, YearMonth now) {
+        LocalDateTime startTime = now.atDay(1).atStartOfDay();
+        LocalDateTime endTime = now.atEndOfMonth().atTime(LocalTime.MAX);
+        long count = remittanceRepository.findByUserAndDepositAndCreatedTimeBetween(user, startTime, endTime).size();
+        return new RemittanceCount(now, count);
+    }
+
+    /**
+     * 사용자의 전체/챌린지별 랭크를 리스트로 반환합니다.
+     * 리스트의 0번째 인덱스에는 전체 순위가 담깁니다.
+     * 리스트의 1번째 인덱스부터 사용자가 참여중인 챌린지별 순위가 담깁니다.
+     *
+     * @param user 사용자
+     * @return 전체/챌린지별 랭크
+     */
+    private List<RankDto.ShortResponse> getUserRanks(User user) {
         List<RankDto.ShortResponse> ranks = new ArrayList<>();
         RankDto.ShortResponse totalRank = new RankDto.ShortResponse(0L, "전체", rankingService.getTotalRank(user));
         List<RankDto.ShortResponse> challengeRanks = rankingService.getUserRanks(user);
         ranks.add(totalRank);
         ranks.addAll(challengeRanks);
-        return new RemittanceDto.StatusResponse(totalAmount, monthlyCount, ranks);
-    }
-
-    private long getTotalAmount(User user) {
-        return remittanceRepository.findSumAmountByUser(user);
-    }
-
-    private RemittanceCount getMonthlyCount(User user, YearMonth now) {
-        if (now == null) {
-            now = YearMonth.now();
-        }
-        LocalDateTime startTime = now.atDay(1).atStartOfDay();
-        LocalDateTime endTime = now.atEndOfMonth().atTime(LocalTime.MAX);
-        long count = remittanceRepository.findByUserAndDepositAndCreatedTimeBetween(user, startTime, endTime).size();
-        return new RemittanceCount(now, count);
+        return ranks;
     }
 
     /**
