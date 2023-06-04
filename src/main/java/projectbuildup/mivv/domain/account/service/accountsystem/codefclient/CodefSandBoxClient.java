@@ -1,4 +1,4 @@
-package projectbuildup.mivv.domain.account.service.accountsystem;
+package projectbuildup.mivv.domain.account.service.accountsystem.codefclient;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,32 +29,30 @@ import java.util.Map;
 
 @Component
 @Slf4j
-public class CodefClient {
-    @Value("${codef.client-id}")
+public class CodefSandBoxClient implements CodefClient {
+    @Value("${codef.sand-client-id}")
     String CLIENT_ID;
-    @Value("${codef.client-secret}")
+    @Value("${codef.sand-client-secret}")
     String CLIENT_SECRET;
     @Value("${codef.public-key}")
     String PUBLIC_KEY;
     EasyCodef codef;
-    private final String CODEF_OWN_ACCOUNT_API = "/v1/kr/bank/p/account/account-list";
-    private final String CODEF_TRANSACTION_LIST_API = "/v1/kr/bank/p/account/transaction-list";
-    private final String CODEF_TRANSFER_AUTHENTICATION_API = "/v1/kr/bank/a/account/transfer-authentication";
 
 
     @PostConstruct
     public void init() {
         codef = new EasyCodef();
-        codef.setClientInfoForDemo(CLIENT_ID, CLIENT_SECRET);
+        codef.setClientInfo(CLIENT_ID, CLIENT_SECRET);
         codef.setPublicKey(PUBLIC_KEY);
     }
 
+    @Override
     public String issueToken() {
         try {
             EasyCodef codef = new EasyCodef();
             codef.setClientInfo(CLIENT_ID, CLIENT_SECRET);
             codef.setPublicKey(PUBLIC_KEY);
-            return codef.requestToken(EasyCodefServiceType.DEMO);
+            return codef.requestToken(EasyCodefServiceType.SANDBOX);
         } catch (IOException e) {
             throw new CInternalServerException();
         }
@@ -84,6 +82,7 @@ public class CodefClient {
      * @param accountDto 입력 파라미터
      * @return 응답값의 data 필드
      */
+    @Override
     public Map<String, Object> createConnectedId(AccountRegisterDto accountDto) {
         List<HashMap<String, Object>> accountList = new ArrayList<>();
         HashMap<String, Object> accountMap = new HashMap<>();
@@ -92,7 +91,7 @@ public class CodefClient {
             fillMapParameter(accountMap, accountDto);
             accountList.add(accountMap);
             parameterMap.put("accountList", accountList);
-            String result = codef.createAccount(EasyCodefServiceType.DEMO, parameterMap);
+            String result = codef.createAccount(EasyCodefServiceType.SANDBOX, parameterMap);
             return getDataField(result);
         } catch (Exception e) {
             e.printStackTrace();
@@ -107,12 +106,14 @@ public class CodefClient {
      * @param connectedId 커넥티드 아이디
      * @return 보유 계좌 목록 (코드에프 테스트 계정의 경우 accountList = [06170204000000, 23850204000000, 54780300000000])
      */
+    @Override
     public Map<String, Object> getOwnAccounts(String bankType, String connectedId) {
+        String CODEF_OWN_ACCOUNT_API = "/v1/kr/bank/p/account/account-list";
         HashMap<String, Object> parameterMap = new HashMap<>();
         try {
             parameterMap.put("organization", bankType);
             parameterMap.put("connectedId", connectedId);
-            String result = codef.requestProduct(CODEF_OWN_ACCOUNT_API, EasyCodefServiceType.DEMO, parameterMap);
+            String result = codef.requestProduct(CODEF_OWN_ACCOUNT_API, EasyCodefServiceType.SANDBOX, parameterMap);
             return getDataField(result);
         } catch (Exception e) {
             e.printStackTrace();
@@ -130,7 +131,9 @@ public class CodefClient {
      * @param startDate      조회 시작 날짜
      * @return 응답값의 data 필드
      */
+    @Override
     public Map<String, Object> getTransactionList(String connectedId, String bankCode, String accountNumbers, LocalDate startDate) {
+        String CODEF_TRANSACTION_LIST_API = "/v1/kr/bank/p/account/transaction-list";
         LocalDate endDate = LocalDate.now();
         String startDateStr = startDate.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         String endDateStr = endDate.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
@@ -142,7 +145,7 @@ public class CodefClient {
         parameterMap.put("endDate", endDateStr);
         parameterMap.put("orderBy", "0");
         try {
-            String result = codef.requestProduct(CODEF_TRANSACTION_LIST_API, EasyCodefServiceType.DEMO, parameterMap);
+            String result = codef.requestProduct(CODEF_TRANSACTION_LIST_API, EasyCodefServiceType.SANDBOX, parameterMap);
             return getDataField(result);
         } catch (Exception e) {
             e.printStackTrace();
@@ -158,13 +161,15 @@ public class CodefClient {
      * @param accountNumbers   계좌번호
      * @return 응답값의 data 필드
      */
+    @Override
     public Map<String, Object> certifyTransfer(String organizationCode, String accountNumbers) {
+        String CODEF_TRANSFER_AUTHENTICATION_API = "/v1/kr/bank/a/account/transfer-authentication";
         HashMap<String, Object> parameterMap = new HashMap<>();
         parameterMap.put("organization", organizationCode);
         parameterMap.put("account", accountNumbers);
         parameterMap.put("inPrintType", "1");
         try {
-            String result = codef.requestProduct(CODEF_TRANSFER_AUTHENTICATION_API, EasyCodefServiceType.DEMO, parameterMap);
+            String result = codef.requestProduct(CODEF_TRANSFER_AUTHENTICATION_API, EasyCodefServiceType.SANDBOX, parameterMap);
             return getDataField(result);
         } catch (Exception e) {
             e.printStackTrace();
@@ -174,17 +179,18 @@ public class CodefClient {
     }
 
     /**
-     * 에러 코드를 확인하고, 정상 응답인 경우, data 필드를 리턴합니다.
+     * 에러 코드를 확인하고, 정상 응답인 경우, data 필드를 HashMap으로 파싱하여 리턴합니다.
      *
-     * @param result JSON 응답 원본
+     * @param json JSON 응답 원본
      * @return 응답값의 data 필드
      */
-    private Map<String, Object> getDataField(String result) {
+    private Map<String, Object> getDataField(String json) {
         try {
-            Map<String, Object> resultMap = new ObjectMapper().readValue(result, HashMap.class);
+            HashMap<String, Object> jsonMap = new ObjectMapper().readValue(json, HashMap.class);
+            HashMap<String, Object> resultMap = (HashMap<String, Object>) jsonMap.get("result");
             String code = (String) resultMap.get("code");
             if (code.equals("CF-00000")) {
-                return (HashMap<String, Object>) resultMap.get("data");
+                return (HashMap<String, Object>) jsonMap.get("data");
             }
             throw new CIllegalArgumentException("인증 과정에서 오류가 발생했습니다. 코드에프 에러코드: " + code);
         } catch (JsonProcessingException e) {

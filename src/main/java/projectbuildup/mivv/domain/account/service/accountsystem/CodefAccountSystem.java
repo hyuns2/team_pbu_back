@@ -1,8 +1,5 @@
 package projectbuildup.mivv.domain.account.service.accountsystem;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;
@@ -13,9 +10,8 @@ import projectbuildup.mivv.domain.account.entity.Account;
 import projectbuildup.mivv.domain.account.entity.BankType;
 import projectbuildup.mivv.domain.account.entity.OpenBanking;
 import projectbuildup.mivv.domain.account.entity.OwnAccounts;
+import projectbuildup.mivv.domain.account.service.accountsystem.codefclient.CodefClient;
 import projectbuildup.mivv.domain.user.entity.User;
-import projectbuildup.mivv.global.error.exception.CIllegalArgumentException;
-import projectbuildup.mivv.global.error.exception.CInternalServerException;
 import projectbuildup.mivv.global.error.exception.CResourceNotFoundException;
 
 import java.util.HashMap;
@@ -32,7 +28,7 @@ public class CodefAccountSystem implements AccountSystem {
 
     @Override
     public Account createAccount(AccountRegisterDto accountDto, User user) {
-        String connectedId = issueConnectedId(accountDto, user);
+        String connectedId = issueConnectedId(accountDto);
         OwnAccounts ownAccounts = findAllAccountNumbers(connectedId, accountDto.getOrganizationCode());
         if (!ownAccounts.contains(accountDto.getAccountNumbers())) {
             throw new CResourceNotFoundException();
@@ -40,7 +36,7 @@ public class CodefAccountSystem implements AccountSystem {
         return new Account(accountDto.getAccountNumbers(), BankType.findByCode(accountDto.getOrganizationCode()), OpenBanking.CODEF, connectedId);
     }
 
-    private String issueConnectedId(AccountRegisterDto accountDto, User user) {
+    private String issueConnectedId(AccountRegisterDto accountDto) {
         Map<String, Object> dataMap = codefClient.createConnectedId(accountDto);
         return (String) dataMap.get("connectedId");
     }

@@ -108,8 +108,8 @@ public class RemittanceService {
     public RemittanceDto.StatusResponse getBriefStatus(User user, Optional<YearMonth> yearMonth) {
         long totalAmount = getTotalAmount(user);
         RemittanceCount monthlyCount = getMonthlyCount(user, yearMonth.orElse(YearMonth.now()));
-        List<RankDto.ShortResponse> ranks = getUserRanks(user);
-        return new RemittanceDto.StatusResponse(totalAmount, monthlyCount, ranks);
+        List<RankDto.ShortResponse> userRanks = getUserRanks(user);
+        return new RemittanceDto.StatusResponse(totalAmount, monthlyCount, userRanks);
     }
 
     /**

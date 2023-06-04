@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import projectbuildup.mivv.domain.account.entity.Account;
 import projectbuildup.mivv.domain.account.entity.OpenBanking;
 import projectbuildup.mivv.domain.account.entity.TransactionDetail;
-import projectbuildup.mivv.domain.account.service.accountsystem.CodefClient;
+import projectbuildup.mivv.domain.account.service.accountsystem.codefclient.CodefDemoClient;
 import projectbuildup.mivv.domain.user.entity.User;
 
 import java.time.LocalDate;
@@ -14,7 +14,7 @@ import java.util.*;
 @Component
 @RequiredArgsConstructor
 public class CodefAccountDetailsSystem implements AccountDetailsSystem {
-    private final CodefClient codefClient;
+    private final CodefDemoClient codefDemoClient;
     private final static String HISTORY_FIELD = "resTrHistoryList";
     private final static String IN_AMOUNT_FIELD = "resAccountIn";
     private final static String OUT_AMOUNT_FIELD = "resAccountOut";
@@ -69,7 +69,7 @@ public class CodefAccountDetailsSystem implements AccountDetailsSystem {
         String connectedId = account.getConnectionMap().get(OpenBanking.CODEF);
         String bankCode = account.getBankType().getCode();
         String accountNumbers = account.getAccountNumbers();
-        Map<String, Object> dataMap = codefClient.getTransactionList(connectedId, bankCode, accountNumbers, startDate);
+        Map<String, Object> dataMap = codefDemoClient.getTransactionList(connectedId, bankCode, accountNumbers, startDate);
         return (List<Map<String, Object>>) dataMap.get(HISTORY_FIELD);
     }
 
