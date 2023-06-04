@@ -1,7 +1,10 @@
 package projectbuildup.mivv.domain.remittance.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import projectbuildup.mivv.domain.account.entity.TransactionDetail;
 import projectbuildup.mivv.domain.account.service.accountdetails.AccountDetailsSystem;
@@ -24,8 +27,12 @@ import static java.lang.Thread.sleep;
 @Slf4j
 @RequiredArgsConstructor
 public class RemittanceChecker {
-
-    private final AccountDetailsSystem accountDetailsSystem;
+    @Autowired
+    @Qualifier("codefAccountDetailsSystem")
+    AccountDetailsSystem accountDetailsSystem;
+    @Autowired
+    @Qualifier("testAccountDetailsSystem")
+    AccountDetailsSystem testAccountDetailsSystem;
     private final RemittanceRepository remittanceRepository;
     private final SavingCountService savingCountService;
     private final RankingService rankingService;
@@ -55,6 +62,21 @@ public class RemittanceChecker {
         return false;
     }
 
+    @Transactional
+    public boolean checkTest(Long amount, Participation participation, LocalDateTime startTime) throws InterruptedException {
+        List<TransactionDetail> transactionDetails = testAccountDetailsSystem.getDepositHistory(participation.getUser(), startTime.toLocalDate());
+        for (int i = 0; i < ASYNC_CHECK_TRY; i++) {
+            sleep(TimeUnit.MILLISECONDS.convert(1, TimeUnit.SECONDS));
+            if (transactionDetails.stream()
+                    .filter(t -> t.getTime().isAfter(startTime))
+                    .anyMatch(t -> t.getAmount() == amount)) {
+                updateRemittance(1000L, participation);
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * 송금액 확인에 성공할 경우, 실행되는 메서드입니다.
      * - 송금 정보를 DB에 기록합니다.
@@ -66,13 +88,14 @@ public class RemittanceChecker {
      * @param amount        송금 정보
      * @param participation 참여 정보
      */
+    @Transactional
     private void updateRemittance(long amount, Participation participation) {
         Remittance remittance = Remittance.newDeposit(amount, participation);
         remittanceRepository.save(remittance);
         savingCountService.addCount(participation);
         double score = rankScoreCalculator.calculate(remittance);
         rankingService.updateScore(participation.getUser(), participation.getChallenge(), score);
-        remittanceArchivingService.assignNumericalConditionCards(participation.getUser());
+//        remittanceArchivingService.assignNumericalConditionCards(participation.getUser());
     }
 
     /**
@@ -89,4 +112,6 @@ public class RemittanceChecker {
                 .filter(t -> t.getTime().isAfter(startTime))
                 .anyMatch(t -> t.getAmount() == amount);
     }
+
+
 }

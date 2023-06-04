@@ -1,10 +1,5 @@
 package projectbuildup.mivv.integrationtest.component;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.codef.api.EasyCodef;
-import io.codef.api.EasyCodefServiceType;
-import io.codef.api.EasyCodefUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,17 +9,17 @@ import projectbuildup.mivv.domain.account.dto.AccountRegisterDto;
 import projectbuildup.mivv.domain.account.entity.TransactionDetail;
 import projectbuildup.mivv.domain.account.service.accountsystem.codefclient.CodefSandBoxClient;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
 @SpringBootTest
-public class CodefClientTest {
+public class CodefSandBoxClientTest {
     @Autowired
     CodefSandBoxClient codefSandBoxClient;
     static final String CONNECTED_ID = "byi1wYwD40k8hEIiXl6bRF";

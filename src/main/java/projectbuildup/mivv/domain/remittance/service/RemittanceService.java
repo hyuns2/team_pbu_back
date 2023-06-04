@@ -55,12 +55,19 @@ public class RemittanceService {
      * @param requestDto 회원 아이디넘버, 챌린지 아이디넘버, 절약금액
      */
     @Transactional
-    public Future<Boolean> remit(RemittanceDto.RemitRequest requestDto, Optional<LocalDateTime> startTime) {
+    public Future<Boolean> remit(RemittanceDto.RemitRequest requestDto, Optional<LocalDateTime> currentTime) {
         Challenge challenge = challengeRepository.findById(requestDto.getChallengeId()).orElseThrow(CResourceNotFoundException::new);
         User user = userRepository.findById(requestDto.getUserId()).orElseThrow(CUserNotFoundException::new);
         Participation participation = participationRepository.findByChallengeAndUser(challenge, user).orElseThrow(() -> new CBadRequestException("참여 중인 챌린지에만 송금할 수 있습니다."));
         validate(challenge, participation, requestDto.getAmount());
-        return executorService.submit(() -> remittanceChecker.check(requestDto.getAmount(), participation, startTime.orElse(LocalDateTime.now())));
+        return executorService.submit(() -> remittanceChecker.check(requestDto.getAmount(), participation, currentTime.orElse(LocalDateTime.now())));
+    }
+
+    public Future<Boolean> remitTest(RemittanceDto.RemitRequest requestDto, Optional<LocalDateTime> currentTime) {
+        Challenge challenge = challengeRepository.findById(requestDto.getChallengeId()).orElseThrow(CResourceNotFoundException::new);
+        User user = userRepository.findById(requestDto.getUserId()).orElseThrow(CUserNotFoundException::new);
+        Participation participation = participationRepository.findByChallengeAndUser(challenge, user).orElseThrow(() -> new CBadRequestException("참여 중인 챌린지에만 송금할 수 있습니다."));
+        return executorService.submit(() -> remittanceChecker.checkTest(requestDto.getAmount(), participation, currentTime.orElse(LocalDateTime.now())));
     }
 
     /**

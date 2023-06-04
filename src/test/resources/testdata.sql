@@ -78,7 +78,7 @@ insert into challenge(id, created_time, modified_time, end_date, store_image_nam
                       limited_number_of_times,
                       max_saving_amount, min_saving_amount, start_date, sub_title)
 values (1, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', '2024-07-13', 'challenge1.png', 'challenge1.png',
-        'https://server.gasomann.com/resources/static/images/challenges/challenge1.png', '배달팁 아끼기', 2, 4000, 1000,
+        'https://server.gasomann.com/resources/static/images/challenges/challenge1.png', '배달팁 아끼기', 2, 4000, 10,
         '2023-03-13', '배달말고 포장, 배달팁 아끼기!'),
        (2, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', '2024-07-13', 'challenge2.png', 'challenge2.png',
         'https://server.gasomann.com/resources/static/images/challenges/challenge2.png', '택시비 아끼기', 3, 6000, 1000,
