@@ -79,7 +79,7 @@ public class InquiryService {
      * @return List<InquiryDto.InquiryResponseDto> 문의들의 정보
      */
     public List<InquiryDto.InquiryResponseDto> retrieveForAdmin() {
-        List<InquiryEntity> resultEntity = repo.findAll(Sort.by(Sort.Direction.DESC, "time_stamp"));
+        List<InquiryEntity> resultEntity = repo.findAll(Sort.by(Sort.Direction.DESC, "timeStamp"));
 
         return resultEntity.stream().map(InquiryDto.InquiryResponseDto::new).collect(Collectors.toList());
     }

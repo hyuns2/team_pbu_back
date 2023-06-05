@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import projectbuildup.mivv.domain.archiving.dto.ArchivingDto;
+import projectbuildup.mivv.domain.archiving.entity.CardType;
 import projectbuildup.mivv.domain.archiving.entity.RemittanceConditionCardEntity;
 import projectbuildup.mivv.domain.archiving.entity.UserCardEntity;
 import projectbuildup.mivv.domain.archiving.repository.CardRepository;
@@ -90,7 +91,7 @@ public class RemittanceArchivingService {
 
         List<UserCardEntity> alreadyExistings = userCardRepo.findUserCardEntitiesByUser(user);
 
-        List<RemittanceConditionCardEntity> allCards = (List<RemittanceConditionCardEntity>) cardRepo.findAll();
+        List<RemittanceConditionCardEntity> allCards = (List<RemittanceConditionCardEntity>) cardRepo.findAllByType(CardType.REMITTANCE);
 
         for (UserCardEntity element: alreadyExistings) {
             allCards.remove(element.getCardEntity());

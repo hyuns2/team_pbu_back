@@ -13,13 +13,13 @@ import projectbuildup.mivv.domain.archiving.dto.ArchivingDto;
 @Table(name = "remittance_card")
 public class RemittanceConditionCardEntity extends CardEntity {
 
-    @Column(name = "charge")
+    @Column(name = "charge", nullable = false)
     protected Integer charge;
 
-    @Column(name = "count")
+    @Column(name = "count", nullable = false)
     protected Integer count;
 
-    @Column(name = "term")
+    @Column(name = "term", nullable = false)
     protected Integer term;
 
     public void updateCard(ArchivingDto.updateRemittanceCardRequestDto dto, String imagePath) {

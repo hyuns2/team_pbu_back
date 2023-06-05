@@ -20,10 +20,10 @@ import java.io.IOException;
 @Table(name = "coupon_card")
 public class CouponConditionCardEntity extends CardEntity {
 
-    @Column(name = "what_number")
+    @Column(name = "what_number", nullable = false)
     protected Integer whatNumber;
 
-    @Column(name = "how_successive")
+    @Column(name = "how_successive", nullable = false)
     protected Integer howSuccessive;
 
     public void updateCard(ArchivingDto.updateCouponCardRequestDto dto, String imagePath) throws IOException {

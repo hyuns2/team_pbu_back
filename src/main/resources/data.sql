@@ -166,6 +166,13 @@ values ('GeneralCondition', 1, 'GENERAL', '제목1', '부제목1', '명언1', 'h
        ('RemittanceCondition', 11, 'REMITTANCE', '제목11', '부제목11', '명언11', 'https://server.gasomann.com/resources/static/images/cardss/card1.png'),
        ('CouponCondition', 12, 'COUPON', '제목12', '부제목12', '명언12', 'https://server.gasomann.com/resources/static/images/cardss/card1.png');
 
+insert into remittance_card(id, charge, count, term)
+values (10, 5000, 0, 0),
+       (11, 5000, 5, 0);
+
+insert into coupon_card(id, how_successive, what_number)
+values (12, 0, 1);
+
 insert into user_card(id, date, card_id, user_id, is_new)
 values (1, '2023-05-18', 1, 2, 0),
        (2, '2023-05-18', 2, 2, 1),

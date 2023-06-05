@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import projectbuildup.mivv.domain.archiving.dto.ArchivingDto;
+import projectbuildup.mivv.domain.archiving.entity.CardType;
 import projectbuildup.mivv.domain.archiving.entity.CouponConditionCardEntity;
 import projectbuildup.mivv.domain.archiving.entity.UserCardEntity;
 import projectbuildup.mivv.domain.archiving.repository.CardRepository;
@@ -155,7 +156,7 @@ public class CouponArchivingService {
     private void assignCards(User user, int whatNumber, int howSuccessive) {
         List<UserCardEntity> alreadyExistings = userCardRepo.findUserCardEntitiesByUser(user);
 
-        List<CouponConditionCardEntity> allCards = (List<CouponConditionCardEntity>) cardRepo.findAll();
+        List<CouponConditionCardEntity> allCards = (List<CouponConditionCardEntity>) cardRepo.findAllByType(CardType.COUPON);
 
         for (UserCardEntity element : alreadyExistings) {
             allCards.remove(element.getCardEntity());

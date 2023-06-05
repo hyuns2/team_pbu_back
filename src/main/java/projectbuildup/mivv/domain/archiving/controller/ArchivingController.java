@@ -30,7 +30,7 @@ import java.util.List;
 @RequestMapping("/api/archiving")
 public class ArchivingController {
 
-    private final RemittanceArchivingService nService;
+    private final RemittanceArchivingService rService;
     private final GeneralArchivingService gService;
     private final CouponArchivingService cService;
 
@@ -39,7 +39,7 @@ public class ArchivingController {
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/admin/remittance-card", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> createRemittanceConditionCard(@AuthenticationPrincipal User user, @Valid @ModelAttribute("createNumericalCards") ArchivingDto.createRemittanceCardRequestDto dto) throws IOException {
-        nService.createRemittanceConditionCard(dto);
+        rService.createRemittanceConditionCard(dto);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -69,7 +69,7 @@ public class ArchivingController {
     @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping(value = "/admin/remittance-card/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> updateRemittanceConditionCard(@AuthenticationPrincipal User user, @PathVariable("id") Long id, @Valid @ModelAttribute("updateRemittanceCards") ArchivingDto.updateRemittanceCardRequestDto dto) throws IOException {
-        nService.updateRemittanceConditionCard(id, dto);
+        rService.updateRemittanceConditionCard(id, dto);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
