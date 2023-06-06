@@ -11,6 +11,8 @@
 <%@page import="java.net.URL"%>
 <%@page import="java.net.HttpURLConnection"%>
 <%@page import="java.util.Enumeration"%>
+<%@ page import="java.io.OutputStreamWriter" %>
+<%@ page import="java.io.BufferedWriter" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
     // -------------------- 인증 수신 -------------------------------------------//
@@ -66,7 +68,8 @@
 		for(Object key : resJson.keySet()){
 			out.print("<p>"+key + " : " + resJson.get(key)+"</p>");
 		}
-		out.print("<p>"+authRequestUrl + " : " + authRequestUrl+"</p>");
+		out.print("<p>"+"authRequestUrl" + " : " + authRequestUrl+"</p>");
+
 		// -------------------- 결과 수신 -------------------------------------------//
 	}else{
 		out.print("<p>"+resultCode+"</p>");

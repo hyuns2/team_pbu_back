@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import projectbuildup.mivv.domain.auth.dto.VerificationResponseDto;
 import projectbuildup.mivv.domain.auth.repository.IdentityVerificationRepository;
+import projectbuildup.mivv.domain.auth.service.component.CertificationSystem;
 import projectbuildup.mivv.domain.user.entity.IdentityVerification;
 
 import java.util.Optional;
@@ -26,7 +27,7 @@ public class IdentityVerificationService {
      */
     @Transactional
     public VerificationResponseDto verifyIdentity(String key) {
-        IdentityVerification newVerification = certificationSystem.certify(key);
+        IdentityVerification newVerification = certificationSystem.certify(key, null);
         Optional<IdentityVerification> existVerification =  identityVerificationRepository.findByMobile(newVerification.getMobile());
         identityVerificationRepository.save(existVerification.orElse(newVerification));
         return new VerificationResponseDto(existVerification.orElse(newVerification).getCode(), existVerification.isEmpty());

@@ -2,6 +2,9 @@ package projectbuildup.mivv;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -50,9 +53,11 @@ public class TestController {
 
     @Operation(summary = "JSP KG 이니시스 성공 테스트", description = "")
     @PostMapping("/jsp/success")
-    public String KgSuccess() {
-        log.info("호출됨");
-        return "success";
+    public void KgSuccess(HttpServletRequest request, HttpServletResponse response) {
+        log.info("resultCode>>: {}", request.getParameter("resultCode"));
+        log.info("resultMsg>>: {}", request.getParameter("resultMsg"));
+        log.info("txId>>: {}", request.getParameter("txId"));
+        log.info("호출됨~~~~~~~~~~~~성공");
     }
 
     @Operation(summary = "JSP KG 이니시스 실패 테스트", description = "")
