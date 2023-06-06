@@ -45,6 +45,9 @@ public class Coupon extends BaseTimeEntity {
     @NonNull
     @Column(name = "coupon_summary")
     private List<String> summary = new ArrayList<>();
+    @Enumerated(EnumType.STRING)
+    @Column(name = "coupon_type")
+    private CouponType couponType;
     public static Coupon toEntity(CouponDto.Request couponDto, String imagePath){
         return Coupon.builder()
                 .title(couponDto.getTitle())
@@ -55,6 +58,7 @@ public class Coupon extends BaseTimeEntity {
                 .limitStartDate(couponDto.getLimitStartDate())
                 .limitEndDate(couponDto.getLimitEndDate())
                 .summary(couponDto.getSummary())
+                .couponType(couponDto.getCouponType())
                 .build();
     }
     public void update(CouponDto.Request couponDto, String imagePath){
@@ -63,6 +67,10 @@ public class Coupon extends BaseTimeEntity {
         this.pin = couponDto.getPin();
         this.limitStartDate = couponDto.getLimitStartDate();
         this.limitEndDate = couponDto.getLimitEndDate();
+        this.issuableStartDate = couponDto.getIssuableStartDate();
+        this.issuableEndDate = couponDto.getIssuableEndDate();
+        this.summary = couponDto.getSummary();
+        this.couponType = couponDto.getCouponType();
     }
 
 

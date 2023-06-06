@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 import projectbuildup.mivv.domain.coupon.entity.Coupon;
+import projectbuildup.mivv.domain.coupon.entity.CouponType;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -42,7 +43,12 @@ public class CouponDto {
         @NotNull
         @Schema(description = "쿠폰 발급기간의 종료 날짜")
         private LocalDate issuableEndDate;
+        @NotNull
+        @Schema(description = "쿠폰의 설명 요약")
         private List<String> summary;
+        @NotNull
+        @Schema(description = "쿠폰 종류")
+        private CouponType couponType;
     }
     @Getter
     @AllArgsConstructor
@@ -56,6 +62,7 @@ public class CouponDto {
         private String imagePath;
         LocalDate limitStartDate;
         LocalDate limitEndDate;
+        CouponType couponType;
         public Response(Coupon coupon){
             this.id = coupon.getId();
             this.title = coupon.getTitle();
@@ -65,6 +72,7 @@ public class CouponDto {
             this.imagePath = coupon.getImagePath();
             this.limitStartDate = coupon.getLimitStartDate();
             this.limitEndDate = coupon.getLimitEndDate();
+            this.couponType = coupon.getCouponType();
         }
     }
 }
