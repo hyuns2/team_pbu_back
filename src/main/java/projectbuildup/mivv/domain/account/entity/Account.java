@@ -48,9 +48,6 @@ public class Account {
     @Column(name = "deleted_at")
     LocalDateTime deletedAt;
 
-    @Column(name = "deleted_at")
-    LocalDateTime deletedAt;
-
     public Account(String accountNumbers, BankType bankType, OpenBanking platform, String connectionId) {
         if (connectionId == null || platform == null) {
             throw new CInternalServerException();
