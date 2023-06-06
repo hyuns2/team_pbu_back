@@ -103,7 +103,11 @@ public class CodefSandBoxClientTest {
             TransactionDetail detail = TransactionDetail.of(amount, (String) elem.get("resAccountTrDate"), (String) elem.get("resAccountTrTime"));
             returnList.add(detail);
         }
-        log.info("{}", returnList);
+        //      [
+        //          TransactionDetail(amount=600000, time=2019-05-29T16:29:20),
+        //          TransactionDetail(amount=300000, time=2019-05-23T14:13:19),
+        //          TransactionDetail(amount=11, time=2019-05-11T03:38:08)
+        //       ]
 
         //then
         assertThat(returnList.size()).isEqualTo(3);
