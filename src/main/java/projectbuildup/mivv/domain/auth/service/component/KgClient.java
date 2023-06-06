@@ -24,7 +24,7 @@ public class KgClient {
     public ResponseBody request(String txId, String authRequestUrl) throws WebClientRequestException {
         WebClient webClient = WebClient.create();
         RequestBody requestBody = new RequestBody(MID, txId);
-        ResponseBody responseData = webClient.method(HttpMethod.POST)
+        ResponseBody responseData = webClient.post()
                 .uri(authRequestUrl)
                 .contentType(MediaType.APPLICATION_JSON)
                 .acceptCharset(StandardCharsets.UTF_8)

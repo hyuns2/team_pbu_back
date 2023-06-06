@@ -1,16 +1,32 @@
 package projectbuildup.mivv.domain.auth.service.component;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import projectbuildup.mivv.domain.user.entity.IdentityVerification;
 
+import java.nio.charset.StandardCharsets;
+
 @Component
+@Slf4j
 @RequiredArgsConstructor
 public class KgCertificationSystem implements CertificationSystem {
     private final KgClient kgClient;
+
+    /**
+     * KG 본인인증을 수행하고, 개인정보를 복호화하여 IdentityVerification 객체를 생성합니다.
+     *
+     * @param txId 트랜잭션 아이디 (프론트 측 전달)
+     * @param authUrl 요청 URL (프론트 측 전달)
+     * @return IdentityVerification
+     */
     @Override
     public IdentityVerification certify(String txId, String authUrl) {
         KgClient.ResponseBody data = kgClient.request(txId, authUrl);
-        return IdentityVerification.generateVerification(data.getUserName(), data.getUserBirthday(), data.getUserPhone());
+        String name = CbcDecoder.decrypt(data.getUserName().getBytes());
+        String birthday = CbcDecoder.decrypt(data.getUserBirthday().getBytes());
+        String phone = CbcDecoder.decrypt(data.getUserPhone().getBytes());
+        log.info(name + " / " + birthday + " / " + phone);
+        return IdentityVerification.generateVerification(name, birthday, phone);
     }
 }

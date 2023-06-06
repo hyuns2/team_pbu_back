@@ -1,5 +1,6 @@
 package projectbuildup.mivv.domain.auth.service.component;
 
+import org.springframework.stereotype.Component;
 import projectbuildup.mivv.infra.kisa.KISA_SEED_CBC;
 
 import java.io.UnsupportedEncodingException;

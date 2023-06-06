@@ -7,10 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
-import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.global.constant.ExampleValue;
-
-import java.util.Collections;
 
 public class AuthDto {
 
@@ -52,7 +49,10 @@ public class AuthDto {
     public static class CertifyRequest {
         @NotBlank
         @Schema(description = "본인인증 API 호출 키")
-        String key;
+        String txId;
+        @NotBlank
+        @Schema(description = "본인인증 API 호출 키")
+        String authUrl;
     }
 
     @Getter

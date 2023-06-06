@@ -37,9 +37,19 @@ public class AuthController {
     @PostMapping("/auth/certify")
     @PreAuthorize("permitAll()")
     public ResponseEntity<VerificationResponseDto> certify(@RequestBody @Valid AuthDto.CertifyRequest requestDto) {
-        VerificationResponseDto responseDto = identityVerificationService.verifyIdentity(requestDto.getKey());
+        VerificationResponseDto responseDto = identityVerificationService.verifyIdentity(requestDto);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
+
+    @Operation(summary = "KG이니시스로 본인인증합니다.[테스트]", description = " 반환받은 verificationCode는 로그인 및 회원가입 시 사용됩니다. " +
+            "만약 이미 회원가입 된 계정이 있다면, isNewUser = true를 반환합니다.")
+    @PostMapping("/auth/certify-kg")
+    @PreAuthorize("permitAll()")
+    public ResponseEntity<VerificationResponseDto> certifyKg(@RequestBody @Valid AuthDto.CertifyRequest requestDto) {
+        VerificationResponseDto responseDto = identityVerificationService.verifyIdentityByKg(requestDto);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+
 
     @Operation(summary = "회원가입합니다.", description = "verficiationCode는 본인인증 결과로 반환되는 코드입니다. ")
     @PostMapping("/auth/signup")
