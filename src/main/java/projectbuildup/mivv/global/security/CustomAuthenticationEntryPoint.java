@@ -22,6 +22,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException, ServletException {
         final Map<String, Object> body = new HashMap<>();
         final ObjectMapper mapper = new ObjectMapper();
+        log.info(">>>>>으악 {}", request.getHeader("ACCESS"));
         e.printStackTrace();
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         body.put("status", ErrorCode.AUTHENTICATION_ERROR.getStatusCode().value());
