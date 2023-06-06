@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import projectbuildup.mivv.domain.coupon.entity.Coupon;
+import projectbuildup.mivv.domain.coupon.repository.CouponRepository;
 import projectbuildup.mivv.domain.couponIssuance.repository.CouponIssuanceRepository;
 import projectbuildup.mivv.domain.likes.repository.LikesShortsRepository;
 import projectbuildup.mivv.domain.likes.repository.LikesWorthyConsumptionRepository;
@@ -23,6 +24,7 @@ import projectbuildup.mivv.global.common.imageStore.ImageType;
 import projectbuildup.mivv.global.common.imageStore.ImageUploader;
 import projectbuildup.mivv.global.common.videoStore.Video;
 import projectbuildup.mivv.global.common.videoStore.VideoUploader;
+import projectbuildup.mivv.global.error.exception.CCouponNotFoundException;
 import projectbuildup.mivv.global.error.exception.CUserNotFoundException;
 import projectbuildup.mivv.global.error.exception.CWorthyConsumptionNotFoundException;
 
@@ -39,6 +41,7 @@ import static projectbuildup.mivv.domain.worthyConsumption.entity.CheckCondition
 public class WorthyConsumptionService {
     private final WorthyConsumptionRepository worthyConsumptionRepository;
     private final CouponIssuanceRepository couponIssuanceRepository;
+    private final CouponRepository couponRepository;
     private final UserRepository userRepository;
     private final LikesWorthyConsumptionRepository likesWorthyConsumptionRepository;
     private final LikesShortsRepository likesShortsRepository;
@@ -81,7 +84,9 @@ public class WorthyConsumptionService {
      */
     public WorthyConsumptionResponseDto.ReadSummaryResponse readSummaryWorthyConsumption(Long worthyConsumptionId){
         WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionId).orElseThrow(CWorthyConsumptionNotFoundException:: new);
-        return new WorthyConsumptionResponseDto.ReadSummaryResponse(worthyConsumption);
+        Long couponId = getCouponForMonth(worthyConsumption);
+        Coupon coupon = couponRepository.findById(couponId).orElseThrow(CCouponNotFoundException::new);
+        return new WorthyConsumptionResponseDto.ReadSummaryResponse(worthyConsumption, coupon);
     }
     public WorthyConsumptionResponseDto.ReadBasicResponse readBasicWorthyConsumption(Long worthyConsumptionId, Long userId){
         WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionId).orElseThrow(CWorthyConsumptionNotFoundException:: new);
@@ -89,9 +94,10 @@ public class WorthyConsumptionService {
 
         checkConditionToIssuableCoupon(worthyConsumption);
         Long couponId = getCouponForMonth(worthyConsumption);
+        Coupon coupon = couponRepository.findById(couponId).orElseThrow(CCouponNotFoundException::new);
 
         Boolean isLiked = likesWorthyConsumptionRepository.findByUserAndWorthyConsumption(user, worthyConsumption).isPresent() ? Boolean.TRUE : Boolean.FALSE;
-        return new WorthyConsumptionResponseDto.ReadBasicResponse(worthyConsumption, isLiked, couponId);
+        return new WorthyConsumptionResponseDto.ReadBasicResponse(worthyConsumption, isLiked, coupon);
     }
     public WorthyConsumptionResponseDto.ReadDetailResponse readDetailWorthyConsumption(Long worthyConsumptionId){
         WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionId).orElseThrow(CWorthyConsumptionNotFoundException:: new);
@@ -103,7 +109,8 @@ public class WorthyConsumptionService {
                 .map(worthyConsumption -> {
                     boolean liked = likesWorthyConsumptionRepository.findByUserAndWorthyConsumption(user, worthyConsumption).isPresent();
                     Long couponId = getCouponForMonth(worthyConsumption);
-                    return new WorthyConsumptionResponseDto.ReadBasicResponse(worthyConsumption, liked, couponId);
+                    Coupon coupon = couponRepository.findById(couponId).orElseThrow(CCouponNotFoundException::new);
+                    return new WorthyConsumptionResponseDto.ReadBasicResponse(worthyConsumption, liked, coupon);
                 })
                 .collect(Collectors.toList());
     }
@@ -150,17 +157,17 @@ public class WorthyConsumptionService {
     public void checkConditionToIssuableCoupon(WorthyConsumption worthyConsumption){
         worthyConsumption.getCondition().checkIssuableCouponStatus(OK);
         checkMaxParticipantsForCoupon(worthyConsumption.getCoupons().get(0).getId(), worthyConsumption);
-        checkConditionDateForCoupon(worthyConsumption);
+        checkConventionDateForCoupon(worthyConsumption);
         worthyConsumptionRepository.save(worthyConsumption);
     }
-    public void checkConditionDateForCoupon(WorthyConsumption worthyConsumption){
-        if(!(worthyConsumption.getCondition().getIssuableCouponStartDate().isBefore(LocalDate.now())//테스트시 now 설정 X
-                &&worthyConsumption.getCondition().getIssuableCouponEndDate().isAfter(LocalDate.now())))
+    public void checkConventionDateForCoupon(WorthyConsumption worthyConsumption){
+        if(!(worthyConsumption.getCondition().getConventionStartDate().isBefore(LocalDate.now())//테스트시 now 설정 X
+                &&worthyConsumption.getCondition().getConventionEndDate().isAfter(LocalDate.now())))
             worthyConsumption.getCondition().checkIssuableCouponStatus(NOT_DATE);
     }
     public void checkMaxParticipantsForCoupon(Long couponId, WorthyConsumption worthyConsumption){
         int nowParticipants = couponIssuanceRepository.countByCouponId(couponId);
-        if(nowParticipants>=worthyConsumption.getCondition().getMaxParticipants())
+        if(nowParticipants>=worthyConsumption.getCondition().getMaxIssuance())
             worthyConsumption.getCondition().checkIssuableCouponStatus(ALREADY_SPEND);
     }
 

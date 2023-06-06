@@ -3,6 +3,8 @@ package projectbuildup.mivv.domain.likes.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import projectbuildup.mivv.domain.coupon.entity.Coupon;
+import projectbuildup.mivv.domain.coupon.repository.CouponRepository;
 import projectbuildup.mivv.domain.likes.entity.LikesShorts;
 import projectbuildup.mivv.domain.likes.entity.LikesCategory;
 import projectbuildup.mivv.domain.likes.entity.LikesWorthyConsumption;
@@ -18,11 +20,9 @@ import projectbuildup.mivv.domain.worthyConsumption.dto.WorthyConsumptionDto;
 import projectbuildup.mivv.domain.worthyConsumption.dto.response.WorthyConsumptionResponseDto;
 import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumption;
 import projectbuildup.mivv.domain.worthyConsumption.repository.WorthyConsumptionRepository;
+import projectbuildup.mivv.domain.worthyConsumption.service.WorthyConsumptionService;
 import projectbuildup.mivv.global.common.BaseTimeEntity;
-import projectbuildup.mivv.global.error.exception.CBadRequestException;
-import projectbuildup.mivv.global.error.exception.CShortsNotFoundException;
-import projectbuildup.mivv.global.error.exception.CUserExistException;
-import projectbuildup.mivv.global.error.exception.CWorthyConsumptionNotFoundException;
+import projectbuildup.mivv.global.error.exception.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,9 +36,12 @@ public class LikesService {
     private final UserRepository userRepository;
     private final ShortsRepository shortsRepository;
     private final WorthyConsumptionRepository worthyConsumptionRepository;
+    private final CouponRepository couponRepository;
 
     private final LikesWorthyConsumptionRepository likesWorthyConsumptionRepository;
     private final LikesShortsRepository likesShortsRepository;
+
+    private final WorthyConsumptionService worthyConsumptionService;
     public void addLikesShorts(Long userId, Long shortsId){
         User user = userRepository.findById(userId).orElseThrow(CUserExistException::new);
         Shorts shorts = shortsRepository.findById(shortsId).orElseThrow(CShortsNotFoundException::new);
@@ -96,7 +99,11 @@ public class LikesService {
         User user = userRepository.findById(userId).orElseThrow(CUserExistException::new);
         return likesWorthyConsumptionRepository.findAllByUser(user)
                 .stream().map(LikesWorthyConsumption::getWorthyConsumption)
-                .map(WorthyConsumptionResponseDto.ReadSummaryResponse::new)
+                .map(worthyConsumption -> {
+                    Long couponId = worthyConsumptionService.getCouponForMonth(worthyConsumption);
+                    Coupon coupon = couponRepository.findById(couponId).orElseThrow(CCouponNotFoundException::new);
+                    return new WorthyConsumptionResponseDto.ReadSummaryResponse(worthyConsumption, coupon);
+                })
                 .toList();
     }
     public List<ShortsDto.shortsResponse> getAllUserLikesShorts(Long userId){

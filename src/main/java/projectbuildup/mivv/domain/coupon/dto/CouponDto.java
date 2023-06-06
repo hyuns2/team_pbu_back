@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import projectbuildup.mivv.domain.coupon.entity.Coupon;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Schema(description = "쿠폰 DTO")
 public class CouponDto {
@@ -35,6 +36,13 @@ public class CouponDto {
         @NotNull @Future
         @Schema(description = "쿠폰 유효기간의 종료 날짜")
         private LocalDate limitEndDate;
+        @NotNull
+        @Schema(description = "쿠폰 발급기간의 시작 날짜")
+        private LocalDate issuableStartDate;
+        @NotNull
+        @Schema(description = "쿠폰 발급기간의 종료 날짜")
+        private LocalDate issuableEndDate;
+        private List<String> summary;
     }
     @Getter
     @AllArgsConstructor

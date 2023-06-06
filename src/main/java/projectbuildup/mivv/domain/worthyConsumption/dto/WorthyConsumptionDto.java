@@ -30,19 +30,17 @@ public class WorthyConsumptionDto {
         List<RecommendationReason> recommendationReasons;
         String availablePrice;
         String availablePlace;
-        @NotNull
-        List<String> summary;
-        private Integer maxParticipants;
+        private Integer maxIssuance;
 
-        @NotNull(message = "가치소비의 쿠폰 발급 가능 시작 날짜를 입력해주세요")
+        @NotNull(message = "가치소비의 협약 시작 날짜를 입력해주세요")
         @Schema(example = "2001-03-02")
         @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
-        private LocalDate issuableCouponStartDate;
+        private LocalDate conventionStartDate;
 
-        @NotNull(message = "가치소비의 쿠폰 발급 가능 시작 날짜를 입력해주세요")
-        @Schema(example = "2001-03-02")
+        @NotNull(message = "가치소비의 협약 끝 날짜를 입력해주세요")
+        @Schema(example = "2101-03-02")
         @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
-        private LocalDate issuableCouponEndDate;
+        private LocalDate conventionEndDate;
 
         private Long lastMonthAmount;
         public WorthyConsumption toEntity(WorthyConsumptionUrl worthyConsumptionUrl, Condition condition, List<RecommendationReason> recommendationReasons){
@@ -55,7 +53,6 @@ public class WorthyConsumptionDto {
                     .recommendationReasons(recommendationReasons)
                     .availablePrice(availablePrice)
                     .availablePlace(availablePlace)
-                    .summary(summary)
                     .condition(condition)
                     .build();
         }
@@ -71,16 +68,15 @@ public class WorthyConsumptionDto {
         List<RecommendationReason> recommendationReasons;
         String availablePrice;
         String availablePlace;
-        List<String> summary;
-        private Integer maxParticipants;
+        private Integer maxIssuance;
 
         @Schema(example = "2001-03-02")
         @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
-        private LocalDate issuableCouponStartDate;
+        private LocalDate conventionStartDate;
 
         @Schema(example = "2101-03-02")
         @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
-        private LocalDate issuableCouponEndDate;
+        private LocalDate conventionEndDate;
         private Long lastMonthAmount;
     }
 }

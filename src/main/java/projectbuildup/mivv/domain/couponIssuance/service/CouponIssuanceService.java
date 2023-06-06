@@ -57,6 +57,7 @@ public class CouponIssuanceService {
         isAchievedLastAmount(user, coupon);
         issue(user, coupon);
     }
+
     /**
      * 사용자가 쿠폰을 보유하고 있는지 검증하는 로직입니다.
      * @param user

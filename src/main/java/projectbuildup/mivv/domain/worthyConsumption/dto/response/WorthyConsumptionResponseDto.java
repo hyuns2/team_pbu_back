@@ -4,10 +4,12 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import org.apache.xmlbeans.impl.xb.xsdschema.Public;
+import projectbuildup.mivv.domain.coupon.entity.Coupon;
 import projectbuildup.mivv.domain.worthyConsumption.entity.CheckConditionType;
 import projectbuildup.mivv.domain.worthyConsumption.entity.RecommendationReason;
 import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumption;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,19 +24,19 @@ public class WorthyConsumptionResponseDto {
         private Integer salePrice;
         private String availablePrice;
         private Long lastMonthAmount;
-        private Integer maxParticipants;
+        private Integer maxIssuance;
         private List<String> summary;
         private String logoPath;
 
-        public ReadSummaryResponse(WorthyConsumption worthyConsumption) {
+        public ReadSummaryResponse(WorthyConsumption worthyConsumption, Coupon coupon) {
             this.id = worthyConsumption.getId();
             this.title = worthyConsumption.getTitle();
             this.originalPrice = worthyConsumption.getOriginalPrice();
             this.salePrice = worthyConsumption.getSalePrice();
             this.availablePrice = worthyConsumption.getAvailablePrice();
             this.lastMonthAmount = worthyConsumption.getCondition().getLastMonthAmount();
-            this.maxParticipants = worthyConsumption.getCondition().getMaxParticipants();
-            this.summary = worthyConsumption.getSummary();
+            this.maxIssuance = worthyConsumption.getCondition().getMaxIssuance();
+            this.summary = coupon.getSummary();
             this.logoPath = worthyConsumption.getWorthyConsumptionUrl().getLogoPath();
         }
     }
@@ -48,16 +50,20 @@ public class WorthyConsumptionResponseDto {
         private CheckConditionType checkConditionType;
         private Boolean isLiked;
         private Long couponId;
+        private LocalDate conventionStartDate;
+        private LocalDate conventionEndDate;
 
-        public ReadBasicResponse(WorthyConsumption worthyConsumption, Boolean isLiked, Long couponId) {
-            super(worthyConsumption);
+        public ReadBasicResponse(WorthyConsumption worthyConsumption, Boolean isLiked, Coupon coupon) {
+            super(worthyConsumption, coupon);
             this.videoThumbNailPath = worthyConsumption.getWorthyConsumptionUrl().getVideoThumbNailPath();
             this.hashtags = worthyConsumption.getHashtags();
             this.videoPath = worthyConsumption.getWorthyConsumptionUrl().getVideoPath();
             this.imagePath = worthyConsumption.getWorthyConsumptionUrl().getImagePath();
             this.checkConditionType = worthyConsumption.getCondition().getCheckConditionType();
             this.isLiked = isLiked;
-            this.couponId = couponId;
+            this.couponId = coupon.getId();
+            this.conventionStartDate = worthyConsumption.getCondition().getConventionStartDate();
+            this.conventionEndDate = worthyConsumption.getCondition().getConventionEndDate();
         }
     }
     @NoArgsConstructor @AllArgsConstructor

@@ -14,32 +14,32 @@ public class Condition {
     @Column(name = "id")
     Long id;
     @NonNull
-    @Column(name = "max_participants")
-    private int maxParticipants;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Column(name = "issuable_coupon_start_date")
-    private LocalDate issuableCouponStartDate;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Column(name = "issuable_coupon_end_date")
-    private LocalDate issuableCouponEndDate;
+    @Column(name = "max_issuance")
+    private int maxIssuance;
     @NonNull
     @Column(name = "last_month_amount")
     private long lastMonthAmount;
     @Enumerated(EnumType.STRING)
     @Column(name = "check_condition_type")
     private CheckConditionType checkConditionType;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Column(name = "convention_start_date")
+    private LocalDate conventionStartDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Column(name = "convention_end_date")
+    private LocalDate conventionEndDate;
 
     public Condition(WorthyConsumptionDto.Creation worthyConsumptionDto){
-        this.maxParticipants= worthyConsumptionDto.getMaxParticipants();
+        this.maxIssuance= worthyConsumptionDto.getMaxIssuance();
         this.lastMonthAmount = worthyConsumptionDto.getLastMonthAmount();
-        this.issuableCouponStartDate = worthyConsumptionDto.getIssuableCouponStartDate();
-        this.issuableCouponEndDate = worthyConsumptionDto.getIssuableCouponEndDate();
+        this.conventionStartDate = worthyConsumptionDto.getConventionStartDate();
+        this.conventionEndDate = worthyConsumptionDto.getConventionEndDate();
     }
     public void update(WorthyConsumptionDto.Update worthyConsumptionDto){
-        this.maxParticipants= worthyConsumptionDto.getMaxParticipants();
+        this.maxIssuance= worthyConsumptionDto.getMaxIssuance();
         this.lastMonthAmount = worthyConsumptionDto.getLastMonthAmount();
-        this.issuableCouponStartDate = worthyConsumptionDto.getIssuableCouponStartDate();
-        this.issuableCouponEndDate = worthyConsumptionDto.getIssuableCouponEndDate();
+        this.conventionStartDate = worthyConsumptionDto.getConventionStartDate();
+        this.conventionEndDate = worthyConsumptionDto.getConventionEndDate();
     }
     public void checkIssuableCouponStatus(CheckConditionType conditionType){
         this.checkConditionType = conditionType;
