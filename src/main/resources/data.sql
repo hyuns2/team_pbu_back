@@ -196,9 +196,10 @@ values (1, '2023-05-18', 1, 2, 0),
 
 
 -- <Worthy Consumption> --
-insert into worthy_consumption_condition(id, check_condition_type, issuable_coupon_end_date, issuable_coupon_start_date,
-                                         last_month_amount, max_participants)
-values (1, 'OK', '2023-07-01', '2023-04-01', 10000, 100),
+insert into worthy_consumption_condition(id, check_condition_type,
+                                         convention_end_date, convention_start_date,
+                                         last_month_amount, max_issuance)
+values (1, 'OK', '2023-07-01', '2023-04-01', 10000, 5),
        (2, 'OK', '2023-07-01', '2023-04-01', 10000, 100),
        (3, 'OK', '2023-07-01', '2023-04-01', 10000, 100);
 
@@ -252,8 +253,6 @@ insert into recommendation_reason(id, title, description, worthy_consumption_id)
 values (1, 'title1', 'description1', 1), (2, 'title2', 'description2', 1), (3, 'title3', 'description3', 1),
        (4, 'title1', 'description1', 2), (5, 'title2', 'description2', 2), (6, 'title3', 'description3', 2),
        (7, 'title1', 'description1', 3), (8, 'title2', 'description2', 3), (9, 'title3', 'description3', 3);
-
-
 insert into worthy_consumption_summary(worthy_consumption_id, worthy_consumption_summary)
 values (1, 'summary1'),
        (1, 'summary1'),
@@ -264,7 +263,6 @@ values (1, 'summary1'),
        (3, 'summary3'),
        (3, 'summary3'),
        (3, 'summary3');
-
 -- <Shorts> --
 
 insert into shorts(id, category, uploader_name, content, image_path, video_path)
@@ -277,43 +275,57 @@ values (1, 'SAVING', '이름1', '내용1', 'https://3.37.5.91/resources/static/i
 
 -- <Coupon> --
 insert into coupon(id, created_time, modified_time, image_path, limit_end_date, limit_start_date, pin, title,
-                   worthy_consumption_id)
+                   worthy_consumption_id, issuable_start_date, issuable_end_date, coupon_type)
 values (1, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
         'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',
-        '2023-05-31', '2023-05-01', '1234', '레드짐 5월 할인권', 1),
+        '2023-05-31', '2023-05-01', '1234', '레드짐 5월 할인권', 1, '2023-05-01', '2023-05-31', 'EVENT'),
        (2, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
         'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',
-        '2023-06-30', '2023-06-01', '1234', '레드짐 6월 할인권', 1),
+        '2023-06-30', '2023-06-01', '1234', '레드짐 6월 할인권', 1, '2023-05-01', '2023-05-31', 'EVENT'),
        (3, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
         'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',
-        '2023-07-31', '2023-07-01', '1234', '레드짐 3월 할인권', 1),
+        '2023-07-31', '2023-07-01', '1234', '레드짐 3월 할인권', 1, '2023-05-01', '2023-05-31', 'EVENT'),
        (4, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
         'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',
-        '2023-08-31', '2023-08-01', '1234', '레드짐 4월 할인권', 1),
+        '2023-08-31', '2023-08-01', '1234', '레드짐 4월 할인권', 1, '2023-05-01', '2023-05-31', 'EVENT'),
        (5, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
         'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',
-        '2023-05-31', '2023-05-01', '1234', '옐로우 짐 5월 할인권', 2),
+        '2023-05-31', '2023-05-01', '1234', '옐로우 짐 5월 할인권', 2,'2023-05-01', '2023-05-31', 'EVENT'),
        (6, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
         'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',
-        '2023-06-30', '2023-06-01', '1234', '옐로우 짐 6월 할인권', 2),
+        '2023-06-30', '2023-06-01', '1234', '옐로우 짐 6월 할인권', 2,'2023-05-01', '2023-05-31', 'EVENT'),
        (7, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
         'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',
-        '2023-07-31', '2023-07-01', '1234', '옐로우 짐 7월 할인권', 2),
+        '2023-07-31', '2023-07-01', '1234', '옐로우 짐 7월 할인권', 2,'2023-05-01', '2023-05-31', 'ACHIEVEMENT_CONDITION'),
        (8, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
         'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',
-        '2023-08-31', '2023-08-01', '1234', '옐로우 짐 8월 할인권', 2),
+        '2023-08-31', '2023-08-01', '1234', '옐로우 짐 8월 할인권', 2,'2023-05-01', '2023-05-31', 'ACHIEVEMENT_CONDITION'),
        (9, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
         'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',
-        '2023-05-31', '2023-05-01', '1234', '블루짐 5월 할인권', 3),
+        '2023-05-31', '2023-05-01', '1234', '블루짐 5월 할인권', 3,'2023-05-01', '2023-05-31', 'ACHIEVEMENT_CONDITION'),
        (10, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
         'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',
-        '2023-06-30', '2023-06-01', '1234', '블루짐 6월 할인권', 3),
+        '2023-06-30', '2023-06-01', '1234', '블루짐 6월 할인권', 3,'2023-05-01', '2023-05-31', 'ACHIEVEMENT_CONDITION'),
        (11, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
         'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',
-        '2023-07-31', '2023-07-01', '1234', '블루짐 7월 할인권', 3),
+        '2023-07-31', '2023-07-01', '1234', '블루짐 7월 할인권', 3,'2023-05-01', '2023-05-31', 'ACHIEVEMENT_CONDITION'),
        (12, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
         'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',
-        '2023-08-31', '2023-08-01', '1234', '블루짐 8월 할인권', 3);
+        '2023-08-31', '2023-08-01', '1234', '블루짐 8월 할인권', 3,'2023-05-01', '2023-05-31', 'ACHIEVEMENT_CONDITION');
+
+insert into coupon_summary(coupon_id, coupon_summary)
+values (1, 'summary1'), (1, 'summary1'), (1, 'summary1'),
+       (2, 'summary2'), (2, 'summary2'), (2, 'summary2'),
+       (3, 'summary3'), (3, 'summary3'), (3, 'summary3'),
+       (4, 'summary4'), (4, 'summary4'), (4, 'summary4'),
+       (5, 'summary5'), (5, 'summary5'), (5, 'summary5'),
+       (6, 'summary6'), (6, 'summary6'), (6, 'summary6'),
+       (7, 'summary7'), (7, 'summary7'), (7, 'summary7'),
+       (8, 'summary8'), (8, 'summary8'), (8, 'summary8'),
+       (9, 'summary9'), (9, 'summary9'), (9, 'summary9'),
+       (10, 'summary10'), (10, 'summary10'), (10, 'summary10'),
+       (11, 'summary11'), (11, 'summary11'), (11, 'summary11'),
+       (12, 'summary12'), (12, 'summary12'), (12, 'summary12');
 
 insert into coupon_issuance(id, created_time, modified_time, created, used, coupon_id, user_id)
 values (1, '2023-03-08 11:31:14.982873', '2023-03-08 11:31:14.982873', 1, 0, 1, 1),
