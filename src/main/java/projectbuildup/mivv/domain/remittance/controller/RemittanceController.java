@@ -21,6 +21,7 @@ import projectbuildup.mivv.global.constant.Header;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Tag(name = "[4. Remittance]", description = "송금 관련 API입니다.")
 @RequiredArgsConstructor
@@ -36,19 +37,19 @@ public class RemittanceController {
     public ResponseEntity<Void> remit(@PathVariable Long challengeId, @RequestBody RemittanceDto.RemitRequest requestDto, @AuthenticationPrincipal User user) {
         requestDto.setUserId(user.getId());
         requestDto.setChallengeId(challengeId);
-        remittanceService.remit(requestDto, null);
+        remittanceService.remit(requestDto, Optional.empty());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @Operation(summary = "절약하기[테스트용]", description = "계좌 내역 조회를 생략하고, 절약금 600000원을 저장합니다.")
+    @Operation(summary = "절약하기[테스트용]", description = "계좌 내역 조회를 생략하고, 절약금 1000원을 저장합니다.")
     @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('USER')")
     @PostMapping("/remittance/test/challenges/{challengeId}")
     public ResponseEntity<Void> remitForTest(@PathVariable Long challengeId, @RequestBody RemittanceDto.RemitRequest requestDto, @AuthenticationPrincipal User user) {
         requestDto.setUserId(user.getId());
         requestDto.setChallengeId(challengeId);
-        requestDto.setAmount(600000L);
-        remittanceService.remit(requestDto, LocalDateTime.of(2019, 5, 1, 1, 1, 1));
+        requestDto.setAmount(11L);
+        remittanceService.remitTest(requestDto, Optional.of(LocalDateTime.of(2019, 5, 1, 1, 1, 1)));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -66,7 +67,16 @@ public class RemittanceController {
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/remittance/status")
     public ResponseEntity<RemittanceDto.StatusResponse> getRemittanceStatus(@AuthenticationPrincipal User user) {
-        RemittanceDto.StatusResponse responseDto = remittanceService.getBriefStatus(user);
+        RemittanceDto.StatusResponse responseDto = remittanceService.getBriefStatus(user, Optional.empty());
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+
+    @Operation(summary = "지난 달 총 절약 금액 조회", description = "")
+    @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/remittance/prev-month")
+    public ResponseEntity<Long> getPreviousSavingAmount(@AuthenticationPrincipal User user) {
+        long response = remittanceService.getPreviousSavingAmount(user.getId(), Optional.empty());
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

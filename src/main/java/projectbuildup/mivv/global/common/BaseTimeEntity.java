@@ -17,12 +17,10 @@ import java.time.LocalDateTime;
 public abstract class BaseTimeEntity {
 
     @CreatedDate
-    @Schema(description = "생성시각", example="...")
     @Column(name = "created_time")
-    LocalDateTime createdTime;
+    protected LocalDateTime createdTime;
 
     @LastModifiedDate
-    @Schema(description = "최근수정시각", example="...")
     @Column(name = "modified_time")
-    LocalDateTime modifiedTime;
+    protected LocalDateTime modifiedTime;
 }

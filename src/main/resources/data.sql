@@ -1,27 +1,37 @@
 -- <IdentityVerification> --
 
-insert into identity_verification (id, birth_date, code, mobile, name, created_time, modified_time)  -- 비밀번호 모두 123456으로 동일 --
-values (1, '19990101', 'abcxxxxxabc', '01012345671', '김철수', '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873'),
-       (2, '19990101', 'defxxxxxdef', '01012345672', '홍길동', '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873'),
-       (3, '19990101', 'ghixxxxxghi', '01099998883', '박지원', '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873'),
-       (4, '19990101', 'jklxxxxxjkl', '01012345674', '최현수', '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873'),
-       (5, '19990101', 'mnoxxxxxmno', '01012345675', '이민우', '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873'),
-       (6, '19990101', 'pqrxxxxxpqr', '01012345676', '정형식', '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873'),
-       (7, '19990101', 'stuxxxxxstu', '01011112227', '이재우', '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873'),
-       (8, '19990101', 'vwxxxxxxvwx', '01012345678', '배주현', '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873'),
-       (9, '19990101', 'yzaxxxxxyza', '01012345679', '김다은', '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873');
+insert into identity_verification (id, birth_date, code, mobile, name, created_time, modified_time,
+                                   deleted_at) -- 비밀번호 모두 123456으로 동일 --
+values (1, '19990101', 'abcxxxxxabc', '01012345671', '김철수', '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873',
+        null),
+       (2, '19990101', 'defxxxxxdef', '01012345672', '홍길동', '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873',
+        null),
+       (3, '19990101', 'ghixxxxxghi', '01099998883', '박지원', '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873',
+        null),
+       (4, '19990101', 'jklxxxxxjkl', '01012345674', '최현수', '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873',
+        null),
+       (5, '19990101', 'mnoxxxxxmno', '01012345675', '이민우', '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873',
+        null),
+       (6, '19990101', 'pqrxxxxxpqr', '01012345676', '정형식', '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873',
+        null),
+       (7, '19990101', 'stuxxxxxstu', '01011112227', '이재우', '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873',
+        null),
+       (8, '19990101', 'vwxxxxxxvwx', '01012345678', '배주현', '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873',
+        null),
+       (9, '19990101', 'yzaxxxxxyza', '01012345679', '김다은', '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873',
+        null);
 
 -- <Account> --
-insert into account(id, account_numbers, bank_type)
-values (1, '123456781', 'KDB'),
-       (2, '123456782', 'IBK'),
-       (3, '123456783', 'KB'),
-       (4, '123456784', 'KDB'),
-       (5, '123456785', 'SUHYUP'),
-       (6, '123456786', 'NONGHYUP'),
-       (7, '123456787', 'WOORI'),
-       (8, '123456788', 'SC'),
-       (9, '123456789', 'CITY');
+insert into account(id, account_numbers, bank_type, deleted_at)
+values (1, '123456781', 'KDB', null),
+       (2, '123456782', 'IBK', null),
+       (3, '123456783', 'KB', null),
+       (4, '123456784', 'KDB', null),
+       (5, '123456785', 'SUHYUP', null),
+       (6, '123456786', 'NONGHYUP', null),
+       (7, '123456787', 'WOORI', null),
+       (8, '123456788', 'SC', null),
+       (9, '123456789', 'CITY', null);
 
 
 insert into account_connection_map(account_id, connection_code, bank_type)
@@ -38,25 +48,25 @@ values (1, 'abcdea', 'CODEF'),
 -- <User> --
 insert into user (id, created_time, modified_time, agreement, email, nickname, password, store_image_name,
                   original_image_name, image_path,
-                  identity_verification_id, account_id)
+                  identity_verification_id, account_id, deleted_at)
 values (1, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'test01@naver.com', '철수',
-        '{bcrypt}$2a$10$yQZvUKRebIw8NcO8bRsuiewJib4zZQ5Pi.GTbodIjDHK5h3icbzrO', null, null, null, 1, 1),
+        '{bcrypt}$2a$10$yQZvUKRebIw8NcO8bRsuiewJib4zZQ5Pi.GTbodIjDHK5h3icbzrO', null, null, null, 1, 1, null),
        (2, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'test02@naver.com', '길동',
-        '{bcrypt}$2a$10$yQZvUKRebIw8NcO8bRsuiewJib4zZQ5Pi.GTbodIjDHK5h3icbzrO', null, null, null, 2, 2),
+        '{bcrypt}$2a$10$yQZvUKRebIw8NcO8bRsuiewJib4zZQ5Pi.GTbodIjDHK5h3icbzrO', null, null, null, 2, 2, null),
        (3, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'test03@naver.com', '지원',
-        '{bcrypt}$2a$10$yQZvUKRebIw8NcO8bRsuiewJib4zZQ5Pi.GTbodIjDHK5h3icbzrO', null, null, null, 3, 3),
+        '{bcrypt}$2a$10$yQZvUKRebIw8NcO8bRsuiewJib4zZQ5Pi.GTbodIjDHK5h3icbzrO', null, null, null, 3, 3, null),
        (4, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'test04@naver.com', '현수',
-        '{bcrypt}$2a$10$yQZvUKRebIw8NcO8bRsuiewJib4zZQ5Pi.GTbodIjDHK5h3icbzrO', null, null, null, 4, 4),
+        '{bcrypt}$2a$10$yQZvUKRebIw8NcO8bRsuiewJib4zZQ5Pi.GTbodIjDHK5h3icbzrO', null, null, null, 4, 4, null),
        (5, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'test05@naver.com', '민우',
-        '{bcrypt}$2a$10$yQZvUKRebIw8NcO8bRsuiewJib4zZQ5Pi.GTbodIjDHK5h3icbzrO', null, null, null, 5, 5),
+        '{bcrypt}$2a$10$yQZvUKRebIw8NcO8bRsuiewJib4zZQ5Pi.GTbodIjDHK5h3icbzrO', null, null, null, 5, 5, null),
        (6, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'test06@naver.com', '형식',
-        '{bcrypt}$2a$10$yQZvUKRebIw8NcO8bRsuiewJib4zZQ5Pi.GTbodIjDHK5h3icbzrO', null, null, null, 6, 6),
+        '{bcrypt}$2a$10$yQZvUKRebIw8NcO8bRsuiewJib4zZQ5Pi.GTbodIjDHK5h3icbzrO', null, null, null, 6, 6, null),
        (7, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'test07@naver.com', '재우',
-        '{bcrypt}$2a$10$yQZvUKRebIw8NcO8bRsuiewJib4zZQ5Pi.GTbodIjDHK5h3icbzrO', null, null, null, 7, 7),
+        '{bcrypt}$2a$10$yQZvUKRebIw8NcO8bRsuiewJib4zZQ5Pi.GTbodIjDHK5h3icbzrO', null, null, null, 7, 7, null),
        (8, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'test08@naver.com', '주현',
-        '{bcrypt}$2a$10$yQZvUKRebIw8NcO8bRsuiewJib4zZQ5Pi.GTbodIjDHK5h3icbzrO', null, null, null, 8, 8),
+        '{bcrypt}$2a$10$yQZvUKRebIw8NcO8bRsuiewJib4zZQ5Pi.GTbodIjDHK5h3icbzrO', null, null, null, 8, 8, null),
        (9, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'test09@naver.com', '다은',
-        '{bcrypt}$2a$10$yQZvUKRebIw8NcO8bRsuiewJib4zZQ5Pi.GTbodIjDHK5h3icbzrO', null, null, null, 9, 9);
+        '{bcrypt}$2a$10$yQZvUKRebIw8NcO8bRsuiewJib4zZQ5Pi.GTbodIjDHK5h3icbzrO', null, null, null, 9, 9, null);
 
 
 insert into user_roles (user_id, roles)
@@ -76,16 +86,16 @@ values (1, 'ROLE_USER'),
 insert into challenge(id, created_time, modified_time, end_date, store_image_name,
                       original_image_name, image_path, main_title,
                       limited_number_of_times,
-                      max_saving_amount, min_saving_amount, start_date, sub_title)
+                      max_saving_amount, min_saving_amount, start_date, sub_title, deleted_at)
 values (1, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', '2024-07-13', 'challenge1.png', 'challenge1.png',
         'https://server.gasomann.com/resources/static/images/challenges/challenge1.png', '배달팁 아끼기', 2, 4000, 1000,
-        '2023-03-13', '배달말고 포장, 배달팁 아끼기!'),
+        '2023-03-13', '배달말고 포장, 배달팁 아끼기!', null),
        (2, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', '2024-07-13', 'challenge2.png', 'challenge2.png',
         'https://server.gasomann.com/resources/static/images/challenges/challenge2.png', '택시비 아끼기', 3, 6000, 1000,
-        '2023-03-13', '걸어서 갈 수 있잖아?'),
+        '2023-03-13', '걸어서 갈 수 있잖아?', null),
        (3, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', '2024-07-13', 'challenge3.png', 'challenge3.png',
         'https://server.gasomann.com/resources/static/images/challenges/challenge3.png', '커피값 아끼기', 3, 5000, 1000,
-        '2023-03-13', '그 커피 꼭 사야 해?');
+        '2023-03-13', '그 커피 꼭 사야 해?', null);
 
 
 
@@ -113,32 +123,32 @@ values (1, 0),
 
 
 -- <Participation> --
-insert into participation(id, created_time, modified_time, challenge_id, saving_count_id, user_id)
-values (1, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', 1, 1, 1),
-       (2, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', 1, 2, 2),
-       (3, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', 1, 3, 3),
-       (4, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', 1, 4, 4),
-       (5, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', 1, 5, 5),
-       (6, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', 1, 6, 6),
-       (7, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', 1, 7, 7),
-       (8, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', 1, 8, 8),
-       (9, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', 1, 9, 9),
-       (10, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', 2, 10, 1);
+insert into participation(id, created_time, modified_time, challenge_id, saving_count_id, user_id, deleted_at)
+values (1, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', 1, 1, 1, null),
+       (2, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', 1, 2, 2, null),
+       (3, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', 1, 3, 3, null),
+       (4, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', 1, 4, 4, null),
+       (5, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', 1, 5, 5, null),
+       (6, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', 1, 6, 6, null),
+       (7, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', 1, 7, 7, null),
+       (8, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', 1, 8, 8, null),
+       (9, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', 1, 9, 9, null),
+       (10, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', 2, 10, 1, null);
 
 
 -- <Remittance> --
-insert into remittance(id, created_time, modified_time, title, amount, participation_id)
-values (1, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873', '배달팁 아끼기', 4000, 1),
-       (2, '2023-04-12 11:31:14.982873', '2023-04-01 11:31:14.982873', '배달팁 아끼기', 2000, 2),
-       (3, '2023-04-13 11:31:14.982873', '2023-04-01 11:31:14.982873', '배달팁 아끼기', 3000, 3),
-       (4, '2023-04-14 11:31:14.982873', '2023-04-01 11:31:14.982873', '배달팁 아끼기', 4000, 4),
-       (5, '2023-04-15 11:31:14.982873', '2023-04-01 11:31:14.982873', '배달팁 아끼기', 5000, 5),
-       (6, '2023-04-16 11:31:14.982873', '2023-04-01 11:31:14.982873', '배달팁 아끼기', 6000, 6),
-       (7, '2023-05-01 11:31:14.982873', '2023-04-01 11:31:14.982873', '배달팁 아끼기', 7000, 7),
-       (8, '2023-05-02 11:31:14.982873', '2023-04-01 11:31:14.982873', '배달팁 아끼기', 8000, 8),
-       (9, '2023-05-03 11:31:14.982873', '2023-04-01 11:31:14.982873', '배달팁 아끼기', 9000, 9),
-       (10, '2023-05-03 11:31:14.982873', '2023-04-01 11:31:14.982873', '배달팁 아끼기', 2000, 1),
-       (11, '2023-05-03 11:31:14.982873', '2023-04-01 11:31:14.982873', '택시비 아끼기', 10000, 10);
+insert into remittance(id, created_time, modified_time, title, amount, participation_id, deleted_at)
+values (1, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873', '배달팁 아끼기', 4000, 1, null),
+       (2, '2023-04-12 11:31:14.982873', '2023-04-01 11:31:14.982873', '배달팁 아끼기', 2000, 2, null),
+       (3, '2023-04-13 11:31:14.982873', '2023-04-01 11:31:14.982873', '배달팁 아끼기', 3000, 3, null),
+       (4, '2023-04-14 11:31:14.982873', '2023-04-01 11:31:14.982873', '배달팁 아끼기', 4000, 4, null),
+       (5, '2023-04-15 11:31:14.982873', '2023-04-01 11:31:14.982873', '배달팁 아끼기', 5000, 5, null),
+       (6, '2023-04-16 11:31:14.982873', '2023-04-01 11:31:14.982873', '배달팁 아끼기', 6000, 6, null),
+       (7, '2023-05-01 11:31:14.982873', '2023-04-01 11:31:14.982873', '배달팁 아끼기', 7000, 7, null),
+       (8, '2023-05-02 11:31:14.982873', '2023-04-01 11:31:14.982873', '배달팁 아끼기', 8000, 8, null),
+       (9, '2023-05-03 11:31:14.982873', '2023-04-01 11:31:14.982873', '배달팁 아끼기', 9000, 9, null),
+       (10, '2023-05-03 11:31:14.982873', '2023-04-01 11:31:14.982873', '배달팁 아끼기', 2000, 1, null),
+       (11, '2023-05-03 11:31:14.982873', '2023-04-01 11:31:14.982873', '택시비 아끼기', 10000, 10, null);
 
 insert into inquiry(id, answer, content, time_stamp, title, user_id)
 values (1, '답변입니다.', '문의 내용입니다.', '2023-04-01 11:31:14.982873', '문의 샘플1', 1),
@@ -185,6 +195,7 @@ values (1, 'OK', '2023-07-01', '2023-04-01', 10000, 100),
        (2, 'OK', '2023-07-01', '2023-04-01', 10000, 100),
        (3, 'OK', '2023-07-01', '2023-04-01', 10000, 100);
 
+
 insert into worthy_consumption_url(id, logo_path, video_thumb_nail_path, detail_background_image_path, detail_image_path, image_path,
                                   place_image_path, video_path)
 
@@ -220,9 +231,16 @@ values (1, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', '대구 �
         '블루 짐', 3, 3);
 
 insert into worthy_consumption_hashtags(worthy_consumption_id, worthy_consumption_hashtags)
-values (1, 'hashtags1'), (1, 'hashtags1'), (1, 'hashtags1'),
-       (2, 'hashtags2'), (2, 'hashtags2'), (2, 'hashtags2'),
-       (3, 'hashtags3'), (3, 'hashtags3'), (3, 'hashtags3');
+values (1, 'hashtags1'),
+       (1, 'hashtags1'),
+       (1, 'hashtags1'),
+       (2, 'hashtags2'),
+       (2, 'hashtags2'),
+       (2, 'hashtags2'),
+       (3, 'hashtags3'),
+       (3, 'hashtags3'),
+       (3, 'hashtags3');
+
 
 
 insert into recommendation_reason(id, title, description, worthy_consumption_id)
@@ -230,10 +248,17 @@ values (1, 'title1', 'description1', 1), (2, 'title2', 'description2', 1), (3, '
        (4, 'title1', 'description1', 2), (5, 'title2', 'description2', 2), (6, 'title3', 'description3', 2),
        (7, 'title1', 'description1', 3), (8, 'title2', 'description2', 3), (9, 'title3', 'description3', 3);
 
+
 insert into worthy_consumption_summary(worthy_consumption_id, worthy_consumption_summary)
-values (1, 'summary1'), (1, 'summary1'), (1, 'summary1'),
-       (2, 'summary2'), (2, 'summary2'), (2, 'summary2'),
-       (3, 'summary3'), (3, 'summary3'), (3, 'summary3');
+values (1, 'summary1'),
+       (1, 'summary1'),
+       (1, 'summary1'),
+       (2, 'summary2'),
+       (2, 'summary2'),
+       (2, 'summary2'),
+       (3, 'summary3'),
+       (3, 'summary3'),
+       (3, 'summary3');
 
 -- <Shorts> --
 
@@ -249,40 +274,40 @@ values (1, 'SAVING', '이름1', '내용1', 'https://3.37.5.91/resources/static/i
 insert into coupon(id, created_time, modified_time, image_path, limit_end_date, limit_start_date, pin, title,
                    worthy_consumption_id)
 values (1, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
-        'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',
+        'http://server.gasomann.com/resources/static/images/coupons/coupon1.png',
         '2023-05-31', '2023-05-01', '1234', '레드짐 5월 할인권', 1),
        (2, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
-        'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',
+        'http://server.gasomann.com/resources/static/images/coupons/coupon1.png',
         '2023-06-30', '2023-06-01', '1234', '레드짐 6월 할인권', 1),
        (3, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
-        'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',
+        'http://server.gasomann.com/resources/static/images/coupons/coupon1.png',
         '2023-07-31', '2023-07-01', '1234', '레드짐 3월 할인권', 1),
        (4, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
-        'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',
+        'http://server.gasomann.com/resources/static/images/coupons/coupon1.png',
         '2023-08-31', '2023-08-01', '1234', '레드짐 4월 할인권', 1),
        (5, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
-        'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',
+        'http://server.gasomann.com/resources/static/images/coupons/coupon1.png',
         '2023-05-31', '2023-05-01', '1234', '옐로우 짐 5월 할인권', 2),
        (6, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
-        'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',
+        'http://server.gasomann.com/resources/static/images/coupons/coupon1.png',
         '2023-06-30', '2023-06-01', '1234', '옐로우 짐 6월 할인권', 2),
        (7, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
-        'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',
+        'http://server.gasomann.com/resources/static/images/coupons/coupon1.png',
         '2023-07-31', '2023-07-01', '1234', '옐로우 짐 7월 할인권', 2),
        (8, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
-        'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',
+        'http://server.gasomann.com/resources/static/images/coupons/coupon1.png',
         '2023-08-31', '2023-08-01', '1234', '옐로우 짐 8월 할인권', 2),
        (9, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
-        'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',
+        'http://server.gasomann.com/resources/static/images/coupons/coupon1.png',
         '2023-05-31', '2023-05-01', '1234', '블루짐 5월 할인권', 3),
        (10, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
-        'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',
+        'http://server.gasomann.com/resources/static/images/coupons/coupon1.png',
         '2023-06-30', '2023-06-01', '1234', '블루짐 6월 할인권', 3),
        (11, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
-        'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',
+        'http://server.gasomann.com/resources/static/images/coupons/coupon1.png',
         '2023-07-31', '2023-07-01', '1234', '블루짐 7월 할인권', 3),
        (12, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
-        'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',
+        'http://server.gasomann.com/resources/static/images/coupons/coupon1.png',
         '2023-08-31', '2023-08-01', '1234', '블루짐 8월 할인권', 3);
 
 insert into coupon_issuance(id, created_time, modified_time, created, used, coupon_id, user_id)
@@ -293,11 +318,11 @@ values (1, '2023-03-08 11:31:14.982873', '2023-03-08 11:31:14.982873', 1, 0, 1, 
 
 -- <Likes> --
 insert into likes_shorts(id, created_time, modified_time, likes_category, shorts_id, user_id)
-values (1,'2023-03-08 11:31:14.982873', '2023-03-08 11:31:14.982873', 'SHORTS_SAVING', 1, 1),
-       (2,'2023-03-08 11:31:14.982873', '2023-03-08 11:31:14.982873', 'SHORTS_EDU', 3, 1),
-       (3,'2023-03-08 11:31:14.982873', '2023-03-08 11:31:14.982873', 'SHORTS_SAVING', 2, 1);
+values (1, '2023-03-08 11:31:14.982873', '2023-03-08 11:31:14.982873', 'SHORTS_SAVING', 1, 1),
+       (2, '2023-03-08 11:31:14.982873', '2023-03-08 11:31:14.982873', 'SHORTS_EDU', 3, 1),
+       (3, '2023-03-08 11:31:14.982873', '2023-03-08 11:31:14.982873', 'SHORTS_SAVING', 2, 1);
 
 insert into likes_worthy_consumption(id, created_time, modified_time, likes_category, user_id, worthy_consumption_id)
-values (1,'2023-03-08 11:31:14.982873', '2023-03-08 11:31:14.982873', 'WORTHY_CONSUMPTION', 1, 1),
-       (2,'2023-03-08 11:31:14.982873', '2023-03-08 11:31:14.982873', 'WORTHY_CONSUMPTION', 1, 2),
-       (3,'2023-03-08 11:31:14.982873', '2023-03-08 11:31:14.982873', 'WORTHY_CONSUMPTION', 1, 3);
+values (1, '2023-03-08 11:31:14.982873', '2023-03-08 11:31:14.982873', 'WORTHY_CONSUMPTION', 1, 1),
+       (2, '2023-03-08 11:31:14.982873', '2023-03-08 11:31:14.982873', 'WORTHY_CONSUMPTION', 1, 2),
+       (3, '2023-03-08 11:31:14.982873', '2023-03-08 11:31:14.982873', 'WORTHY_CONSUMPTION', 1, 3);

@@ -25,11 +25,9 @@ public class ProfileDto {
     @Getter
     public static class Response {
         @Schema(description = "닉네임")
-        @NotBlank
         String nickname;
 
         @Schema(description = "이미지")
-        @NotNull
         Image profileImage;
 
         public Response(User user){

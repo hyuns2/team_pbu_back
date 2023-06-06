@@ -5,6 +5,8 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -77,7 +79,6 @@ public class AuthController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-
     @Operation(summary = "어세스토큰과 리프레시토큰을 재발급합니다.", description = "만료된 어세스토큰으로만 리이슈를 호출할 수 있습니다.<br>" +
             "리프레시토큰도 만료된 경우, 리이슈에 실패합니다.")
     @PostMapping("/auth/reissue")
@@ -85,5 +86,18 @@ public class AuthController {
     public ResponseEntity<TokenDto> reissue(@RequestBody @Valid AuthDto.ReissueRequest requestDto) {
         TokenDto responseDto = authService.reissue(requestDto);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+
+    @Operation(summary = "닉네임 중복 검사", description = "이미 존재하는 닉네임인지 확인합니다. 사용 가능한 닉네임인 경우 True가 반환됩니다.")
+    @GetMapping("/auth/check-nickname")
+    @PreAuthorize("permitAll()")
+    public ResponseEntity<ResponseBoolean> checkNickname(@RequestParam String nickname) {
+        ResponseBoolean response = new ResponseBoolean(authService.checkNickname(nickname));
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+    @AllArgsConstructor
+    @Getter
+    static class ResponseBoolean{
+        boolean available;
     }
 }

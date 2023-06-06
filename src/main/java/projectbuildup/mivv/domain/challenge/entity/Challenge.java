@@ -4,12 +4,15 @@ package projectbuildup.mivv.domain.challenge.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Columns;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import projectbuildup.mivv.domain.challenge.dto.ChallengeDto;
 import projectbuildup.mivv.domain.participation.entity.Participation;
 import projectbuildup.mivv.global.common.BaseTimeEntity;
 import projectbuildup.mivv.global.common.imageStore.Image;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,21 +22,23 @@ import java.util.List;
 @Getter
 @Builder
 @ToString
+@Where(clause = "deleted_at IS NULL")
+@SQLDelete(sql = "UPDATE challenge SET deleted_at = CURRENT_TIMESTAMP where id = ?")
 @Table(name = "challenge")
 public class Challenge extends BaseTimeEntity {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "main_title")
+    @Column(name = "main_title", nullable = false)
     private String mainTitle;
     @Column(name = "sub_title")
     private String subTitle;
     @CollectionTable(
             name = "challenge_description",
-            joinColumns = @JoinColumn(name = "challenge_id", referencedColumnName = "id")
+            joinColumns = @JoinColumn(name = "challenge_id", foreignKey = @ForeignKey(name = "fk_challenge_to_description"))
     )
-    @Column(name = "description")
+    @Column(name = "description", nullable = false)
     @ElementCollection
     private List<String> description = new ArrayList<>();
     @Column(name = "max_saving_amount")
@@ -56,11 +61,15 @@ public class Challenge extends BaseTimeEntity {
     @OneToMany(mappedBy = "challenge", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List<Participation> participationList;
 
+    @Column(name = "deleted_at")
+    protected LocalDateTime deletedAt;
+
     public void update(ChallengeDto.UpdateRequest requestDto) {
         this.mainTitle = requestDto.getMainTitle();
         this.subTitle = requestDto.getSubTitle();
         this.description = requestDto.getDescription();
-        this.maxSavingAmount = requestDto.getRemittanceOnceLimit();
+        this.maxSavingAmount = requestDto.getMaxSavingAmount();
+        this.minSavingAmount = requestDto.getMinSavingAmount();
         this.limitedNumberOfTimes = requestDto.getRemittanceAvailableCount();
     }
 

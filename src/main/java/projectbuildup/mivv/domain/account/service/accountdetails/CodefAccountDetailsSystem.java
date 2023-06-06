@@ -1,11 +1,12 @@
 package projectbuildup.mivv.domain.account.service.accountdetails;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import projectbuildup.mivv.domain.account.entity.Account;
 import projectbuildup.mivv.domain.account.entity.OpenBanking;
 import projectbuildup.mivv.domain.account.entity.TransactionDetail;
-import projectbuildup.mivv.domain.account.service.accountsystem.CodefClient;
+import projectbuildup.mivv.domain.account.service.accountsystem.codefclient.CodefClient;
 import projectbuildup.mivv.domain.user.entity.User;
 
 import java.time.LocalDate;
@@ -14,6 +15,7 @@ import java.util.*;
 @Component
 @RequiredArgsConstructor
 public class CodefAccountDetailsSystem implements AccountDetailsSystem {
+    @Qualifier("codefDemoClient")
     private final CodefClient codefClient;
     private final static String HISTORY_FIELD = "resTrHistoryList";
     private final static String IN_AMOUNT_FIELD = "resAccountIn";

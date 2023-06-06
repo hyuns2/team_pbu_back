@@ -2,28 +2,37 @@ package projectbuildup.mivv.domain.remittance.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import projectbuildup.mivv.domain.participation.entity.Participation;
 import projectbuildup.mivv.global.common.BaseTimeEntity;
 import projectbuildup.mivv.global.error.exception.CBadRequestException;
+
+import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
 @Getter
 @ToString
 @AllArgsConstructor
+@Where(clause = "deleted_at IS NULL")
+@SQLDelete(sql = "UPDATE remittance SET deleted_at = CURRENT_TIMESTAMP where id = ?")
 @Table(name = "remittance")
 public class Remittance extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @Column(name = "amount")
+    @Column(name = "amount", nullable = false)
     private long amount;
-    @Column(name = "title")
+    @Column(name = "title", nullable = false)
     private String title;
     @ManyToOne
-    @JoinColumn(name = "participation_id")
+    @JoinColumn(name = "participation_id", foreignKey = @ForeignKey(name = "fk_remittance_to_participation"))
     Participation participation;
+
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
 
     public Remittance(long amount, Participation participation) {
         this.amount = amount;
@@ -38,8 +47,8 @@ public class Remittance extends BaseTimeEntity {
     }
 
     public static Remittance newDeposit(long amount, Participation participation) {
-        if (amount < participation.getChallenge().getMaxSavingAmount()) {
-            throw new CBadRequestException("최소 금액 이상 송금할 수 있습니다.");
+        if (amount < 0) {
+            throw new CBadRequestException("입금액은 음수일 수 없습니다.");
         }
         return new Remittance(amount, participation);
     }

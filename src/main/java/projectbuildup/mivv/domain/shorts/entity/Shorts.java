@@ -7,11 +7,13 @@ import projectbuildup.mivv.domain.shorts.dto.ShortsDto;
 
 @Entity
 @Slf4j
-@AllArgsConstructor @NoArgsConstructor(force = true)
-//@RequiredArgsConstructor
-@Getter @Builder
+@AllArgsConstructor
+@NoArgsConstructor(force = true)
+@Getter
+@Builder
 public class Shorts {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
     @Enumerated(EnumType.STRING)
@@ -37,6 +39,7 @@ public class Shorts {
         this.videoPath = videoPath;
         this.category = shortsDto.getCategory();
     }
+
     public void update(ShortsDto.updateRequest shortsDto, String imagePath, String videoPath){
         this.uploaderName = shortsDto.getUploaderName();
         this.content = shortsDto.getContent();
@@ -45,10 +48,12 @@ public class Shorts {
         this.category = shortsDto.getCategory();
 
     }
-    public void updateImage(String imagePath){
+
+    public void updateImage(String imagePath) {
         this.imagePath = imagePath;
     }
-    public void updateVideo(String videoPath){
+
+    public void updateVideo(String videoPath) {
         this.videoPath = videoPath;
     }
 }
