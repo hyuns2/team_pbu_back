@@ -253,16 +253,7 @@ insert into recommendation_reason(id, title, description, worthy_consumption_id)
 values (1, 'title1', 'description1', 1), (2, 'title2', 'description2', 1), (3, 'title3', 'description3', 1),
        (4, 'title1', 'description1', 2), (5, 'title2', 'description2', 2), (6, 'title3', 'description3', 2),
        (7, 'title1', 'description1', 3), (8, 'title2', 'description2', 3), (9, 'title3', 'description3', 3);
-insert into worthy_consumption_summary(worthy_consumption_id, worthy_consumption_summary)
-values (1, 'summary1'),
-       (1, 'summary1'),
-       (1, 'summary1'),
-       (2, 'summary2'),
-       (2, 'summary2'),
-       (2, 'summary2'),
-       (3, 'summary3'),
-       (3, 'summary3'),
-       (3, 'summary3');
+
 -- <Shorts> --
 
 insert into shorts(id, category, uploader_name, content, image_path, video_path)
