@@ -3,6 +3,7 @@ package projectbuildup.mivv.domain.archiving.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
@@ -11,6 +12,9 @@ import projectbuildup.mivv.domain.archiving.entity.*;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ArchivingDto {
 
@@ -28,10 +32,10 @@ public class ArchivingDto {
         @Schema(description = "카드 부제목")
         private String subTitle;
 
-        @NotBlank
-        @Length(min = 2, max = 30)
+        @NotNull
+        @Size(max = 2)
         @Schema(description = "카드 명언")
-        private String sentence;
+        private List<@NotBlank @Length(min = 2, max = 30) String> sentences;
 
         @NotNull
         @Schema(description = "카드 이미지 파일")
@@ -55,7 +59,9 @@ public class ArchivingDto {
                     .type(CardType.REMITTANCE)
                     .title(dto.getTitle())
                     .subTitle(dto.getSubTitle())
-                    .sentence(dto.getSentence())
+                    .sentences(dto.getSentences().stream()
+                            .map(Object::toString)
+                            .collect(Collectors.joining(", ")))
                     .imagePath(imagePath)
                     .charge(dto.getCharge())
                     .count(dto.getCount())
@@ -77,9 +83,9 @@ public class ArchivingDto {
         @Schema(description = "카드 부제목")
         private String subTitle;
 
-        @Length(max = 30)
+        @Size(max = 2)
         @Schema(description = "카드 명언")
-        private String sentence;
+        private List<@Length(max = 30) String> sentences;
 
         @Schema(description = "카드 이미지 파일")
         private MultipartFile image;
@@ -109,10 +115,10 @@ public class ArchivingDto {
         @Schema(description = "카드 부제목")
         private String subTitle;
 
-        @NotBlank
-        @Length(min = 2, max = 30)
+        @NotNull
+        @Size(max = 2)
         @Schema(description = "카드 명언")
-        private String sentence;
+        private List<@NotBlank @Length(min = 2, max = 30) String> sentences;
 
         @NotNull
         @Schema(description = "카드 이미지 파일")
@@ -124,7 +130,9 @@ public class ArchivingDto {
                     .type(CardType.GENERAL)
                     .title(dto.getTitle())
                     .subTitle(dto.getSubTitle())
-                    .sentence(dto.getSentence())
+                    .sentences(dto.getSentences().stream()
+                            .map(Object::toString)
+                            .collect(Collectors.joining(", ")))
                     .imagePath(imagePath)
                     .build();
 
@@ -143,9 +151,9 @@ public class ArchivingDto {
         @Schema(description = "카드 부제목")
         private String subTitle;
 
-        @Length(max = 30)
+        @Size(max = 2)
         @Schema(description = "카드 명언")
-        private String sentence;
+        private List<@Length(max = 30) String> sentences;
 
         @Schema(description = "카드 이미지 파일")
         private MultipartFile image;
@@ -178,10 +186,10 @@ public class ArchivingDto {
         @Schema(description = "카드 부제목")
         private String subTitle;
 
-        @NotBlank
-        @Length(min = 2, max = 30)
+        @NotNull
+        @Size(max = 2)
         @Schema(description = "카드 명언")
-        private String sentence;
+        private List<@NotBlank @Length(min = 2, max = 30) String> sentences;
 
         @NotNull
         @Schema(description = "카드 이미지 파일")
@@ -201,7 +209,9 @@ public class ArchivingDto {
                     .type(CardType.COUPON)
                     .title(dto.getTitle())
                     .subTitle(dto.getSubTitle())
-                    .sentence(dto.getSentence())
+                    .sentences(dto.getSentences().stream()
+                            .map(Object::toString)
+                            .collect(Collectors.joining(", ")))
                     .imagePath(imagePath)
                     .whatNumber(dto.getWhatNumber())
                     .howSuccessive(dto.getHowSuccessive())
@@ -222,9 +232,9 @@ public class ArchivingDto {
         @Schema(description = "카드 부제목")
         private String subTitle;
 
-        @Length(max = 30)
+        @Size(max = 2)
         @Schema(description = "카드 명언")
-        private String sentence;
+        private List<@Length(max = 30) String> sentences;
 
         @Schema(description = "카드 이미지 파일")
         private MultipartFile image;
@@ -254,17 +264,20 @@ public class ArchivingDto {
         private String subTitle;
 
         @Schema(description = "카드 명언")
-        private String sentence;
+        private List<String> sentences;
 
         @Schema(description = "카드 이미지 파일경로")
         private String imagePath;
 
         public CardResponseDto(final CardEntity entity) {
+            String[] stringSentences = entity.getSentences().split(", ");
+            List<String> listSentences = Arrays.stream(stringSentences).toList();
+
             this.id = entity.getId();
             this.cardType = entity.getType().name();
             this.title = entity.getTitle();
             this.subTitle = entity.getSubTitle();
-            this.sentence = entity.getSentence();
+            this.sentences = listSentences;
             this.imagePath = entity.getImagePath();
         }
 
@@ -278,7 +291,7 @@ public class ArchivingDto {
         private Long id;
 
         @Schema(description = "카드 정보")
-        private CardResponseDto cardResponseDto;
+        private CardResponseDto cardDto;
 
         @Schema(description = "발급 일자")
         private LocalDate date;
@@ -288,7 +301,7 @@ public class ArchivingDto {
 
         public UserCardResponseDto(final UserCardEntity entity) {
             this.id = entity.getId();
-            this.cardResponseDto = new CardResponseDto(entity.getCardEntity());
+            this.cardDto = new CardResponseDto(entity.getCardEntity());
             this.date = entity.getDate();
             this.isNew = entity.isNew();
         }

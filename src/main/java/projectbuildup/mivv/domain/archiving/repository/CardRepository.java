@@ -9,6 +9,7 @@ import projectbuildup.mivv.domain.user.entity.User;
 
 import java.util.List;
 
+
 @Repository
 public interface CardRepository<T extends CardEntity> extends JpaRepository<T, Long> {
 

@@ -152,19 +152,19 @@ values (1, '이벤트내용', 'https://server.gasomann.com/resources/static/imag
        (3, '공지내용', 'https://server.gasomann.com/resources/static/images/cards/card1.png', 'NOTICE', '2023-05-24 11:00:14.982873', '공지사항1'),
        (4, '공지내용', 'https://server.gasomann.com/resources/static/images/cards/card1.png', 'NOTICE', '2023-05-24 11:00:14.982873', '공지사항2');
 
-insert into card(d_type, id, type, title, sub_title, sentence, image_path)
-values ('GeneralCondition', 1, 'GENERAL', '제목1', '부제목1', '명언1', 'https://server.gasomann.com/resources/static/images/cards/card1.png'),
-       ('GeneralCondition', 2, 'GENERAL', '제목2', '부제목2', '명언2', 'https://server.gasomann.com/resources/static/images/cards/card1.png'),
-       ('GeneralCondition', 3, 'GENERAL', '제목3', '부제목3', '명언3', 'https://server.gasomann.com/resources/static/images/cards/card1.png'),
-       ('GeneralCondition', 4, 'GENERAL', '제목4', '부제목4', '명언4', 'https://server.gasomann.com/resources/static/images/cards/card1.png'),
-       ('GeneralCondition', 5, 'GENERAL', '제목5', '부제목5', '명언5', 'https://server.gasomann.com/resources/static/images/cards/card1.png'),
-       ('GeneralCondition', 6, 'GENERAL', '제목6', '부제목6', '명언6', 'https://server.gasomann.com/resources/static/images/cards/card1.png'),
-       ('GeneralCondition', 7, 'GENERAL', '제목7', '부제목7', '명언7', 'https://server.gasomann.com/resources/static/images/cards/card1.png'),
-       ('GeneralCondition', 8, 'GENERAL', '제목8', '부제목8', '명언8', 'https://server.gasomann.com/resources/static/images/cards/card1.png'),
-       ('GeneralCondition', 9, 'GENERAL', '제목9', '부제목9', '명언9', 'https://server.gasomann.com/resources/static/images/cards/card1.png'),
-       ('RemittanceCondition', 10, 'REMITTANCE', '제목10', '부제목10', '명언10', 'https://server.gasomann.com/resources/static/images/cards/card1.png'),
-       ('RemittanceCondition', 11, 'REMITTANCE', '제목11', '부제목11', '명언11', 'https://server.gasomann.com/resources/static/images/cards/card1.png'),
-       ('CouponCondition', 12, 'COUPON', '제목12', '부제목12', '명언12', 'https://server.gasomann.com/resources/static/images/cards/card1.png');
+insert into card(d_type, id, type, title, sub_title, sentences, image_path)
+values ('GeneralCondition', 1, 'GENERAL', '제목1', '부제목1', '명언1, 명언2', 'https://server.gasomann.com/resources/static/images/cards/card1.png'),
+       ('GeneralCondition', 2, 'GENERAL', '제목2', '부제목2', '명언1, 명언2', 'https://server.gasomann.com/resources/static/images/cards/card1.png'),
+       ('GeneralCondition', 3, 'GENERAL', '제목3', '부제목3', '명언1, 명언2', 'https://server.gasomann.com/resources/static/images/cards/card1.png'),
+       ('GeneralCondition', 4, 'GENERAL', '제목4', '부제목4', '명언1, 명언2', 'https://server.gasomann.com/resources/static/images/cards/card1.png'),
+       ('GeneralCondition', 5, 'GENERAL', '제목5', '부제목5', '명언1, 명언2', 'https://server.gasomann.com/resources/static/images/cards/card1.png'),
+       ('GeneralCondition', 6, 'GENERAL', '제목6', '부제목6', '명언1, 명언2', 'https://server.gasomann.com/resources/static/images/cards/card1.png'),
+       ('GeneralCondition', 7, 'GENERAL', '제목7', '부제목7', '명언1, 명언2', 'https://server.gasomann.com/resources/static/images/cards/card1.png'),
+       ('GeneralCondition', 8, 'GENERAL', '제목8', '부제목8', '명언1, 명언2', 'https://server.gasomann.com/resources/static/images/cards/card1.png'),
+       ('GeneralCondition', 9, 'GENERAL', '제목9', '부제목9', '명언1, 명언2', 'https://server.gasomann.com/resources/static/images/cards/card1.png'),
+       ('RemittanceCondition', 10, 'REMITTANCE', '제목10', '부제목10', '명언1, 명언2', 'https://server.gasomann.com/resources/static/images/cards/card1.png'),
+       ('RemittanceCondition', 11, 'REMITTANCE', '제목11', '부제목11', '명언1, 명언2', 'https://server.gasomann.com/resources/static/images/cards/card1.png'),
+       ('CouponCondition', 12, 'COUPON', '제목12', '부제목12', '명언1, 명언2', 'https://server.gasomann.com/resources/static/images/cards/card1.png');
 
 insert into remittance_card(id, charge, count, term)
 values (10, 5000, 0, 0),
