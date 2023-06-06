@@ -2,7 +2,10 @@ package projectbuildup.mivv;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +20,7 @@ import projectbuildup.mivv.global.error.exception.CUserNotFoundException;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/test")
+@Slf4j
 public class TestController {
     private final UserRepository userRepository;
     private final IdentityVerificationRepository identityVerificationRepository;
@@ -28,5 +32,14 @@ public class TestController {
         userRepository.delete(user);
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Operation(summary = "JSP KG 이니시스 성공 테스트", description = "")
+    @PostMapping("/jsp/success")
+    public void KgSuccess(HttpServletRequest request, HttpServletResponse response) {
+        log.info("resultCode>>: {}", request.getParameter("resultCode"));
+        log.info("resultMsg>>: {}", request.getParameter("resultMsg"));
+        log.info("txId>>: {}", request.getParameter("txId"));
+        log.info("호출됨~~~~~~~~~~~~성공");
     }
 }

@@ -56,6 +56,11 @@ public class CouponService {
         worthyConsumption.getCondition().checkIssuableCouponStatus(CheckConditionType.OK);
         worthyConsumptionRepository.save(worthyConsumption);
     }
+    public List<CouponDto.Response> readAllCoupon(){
+        return couponRepository.findAll().stream()
+                .map(CouponDto.Response::new)
+                .toList();
+    }
     /**
      * 쿠폰 조회시, 완전한 정보 모두를 포함한 것입니다.
      * @param

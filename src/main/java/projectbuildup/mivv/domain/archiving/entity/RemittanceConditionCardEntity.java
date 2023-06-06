@@ -13,13 +13,13 @@ import projectbuildup.mivv.domain.archiving.dto.ArchivingDto;
 @Table(name = "remittance_card")
 public class RemittanceConditionCardEntity extends CardEntity {
 
-    @Column(name = "charge")
+    @Column(name = "charge", nullable = false)
     protected Integer charge;
 
-    @Column(name = "count")
+    @Column(name = "count", nullable = false)
     protected Integer count;
 
-    @Column(name = "term")
+    @Column(name = "term", nullable = false)
     protected Integer term;
 
     public void updateCard(ArchivingDto.updateRemittanceCardRequestDto dto, String imagePath) {
@@ -29,8 +29,8 @@ public class RemittanceConditionCardEntity extends CardEntity {
         if (dto.getSubTitle() != null) {
             this.subTitle = dto.getSubTitle();
         }
-        if (dto.getSentence() != null) {
-            this.sentence = dto.getSentence();
+        if (dto.getSentences().size() > 0) {
+            this.sentences = dto.getSentences().toString();
         }
         if (dto.getImage() != null) {
             this.imagePath = imagePath;
@@ -51,7 +51,7 @@ public class RemittanceConditionCardEntity extends CardEntity {
                 this.type.equals(remittanceConditionCardEntity.getType()) &&
                 this.title.equals(remittanceConditionCardEntity.getTitle()) &&
                 this.subTitle.equals(remittanceConditionCardEntity.getSubTitle()) &&
-                this.sentence.equals(remittanceConditionCardEntity.getSentence()) &&
+                this.sentences.equals(remittanceConditionCardEntity.getSentences()) &&
                 this.imagePath.equals(remittanceConditionCardEntity.getImagePath()) &&
                 this.charge.equals(remittanceConditionCardEntity.getCharge()) &&
                 this.count.equals(remittanceConditionCardEntity.getCount()) &&

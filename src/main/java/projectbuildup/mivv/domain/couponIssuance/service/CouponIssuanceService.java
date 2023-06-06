@@ -13,6 +13,8 @@ import projectbuildup.mivv.domain.remittance.repository.RemittanceRepository;
 import projectbuildup.mivv.domain.remittance.service.RemittanceService;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.domain.user.repository.UserRepository;
+import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumption;
+import projectbuildup.mivv.domain.worthyConsumption.service.WorthyConsumptionService;
 import projectbuildup.mivv.global.error.exception.CBadRequestException;
 import projectbuildup.mivv.global.error.exception.CCouponNotFoundException;
 import projectbuildup.mivv.global.error.exception.CUserNotFoundException;
@@ -31,6 +33,7 @@ public class CouponIssuanceService {
     private final UserRepository userRepository;
     private final CouponRepository couponRepository;
     private final RemittanceRepository remittanceRepository;
+    private final WorthyConsumptionService worthyConsumptionService;
     /*
      * 발급받을때 고려할 사항
      * 1. 먼저 유저가 유효한 유저인지 판단 (유저가 진짜 유저인가) : O
@@ -54,14 +57,22 @@ public class CouponIssuanceService {
         Coupon coupon = couponRepository.findById(couponId).orElseThrow(CCouponNotFoundException::new);
 
         isIssuable(user, coupon);
+        isUpperCount(user, coupon.getWorthyConsumption());
         isAchievedLastAmount(user, coupon);
         issue(user, coupon);
     }
+
     /**
      * 사용자가 쿠폰을 보유하고 있는지 검증하는 로직입니다.
      * @param user
      * @param coupon
      */
+    private void isUpperCount(User user, WorthyConsumption worthyConsumption){
+        if(worthyConsumptionService.checkUserIssueCount(user, worthyConsumption)>=worthyConsumption.getCondition().getMaxIssuance()){
+            throw new CBadRequestException("쿠폰 발급 횟수 초과입니다.");
+        }
+
+    }
     private void isIssuable(User user, Coupon coupon){
         if(couponIssuanceRepository.findByUserAndCoupon(user, coupon).isPresent()){
             throw new CBadRequestException("이미 보유중인 쿠폰입니다.");
