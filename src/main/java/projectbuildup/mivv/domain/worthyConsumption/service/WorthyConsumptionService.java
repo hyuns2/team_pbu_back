@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import projectbuildup.mivv.domain.coupon.entity.Coupon;
 import projectbuildup.mivv.domain.coupon.repository.CouponRepository;
+import projectbuildup.mivv.domain.couponIssuance.entity.CouponIssuance;
 import projectbuildup.mivv.domain.couponIssuance.repository.CouponIssuanceRepository;
 import projectbuildup.mivv.domain.likes.repository.LikesShortsRepository;
 import projectbuildup.mivv.domain.likes.repository.LikesWorthyConsumptionRepository;
@@ -95,9 +96,9 @@ public class WorthyConsumptionService {
         checkConditionToIssuableCoupon(worthyConsumption);
         Long couponId = getCouponForMonth(worthyConsumption);
         Coupon coupon = couponRepository.findById(couponId).orElseThrow(CCouponNotFoundException::new);
-
+        long count = checkUserIssueCount(user, worthyConsumption);
         Boolean isLiked = likesWorthyConsumptionRepository.findByUserAndWorthyConsumption(user, worthyConsumption).isPresent() ? Boolean.TRUE : Boolean.FALSE;
-        return new WorthyConsumptionResponseDto.ReadBasicResponse(worthyConsumption, isLiked, coupon);
+        return new WorthyConsumptionResponseDto.ReadBasicResponse(worthyConsumption, isLiked, coupon, count);
     }
     public WorthyConsumptionResponseDto.ReadDetailResponse readDetailWorthyConsumption(Long worthyConsumptionId){
         WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionId).orElseThrow(CWorthyConsumptionNotFoundException:: new);
@@ -110,7 +111,8 @@ public class WorthyConsumptionService {
                     boolean liked = likesWorthyConsumptionRepository.findByUserAndWorthyConsumption(user, worthyConsumption).isPresent();
                     Long couponId = getCouponForMonth(worthyConsumption);
                     Coupon coupon = couponRepository.findById(couponId).orElseThrow(CCouponNotFoundException::new);
-                    return new WorthyConsumptionResponseDto.ReadBasicResponse(worthyConsumption, liked, coupon);
+                    long count = checkUserIssueCount(user, worthyConsumption);
+                    return new WorthyConsumptionResponseDto.ReadBasicResponse(worthyConsumption, liked, coupon, count);
                 })
                 .collect(Collectors.toList());
     }
@@ -185,5 +187,12 @@ public class WorthyConsumptionService {
         if(coupon.getLimitStartDate().isBefore(LocalDate.now())&&coupon.getLimitEndDate().isAfter(LocalDate.now()))
             return true;
         return false;
+    }
+    public long checkUserIssueCount(User user, WorthyConsumption worthyConsumption){
+
+        return couponIssuanceRepository.findAllByUser(user).stream()
+                .map(CouponIssuance::getCoupon)
+                .filter(coupon -> coupon.getWorthyConsumption().equals(worthyConsumption))
+                .count();
     }
 }

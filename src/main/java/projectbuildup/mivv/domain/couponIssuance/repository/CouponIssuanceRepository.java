@@ -13,6 +13,7 @@ import java.util.Optional;
 public interface CouponIssuanceRepository extends JpaRepository<CouponIssuance, Long> {
     Optional<CouponIssuance> findByUserAndCoupon(User user, Coupon coupon);
     List<CouponIssuance> findAllByUserId(Long userId);
+    List<CouponIssuance> findAllByUser(User user);
     CouponIssuance findByUserIdAndCouponId(Long userId, Long couponId);
     int countByCouponId(Long couponId);
 

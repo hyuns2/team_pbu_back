@@ -54,8 +54,9 @@ public class WorthyConsumptionResponseDto {
         private LocalDate conventionStartDate;
         private LocalDate conventionEndDate;
         private CouponType couponType;
+        private long issueCount;
 
-        public ReadBasicResponse(WorthyConsumption worthyConsumption, Boolean isLiked, Coupon coupon) {
+        public ReadBasicResponse(WorthyConsumption worthyConsumption, Boolean isLiked, Coupon coupon, long issueCount) {
             super(worthyConsumption, coupon);
             this.videoThumbNailPath = worthyConsumption.getWorthyConsumptionUrl().getVideoThumbNailPath();
             this.hashtags = worthyConsumption.getHashtags();
@@ -67,6 +68,7 @@ public class WorthyConsumptionResponseDto {
             this.conventionStartDate = worthyConsumption.getCondition().getConventionStartDate();
             this.conventionEndDate = worthyConsumption.getCondition().getConventionEndDate();
             this.couponType = coupon.getCouponType();
+            this.issueCount = issueCount;
         }
     }
     @NoArgsConstructor @AllArgsConstructor
