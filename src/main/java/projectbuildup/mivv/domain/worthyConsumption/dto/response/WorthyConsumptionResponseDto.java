@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 import projectbuildup.mivv.domain.coupon.entity.Coupon;
+import projectbuildup.mivv.domain.coupon.entity.CouponType;
 import projectbuildup.mivv.domain.worthyConsumption.entity.CheckConditionType;
 import projectbuildup.mivv.domain.worthyConsumption.entity.RecommendationReason;
 import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumption;
@@ -52,6 +53,7 @@ public class WorthyConsumptionResponseDto {
         private Long couponId;
         private LocalDate conventionStartDate;
         private LocalDate conventionEndDate;
+        private CouponType couponType;
 
         public ReadBasicResponse(WorthyConsumption worthyConsumption, Boolean isLiked, Coupon coupon) {
             super(worthyConsumption, coupon);
@@ -64,6 +66,7 @@ public class WorthyConsumptionResponseDto {
             this.couponId = coupon.getId();
             this.conventionStartDate = worthyConsumption.getCondition().getConventionStartDate();
             this.conventionEndDate = worthyConsumption.getCondition().getConventionEndDate();
+            this.couponType = coupon.getCouponType();
         }
     }
     @NoArgsConstructor @AllArgsConstructor
