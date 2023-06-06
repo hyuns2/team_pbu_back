@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
 import projectbuildup.mivv.domain.worthyConsumption.entity.Condition;
+import projectbuildup.mivv.domain.worthyConsumption.entity.RecommendationReason;
 import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumption;
 import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumptionUrl;
 
@@ -14,7 +15,7 @@ import java.time.LocalDate;
 import java.util.List;
 @Schema(description = "가치소비 DTO")
 public class WorthyConsumptionDto {
-    @Getter @Setter
+    @Getter @Setter @Builder
     @NoArgsConstructor @AllArgsConstructor
     public static class Creation extends WorthyConsumptionUrlDto.Creation {
         @NotBlank(message = "가치소비의 이름을 입력해주세요")
@@ -26,7 +27,7 @@ public class WorthyConsumptionDto {
         @NotNull(message = "가치소비의 할인 가격을 입력해주세요") @Positive
         Integer salePrice;
         @NotNull
-        List<String> recommendationReason;
+        List<RecommendationReason> recommendationReasons;
         String availablePrice;
         String availablePlace;
         @NotNull
@@ -44,14 +45,14 @@ public class WorthyConsumptionDto {
         private LocalDate issuableCouponEndDate;
 
         private Long lastMonthAmount;
-        public WorthyConsumption toEntity(WorthyConsumptionUrl worthyConsumptionUrl, Condition condition){
+        public WorthyConsumption toEntity(WorthyConsumptionUrl worthyConsumptionUrl, Condition condition, List<RecommendationReason> recommendationReasons){
             return WorthyConsumption.builder()
                     .title(title)
                     .hashtags(hashtags)
                     .worthyConsumptionUrl(worthyConsumptionUrl)
                     .originalPrice(originalPrice)
                     .salePrice(salePrice)
-                    .recommendationReason(recommendationReason)
+                    .recommendationReasons(recommendationReasons)
                     .availablePrice(availablePrice)
                     .availablePlace(availablePlace)
                     .summary(summary)
@@ -67,7 +68,7 @@ public class WorthyConsumptionDto {
         Integer originalPrice;
         Integer salePrice;
         @NotNull
-        List<String> recommendationReason;
+        List<RecommendationReason> recommendationReasons;
         String availablePrice;
         String availablePlace;
         List<String> summary;

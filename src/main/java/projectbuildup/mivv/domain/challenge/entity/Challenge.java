@@ -68,7 +68,8 @@ public class Challenge extends BaseTimeEntity {
         this.mainTitle = requestDto.getMainTitle();
         this.subTitle = requestDto.getSubTitle();
         this.description = requestDto.getDescription();
-        this.maxSavingAmount = requestDto.getRemittanceOnceLimit();
+        this.maxSavingAmount = requestDto.getMaxSavingAmount();
+        this.minSavingAmount = requestDto.getMinSavingAmount();
         this.limitedNumberOfTimes = requestDto.getRemittanceAvailableCount();
     }
 

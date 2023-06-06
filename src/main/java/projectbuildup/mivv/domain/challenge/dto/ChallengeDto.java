@@ -65,9 +65,13 @@ public class ChallengeDto {
         @NotNull
         List<String> description;
 
-        @Schema(description = "1회 송금액")
+        @Schema(description = "최대 송금액")
         @Min(1000)
-        private long remittanceOnceLimit;
+        private long maxSavingAmount;
+
+        @Schema(description = "최소 송금액")
+        @Min(1000)
+        private long minSavingAmount;
 
         @Schema(description = "하루 송금 횟수 제한")
         @Min(1)

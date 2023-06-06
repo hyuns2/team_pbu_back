@@ -1,5 +1,6 @@
 package projectbuildup.mivv.domain.account.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,7 @@ public class AccountRegisterService {
      * @param requestDto 계좌 정보, 아이디/비밀번호 혹은 인증서
      * @param userId     회원 아이디넘버
      */
+    @Transactional
     public void registerAccount(AccountRegisterDto requestDto, Long userId) {
         User user = userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
         Account account = accountSystem.createAccount(requestDto, user);
