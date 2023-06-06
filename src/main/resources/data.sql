@@ -182,7 +182,7 @@ values (1, '2023-05-18', 1, 2, 0),
 insert into worthy_consumption_condition(id, check_condition_type,
                                          convention_end_date, convention_start_date,
                                          last_month_amount, max_issuance)
-values (1, 'OK', '2023-07-01', '2023-04-01', 10000, 100),
+values (1, 'OK', '2023-07-01', '2023-04-01', 10000, 5),
        (2, 'OK', '2023-07-01', '2023-04-01', 10000, 100),
        (3, 'OK', '2023-07-01', '2023-04-01', 10000, 100);
 
