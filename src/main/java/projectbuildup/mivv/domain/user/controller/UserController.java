@@ -74,7 +74,7 @@ public class UserController {
     @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('USER')")
     @GetMapping(value = "/profile")
-    public ResponseEntity<ProfileDto.Response> getProfile(@AuthenticationPrincipal User user) throws IOException {
+    public ResponseEntity<ProfileDto.Response> getProfile(@AuthenticationPrincipal User user) {
         ProfileDto.Response responseDto = userService.getProfile(user.getId());
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }

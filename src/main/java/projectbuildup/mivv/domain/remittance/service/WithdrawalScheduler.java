@@ -3,6 +3,8 @@ package projectbuildup.mivv.domain.remittance.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import projectbuildup.mivv.domain.account.entity.TransactionDetail;
@@ -21,7 +23,9 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class WithdrawalScheduler {
-    private final AccountDetailsSystem accountDetailsSystem;
+    @Autowired
+    @Qualifier("codefAccountDetailsSystem")
+    AccountDetailsSystem accountDetailsSystem;
     private final UserRepository userRepository;
     private final ParticipationRepository participationRepository;
     private final RemittanceRepository remittanceRepository;

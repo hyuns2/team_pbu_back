@@ -17,10 +17,6 @@ public class SavingCountRedisRepository implements SavingCountRepository {
     }
 
     @Override
-    public Optional<SavingCount> findByParticipation(Participation participation) {
-        return Optional.empty();
-    }
-    @Override
     public List<SavingCount> findAll() {
         return null;
     }
@@ -28,5 +24,10 @@ public class SavingCountRedisRepository implements SavingCountRepository {
     @Override
     public Optional<SavingCount> findById(Long id) {
         return Optional.empty();
+    }
+
+    @Override
+    public void delete(SavingCount savingCount) {
+
     }
 }
