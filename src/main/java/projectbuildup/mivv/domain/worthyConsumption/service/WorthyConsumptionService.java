@@ -14,6 +14,7 @@ import projectbuildup.mivv.domain.user.repository.UserRepository;
 import projectbuildup.mivv.domain.worthyConsumption.dto.WorthyConsumptionDto;
 import projectbuildup.mivv.domain.worthyConsumption.dto.response.WorthyConsumptionResponseDto;
 import projectbuildup.mivv.domain.worthyConsumption.entity.Condition;
+import projectbuildup.mivv.domain.worthyConsumption.entity.RecommendationReason;
 import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumption;
 import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumptionUrl;
 import projectbuildup.mivv.domain.worthyConsumption.repository.WorthyConsumptionRepository;
@@ -50,17 +51,29 @@ public class WorthyConsumptionService {
      * @param
      */
     public void createWorthyConsumption(WorthyConsumptionDto.Creation worthyConsumptionDto) throws IOException {
+        Image logo = imageUploader.upload(worthyConsumptionDto.getLogo(),ImageType.VALUE);
+        Image videoThumbNail = imageUploader.upload(worthyConsumptionDto.getVideoThumbNail(),ImageType.VALUE);
         Video video = videoUploader.upload(worthyConsumptionDto.getVideo(), "values");
         Image image = imageUploader.upload(worthyConsumptionDto.getImage(), ImageType.VALUE);
         Image detailImage = imageUploader.upload(worthyConsumptionDto.getDetailImage(), ImageType.VALUE);
         Image detailBackgroundImage = imageUploader.upload(worthyConsumptionDto.getDetailBackgroundImage(), ImageType.VALUE);
         Image placeImage = imageUploader.upload(worthyConsumptionDto.getPlaceImage(), ImageType.VALUE);
 
-        WorthyConsumptionUrl worthyConsumptionUrl = new WorthyConsumptionUrl(video.getVideoPath(), image.getImagePath(), detailImage.getImagePath(), detailBackgroundImage.getImagePath(), placeImage.getImagePath());
+        WorthyConsumptionUrl worthyConsumptionUrl = new WorthyConsumptionUrl(logo.getImagePath(), videoThumbNail.getImagePath(), video.getVideoPath(), image.getImagePath(), detailImage.getImagePath(), detailBackgroundImage.getImagePath(), placeImage.getImagePath());
         Condition condition = new Condition(worthyConsumptionDto);
-        WorthyConsumption worthyConsumption = worthyConsumptionDto.toEntity(worthyConsumptionUrl, condition);
+        List<RecommendationReason> recommendationReasons = worthyConsumptionDto.getRecommendationReasons().stream()
+                .map(dto -> mapToRecommendationReason(dto.getTitle(), dto.getDescription()))
+                .collect(Collectors.toList());
+        WorthyConsumption worthyConsumption = worthyConsumptionDto.toEntity(worthyConsumptionUrl, condition, recommendationReasons);
         worthyConsumptionRepository.save(worthyConsumption);
     }
+    private RecommendationReason mapToRecommendationReason(String title, String description) {
+        return RecommendationReason.builder()
+                .title(title)
+                .description(description)
+                .build();
+    }
+
     /**
      * 가치소비를 조회하는 로직입니다.
      * @param worthyConsumptionId
@@ -109,13 +122,15 @@ public class WorthyConsumptionService {
         worthyConsumptionRepository.save(worthyConsumption);
     }
     public void updateUrl(WorthyConsumption worthyConsumption, WorthyConsumptionDto.Update worthyConsumptionDto) throws IOException {
+        Image logo = imageUploader.upload(worthyConsumptionDto.getLogo(),ImageType.VALUE);
+        Image videoThumbNail = imageUploader.upload(worthyConsumptionDto.getVideoThumbNail(),ImageType.VALUE);
         Video video = videoUploader.upload(worthyConsumptionDto.getVideo(), "values");
         Image image = imageUploader.upload(worthyConsumptionDto.getImage(), ImageType.VALUE);
         Image detailImage = imageUploader.upload(worthyConsumptionDto.getDetailImage(), ImageType.VALUE);
         Image detailBackgroundImage = imageUploader.upload(worthyConsumptionDto.getDetailBackgroundImage(), ImageType.VALUE);
         Image placeImage = imageUploader.upload(worthyConsumptionDto.getPlaceImage(), ImageType.VALUE);
 
-        worthyConsumption.getWorthyConsumptionUrl().update(video.getVideoPath(), image.getImagePath(), detailImage.getImagePath(), detailBackgroundImage.getImagePath(), placeImage.getImagePath());
+        worthyConsumption.getWorthyConsumptionUrl().update(logo.getImagePath(), videoThumbNail.getImagePath(), video.getVideoPath(), image.getImagePath(), detailImage.getImagePath(), detailBackgroundImage.getImagePath(), placeImage.getImagePath());
     }
         /**
          * 가치소비를 삭제하는 로직입니다.

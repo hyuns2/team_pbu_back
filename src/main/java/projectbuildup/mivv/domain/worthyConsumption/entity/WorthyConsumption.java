@@ -34,11 +34,9 @@ public class WorthyConsumption extends BaseTimeEntity {
     @NonNull
     @Column(name = "sale_price")
     private int salePrice;
-
-    @ElementCollection
-    @NonNull
-    @Column(name = "worthy_consumption_recommendation_reason")
-    private List<String> recommendationReason = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "worthy_consumption_id")
+    private List<RecommendationReason> recommendationReasons = new ArrayList<RecommendationReason>();
 
     @NonNull
     @Column(name = "available_price")
@@ -69,7 +67,7 @@ public class WorthyConsumption extends BaseTimeEntity {
     public void update(WorthyConsumptionDto.Update worthyConsumptionDto){
         this.title = worthyConsumptionDto.getTitle();
         this.hashtags = worthyConsumptionDto.getHashtags();
-        this.recommendationReason = worthyConsumptionDto.getRecommendationReason();
+        this.recommendationReasons = worthyConsumptionDto.getRecommendationReasons();
         this.summary = worthyConsumptionDto.getSummary();
         this.originalPrice = worthyConsumptionDto.getOriginalPrice();
         this.salePrice = worthyConsumptionDto.getSalePrice();

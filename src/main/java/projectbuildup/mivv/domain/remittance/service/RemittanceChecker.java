@@ -1,7 +1,10 @@
 package projectbuildup.mivv.domain.remittance.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import projectbuildup.mivv.domain.account.entity.TransactionDetail;
 import projectbuildup.mivv.domain.account.service.accountdetails.AccountDetailsSystem;
@@ -24,8 +27,12 @@ import static java.lang.Thread.sleep;
 @Slf4j
 @RequiredArgsConstructor
 public class RemittanceChecker {
-
-    private final AccountDetailsSystem accountDetailsSystem;
+    @Autowired
+    @Qualifier("codefAccountDetailsSystem")
+    AccountDetailsSystem accountDetailsSystem;
+    @Autowired
+    @Qualifier("testAccountDetailsSystem")
+    AccountDetailsSystem testAccountDetailsSystem;
     private final RemittanceRepository remittanceRepository;
     private final SavingCountService savingCountService;
     private final RankingService rankingService;
@@ -44,21 +51,30 @@ public class RemittanceChecker {
      * @param participation 참여 정보
      * @throws InterruptedException exception
      */
+    @Transactional
     public boolean check(long amount, Participation participation, LocalDateTime startTime) throws InterruptedException {
-        log.info("5분간 조회 시작");
-        if (startTime == null) {
-            startTime = LocalDateTime.now();
-        }
         for (int i = 0; i < ASYNC_CHECK_TRY; i++) {
             sleep(TimeUnit.MILLISECONDS.convert(ASYNC_CHECK_TERM_SEC, TimeUnit.SECONDS));
-            log.info("{}초 경과, 조회 중...", (i + 1) * ASYNC_CHECK_TERM_SEC);
             if (hasRecord(amount, participation.getUser(), startTime)) {
                 updateRemittance(amount, participation);
-                log.info("송금액 확인 성공");
                 return true;
             }
         }
-        log.info("송금액 확인 실패");
+        return false;
+    }
+
+    @Transactional
+    public boolean checkTest(Long amount, Participation participation, LocalDateTime startTime) throws InterruptedException {
+        List<TransactionDetail> transactionDetails = testAccountDetailsSystem.getDepositHistory(participation.getUser(), startTime.toLocalDate());
+        for (int i = 0; i < ASYNC_CHECK_TRY; i++) {
+            sleep(TimeUnit.MILLISECONDS.convert(1, TimeUnit.SECONDS));
+            if (transactionDetails.stream()
+                    .filter(t -> t.getTime().isAfter(startTime))
+                    .anyMatch(t -> t.getAmount() == amount)) {
+                updateRemittance(1000L, participation);
+                return true;
+            }
+        }
         return false;
     }
 
@@ -68,17 +84,19 @@ public class RemittanceChecker {
      * - 금일 절약 횟수를 1 증가시킵니다.
      * - 랭킹 점수를 증가시킵니다.
      * - 챌린지의 총 절약 금액 정보를 갱신합니다.
+     * - 수치 조건 카드의 발급을 확인합니다.
      *
      * @param amount        송금 정보
      * @param participation 참여 정보
      */
+    @Transactional
     private void updateRemittance(long amount, Participation participation) {
         Remittance remittance = Remittance.newDeposit(amount, participation);
         remittanceRepository.save(remittance);
         savingCountService.addCount(participation);
         double score = rankScoreCalculator.calculate(remittance);
         rankingService.updateScore(participation.getUser(), participation.getChallenge(), score);
-        remittanceArchivingService.assignRemittanceConditionCards(participation.getUser());
+//        remittanceArchivingService.assignNumericalConditionCards(participation.getUser());
     }
 
     /**
@@ -95,4 +113,6 @@ public class RemittanceChecker {
                 .filter(t -> t.getTime().isAfter(startTime))
                 .anyMatch(t -> t.getAmount() == amount);
     }
+
+
 }

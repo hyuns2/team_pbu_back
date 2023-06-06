@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -28,6 +29,7 @@ import projectbuildup.mivv.integrationtest.setting.MockEntityFactory;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.YearMonth;
 import java.util.List;
 import java.util.Optional;
 
@@ -113,5 +115,52 @@ class RemittanceRepositoryTest {
 
         // then
         assertThat(result).isEqualTo(5500L);
+    }
+
+    @Test
+    @DisplayName("현재 달에 절약한 금액의 총합을 조회한다.")
+    void test3() {
+        // given
+        User user = MockEntityFactory.mockUser(MockEntityFactory.mockIdentityVerification(), "유저1");
+        userRepository.save(user);
+        Challenge challenge = MockEntityFactory.mockChallenge(MockEntityFactory.mockImage(), "챌린지1");
+        challengeRepository.save(challenge);
+        Participation participation = new Participation(user, challenge);
+        participationRepository.save(participation);
+        Remittance remittance1 = new Remittance(1000L, participation);
+        Remittance remittance2 = new Remittance(2000L, participation);
+        Remittance remittance3 = new Remittance(3000L, participation);
+        Remittance remittance4 = new Remittance(4000L, participation);
+        remittanceRepository.saveAll(List.of(remittance1, remittance2, remittance3, remittance4));
+
+        // when
+        YearMonth yearMonth = YearMonth.now();
+        LocalDateTime startTime = yearMonth.atDay(1).atStartOfDay();
+        LocalDateTime endTime = yearMonth.atEndOfMonth().atTime(LocalTime.MAX);
+        Long result = remittanceRepository.findSumAmountByUserAndCreatedTimeBetween(user, startTime, endTime);
+
+        // then
+        assertThat(result).isEqualTo(10000L);
+    }
+
+    @Test
+    @DisplayName("현재 달에 절약한 금액이 없을 경우 0을 반환한다.")
+    void test4() {
+        // given
+        User user = MockEntityFactory.mockUser(MockEntityFactory.mockIdentityVerification(), "유저1");
+        userRepository.save(user);
+        Challenge challenge = MockEntityFactory.mockChallenge(MockEntityFactory.mockImage(), "챌린지1");
+        challengeRepository.save(challenge);
+        Participation participation = new Participation(user, challenge);
+        participationRepository.save(participation);
+
+        // when
+        YearMonth yearMonth = YearMonth.now();
+        LocalDateTime startTime = yearMonth.atDay(1).atStartOfDay();
+        LocalDateTime endTime = yearMonth.atEndOfMonth().atTime(LocalTime.MAX);
+        Long result = remittanceRepository.findSumAmountByUserAndCreatedTimeBetween(user, startTime, endTime);
+
+        // then
+        assertThat(result).isEqualTo(0L);
     }
 }

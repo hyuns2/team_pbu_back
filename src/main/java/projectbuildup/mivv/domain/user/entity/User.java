@@ -1,8 +1,11 @@
 package projectbuildup.mivv.domain.user.entity;
 
 import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.ForeignKey;
+import jakarta.persistence.Table;
 import lombok.*;
-import org.hibernate.annotations.Columns;
+import org.hibernate.annotations.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,6 +14,7 @@ import projectbuildup.mivv.domain.auth.dto.AuthDto;
 import projectbuildup.mivv.global.common.BaseTimeEntity;
 import projectbuildup.mivv.global.common.imageStore.Image;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -23,6 +27,8 @@ import java.util.stream.Collectors;
 @Builder
 @Entity
 @ToString
+@Where(clause = "deleted_at IS NULL")
+@SQLDelete(sql = "UPDATE user SET deleted_at = CURRENT_TIMESTAMP where id = ?")
 @Table(name = "user")
 public class User extends BaseTimeEntity implements UserDetails {
     private final static String DEFAULT_ROLE = "ROLE_USER";
@@ -30,9 +36,9 @@ public class User extends BaseTimeEntity implements UserDetails {
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    @Column(name = "nickname", nullable = false)
+    @Column(name = "nickname", nullable = false, length = 50)
     String nickname;
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = false, length = 50)
     String email;
     @Column(name = "password", nullable = false)
     String password;
@@ -42,20 +48,26 @@ public class User extends BaseTimeEntity implements UserDetails {
             @Column(name = "store_image_name")
     })
     Image profileImage;
-    @Column(name = "agreement", nullable = false)
+    @Column(name = "agreement", nullable = false, length = 1)
     boolean agreement;
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "identity_verification_id")
+    @JoinColumn(name = "identity_verification_id", foreignKey = @ForeignKey(name = "fk_user_to_iv"), nullable = false)
     IdentityVerification identityVerification;
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "account_id")
+    @JoinColumn(name = "account_id", foreignKey = @ForeignKey(name = "fk_user_to_account"))
     Account account;
 
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-//    private List<UserCardEntity> userCards = new ArrayList<>();
-//    @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn
-//    LikesShorts likes;
+    @Column(name = "deleted_at")
+    protected LocalDateTime deletedAt;
+
+    @CollectionTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "fk_user_to_roles"))
+    )
+    @Column(name = "roles", length = 30)
+    @ElementCollection(fetch = FetchType.LAZY)
+    @Builder.Default
+    private List<String> roles = new ArrayList<>();
 
     public static User of(AuthDto.SignupRequest requestDto, String encodedPassword, IdentityVerification identityVerification) {
         return User.builder()
@@ -67,15 +79,6 @@ public class User extends BaseTimeEntity implements UserDetails {
                 .roles(Collections.singletonList(DEFAULT_ROLE))
                 .build();
     }
-
-    @CollectionTable(
-            name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id")
-    )
-    @Column(name = "roles")
-    @ElementCollection(fetch = FetchType.LAZY)
-    @Builder.Default
-    private List<String> roles = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

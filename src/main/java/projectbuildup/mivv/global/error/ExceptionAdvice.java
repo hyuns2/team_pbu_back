@@ -68,8 +68,9 @@ public class ExceptionAdvice {
     @ExceptionHandler(CIllegalArgumentException.class)
     protected ResponseEntity<ErrorResponseDto> handle(CIllegalArgumentException e) {
         ErrorCode errorCode = e.getErrorCode();
+        String message = e.getMessage();
         e.printStackTrace();
-        return new ResponseEntity<>(new ErrorResponseDto(errorCode), errorCode.getStatusCode());
+        return new ResponseEntity<>(new ErrorResponseDto(errorCode, message), errorCode.getStatusCode());
     }
 
     @ExceptionHandler(CLoginFailedException.class)
