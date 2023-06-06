@@ -185,20 +185,26 @@ values (1, 'OK', '2023-07-01', '2023-04-01', 10000, 100),
        (2, 'OK', '2023-07-01', '2023-04-01', 10000, 100),
        (3, 'OK', '2023-07-01', '2023-04-01', 10000, 100);
 
-insert into worthy_consumption_url(id, detail_background_image_path, detail_image_path, image_path,
+insert into worthy_consumption_url(id, logo_path, video_thumb_nail_path, detail_background_image_path, detail_image_path, image_path,
                                   place_image_path, video_path)
 
-values (1, 'https://server.gasomann.com/resources/static/images/values/valueDetailBackground1.png',
+values (1, 'https://server.gasomann.com/resources/static/images/values/valueLogo1.png',
+        'https://server.gasomann.com/resources/static/images/values/valueVideoThumbNail1.png',
+        'https://server.gasomann.com/resources/static/images/values/valueDetailBackground1.png',
         'https://server.gasomann.com/resources/static/images/values/valueDetail1.png',
         'https://server.gasomann.com/resources/static/images/values/valueBackground1.png',
         'https://server.gasomann.com/resources/static/images/values/valueDetailMap1.png',
         'https://server.gasomann.com/resources/static/videos/values/valuevideo1.mp4'),
-       (2, 'https://server.gasomann.com/resources/static/images/values/valueDetailBackground1.png',
+       (2, 'https://server.gasomann.com/resources/static/images/values/valueLogo1.png',
+        'https://server.gasomann.com/resources/static/images/values/valueVideoThumbNail1.png',
+        'https://server.gasomann.com/resources/static/images/values/valueDetailBackground1.png',
         'https://server.gasomann.com/resources/static/images/values/valueDetail1.png',
         'https://server.gasomann.com/resources/static/images/values/valueBackground1.png',
         'https://server.gasomann.com/resources/static/images/values/valueDetailMap1.png',
         'https://server.gasomann.com/resources/static/videos/values/valuevideo1.mp4'),
-       (3, 'https://server.gasomann.com/resources/static/images/values/valueDetailBackground2.png',
+       (3, 'https://server.gasomann.com/resources/static/images/values/valueLogo1.png',
+        'https://server.gasomann.com/resources/static/images/values/valueVideoThumbNail1.png',
+        'https://server.gasomann.com/resources/static/images/values/valueDetailBackground1.png',
         'https://server.gasomann.com/resources/static/images/values/valueDetail1.png',
         'https://server.gasomann.com/resources/static/images/values/valueBackground1.png',
         'https://server.gasomann.com/resources/static/images/values/valueDetailMap1.png',
@@ -219,10 +225,10 @@ values (1, 'hashtags1'), (1, 'hashtags1'), (1, 'hashtags1'),
        (3, 'hashtags3'), (3, 'hashtags3'), (3, 'hashtags3');
 
 
-insert into worthy_consumption_recommendation_reason(worthy_consumption_id, worthy_consumption_recommendation_reason)
-values (1, 'recommendation reason1'), (1, 'recommendation reason1'), (1, 'recommendation reason1'),
-       (2, 'recommendation reason2'), (2, 'recommendation reason2'), (2, 'recommendation reason2'),
-       (3, 'recommendation reason3'), (3, 'recommendation reason3'), (3, 'recommendation reason3');
+insert into recommendation_reason(id, title, description, worthy_consumption_id)
+values (1, 'title1', 'description1', 1), (2, 'title2', 'description2', 1), (3, 'title3', 'description3', 1),
+       (4, 'title1', 'description1', 2), (5, 'title2', 'description2', 2), (6, 'title3', 'description3', 2),
+       (7, 'title1', 'description1', 3), (8, 'title2', 'description2', 3), (9, 'title3', 'description3', 3);
 
 insert into worthy_consumption_summary(worthy_consumption_id, worthy_consumption_summary)
 values (1, 'summary1'), (1, 'summary1'), (1, 'summary1'),
@@ -230,12 +236,13 @@ values (1, 'summary1'), (1, 'summary1'), (1, 'summary1'),
        (3, 'summary3'), (3, 'summary3'), (3, 'summary3');
 
 -- <Shorts> --
-insert into shorts(id, category, title, content, image_path, video_path)
-values (1, 'SAVING', '제목1', '내용1', 'https://server.gasomann.com/resources/static/images/shorts/shortImage1.png',
+
+insert into shorts(id, category, uploader_name, content, image_path, video_path)
+values (1, 'SAVING', '이름1', '내용1', 'https://3.37.5.91/resources/static/images/shorts/shortImage1.png',
         'https://server.gasomann.com/resources/static/videos/shorts/shortVideo1.mp4'),
-       (2, 'SAVING', '제목2', '내용2', 'https://server.gasomann.com/resources/static/images/shorts/shortImage2.png',
+       (2, 'SAVING', '이름2', '내용2', 'https://3.37.5.91/resources/static/images/shorts/shortImage2.png',
         'https://server.gasomann.com/resources/static/videos/shorts/shortVideo2.mp4'),
-       (3, 'EDUCATION', '제목3', '내용3', 'https://server.gasomann.com/resources/static/images/shorts/shortImage3.png',
+       (3, 'EDUCATION', '이름3', '내용3', 'https://3.37.5.91/resources/static/images/shorts/shortImage3.png',
         'https://server.gasomann.com/resources/static/videos/shorts/shortVideo3.mp4');
 
 -- <Coupon> --
