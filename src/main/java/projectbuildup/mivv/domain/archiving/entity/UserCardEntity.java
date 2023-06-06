@@ -39,4 +39,8 @@ public class UserCardEntity {
         this.isNew = true;
     }
 
+    public void updateIsNew() {
+        this.isNew = false;
+    }
+
 }

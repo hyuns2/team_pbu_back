@@ -31,7 +31,7 @@ public class NotificationEntity {
     @Column(name = "content", nullable = false, length = 1000)
     private String content;
 
-    @Column(name = "image_path", nullable = false, length = 1000)
+    @Column(name = "image_path", nullable = false, length = 5000)
     private String imagePath;
 
     @Column(name = "time_stamp", nullable = false)
