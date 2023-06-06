@@ -19,7 +19,11 @@ public class WorthyConsumptionUrlDto {
     @Schema(description = "가치소비 영상 및 이미지 URL 생성 DTO")
     public static class Creation {
         @NotNull
+        private MultipartFile logo;
+        @NotNull
         private MultipartFile video;
+        @NotNull
+        private MultipartFile videoThumbNail;
         @NotNull
         private MultipartFile image;
         @NotNull
@@ -35,7 +39,11 @@ public class WorthyConsumptionUrlDto {
     @Schema(description = "가치소비 영상 및 이미지 URL 수정 DTO")
     public static class Update {
         @NotNull
+        private MultipartFile logo;
+        @NotNull
         private MultipartFile video;
+        @NotNull
+        private MultipartFile videoThumbNail;
         @NotNull
         private MultipartFile image;
         @NotNull

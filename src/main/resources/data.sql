@@ -157,40 +157,24 @@ values (1, '답변입니다.', '문의 내용입니다.', '2023-04-01 11:31:14.9
        (4, '답변입니다.', '문의 내용입니다.', '2023-04-01 11:31:14.982873', '문의 샘플4', 3);
 
 insert into notification(id, content, image_path, type, time_stamp, title)
-values (1, '이벤트내용', 'https://server.gasomann.com/resources/static/images/cardss/card1.png', 'EVENT',
-        '2023-05-24 11:00:14.982873', '이벤트1'),
-       (2, '이벤트내용', 'https://server.gasomann.com/resources/static/images/cardss/card1.png', 'EVENT',
-        '2023-05-24 11:00:14.982873', '이벤트2'),
-       (3, '공지내용', 'https://server.gasomann.com/resources/static/images/cardss/card1.png', 'NOTICE',
-        '2023-05-24 11:00:14.982873', '공지사항1'),
-       (4, '공지내용', 'https://server.gasomann.com/resources/static/images/cardss/card1.png', 'NOTICE',
-        '2023-05-24 11:00:14.982873', '공지사항2');
-
+values (1, '이벤트내용', 'https://server.gasomann.com/resources/static/images/cards/card1.png', 'EVENT', '2023-05-24 11:00:14.982873', '이벤트1'),
+       (2, '이벤트내용', 'https://server.gasomann.com/resources/static/images/cards/card1.png', 'EVENT', '2023-05-24 11:00:14.982873', '이벤트2'),
+       (3, '공지내용', 'https://server.gasomann.com/resources/static/images/cards/card1.png', 'NOTICE', '2023-05-24 11:00:14.982873', '공지사항1'),
+       (4, '공지내용', 'https://server.gasomann.com/resources/static/images/cards/card1.png', 'NOTICE', '2023-05-24 11:00:14.982873', '공지사항2');
+       
 insert into card(d_type, id, type, title, sub_title, sentence, image_path)
-values ('GeneralCondition', 1, 'GENERAL', '제목1', '부제목1', '명언1',
-        'https://server.gasomann.com/resources/static/images/cardss/card1.png'),
-       ('GeneralCondition', 2, 'GENERAL', '제목2', '부제목2', '명언2',
-        'https://server.gasomann.com/resources/static/images/cardss/card1.png'),
-       ('GeneralCondition', 3, 'GENERAL', '제목3', '부제목3', '명언3',
-        'https://server.gasomann.com/resources/static/images/cardss/card1.png'),
-       ('GeneralCondition', 4, 'GENERAL', '제목4', '부제목4', '명언4',
-        'https://server.gasomann.com/resources/static/images/cardss/card1.png'),
-       ('GeneralCondition', 5, 'GENERAL', '제목5', '부제목5', '명언5',
-        'https://server.gasomann.com/resources/static/images/cardss/card1.png'),
-       ('GeneralCondition', 6, 'GENERAL', '제목6', '부제목6', '명언6',
-        'https://server.gasomann.com/resources/static/images/cardss/card1.png'),
-       ('GeneralCondition', 7, 'GENERAL', '제목7', '부제목7', '명언7',
-        'https://server.gasomann.com/resources/static/images/cardss/card1.png'),
-       ('GeneralCondition', 8, 'GENERAL', '제목8', '부제목8', '명언8',
-        'https://server.gasomann.com/resources/static/images/cardss/card1.png'),
-       ('GeneralCondition', 9, 'GENERAL', '제목9', '부제목9', '명언9',
-        'https://server.gasomann.com/resources/static/images/cardss/card1.png'),
-       ('RemittanceCondition', 10, 'REMITTANCE', '제목10', '부제목10', '명언10',
-        'https://server.gasomann.com/resources/static/images/cardss/card1.png'),
-       ('RemittanceCondition', 11, 'REMITTANCE', '제목11', '부제목11', '명언11',
-        'https://server.gasomann.com/resources/static/images/cardss/card1.png'),
-       ('CouponCondition', 12, 'COUPON', '제목12', '부제목12', '명언12',
-        'https://server.gasomann.com/resources/static/images/cardss/card1.png');
+values ('GeneralCondition', 1, 'GENERAL', '제목1', '부제목1', '명언1', 'https://server.gasomann.com/resources/static/images/cards/card1.png'),
+       ('GeneralCondition', 2, 'GENERAL', '제목2', '부제목2', '명언2', 'https://server.gasomann.com/resources/static/images/cards/card1.png'),
+       ('GeneralCondition', 3, 'GENERAL', '제목3', '부제목3', '명언3', 'https://server.gasomann.com/resources/static/images/cards/card1.png'),
+       ('GeneralCondition', 4, 'GENERAL', '제목4', '부제목4', '명언4', 'https://server.gasomann.com/resources/static/images/cards/card1.png'),
+       ('GeneralCondition', 5, 'GENERAL', '제목5', '부제목5', '명언5', 'https://server.gasomann.com/resources/static/images/cards/card1.png'),
+       ('GeneralCondition', 6, 'GENERAL', '제목6', '부제목6', '명언6', 'https://server.gasomann.com/resources/static/images/cards/card1.png'),
+       ('GeneralCondition', 7, 'GENERAL', '제목7', '부제목7', '명언7', 'https://server.gasomann.com/resources/static/images/cards/card1.png'),
+       ('GeneralCondition', 8, 'GENERAL', '제목8', '부제목8', '명언8', 'https://server.gasomann.com/resources/static/images/cards/card1.png'),
+       ('GeneralCondition', 9, 'GENERAL', '제목9', '부제목9', '명언9', 'https://server.gasomann.com/resources/static/images/cards/card1.png'),
+       ('RemittanceCondition', 10, 'REMITTANCE', '제목10', '부제목10', '명언10', 'https://server.gasomann.com/resources/static/images/cards/card1.png'),
+       ('RemittanceCondition', 11, 'REMITTANCE', '제목11', '부제목11', '명언11', 'https://server.gasomann.com/resources/static/images/cards/card1.png'),
+       ('CouponCondition', 12, 'COUPON', '제목12', '부제목12', '명언12', 'https://server.gasomann.com/resources/static/images/cards/card1.png');
 
 insert into user_card(id, date, card_id, user_id, is_new)
 values (1, '2023-05-18', 1, 2, 0),
@@ -211,24 +195,31 @@ values (1, 'OK', '2023-07-01', '2023-04-01', 10000, 100),
        (2, 'OK', '2023-07-01', '2023-04-01', 10000, 100),
        (3, 'OK', '2023-07-01', '2023-04-01', 10000, 100);
 
-insert into worthy_consumption_url(id, detail_background_image_path, detail_image_path, image_path,
-                                   place_image_path, video_path)
 
-values (1, 'http://server.gasomann.com/resources/static/images/values/valueDetailBackground1.png',
-        'http://server.gasomann.com/resources/static/images/values/valueDetail1.png',
-        'http://server.gasomann.com/resources/static/images/values/valueBackground1.png',
-        'http://server.gasomann.com/resources/static/images/values/valueDetailMap1.png',
-        'http://server.gasomann.com/resources/static/videos/values/valuevideo1.mp4'),
-       (2, 'http://server.gasomann.com/resources/static/images/values/valueDetailBackground1.png',
-        'http://server.gasomann.com/resources/static/images/values/valueDetail1.png',
-        'http://server.gasomann.com/resources/static/images/values/valueBackground1.png',
-        'http://server.gasomann.com/resources/static/images/values/valueDetailMap1.png',
-        'http://server.gasomann.com/resources/static/videos/values/valuevideo1.mp4'),
-       (3, 'http://server.gasomann.com/resources/static/images/values/valueDetailBackground2.png',
-        'http://server.gasomann.com/resources/static/images/values/valueDetail1.png',
-        'http://server.gasomann.com/resources/static/images/values/valueBackground1.png',
-        'http://server.gasomann.com/resources/static/images/values/valueDetailMap1.png',
-        'http://server.gasomann.com/resources/static/videos/values/valuevideo1.mp4');
+insert into worthy_consumption_url(id, logo_path, video_thumb_nail_path, detail_background_image_path, detail_image_path, image_path,
+                                  place_image_path, video_path)
+
+values (1, 'https://server.gasomann.com/resources/static/images/values/valueLogo1.png',
+        'https://server.gasomann.com/resources/static/images/values/valueVideoThumbNail1.png',
+        'https://server.gasomann.com/resources/static/images/values/valueDetailBackground1.png',
+        'https://server.gasomann.com/resources/static/images/values/valueDetail1.png',
+        'https://server.gasomann.com/resources/static/images/values/valueBackground1.png',
+        'https://server.gasomann.com/resources/static/images/values/valueDetailMap1.png',
+        'https://server.gasomann.com/resources/static/videos/values/valuevideo1.mp4'),
+       (2, 'https://server.gasomann.com/resources/static/images/values/valueLogo1.png',
+        'https://server.gasomann.com/resources/static/images/values/valueVideoThumbNail1.png',
+        'https://server.gasomann.com/resources/static/images/values/valueDetailBackground1.png',
+        'https://server.gasomann.com/resources/static/images/values/valueDetail1.png',
+        'https://server.gasomann.com/resources/static/images/values/valueBackground1.png',
+        'https://server.gasomann.com/resources/static/images/values/valueDetailMap1.png',
+        'https://server.gasomann.com/resources/static/videos/values/valuevideo1.mp4'),
+       (3, 'https://server.gasomann.com/resources/static/images/values/valueLogo1.png',
+        'https://server.gasomann.com/resources/static/images/values/valueVideoThumbNail1.png',
+        'https://server.gasomann.com/resources/static/images/values/valueDetailBackground1.png',
+        'https://server.gasomann.com/resources/static/images/values/valueDetail1.png',
+        'https://server.gasomann.com/resources/static/images/values/valueBackground1.png',
+        'https://server.gasomann.com/resources/static/images/values/valueDetailMap1.png',
+        'https://server.gasomann.com/resources/static/videos/values/valuevideo1.mp4');
 
 insert into worthy_consumption(id, created_time, modified_time, available_place, available_price,
                                original_price, sale_price, title, condition_id, worthy_consumption_url_id)
@@ -251,16 +242,12 @@ values (1, 'hashtags1'),
        (3, 'hashtags3');
 
 
-insert into worthy_consumption_recommendation_reason(worthy_consumption_id, worthy_consumption_recommendation_reason)
-values (1, 'recommendation reason1'),
-       (1, 'recommendation reason1'),
-       (1, 'recommendation reason1'),
-       (2, 'recommendation reason2'),
-       (2, 'recommendation reason2'),
-       (2, 'recommendation reason2'),
-       (3, 'recommendation reason3'),
-       (3, 'recommendation reason3'),
-       (3, 'recommendation reason3');
+
+insert into recommendation_reason(id, title, description, worthy_consumption_id)
+values (1, 'title1', 'description1', 1), (2, 'title2', 'description2', 1), (3, 'title3', 'description3', 1),
+       (4, 'title1', 'description1', 2), (5, 'title2', 'description2', 2), (6, 'title3', 'description3', 2),
+       (7, 'title1', 'description1', 3), (8, 'title2', 'description2', 3), (9, 'title3', 'description3', 3);
+
 
 insert into worthy_consumption_summary(worthy_consumption_id, worthy_consumption_summary)
 values (1, 'summary1'),
@@ -274,12 +261,13 @@ values (1, 'summary1'),
        (3, 'summary3');
 
 -- <Shorts> --
-insert into shorts(id, category, title, content, image_path, video_path)
-values (1, 'SAVING', '제목1', '내용1', 'https://3.37.5.91/resources/static/images/shorts/shortImage1.png',
+
+insert into shorts(id, category, uploader_name, content, image_path, video_path)
+values (1, 'SAVING', '이름1', '내용1', 'https://3.37.5.91/resources/static/images/shorts/shortImage1.png',
         'https://server.gasomann.com/resources/static/videos/shorts/shortVideo1.mp4'),
-       (2, 'SAVING', '제목2', '내용2', 'https://3.37.5.91/resources/static/images/shorts/shortImage2.png',
+       (2, 'SAVING', '이름2', '내용2', 'https://3.37.5.91/resources/static/images/shorts/shortImage2.png',
         'https://server.gasomann.com/resources/static/videos/shorts/shortVideo2.mp4'),
-       (3, 'EDUCATION', '제목3', '내용3', 'https://3.37.5.91/resources/static/images/shorts/shortImage3.png',
+       (3, 'EDUCATION', '이름3', '내용3', 'https://3.37.5.91/resources/static/images/shorts/shortImage3.png',
         'https://server.gasomann.com/resources/static/videos/shorts/shortVideo3.mp4');
 
 -- <Coupon> --

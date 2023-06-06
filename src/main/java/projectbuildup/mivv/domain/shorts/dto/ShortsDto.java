@@ -13,22 +13,22 @@ public class ShortsDto {
     @Getter @Setter
     @AllArgsConstructor
     public static class creatRequest{
-        //@NotBlank(message = "제목은 필수 입력값입니다.")
-        String title;
-        //@NotBlank(message = "설명은 필수 입력값입니다.")
+        @NotBlank(message = "제목은 필수 입력값입니다.")
+        String uploaderName;
+        @NotBlank(message = "설명은 필수 입력값입니다.")
         String content;
-        //@NotBlank(message = "영상 주소는 필수 입력값입니다.")
+        @NotBlank(message = "영상 주소는 필수 입력값입니다.")
         //String videoPath;
         private MultipartFile video;
-        //@NotNull(message = "영상의 썸네일 이미지는 필수 입력값입니다.")
+        @NotNull(message = "영상의 썸네일 이미지는 필수 입력값입니다.")
         private MultipartFile image;
-        //@NotNull(message = "영상 카테고리는 필수 입력값입니다.") @Enumerated(EnumType.STRING)
+        @NotNull(message = "영상 카테고리는 필수 입력값입니다.") @Enumerated(EnumType.STRING)
         ShortsCategory category;
     }
     @Getter @Setter
     @AllArgsConstructor @NoArgsConstructor
     public static class updateRequest {
-        String title;
+        String uploaderName;
         String content;
         //String videoPath;
         private MultipartFile video;
@@ -39,7 +39,7 @@ public class ShortsDto {
     @AllArgsConstructor
     public static class shortsResponse {
         private Long id;
-        String title;
+        String uploaderName;
         String content;
         String videoPath;
         String imagePath;
@@ -48,7 +48,7 @@ public class ShortsDto {
         Boolean liked;
     public shortsResponse(Shorts shorts, Boolean liked){
         this.id = shorts.getId();
-        this.title = shorts.getTitle();
+        this.uploaderName = shorts.getUploaderName();
         this.content = shorts.getContent();
         this.videoPath = shorts.getVideoPath();
         this.imagePath= shorts.getImagePath();
