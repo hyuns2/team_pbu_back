@@ -5,6 +5,7 @@ import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 import projectbuildup.mivv.domain.challenge.entity.Challenge;
@@ -15,6 +16,7 @@ import java.util.List;
 
 public class ChallengeDto {
     @Getter
+    @Setter
     @NoArgsConstructor
     @AllArgsConstructor
     public static class CreationRequest {
