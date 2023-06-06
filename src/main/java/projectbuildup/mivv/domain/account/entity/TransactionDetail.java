@@ -3,6 +3,7 @@ package projectbuildup.mivv.domain.account.entity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -10,6 +11,7 @@ import java.time.format.DateTimeFormatter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class TransactionDetail {
     private final static String DATE_TIME_PATTERN = "yyyyMMddHHmmss";
     long amount;

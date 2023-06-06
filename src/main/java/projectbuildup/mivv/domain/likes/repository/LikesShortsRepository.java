@@ -16,4 +16,6 @@ public interface LikesShortsRepository extends JpaRepository<LikesShorts, Long> 
     List<LikesShorts> findAllByUser(User user);
     Optional<LikesShorts> findByUserAndShorts(User user, Shorts shorts);
     List<LikesShorts> findAllByUserAndLikesCategory(User user, LikesCategory likesCategory);
+
+    void deleteAllByUser(User user);
 }

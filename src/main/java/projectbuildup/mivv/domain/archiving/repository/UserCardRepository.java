@@ -16,8 +16,5 @@ public interface UserCardRepository extends JpaRepository<UserCardEntity, Long> 
     @Query("select u from UserCardEntity u where u.user = ?1 and u.isNew = true")
     List<UserCardEntity> findUserNewCards(User user);
 
-    @Modifying(clearAutomatically = true)
-    @Query("update UserCardEntity u set u.isNew = false where u.isNew = true and u.user = ?1")
-    void updateUserNewCards(User user);
-
+    void deleteAllByUser(User user);
 }

@@ -30,7 +30,7 @@ dependencies {
 	//codef
 	implementation 'io.codef.api:easycodef-java:1.0.5'
 	//mariadb
-//	implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client'
+	implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client'
 
 	//email
 	implementation 'org.springframework.boot:spring-boot-starter-mail'

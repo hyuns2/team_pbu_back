@@ -8,7 +8,4 @@ import projectbuildup.mivv.domain.user.entity.User;
 import java.util.Optional;
 
 public interface SavingCountJpaRepository extends JpaRepository<SavingCount, Long>{
-
-
-    Optional<SavingCount> findByParticipation(Participation participation);
 }

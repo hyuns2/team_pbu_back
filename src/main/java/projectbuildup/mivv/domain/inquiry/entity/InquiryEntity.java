@@ -5,6 +5,7 @@ import lombok.*;
 import projectbuildup.mivv.domain.user.entity.User;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Builder
 @NoArgsConstructor
@@ -35,5 +36,9 @@ public class InquiryEntity {
     @Column(name = "time_stamp", nullable = false)
     @Temporal(value = TemporalType.TIMESTAMP)
     private LocalDateTime timeStamp;
+
+    public void updateAnswer(final String answer) {
+        this.answer = answer;
+    }
 
 }

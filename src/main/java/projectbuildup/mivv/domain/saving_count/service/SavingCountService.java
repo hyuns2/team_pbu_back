@@ -3,6 +3,7 @@ package projectbuildup.mivv.domain.saving_count.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import projectbuildup.mivv.domain.participation.entity.Participation;
+import projectbuildup.mivv.domain.participation.repository.ParticipationRepository;
 import projectbuildup.mivv.domain.saving_count.entity.SavingCount;
 import projectbuildup.mivv.domain.saving_count.repository.SavingCountRepository;
 import projectbuildup.mivv.domain.user.entity.User;
@@ -14,6 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SavingCountService {
     private final SavingCountRepository savingCountRepository;
+    private final ParticipationRepository participationRepository;
 
     /**
      * 해당 사용자의 금일 참여 횟수를 1 증가시킵니다.
@@ -21,9 +23,10 @@ public class SavingCountService {
      * @param participation 참여 정보
      */
     public void addCount(Participation participation) {
-        SavingCount savingCount = savingCountRepository.findByParticipation(participation).orElseThrow(CUserNotFoundException::new);
+        SavingCount savingCount = participation.getSavingCount();
         savingCount.addCount();
-        savingCountRepository.save(savingCount);
+        participation.setSavingCount(savingCount);
+        participationRepository.save(participation);
     }
 
     /**

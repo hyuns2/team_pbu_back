@@ -13,4 +13,6 @@ public interface LikesWorthyConsumptionRepository extends JpaRepository<LikesWor
     void deleteLikesWorthyConsumptionByUserAndWorthyConsumption(User user, WorthyConsumption worthyConsumption);
     List<LikesWorthyConsumption> findAllByUser(User user);
     Optional<LikesWorthyConsumption> findByUserAndWorthyConsumption(User user, WorthyConsumption worthyConsumption);
+
+    void deleteAllByUser(User user);
 }

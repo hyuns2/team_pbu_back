@@ -3,6 +3,7 @@ package projectbuildup.mivv.domain.challenge.dto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 import projectbuildup.mivv.global.common.imageStore.Image;
 
 
@@ -13,6 +14,7 @@ import java.util.List;
 public class RankDto {
     @Getter
     @AllArgsConstructor
+    @ToString
     public static class Unit {
         long rank;
         long userId;

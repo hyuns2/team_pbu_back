@@ -1,6 +1,7 @@
 package projectbuildup.mivv.domain.challenge.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import projectbuildup.mivv.domain.challenge.dto.RankDto;
 import projectbuildup.mivv.domain.challenge.entity.Challenge;
@@ -16,12 +17,12 @@ import projectbuildup.mivv.global.error.exception.CUserNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import static projectbuildup.mivv.domain.challenge.service.RedisRankingSystem.*;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class RankingService {
     private final RedisRankingSystem rankingSystem;
     private final ChallengeRepository challengeRepository;
@@ -65,6 +66,24 @@ public class RankingService {
         return generateResponse(theFirst, userRanking);
     }
 
+    /**
+     * 사용자의 전체 랭킹 순위를 조회합니다.
+     *
+     * @param user 사용자
+     * @return 전체 랭킹 순위
+     */
+    public long getTotalRank(User user) {
+        String member = String.valueOf(user.getId());
+        return rankingSystem.getUserRank(TOTAL_RANKING_KEY, member);
+    }
+
+    /**
+     * 등수 리스트를 본인을 기준으로 first, upper, me, lower 새 필드에 나누어 담습니다.
+     *
+     * @param theFirst    1등의 랭킹 정보
+     * @param userRanking 자신 근처 랭킹 정보
+     * @return first, upper, me, lower
+     */
     private RankDto.GroupResponse generateResponse(RankDto.UnitResponse theFirst, List<RankDto.UnitResponse> userRanking) {
         List<RankDto.UnitResponse> upper = userRanking.subList(0, NEARBY_SIZE).stream().filter(Objects::nonNull).toList();
         RankDto.UnitResponse me = userRanking.get(NEARBY_SIZE);
@@ -73,6 +92,9 @@ public class RankingService {
     }
 
     private RankDto.UnitResponse toResponseDto(RankDto.Unit rank, Challenge challenge) {
+        if (rank == null) {
+            return null;
+        }
         User user = userRepository.findById(rank.getUserId()).orElseThrow(CUserNotFoundException::new);
         Long sumAmount = remittanceRepository.findSumAmountByUserAndChallenge(user, challenge);
         return RankDto.UnitResponse.builder()
