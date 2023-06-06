@@ -33,8 +33,8 @@ public class CardEntity {
     @Column(name = "sub_title", nullable = false, length = 30)
     protected String subTitle;
 
-    @Column(name = "sentence", nullable = false, length = 30)
-    protected String sentence;
+    @Column(name = "sentences", nullable = false, length = 300)
+    protected String sentences;
 
     @Column(name = "image_path", nullable = false, length = 5000)
     protected String imagePath;
@@ -50,8 +50,8 @@ public class CardEntity {
         if (dto.getSubTitle() != null) {
             this.subTitle = dto.getSubTitle();
         }
-        if (dto.getSentence() != null) {
-            this.sentence = dto.getSentence();
+        if (dto.getSentences().size() > 0) {
+            this.sentences = dto.getSentences().toString();
         }
         if (dto.getImage() != null) {
             this.imagePath = imagePath;

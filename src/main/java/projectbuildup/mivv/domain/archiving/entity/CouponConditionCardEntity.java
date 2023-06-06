@@ -11,6 +11,7 @@ import lombok.experimental.SuperBuilder;
 import projectbuildup.mivv.domain.archiving.dto.ArchivingDto;
 
 import java.io.IOException;
+import java.util.Collections;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder
@@ -20,10 +21,10 @@ import java.io.IOException;
 @Table(name = "coupon_card")
 public class CouponConditionCardEntity extends CardEntity {
 
-    @Column(name = "what_number")
+    @Column(name = "what_number", nullable = false)
     protected Integer whatNumber;
 
-    @Column(name = "how_successive")
+    @Column(name = "how_successive", nullable = false)
     protected Integer howSuccessive;
 
     public void updateCard(ArchivingDto.updateCouponCardRequestDto dto, String imagePath) throws IOException {
@@ -33,8 +34,8 @@ public class CouponConditionCardEntity extends CardEntity {
         if (dto.getSubTitle() != null) {
             this.subTitle = dto.getSubTitle();
         }
-        if (dto.getSentence() != null) {
-            this.sentence = dto.getSentence();
+        if (dto.getSentences().size() > 0) {
+            this.sentences = dto.getSentences().toString();
         }
         if (dto.getImage() != null) {
             this.imagePath = imagePath;

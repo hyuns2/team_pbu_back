@@ -44,11 +44,6 @@ public class WorthyConsumption extends BaseTimeEntity {
     @NonNull
     @Column(name = "available_place")
     private String availablePlace;
-    @ElementCollection
-    @NonNull
-    @Column(name = "worthy_consumption_summary")
-    private List<String> summary = new ArrayList<>();
-
     @Nullable
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "worthy_consumption_url_id")
@@ -68,7 +63,6 @@ public class WorthyConsumption extends BaseTimeEntity {
         this.title = worthyConsumptionDto.getTitle();
         this.hashtags = worthyConsumptionDto.getHashtags();
         this.recommendationReasons = worthyConsumptionDto.getRecommendationReasons();
-        this.summary = worthyConsumptionDto.getSummary();
         this.originalPrice = worthyConsumptionDto.getOriginalPrice();
         this.salePrice = worthyConsumptionDto.getSalePrice();
         this.availablePrice = worthyConsumptionDto.getAvailablePrice();

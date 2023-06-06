@@ -21,7 +21,7 @@ import projectbuildup.mivv.global.constant.ExampleValue;
 import projectbuildup.mivv.global.constant.Header;
 
 import java.io.IOException;
-
+import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -30,6 +30,14 @@ import java.io.IOException;
 public class CouponController {
 
     private final CouponService couponService;
+    @Operation(summary = "쿠폰을 모두 조회합니다.", description = "관리자가 쿠폰을 모두 조회합니다.")
+    @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping()
+    public ResponseEntity<?> readAllCoupon(){
+        List<CouponDto.Response> couponList = couponService.readAllCoupon();
+        return new ResponseEntity<>(couponList, HttpStatus.OK);
+    }
     @Operation(summary = "쿠폰을 조회합니다.", description = "사용자가 쿠폰을 조회합니다.(단건)")
     @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('USER')")
