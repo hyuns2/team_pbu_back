@@ -52,7 +52,6 @@ public class CodefAccountSystem implements AccountSystem {
 
     @Override
     public String certifyTransfer(AccountCertifyTransferDto requestDto) {
-        Map<String, Object> dataMap = codefClient.certifyTransfer(requestDto.getOrganizationCode(), requestDto.getAccountNumbers());
-        return (String) dataMap.get("authCode");
+        return (String) codefClient.certifyTransfer(requestDto.getOrganizationCode(), requestDto.getAccountNumbers()).get("authCode");
     }
 }
