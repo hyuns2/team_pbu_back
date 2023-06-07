@@ -62,8 +62,7 @@ public class AuthController {
     @Operation(summary = "KG이니시스 본인인증 (실패시 호출됨)")
     @PostMapping("/auth/certify-kg/fail")
     @PreAuthorize("permitAll()")
-    public ResponseEntity<String> Kgfail(HttpServletRequest request) {
-        log.info("정 세 벽");
+    public ResponseEntity<String> Kgfail() {
         return new ResponseEntity<>("본인인증에 실패하였습니다.", HttpStatus.OK);
     }
 

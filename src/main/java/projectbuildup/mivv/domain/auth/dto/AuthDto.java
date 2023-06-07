@@ -16,8 +16,8 @@ public class AuthDto {
     @AllArgsConstructor
     public static class SignupRequest{
         @NotBlank
-        @Schema(description = "본인인증 코드")
-        String verificationCode;
+        @Schema(description = "전화번호")
+        String mobile;
         @Email
         @Schema(description = "이메일", example = ExampleValue.User.EMAIL)
         String email;

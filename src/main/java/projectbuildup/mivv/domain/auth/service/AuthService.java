@@ -54,7 +54,7 @@ public class AuthService {
      */
     @Transactional
     public void signup(AuthDto.SignupRequest requestDto) {
-        IdentityVerification identityVerification = identityVerificationRepository.findByCode(requestDto.getVerificationCode()).orElseThrow(CVerificationNotFoundException::new);
+        IdentityVerification identityVerification = identityVerificationRepository.findByMobile(requestDto.getMobile()).orElseThrow(CVerificationNotFoundException::new);
         if (identityVerification.getUser() != null) {
             throw new CUserExistException();
         }
