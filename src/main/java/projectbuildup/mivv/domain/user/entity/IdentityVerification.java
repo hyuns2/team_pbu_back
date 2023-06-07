@@ -56,4 +56,13 @@ public class IdentityVerification extends BaseTimeEntity {
                 .code(dummyCode)
                 .build();
     }
+    public static IdentityVerification generateVerification(String name, String birthDate, String mobile){
+        String dummyCode = RandomStringUtils.randomAlphabetic(16);
+        return IdentityVerification.builder()
+                .name(name)
+                .birthDate(birthDate)
+                .mobile(mobile)
+                .code(dummyCode)
+                .build();
+    }
 }

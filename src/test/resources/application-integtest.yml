@@ -57,7 +57,12 @@ app:
     enable: false
 
 path:
-  files: classpath:store/files
-  images: classpath:store/images
-  videos: classpath:store/videos
+  files: E:\ROOM\Github\mivv-backend\src\test\resources\store\files
+  images: E:\ROOM\Github\mivv-backend\src\test\resources\store\images
+  videos: E:\ROOM\Github\mivv-backend\src\test\resources\store\videos
   ipUrl:
+
+jwt:
+  expiration:
+    access: 31536000 # 60 * 60 * 24 * 365 (1년)
+    refresh: 31536000 # 60 * 60 * 24 * 365 (1년)

@@ -48,7 +48,7 @@ public class AuthApiTest extends IntegrationTest {
     @DisplayName("본인인증 - 정상")
     void test() throws Exception {
         // given
-        AuthDto.CertifyRequest requestDto = new AuthDto.CertifyRequest("key");
+        AuthDto.CertifyRequest requestDto = new AuthDto.CertifyRequest("key", null, null);
 
         // when
         ResultActions actions = mvc.perform(post(CERTIFY_API)
@@ -66,7 +66,7 @@ public class AuthApiTest extends IntegrationTest {
     @DisplayName("회원가입 - 정상")
     void test1() throws Exception {
         // given
-        AuthDto.CertifyRequest certifyRequest = new AuthDto.CertifyRequest("key");
+        AuthDto.CertifyRequest certifyRequest = new AuthDto.CertifyRequest("key", null, null);
         String content = mvc.perform(post(CERTIFY_API)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(certifyRequest))

@@ -57,3 +57,8 @@ path:
   images: /resources/static/images
   videos: /resources/static/videos
   ipUrl: https://server.gasomann.com
+
+jwt:
+  expiration:
+    access: 31536000 # 60 * 60 * 24 * 365 (1년)
+    refresh: 31536000 # 60 * 60 * 24 * 365 (1년)

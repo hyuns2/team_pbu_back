@@ -16,7 +16,6 @@ import java.util.List;
 public class RemittanceDto {
 
     @Getter
-    @Setter
     @NoArgsConstructor
     @AllArgsConstructor
     public static class RemitRequest{
@@ -24,8 +23,6 @@ public class RemittanceDto {
         private Long userId;
         @Schema(hidden = true)
         private Long challengeId;
-        @Schema(description = "송금할 금액")
-        private Long amount;
     }
 
 

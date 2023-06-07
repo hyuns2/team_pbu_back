@@ -7,6 +7,7 @@ import projectbuildup.mivv.domain.remittance.dto.RemittanceDto;
 import projectbuildup.mivv.domain.remittance.service.RemittanceService;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.domain.user.repository.UserRepository;
+import projectbuildup.mivv.global.error.exception.CBadRequestException;
 import projectbuildup.mivv.global.error.exception.CUserNotFoundException;
 import projectbuildup.mivv.integrationtest.setting.IntegrationTest;
 import projectbuildup.mivv.integrationtest.setting.WithAuthUser;
@@ -18,6 +19,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class RemittanceServiceTest extends IntegrationTest {
     @Autowired
@@ -40,28 +42,28 @@ public class RemittanceServiceTest extends IntegrationTest {
     }
 
     @Test
-    @DisplayName("절약하기 호출 후, 절약금을 확인하면 갱신한다.")
-    void test1() throws ExecutionException, InterruptedException {
+    @DisplayName("절약금이 확인된 경우, 갱신한다.")
+    void test1() {
         // given
-        RemittanceDto.RemitRequest requestDto = new RemittanceDto.RemitRequest(1L, 1L, 11L);
+        RemittanceDto.RemitRequest requestDto = new RemittanceDto.RemitRequest(1L, 1L);
 
         // when
-        Future<Boolean> result = remittanceService.remitTest(requestDto, Optional.of(LocalDateTime.of(2019, 5, 11, 3, 38, 0)));
+        boolean result = remittanceService.checkSavingForTest(requestDto, Optional.empty());
 
         // then
-        assertThat(result.get()).isTrue();
+        assertThat(result).isTrue();
     }
 
     @Test
-    @DisplayName("절약하기 호출 후, 절약금을 확인하지 못하면 갱신하지 않는다.")
-    void test2() throws ExecutionException, InterruptedException {
+    @DisplayName("절약금을 확인하지 못하면 갱신하지 않는다.")
+    void test2() {
         // given
-        RemittanceDto.RemitRequest requestDto = new RemittanceDto.RemitRequest(1L, 1L, 11L);
+        RemittanceDto.RemitRequest requestDto = new RemittanceDto.RemitRequest(1L, 1L);
 
         // when
-        Future<Boolean> result = remittanceService.remitTest(requestDto, Optional.of(LocalDateTime.of(2019, 5, 11, 4, 0, 0)));
 
         // then
-        assertThat(result.get()).isFalse();
+        assertThatThrownBy(() -> remittanceService.checkSavingForTest(requestDto, Optional.of(LocalDateTime.of(2019, 5, 11, 4, 0, 0))))
+                .isInstanceOf(CBadRequestException.class);
     }
 }
