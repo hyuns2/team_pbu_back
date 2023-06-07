@@ -171,7 +171,7 @@ public class CodefDemoClient implements CodefClient {
         HashMap<String, Object> parameterMap = new HashMap<>();
         parameterMap.put("organization", organizationCode);
         parameterMap.put("account", accountNumbers);
-        parameterMap.put("inPrintType", "1");
+        parameterMap.put("inPrintType", "0");
         try {
             String CODEF_TRANSFER_AUTHENTICATION_API = "/v1/kr/bank/a/account/transfer-authentication";
             String result = codef.requestProduct(CODEF_TRANSFER_AUTHENTICATION_API, EasyCodefServiceType.DEMO, parameterMap);
