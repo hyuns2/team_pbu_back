@@ -1,4 +1,4 @@
-package projectbuildup.mivv.domain.remittance.service;
+package projectbuildup.mivv.global.batch;
 
 
 import lombok.RequiredArgsConstructor;

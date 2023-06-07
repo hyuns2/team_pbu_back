@@ -192,6 +192,7 @@ public class CodefSandBoxClient implements CodefClient {
             if (code.equals("CF-00000")) {
                 return (HashMap<String, Object>) jsonMap.get("data");
             }
+            log.error("코드에프 에러 코드 : {}", code);
             throw new CIllegalArgumentException("인증 과정에서 오류가 발생했습니다. 코드에프 에러코드: " + code);
         } catch (JsonProcessingException e) {
             throw new CInternalServerException();
