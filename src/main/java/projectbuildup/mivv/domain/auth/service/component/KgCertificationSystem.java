@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import projectbuildup.mivv.domain.user.entity.IdentityVerification;
+import projectbuildup.mivv.global.error.exception.CInternalServerException;
 
 import java.nio.charset.StandardCharsets;
 
@@ -21,12 +22,16 @@ public class KgCertificationSystem implements CertificationSystem {
      * @return IdentityVerification
      */
     @Override
-    public IdentityVerification certify(String txId, String authUrl) {
-        KgClient.ResponseBody data = kgClient.request(txId, authUrl);
-        String name = CbcDecoder.decrypt(data.getUserName().getBytes());
-        String birthday = CbcDecoder.decrypt(data.getUserBirthday().getBytes());
-        String phone = CbcDecoder.decrypt(data.getUserPhone().getBytes());
-        log.info(name + " / " + birthday + " / " + phone);
-        return IdentityVerification.generateVerification(name, birthday, phone);
+    public IdentityVerification certify(String txId, String authUrl, String token) {
+        try {
+            KgClient.ResponseBody data = kgClient.request(txId, authUrl);
+            String name = CbcDecoder.decrypt(data.getUserName().getBytes(StandardCharsets.UTF_8), token);
+            String birthday = CbcDecoder.decrypt(data.getUserBirthday().getBytes(), token);
+            String phone = CbcDecoder.decrypt(data.getUserPhone().getBytes(), token);
+            return IdentityVerification.generateVerification(name, birthday, phone);
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new CInternalServerException();
+        }
     }
 }

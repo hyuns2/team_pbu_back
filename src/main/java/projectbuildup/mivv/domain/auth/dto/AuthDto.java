@@ -51,8 +51,11 @@ public class AuthDto {
         @Schema(description = "본인인증 API 호출 키")
         String txId;
         @NotBlank
-        @Schema(description = "본인인증 API 호출 키")
+        @Schema(description = "콜백 URL")
         String authUrl;
+        @NotBlank
+        @Schema(description = "복호화 키")
+        String token;
     }
 
     @Getter

@@ -2,7 +2,6 @@ package projectbuildup.mivv.domain.auth.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.checkerframework.checker.units.qual.K;
 import org.springframework.stereotype.Service;
 import projectbuildup.mivv.domain.auth.dto.AuthDto;
 import projectbuildup.mivv.domain.auth.dto.VerificationResponseDto;
@@ -31,7 +30,7 @@ public class IdentityVerificationService {
      */
     @Transactional
     public VerificationResponseDto verifyIdentity(AuthDto.CertifyRequest requestDto) {
-        IdentityVerification newVerification = certificationSystem.certify(requestDto.getTxId(), requestDto.getAuthUrl());
+        IdentityVerification newVerification = certificationSystem.certify(requestDto.getTxId(), requestDto.getAuthUrl(), null);
         Optional<IdentityVerification> existVerification =  identityVerificationRepository.findByMobile(newVerification.getMobile());
         identityVerificationRepository.save(existVerification.orElse(newVerification));
         return new VerificationResponseDto(existVerification.orElse(newVerification).getCode(), existVerification.isEmpty());
@@ -39,7 +38,7 @@ public class IdentityVerificationService {
 
     @Transactional
     public VerificationResponseDto verifyIdentityByKg(AuthDto.CertifyRequest requestDto) {
-        IdentityVerification newVerification = new KgCertificationSystem(new KgClient()).certify(requestDto.getTxId(), requestDto.getAuthUrl());
+        IdentityVerification newVerification = new KgCertificationSystem(new KgClient()).certify(requestDto.getTxId(), requestDto.getAuthUrl(), requestDto.getToken());
         Optional<IdentityVerification> existVerification =  identityVerificationRepository.findByMobile(newVerification.getMobile());
         identityVerificationRepository.save(existVerification.orElse(newVerification));
         return new VerificationResponseDto(existVerification.orElse(newVerification).getCode(), existVerification.isEmpty());

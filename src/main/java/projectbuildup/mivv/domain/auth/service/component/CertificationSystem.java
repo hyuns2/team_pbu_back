@@ -4,5 +4,5 @@ import projectbuildup.mivv.domain.user.entity.IdentityVerification;
 
 public interface CertificationSystem {
 
-    IdentityVerification certify(String txId, String authUrl);
+    IdentityVerification certify(String txId, String authUrl, String token);
 }

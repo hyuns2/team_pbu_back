@@ -1,12 +1,14 @@
 package projectbuildup.mivv.infra.kisa;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * @author Copyright (c) 2013 by KISA
  * @file KISA_SEED_CBC.java
  * @brief SEED CBC 암호 알고리즘
  * @remarks http://seed.kisa.or.kr/
  */
-
+@Slf4j
 public class KISA_SEED_CBC {
 
     // DEFAULT : JAVA = BIG_ENDIAN
@@ -617,13 +619,19 @@ public class KISA_SEED_CBC {
 
 
     public static byte[] SEED_CBC_Decrypt(byte[] pbszUserKey, byte[] pbszIV, byte[] message, int message_offset, int message_length) {
+        log.info("pbszUserKey: {} ", pbszUserKey);
+        log.info("pbszIV: {} ", pbszIV);
+        log.info("message: {} ", message);
+        log.info("message_offset: {} ", message_offset);
+        log.info("message_length: {} ", message_length);
+
         KISA_SEED_INFO info = new KISA_SEED_INFO();
         int[] outbuf;
         int[] data;
         byte[] cdata;
         int outlen;
-        int nRetOutLeng[] = new int[]{0};
-        int nPaddingLeng[] = new int[]{0};
+        int[] nRetOutLeng = new int[]{0};
+        int[] nPaddingLeng = new int[]{0};
 
 
         byte[] pbszCipherText = new byte[message_length];
@@ -631,8 +639,7 @@ public class KISA_SEED_CBC {
         int nCipherTextLen = pbszCipherText.length;
 
         if ((nCipherTextLen % BLOCK_SIZE_SEED) != 0) {
-            byte result[] = null;
-            return result;
+            return null;
         }
 
 
@@ -669,8 +676,7 @@ public class KISA_SEED_CBC {
             return result;
 
         } else {
-            byte result[] = null;
-            return result;
+            return null;
         }
 
 

@@ -20,7 +20,6 @@ public class KgClientTest extends IntegrationTest {
         // given
 
         // when
-        KgClient.ResponseBody request = kgClient.request(TX_ID, AUTH_REQUEST_URL);
 
         // then
     }

@@ -10,7 +10,7 @@ import projectbuildup.mivv.domain.user.entity.IdentityVerification;
 @RequiredArgsConstructor
 public class BasicCertificationSystem implements CertificationSystem{
     @Override
-    public IdentityVerification certify(String key, String authUrl) {
+    public IdentityVerification certify(String key, String authUrl, String token) {
         return IdentityVerification.generateDummyVerification();
     }
 }

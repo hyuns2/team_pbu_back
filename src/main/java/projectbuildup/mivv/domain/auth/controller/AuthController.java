@@ -1,9 +1,11 @@
 package projectbuildup.mivv.domain.auth.controller;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,7 +34,7 @@ public class AuthController {
     private final AuthService authService;
     private final IdentityVerificationService identityVerificationService;
 
-    @Operation(summary = "본인인증합니다.", description = "본인인증 API 호출 결과로 받은 key를 이용해 본인인증을 수행합니다. 반환받은 verificationCode는 로그인 및 회원가입 시 사용됩니다. " +
+    @Operation(summary = "본인인증", description = "본인인증 API 호출 결과로 받은 key를 이용해 본인인증을 수행합니다. 반환받은 verificationCode는 로그인 및 회원가입 시 사용됩니다. " +
             "만약 이미 회원가입 된 계정이 있다면, isNewUser = true를 반환합니다.")
     @PostMapping("/auth/certify")
     @PreAuthorize("permitAll()")
@@ -41,15 +43,26 @@ public class AuthController {
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
-    @Operation(summary = "KG이니시스로 본인인증합니다.[테스트]", description = " 반환받은 verificationCode는 로그인 및 회원가입 시 사용됩니다. " +
+    @Hidden
+    @Operation(summary = "KG이니시스 본인인증 (성공시 호출됨)", description = " 반환받은 verificationCode는 로그인 및 회원가입 시 사용됩니다. " +
             "만약 이미 회원가입 된 계정이 있다면, isNewUser = true를 반환합니다.")
-    @PostMapping("/auth/certify-kg")
+    @PostMapping("/auth/certify-kg/success")
     @PreAuthorize("permitAll()")
-    public ResponseEntity<VerificationResponseDto> certifyKg(@RequestBody @Valid AuthDto.CertifyRequest requestDto) {
-        VerificationResponseDto responseDto = identityVerificationService.verifyIdentityByKg(requestDto);
+    public ResponseEntity<VerificationResponseDto> KgSuccess(HttpServletRequest request) {
+        String txId = request.getParameter("txId");
+        String authRequestUrl = request.getParameter("authRequestUrl");
+        String token = request.getParameter("token");
+        VerificationResponseDto responseDto = identityVerificationService.verifyIdentityByKg(new AuthDto.CertifyRequest(txId, authRequestUrl, token));
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
+    @Hidden
+    @Operation(summary = "KG이니시스 본인인증 (실패시 호출됨)")
+    @PostMapping("/auth/certify-kg/fail")
+    @PreAuthorize("permitAll()")
+    public ResponseEntity<Void> Kgfail(HttpServletRequest request) {
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
     @Operation(summary = "회원가입합니다.", description = "verficiationCode는 본인인증 결과로 반환되는 코드입니다. ")
     @PostMapping("/auth/signup")
@@ -84,7 +97,7 @@ public class AuthController {
     @PreAuthorize("hasRole('USER')")
     @PostMapping("/auth/withdraw")
     public ResponseEntity<Void> withdraw(@RequestHeader(Header.ACCESS_TOKEN) String accessToken, @RequestHeader(Header.REFRESH_TOKEN) String refreshToken, @AuthenticationPrincipal User user) {
-        AuthDto.UnlinkRequestDto requestDto = new AuthDto.UnlinkRequestDto(user.getId(),accessToken, refreshToken);
+        AuthDto.UnlinkRequestDto requestDto = new AuthDto.UnlinkRequestDto(user.getId(), accessToken, refreshToken);
         authService.withdraw(requestDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -105,9 +118,10 @@ public class AuthController {
         ResponseBoolean response = new ResponseBoolean(authService.checkNickname(nickname));
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
     @AllArgsConstructor
     @Getter
-    static class ResponseBoolean{
+    static class ResponseBoolean {
         boolean available;
     }
 }

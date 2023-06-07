@@ -16,9 +16,9 @@
 	authmd.update(plainText1.getBytes("UTF-8"));
 	String authHash = DatatypeConverter.printHexBinary(authmd.digest()).toLowerCase();
 
-	String userName = "홍길동";          // 사용자 이름
-	String userPhone = "01011112222";  // 사용자 전화번호
-	String userBirth = "19800101";     // 사용자 생년월일
+	String userName = "이한솔";          // 사용자 이름
+	String userPhone = "01076078701";  // 사용자 전화번호
+	String userBirth = "19990311";     // 사용자 생년월일
 	String userHash = "";
 
 	String flgFixedUser = "N";         // 특정사용자 고정시 Y
@@ -76,8 +76,8 @@
 <input type="hidden" name="reservedMsg" value="<%=reservedMsg %>">           reservedMsg<br/>
 <input type="text" name="directAgency" value="">                             directAgency<br/>
 
-<input type="text" name="successUrl" value="http://localhost:8080/test/jsp/success">                  successUrl<br/>
-<input type="text" name="failUrl" value="http://localhost:8080/test/jsp/fail">                     failUrl<br/>
+<input type="text" name="successUrl" value="http://localhost:8080/api/auth/certify-kg/success">                  successUrl<br/>
+<input type="text" name="failUrl" value="http://localhost:8080/api/auth/certify-kg/fail">                     failUrl<br/>
 <!-- successUrl/failUrl 은 분리하여도 됩니다. !-->
 </form>
 
