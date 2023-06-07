@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import projectbuildup.mivv.domain.archiving.repository.UserCardRepository;
 import projectbuildup.mivv.domain.auth.dto.AuthDto;
+import projectbuildup.mivv.domain.auth.dto.VerificationResponseDto;
 import projectbuildup.mivv.domain.auth.repository.IdentityVerificationRepository;
 import projectbuildup.mivv.domain.auth.repository.TokenRepository;
 import projectbuildup.mivv.domain.couponIssuance.entity.CouponIssuance;
@@ -27,6 +28,7 @@ import projectbuildup.mivv.global.security.jwt.JwtValidator;
 import projectbuildup.mivv.global.security.jwt.TokenDto;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -54,7 +56,7 @@ public class AuthService {
      */
     @Transactional
     public void signup(AuthDto.SignupRequest requestDto) {
-        IdentityVerification identityVerification = identityVerificationRepository.findByMobile(requestDto.getMobile()).orElseThrow(CVerificationNotFoundException::new);
+        IdentityVerification identityVerification = identityVerificationRepository.findByCode(requestDto.getVerificationCode()).orElseThrow(CVerificationNotFoundException::new);
         if (identityVerification.getUser() != null) {
             throw new CUserExistException();
         }
@@ -152,4 +154,5 @@ public class AuthService {
     public boolean checkNickname(String nickname) {
         return userRepository.findByNickname(nickname).isEmpty();
     }
+
 }

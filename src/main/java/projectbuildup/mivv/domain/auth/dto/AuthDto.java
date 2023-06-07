@@ -1,6 +1,7 @@
 package projectbuildup.mivv.domain.auth.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,8 +17,8 @@ public class AuthDto {
     @AllArgsConstructor
     public static class SignupRequest{
         @NotBlank
-        @Schema(description = "전화번호")
-        String mobile;
+        @Schema(description = "본인인증 코드")
+        String verificationCode;
         @Email
         @Schema(description = "이메일", example = ExampleValue.User.EMAIL)
         String email;
