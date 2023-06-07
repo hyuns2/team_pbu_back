@@ -186,15 +186,16 @@ public class CodefDemoClient implements CodefClient {
     /**
      * 에러 코드를 확인하고, 정상 응답인 경우, data 필드를 리턴합니다.
      *
-     * @param result JSON 응답 원본
+     * @param json JSON 응답 원본
      * @return 응답값의 data 필드
      */
-    private Map<String, Object> getDataField(String result) {
+    private Map<String, Object> getDataField(String json) {
         try {
-            Map<String, Object> resultMap = new ObjectMapper().readValue(result, HashMap.class);
+            HashMap<String, Object> jsonMap = new ObjectMapper().readValue(json, HashMap.class);
+            HashMap<String, Object> resultMap = (HashMap<String, Object>) jsonMap.get("result");
             String code = (String) resultMap.get("code");
             if (code.equals("CF-00000")) {
-                return (HashMap<String, Object>) resultMap.get("data");
+                return (HashMap<String, Object>) jsonMap.get("data");
             }
             throw new CIllegalArgumentException("인증 과정에서 오류가 발생했습니다. 코드에프 에러코드: " + code);
         } catch (JsonProcessingException e) {
