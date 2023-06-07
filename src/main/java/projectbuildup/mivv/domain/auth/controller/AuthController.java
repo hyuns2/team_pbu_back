@@ -48,7 +48,7 @@ public class AuthController {
     @Hidden
     @Operation(summary = "KG이니시스 본인인증 (성공시 호출됨)", description = " 반환받은 verificationCode는 로그인 및 회원가입 시 사용됩니다. " +
             "만약 이미 회원가입 된 계정이 있다면, isNewUser = true를 반환합니다.")
-    @GetMapping("/auth/certify-kg/success")
+    @PostMapping("/auth/certify-kg/success")
     @PreAuthorize("permitAll()")
     public ResponseEntity<VerificationResponseDto> KgSuccess(HttpServletRequest request) {
         String txId = request.getParameter("txId");
