@@ -96,7 +96,7 @@ public class ChallengeService {
         Challenge challenge = challengeRepository.findById(requestDto.getChallengeId()).orElseThrow(CResourceNotFoundException::new);
         challenge.update(requestDto);
         if (requestDto.getImageFile() != null) {
-            imageUploader.delete(challenge.getImage());
+            imageUploader.deleteIfExists(challenge.getImage());
             Image image = imageUploader.upload(requestDto.getImageFile(), ImageType.CHALLENGE);
             challenge.updateImage(image);
         }

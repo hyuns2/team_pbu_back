@@ -3,6 +3,7 @@ package projectbuildup.mivv.domain.user.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import projectbuildup.mivv.global.common.imageStore.Image;
 import projectbuildup.mivv.global.common.imageStore.ImageType;
 import projectbuildup.mivv.global.common.imageStore.ImageUploader;
@@ -41,13 +42,23 @@ public class UserService {
     public void updateProfile(Long userId, ProfileDto.UpdateRequest requestDto) throws IOException {
         User user = userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
         deleteExistingImage(user);
-        Image image = imageUploader.upload(requestDto.getImageFile(), ImageType.USER_PROFILE);
+        Image image = getUploadedImage(requestDto.getImageFile());
         user.updateProfile(requestDto.getNickname(), image);
         userRepository.save(user);
     }
+
     private void deleteExistingImage(User user) throws IOException {
-        if (user.getProfileImage() != null) {
-            imageUploader.delete(user.getProfileImage());
+        if (!user.getProfileImage().equals(Image.newDefaultProfileImage())) {
+            imageUploader.deleteIfExists(user.getProfileImage());
         }
     }
+
+    private Image getUploadedImage(MultipartFile multipartFileImage) {
+        if (multipartFileImage == null) {
+            return Image.newDefaultProfileImage();
+        }
+        return imageUploader.upload(multipartFileImage, ImageType.USER_PROFILE);
+    }
+
+
 }
