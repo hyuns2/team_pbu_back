@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -28,6 +29,7 @@ import projectbuildup.mivv.global.security.jwt.TokenDto;
 @Tag(name = "[1.Authentication]", description = "인증과 관련된 API입니다.")
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 @RequestMapping("/api")
 public class AuthController {
 
@@ -36,7 +38,7 @@ public class AuthController {
 
     @Operation(summary = "본인인증", description = "본인인증 API 호출 결과로 받은 key를 이용해 본인인증을 수행합니다. 반환받은 verificationCode는 로그인 및 회원가입 시 사용됩니다. " +
             "만약 이미 회원가입 된 계정이 있다면, isNewUser = true를 반환합니다.")
-    @PostMapping("/auth/certify")
+    @GetMapping("/auth/certify")
     @PreAuthorize("permitAll()")
     public ResponseEntity<VerificationResponseDto> certify(@RequestBody @Valid AuthDto.CertifyRequest requestDto) {
         VerificationResponseDto responseDto = identityVerificationService.verifyIdentity(requestDto);
@@ -46,7 +48,7 @@ public class AuthController {
     @Hidden
     @Operation(summary = "KG이니시스 본인인증 (성공시 호출됨)", description = " 반환받은 verificationCode는 로그인 및 회원가입 시 사용됩니다. " +
             "만약 이미 회원가입 된 계정이 있다면, isNewUser = true를 반환합니다.")
-    @PostMapping("/auth/certify-kg/success")
+    @GetMapping("/auth/certify-kg/success")
     @PreAuthorize("permitAll()")
     public ResponseEntity<VerificationResponseDto> KgSuccess(HttpServletRequest request) {
         String txId = request.getParameter("txId");
@@ -60,8 +62,9 @@ public class AuthController {
     @Operation(summary = "KG이니시스 본인인증 (실패시 호출됨)")
     @PostMapping("/auth/certify-kg/fail")
     @PreAuthorize("permitAll()")
-    public ResponseEntity<Void> Kgfail(HttpServletRequest request) {
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<String> Kgfail(HttpServletRequest request) {
+        log.info("정 세 벽");
+        return new ResponseEntity<>("본인인증에 실패하였습니다.", HttpStatus.OK);
     }
 
     @Operation(summary = "회원가입합니다.", description = "verficiationCode는 본인인증 결과로 반환되는 코드입니다. ")
