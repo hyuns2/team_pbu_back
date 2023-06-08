@@ -21,6 +21,8 @@ public interface CodefClient {
 
     Map<String, Object> certifyTransfer(String organizationCode, String accountNumbers);
 
+    Map<String, Object> holderAuthentication(String organizationCode, String accountNumbers, String birthDate);
+
     /**
      * 결과 JSON을 바탕으로 에러 코드를 확인하고, 정상 응답인 경우 data 필드를 리턴합니다.
      *
@@ -40,4 +42,5 @@ public interface CodefClient {
             throw new CInternalServerException();
         }
     }
+
 }

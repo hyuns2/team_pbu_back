@@ -180,5 +180,22 @@ public class CodefDemoClient implements CodefClient {
         }
     }
 
+    @Override
+    public Map<String, Object> holderAuthentication(String organizationCode, String accountNumbers, String birthDate) {
+        String CODEF_HOLDER_AUTHENTICATION_API = "/v1/kr/bank/a/account/holder-authentication";
+        HashMap<String, Object> parameterMap = new HashMap<>();
+        parameterMap.put("organization", organizationCode);
+        parameterMap.put("account", accountNumbers);
+        parameterMap.put("identity", birthDate);
+        try {
+            String result = codef.requestProduct(CODEF_HOLDER_AUTHENTICATION_API, EasyCodefServiceType.DEMO, parameterMap);
+            return getDataField(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("API 통신 중 오류가 발생했습니다.");
+            throw new CInternalServerException();
+        }
+    }
+
 
 }
