@@ -35,7 +35,6 @@ public class AccountController {
     }
 
     @Operation(summary = "계좌 연동 (은행 ID/비밀번호 이용)", description = "은행 ID와 비밀번호를 사용해 계좌를 연동합니다.")
-    @PreAuthorize("hasRole('USER')")
     @PostMapping("/account/register")
     public ResponseEntity<Void> registerAccount(@RequestBody AccountRegisterDto requestDto) {
         accountRegisterService.registerAccount(requestDto);
