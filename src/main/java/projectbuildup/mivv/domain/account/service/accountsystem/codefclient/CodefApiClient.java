@@ -1,7 +1,6 @@
 package projectbuildup.mivv.domain.account.service.accountsystem.codefclient;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.codef.api.EasyCodef;
 import io.codef.api.EasyCodefServiceType;
 import io.codef.api.EasyCodefUtil;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 import projectbuildup.mivv.domain.account.dto.AccountRegisterDto;
-import projectbuildup.mivv.global.error.exception.CIllegalArgumentException;
 import projectbuildup.mivv.global.error.exception.CInternalServerException;
 
 import javax.crypto.BadPaddingException;
@@ -29,13 +27,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Primary
 @Component
 @Slf4j
-public class CodefDemoClient implements CodefClient {
-    @Value("${codef.demo-client-id}")
+public class CodefApiClient implements CodefClient {
+    @Value("${codef.api-client-id}")
     String CLIENT_ID;
-    @Value("${codef.demo-client-secret}")
+    @Value("${codef.api-client-secret}")
     String CLIENT_SECRET;
     @Value("${codef.public-key}")
     String PUBLIC_KEY;
@@ -55,7 +52,7 @@ public class CodefDemoClient implements CodefClient {
             EasyCodef codef = new EasyCodef();
             codef.setClientInfo(CLIENT_ID, CLIENT_SECRET);
             codef.setPublicKey(PUBLIC_KEY);
-            return codef.requestToken(EasyCodefServiceType.DEMO);
+            return codef.requestToken(EasyCodefServiceType.API);
         } catch (IOException e) {
             throw new CInternalServerException();
         }
@@ -100,7 +97,7 @@ public class CodefDemoClient implements CodefClient {
             fillMapParameter(accountMap, accountDto);
             accountList.add(accountMap);
             parameterMap.put("accountList", accountList);
-            String result = codef.createAccount(EasyCodefServiceType.DEMO, parameterMap);
+            String result = codef.createAccount(EasyCodefServiceType.API, parameterMap);
             return getDataField(result);
         } catch (UnsupportedEncodingException | JsonProcessingException | InterruptedException e) {
             log.error("통신 중 오류가 발생했습니다.");
@@ -122,7 +119,7 @@ public class CodefDemoClient implements CodefClient {
             parameterMap.put("organization", bankType);
             parameterMap.put("connectedId", connectedId);
             String CODEF_OWN_ACCOUNT_API = "/v1/kr/bank/p/account/account-list";
-            String result = codef.requestProduct(CODEF_OWN_ACCOUNT_API, EasyCodefServiceType.DEMO, parameterMap);
+            String result = codef.requestProduct(CODEF_OWN_ACCOUNT_API, EasyCodefServiceType.API, parameterMap);
             return getDataField(result);
         } catch (UnsupportedEncodingException | JsonProcessingException | InterruptedException e) {
             log.error("통신 중 오류가 발생했습니다.");
@@ -154,7 +151,7 @@ public class CodefDemoClient implements CodefClient {
         parameterMap.put("endDate", endDateStr);
         parameterMap.put("orderBy", "0");
         try {
-            String result = codef.requestProduct(CODEF_TRANSACTION_LIST_API, EasyCodefServiceType.DEMO, parameterMap);
+            String result = codef.requestProduct(CODEF_TRANSACTION_LIST_API, EasyCodefServiceType.API, parameterMap);
             return getDataField(result);
         } catch (UnsupportedEncodingException | JsonProcessingException | InterruptedException e) {
             log.error("통신 중 오류가 발생했습니다.");
@@ -178,7 +175,7 @@ public class CodefDemoClient implements CodefClient {
         parameterMap.put("inPrintType", "0");
         try {
             String CODEF_TRANSFER_AUTHENTICATION_API = "/v1/kr/bank/a/account/transfer-authentication";
-            String result = codef.requestProduct(CODEF_TRANSFER_AUTHENTICATION_API, EasyCodefServiceType.DEMO, parameterMap);
+            String result = codef.requestProduct(CODEF_TRANSFER_AUTHENTICATION_API, EasyCodefServiceType.API, parameterMap);
             return getDataField(result);
         } catch (UnsupportedEncodingException | JsonProcessingException | InterruptedException e) {
             log.error("통신 중 오류가 발생했습니다.");
@@ -194,13 +191,11 @@ public class CodefDemoClient implements CodefClient {
         parameterMap.put("account", accountNumbers);
         parameterMap.put("identity", birthDate);
         try {
-            String result = codef.requestProduct(CODEF_HOLDER_AUTHENTICATION_API, EasyCodefServiceType.DEMO, parameterMap);
+            String result = codef.requestProduct(CODEF_HOLDER_AUTHENTICATION_API, EasyCodefServiceType.API, parameterMap);
             return getDataField(result);
         } catch (UnsupportedEncodingException | JsonProcessingException | InterruptedException e) {
             log.error("통신 중 오류가 발생했습니다.");
             throw new CInternalServerException();
         }
     }
-
-
 }

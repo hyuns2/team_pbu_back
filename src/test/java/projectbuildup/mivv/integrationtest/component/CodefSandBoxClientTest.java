@@ -116,5 +116,18 @@ public class CodefSandBoxClientTest {
         assertThat(returnList.get(2).getAmount()).isEqualTo(11L);
     }
 
+    @Test
+    @DisplayName("계좌 실명 인증을 수행한다. ")
+    void test4() {
+        // given
+
+        // when
+        Map<String, Object> dataField = codefSandBoxClient.holderAuthentication("0020", "1002000111222", "900101");
+        String result = (String) dataField.get("name");
+
+        // then
+        log.info(result);
+        assertThat(result).isEqualTo("코뿔소");
+    }
 }
 

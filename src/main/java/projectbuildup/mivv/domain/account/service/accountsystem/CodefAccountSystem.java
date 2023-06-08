@@ -11,7 +11,12 @@ import projectbuildup.mivv.domain.account.entity.BankType;
 import projectbuildup.mivv.domain.account.entity.OpenBanking;
 import projectbuildup.mivv.domain.account.entity.OwnAccounts;
 import projectbuildup.mivv.domain.account.service.accountsystem.codefclient.CodefClient;
+import projectbuildup.mivv.domain.auth.repository.IdentityVerificationRepository;
+import projectbuildup.mivv.domain.user.entity.IdentityVerification;
 import projectbuildup.mivv.domain.user.entity.User;
+import projectbuildup.mivv.global.error.exception.CAccountNotFoundException;
+import projectbuildup.mivv.global.error.exception.CBadRequestException;
+import projectbuildup.mivv.global.error.exception.CNotOwnAccountException;
 import projectbuildup.mivv.global.error.exception.CResourceNotFoundException;
 
 import java.util.HashMap;
@@ -25,13 +30,14 @@ import java.util.Map;
 public class CodefAccountSystem implements AccountSystem {
 
     private final CodefClient codefClient;
+    private final IdentityVerificationRepository identityVerificationRepository;
 
     @Override
     public Account createAccount(AccountRegisterDto accountDto, User user) {
         String connectedId = issueConnectedId(accountDto);
         OwnAccounts ownAccounts = findAllAccountNumbers(connectedId, accountDto.getOrganizationCode());
         if (!ownAccounts.contains(accountDto.getAccountNumbers())) {
-            throw new CResourceNotFoundException();
+            throw new CAccountNotFoundException();
         }
         return new Account(accountDto.getAccountNumbers(), BankType.findByCode(accountDto.getOrganizationCode()), OpenBanking.CODEF, connectedId);
     }
@@ -49,10 +55,13 @@ public class CodefAccountSystem implements AccountSystem {
                 .toList();
         return new OwnAccounts(accounts);
     }
-
     @Override
     public String certifyTransfer(AccountCertifyTransferDto requestDto) {
-        Map<String, Object> dataMap = codefClient.certifyTransfer(requestDto.getOrganizationCode(), requestDto.getAccountNumbers());
-        return (String) dataMap.get("authCode");
+        String name =  (String) codefClient.holderAuthentication(requestDto.getOrganizationCode(), requestDto.getAccountNumbers(), requestDto.getBirthDate()).get("name");
+        IdentityVerification identityVerification = identityVerificationRepository.findByCode(requestDto.getVerificationCode()).orElseThrow(CResourceNotFoundException::new);
+        if (identityVerification.getName().equals(name)){
+            return (String) codefClient.certifyTransfer(requestDto.getOrganizationCode(), requestDto.getAccountNumbers()).get("authCode");
+        }
+        throw new CNotOwnAccountException();
     }
 }

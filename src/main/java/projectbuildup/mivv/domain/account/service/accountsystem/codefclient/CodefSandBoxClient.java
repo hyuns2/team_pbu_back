@@ -1,7 +1,6 @@
 package projectbuildup.mivv.domain.account.service.accountsystem.codefclient;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.codef.api.EasyCodef;
 import io.codef.api.EasyCodefServiceType;
 import io.codef.api.EasyCodefUtil;
@@ -10,13 +9,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import projectbuildup.mivv.domain.account.dto.AccountRegisterDto;
-import projectbuildup.mivv.global.error.exception.CIllegalArgumentException;
 import projectbuildup.mivv.global.error.exception.CInternalServerException;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
@@ -58,21 +57,27 @@ public class CodefSandBoxClient implements CodefClient {
         }
     }
 
-    private void fillMapParameter(HashMap<String, Object> accountMap, AccountRegisterDto accountDto) throws NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, InvalidKeySpecException, BadPaddingException, InvalidKeyException {
+    private void fillMapParameter(HashMap<String, Object> accountMap, AccountRegisterDto accountDto) {
         final String DAEGU_BANK = "0031";
         String id = accountDto.getBankId();
         String password = accountDto.getBankPassword();
-        String encodedPassword = EasyCodefUtil.encryptRSA(password, codef.getPublicKey());
-        accountMap.put("countryCode", "KR");
-        accountMap.put("businessType", "BK");
-        accountMap.put("organization", accountDto.getOrganizationCode());
-        accountMap.put("clientType", "P");
-        accountMap.put("loginType", "1");
-        accountMap.put("id", id);
-        accountMap.put("password", encodedPassword);
-        if (accountDto.getOrganizationCode().equals(DAEGU_BANK)) {
-            accountMap.put("withdrawAccountNo", accountDto.getAccountNumbers());
-            accountMap.put("withdrawAccountPassword", accountDto.getAccountPassword());
+        try {
+            String encodedPassword = EasyCodefUtil.encryptRSA(password, codef.getPublicKey());
+            accountMap.put("countryCode", "KR");
+            accountMap.put("businessType", "BK");
+            accountMap.put("organization", accountDto.getOrganizationCode());
+            accountMap.put("clientType", "P");
+            accountMap.put("loginType", "1");
+            accountMap.put("id", id);
+            accountMap.put("password", encodedPassword);
+            if (accountDto.getOrganizationCode().equals(DAEGU_BANK)) {
+                accountMap.put("withdrawAccountNo", accountDto.getAccountNumbers());
+                accountMap.put("withdrawAccountPassword", accountDto.getAccountPassword());
+            }
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException | NoSuchPaddingException | InvalidKeyException |
+                 IllegalBlockSizeException | BadPaddingException e) {
+            log.error("암호화 중 오류가 발생했습니다.");
+            throw new CInternalServerException();
         }
     }
 
@@ -93,8 +98,8 @@ public class CodefSandBoxClient implements CodefClient {
             parameterMap.put("accountList", accountList);
             String result = codef.createAccount(EasyCodefServiceType.SANDBOX, parameterMap);
             return getDataField(result);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (UnsupportedEncodingException | JsonProcessingException | InterruptedException e) {
+            log.error("통신 중 오류가 발생했습니다.");
             throw new CInternalServerException();
         }
     }
@@ -115,8 +120,8 @@ public class CodefSandBoxClient implements CodefClient {
             parameterMap.put("connectedId", connectedId);
             String result = codef.requestProduct(CODEF_OWN_ACCOUNT_API, EasyCodefServiceType.SANDBOX, parameterMap);
             return getDataField(result);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (UnsupportedEncodingException | JsonProcessingException | InterruptedException e) {
+            log.error("통신 중 오류가 발생했습니다.");
             throw new CInternalServerException();
         }
     }
@@ -147,8 +152,8 @@ public class CodefSandBoxClient implements CodefClient {
         try {
             String result = codef.requestProduct(CODEF_TRANSACTION_LIST_API, EasyCodefServiceType.SANDBOX, parameterMap);
             return getDataField(result);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (UnsupportedEncodingException | JsonProcessingException | InterruptedException e) {
+            log.error("통신 중 오류가 발생했습니다.");
             throw new CInternalServerException();
         }
     }
@@ -171,29 +176,32 @@ public class CodefSandBoxClient implements CodefClient {
         try {
             String result = codef.requestProduct(CODEF_TRANSFER_AUTHENTICATION_API, EasyCodefServiceType.SANDBOX, parameterMap);
             return getDataField(result);
-        } catch (Exception e) {
-            e.printStackTrace();
-            log.error("API 통신 중 오류가 발생했습니다.");
+        } catch (UnsupportedEncodingException | JsonProcessingException | InterruptedException e) {
+            log.error("통신 중 오류가 발생했습니다.");
             throw new CInternalServerException();
         }
     }
 
     /**
-     * 에러 코드를 확인하고, 정상 응답인 경우, data 필드를 HashMap으로 파싱하여 리턴합니다.
+     * 1원 인증을 수행합니다.
+     * data 필드로 사용자에게 전송된 인증코드가 전달됩니다.
      *
-     * @param json JSON 응답 원본
+     * @param organizationCode 은행코드
+     * @param accountNumbers   계좌번호
      * @return 응답값의 data 필드
      */
-    private Map<String, Object> getDataField(String json) {
+    @Override
+    public Map<String, Object> holderAuthentication(String organizationCode, String accountNumbers, String birthDate) {
+        String CODEF_HOLDER_AUTHENTICATION_API = "/v1/kr/bank/a/account/holder-authentication";
+        HashMap<String, Object> parameterMap = new HashMap<>();
+        parameterMap.put("organization", organizationCode);
+        parameterMap.put("account", accountNumbers);
+        parameterMap.put("identity", birthDate);
         try {
-            HashMap<String, Object> jsonMap = new ObjectMapper().readValue(json, HashMap.class);
-            HashMap<String, Object> resultMap = (HashMap<String, Object>) jsonMap.get("result");
-            String code = (String) resultMap.get("code");
-            if (code.equals("CF-00000")) {
-                return (HashMap<String, Object>) jsonMap.get("data");
-            }
-            throw new CIllegalArgumentException("인증 과정에서 오류가 발생했습니다. 코드에프 에러코드: " + code);
-        } catch (JsonProcessingException e) {
+            String result = codef.requestProduct(CODEF_HOLDER_AUTHENTICATION_API, EasyCodefServiceType.SANDBOX, parameterMap);
+            return getDataField(result);
+        } catch (UnsupportedEncodingException | JsonProcessingException | InterruptedException e) {
+            log.error("통신 중 오류가 발생했습니다.");
             throw new CInternalServerException();
         }
     }

@@ -1,4 +1,4 @@
-package projectbuildup.mivv.domain.challenge.service;
+package projectbuildup.mivv.global.batch;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -6,6 +6,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import projectbuildup.mivv.domain.challenge.entity.Challenge;
 import projectbuildup.mivv.domain.challenge.repository.ChallengeRepository;
+import projectbuildup.mivv.domain.challenge.service.RankingService;
+import projectbuildup.mivv.domain.challenge.service.RedisRankingSystem;
 
 import java.util.List;
 import java.util.Map;
