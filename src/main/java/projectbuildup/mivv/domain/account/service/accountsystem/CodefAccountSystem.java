@@ -57,8 +57,9 @@ public class CodefAccountSystem implements AccountSystem {
     }
     @Override
     public String certifyTransfer(AccountCertifyTransferDto requestDto) {
-        String name =  (String) codefClient.holderAuthentication(requestDto.getOrganizationCode(), requestDto.getAccountNumbers(), requestDto.getBirthDate()).get("name");
         IdentityVerification identityVerification = identityVerificationRepository.findByCode(requestDto.getVerificationCode()).orElseThrow(CResourceNotFoundException::new);
+        String birthDate = identityVerification.getBirthDate().substring(2);
+        String name =  (String) codefClient.holderAuthentication(requestDto.getOrganizationCode(), requestDto.getAccountNumbers(), birthDate).get("name");
         if (identityVerification.getName().equals(name)){
             return (String) codefClient.certifyTransfer(requestDto.getOrganizationCode(), requestDto.getAccountNumbers()).get("authCode");
         }
