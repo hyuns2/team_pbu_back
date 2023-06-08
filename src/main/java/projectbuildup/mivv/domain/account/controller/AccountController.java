@@ -27,7 +27,7 @@ import projectbuildup.mivv.global.constant.Header;
 public class AccountController {
     private final AccountRegisterService accountRegisterService;
 
-    @Operation(summary = "1원 인증", description = "인증코드가 반환됩니다. 사용자가 입력한 코드와 대조하여 같다면, 인증에 성공한 것으로 간주합니다.")
+    @Operation(summary = "1원 인증", description = "인증코드가 반환됩니다. 사용자가 입력한 코드와 대조하여 같다면, 인증에 성공한 것으로 간주합니다. 만약 본인 명의의 계좌가 아닌 경우, 예외가 반환됩니다.")
     @PostMapping("/account/certify-transfer")
     public ResponseEntity<String> certifyTransfer(@RequestBody AccountCertifyTransferDto requestDto) {
         String response = accountRegisterService.certifyTransfer(requestDto);
