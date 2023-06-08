@@ -70,7 +70,7 @@ public class Challenge extends BaseTimeEntity {
         this.description = requestDto.getDescription();
         this.maxSavingAmount = requestDto.getMaxSavingAmount();
         this.minSavingAmount = requestDto.getMinSavingAmount();
-        this.limitedNumberOfTimes = requestDto.getRemittanceAvailableCount();
+        this.limitedNumberOfTimes = requestDto.getLimitedNumberOfTimes();
     }
 
     public void updateImage(Image image) {
