@@ -35,11 +35,10 @@ public class AccountController {
     }
 
     @Operation(summary = "계좌 연동 (은행 ID/비밀번호 이용)", description = "은행 ID와 비밀번호를 사용해 계좌를 연동합니다.")
-    @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('USER')")
     @PostMapping("/account/register")
-    public ResponseEntity<Void> registerAccount(@RequestBody AccountRegisterDto requestDto, @AuthenticationPrincipal User user) {
-        accountRegisterService.registerAccount(requestDto, user.getId());
+    public ResponseEntity<Void> registerAccount(@RequestBody AccountRegisterDto requestDto) {
+        accountRegisterService.registerAccount(requestDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

@@ -20,6 +20,9 @@ public class AccountRegisterDto {
     @NotNull
     @Schema(description = "은행 비밀번호")
     String bankPassword;
+    @NotNull
+    @Schema(description = "본인인증 코드")
+    String verificationCode;
     @Schema(description = "출금 계좌 비밀번호 (대구은행인 경우)")
     String accountPassword;
 }
