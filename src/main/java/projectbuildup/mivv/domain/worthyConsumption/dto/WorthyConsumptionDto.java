@@ -1,5 +1,6 @@
 package projectbuildup.mivv.domain.worthyConsumption.dto;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
@@ -27,7 +28,7 @@ public class WorthyConsumptionDto {
         @NotNull(message = "가치소비의 할인 가격을 입력해주세요") @Positive
         Integer salePrice;
         @NotNull
-        List<RecommendationReason> recommendationReasons;
+        List<RecommendationReasonDto> recommendationReasons;
         String availablePrice;
         String availablePlace;
         private Integer maxIssuance;
@@ -50,7 +51,6 @@ public class WorthyConsumptionDto {
                     .worthyConsumptionUrl(worthyConsumptionUrl)
                     .originalPrice(originalPrice)
                     .salePrice(salePrice)
-                    .recommendationReasons(recommendationReasons)
                     .availablePrice(availablePrice)
                     .availablePlace(availablePlace)
                     .condition(condition)
@@ -78,5 +78,12 @@ public class WorthyConsumptionDto {
         @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
         private LocalDate conventionEndDate;
         private Long lastMonthAmount;
+    }
+    @NoArgsConstructor @AllArgsConstructor
+    @Getter @Setter
+    @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+    public static class RecommendationReasonDto{
+        String title;
+        String description;
     }
 }
