@@ -62,8 +62,9 @@ public class AuthController {
     @Operation(summary = "KG이니시스 본인인증 (실패시 호출됨)")
     @PostMapping("/auth/certify-kg/fail")
     @PreAuthorize("permitAll()")
-    public ResponseEntity<String> Kgfail() {
-        return new ResponseEntity<>("본인인증에 실패하였습니다.", HttpStatus.OK);
+    public ResponseEntity<VerificationResponseDto> Kgfail() {
+        VerificationResponseDto responseDto = VerificationResponseDto.newFailResponse();
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     @Operation(summary = "회원가입합니다.", description = "verficiationCode는 본인인증 결과로 반환되는 코드입니다. ")
