@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import projectbuildup.mivv.domain.account.dto.AccountCertifyTransferDto;
 import projectbuildup.mivv.domain.account.dto.AccountRegisterDto;
 import projectbuildup.mivv.domain.account.entity.Account;
+import projectbuildup.mivv.domain.account.repository.AccountRepository;
 import projectbuildup.mivv.domain.account.service.accountsystem.AccountSystem;
 import projectbuildup.mivv.domain.auth.repository.IdentityVerificationRepository;
 import projectbuildup.mivv.domain.user.entity.IdentityVerification;
