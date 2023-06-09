@@ -7,5 +7,6 @@ import projectbuildup.mivv.domain.user.entity.User;
 
 public interface AccountSystem {
     Account createAccount(AccountRegisterDto accountDto, User user);
-    String certifyTransfer(AccountCertifyTransferDto requestDto);
+    String certifyTransfer(String organizationCode, String accountNumbers);
+    String getAccountOwner(String organizationCode, String accountNumbers, String verificationCode);
 }

@@ -1,0 +1,80 @@
+spring:
+  datasource:
+    url: jdbc:mariadb://localhost:3307/gasomann_prod?validationQuery="select 1"&useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=UTF-8&serverTimezone=UTC&useLegacyDatetimeCode=false
+    username: root
+    password: root
+    driver-class-name: org.mariadb.jdbc.Driver
+    hikari:
+      connection-test-query: select 1 from dual
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MariaDB106Dialect
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: Asia/Seoul
+        enable_lazy_load_no_trans: true
+        format_sql: true
+        hbm2ddl:
+          auto: none
+  sql:
+    init:
+      mode: always
+      schema-locations: schema.sql
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: reply.projectbuildup
+    password: myynkvtrchdqzjcl
+    properties:
+      mail:
+        smtp:
+          auth: true
+          timeout: 5000
+          starttls:
+            enable: true
+
+springdoc:
+  use-fqn: true
+  api-docs:
+    enabled: false # Spring Doc 사용 X
+  swagger-ui:
+    display-request-duration: true
+    tags-sorter: alpha
+
+logging:
+  pattern:
+    console: "%d{yy-MM-dd HH:mm:ss} %clr(%-5level) [%thread] %logger[%method:%line] - %msg%n"
+    file: "%d{yy-MM-dd HH:mm:ss} %-5level [%thread] %logger[%method:%line] - %msg%n"
+  logback:
+    rollingpolicy:
+      file-name-pattern: "/logs/app/%d{yy-MM-dd}/log_%i.gz"
+      max-history: 30
+      max-file-size: 20KB
+      total-size-cap: 100MB
+  level:
+    root: info
+    org.springframework: info
+    org.hibernate:
+      SQL: info
+      type: trace
+  file:
+    name: "/logs/app/current.log"
+
+api:
+  password-change: http://localhost:8080/api/password/change
+
+path:
+  files: /resources/static/files
+  images: /resources/static/images
+  videos: /resources/static/videos
+  ipUrl: https://server.gasomann.com
+
+jwt:
+  expiration:
+    access:  1800 # 60 * 30 (30분)
+    refresh: 604800 # 60 * 60 * 24 * 7 (일주일)

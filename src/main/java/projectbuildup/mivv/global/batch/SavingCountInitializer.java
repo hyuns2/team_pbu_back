@@ -6,7 +6,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import projectbuildup.mivv.domain.participation.entity.Participation;
 import projectbuildup.mivv.domain.participation.repository.ParticipationRepository;
-import projectbuildup.mivv.domain.saving_count.service.SavingCountService;
 
 import java.util.List;
 
@@ -14,7 +13,6 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class SavingCountInitializer {
-    private final SavingCountService savingCountService;
     private final ParticipationRepository participationRepository;
     private static final long FIXED_ONE_DAY = 1000 * 60 * 60 * 24;
     private static final long FIXED_ONE_MINUTE = 1000 * 60;

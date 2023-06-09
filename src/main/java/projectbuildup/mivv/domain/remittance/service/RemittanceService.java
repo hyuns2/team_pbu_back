@@ -20,11 +20,11 @@ import projectbuildup.mivv.domain.challenge.repository.ChallengeRepository;
 import projectbuildup.mivv.domain.remittance.dto.RemittanceDto;
 import projectbuildup.mivv.domain.participation.entity.Participation;
 import projectbuildup.mivv.domain.participation.repository.ParticipationRepository;
-import projectbuildup.mivv.domain.saving_count.service.SavingCountService;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.domain.user.repository.UserRepository;
 import projectbuildup.mivv.global.error.exception.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.YearMonth;
@@ -45,8 +45,9 @@ public class RemittanceService {
     private final ParticipationRepository participationRepository;
     private final RemittanceRepository remittanceRepository;
     private final RankingService rankingService;
-    private final SavingCountService savingCountService;
     private final RankScoreCalculator rankScoreCalculator;
+    private final RemittanceArchivingService remittanceArchivingService;
+
     @Autowired
     @Qualifier("codefAccountDetailsSystem")
     AccountDetailsSystem accountDetailsSystem;
@@ -54,19 +55,17 @@ public class RemittanceService {
     @Autowired
     @Qualifier("testAccountDetailsSystem")
     AccountDetailsSystem testAccountDetailsSystem;
-    RemittanceArchivingService remittanceArchivingService;
 
 
     /**
      * 사용자의 계좌 내역을 조회하여 송금액을 갱신합니다.
      * 일일 참여 횟수를 초과한 경우, 예외가 발생합니다.
      *
-     * @param requestDto 유저 아이디넘버, 챌린지 아이디넘버
-     * @param startTime  시작 시간
+     * @param requestDto 유저 아이디넘버, 챌린지 아이디넘버, 시작 시간
      * @return true/exception
      */
     @Transactional
-    public boolean checkSaving(RemittanceDto.RemitRequest requestDto, Optional<LocalDateTime> startTime) {
+    public boolean checkSaving(RemittanceDto.RemitRequest requestDto) {
         Challenge challenge = challengeRepository.findById(requestDto.getChallengeId()).orElseThrow(CResourceNotFoundException::new);
         User user = userRepository.findById(requestDto.getUserId()).orElseThrow(CUserNotFoundException::new);
         Participation participation = participationRepository.findByChallengeAndUser(challenge, user)
@@ -75,7 +74,7 @@ public class RemittanceService {
         if (!participation.canRemit()) {
             throw new CBadRequestException("일일 절약 한도를 초과했습니다.");
         }
-        TransactionDetail transactionDetail = getRecentTransactionDetail(participation, startTime.orElse(LocalDateTime.now()));
+        TransactionDetail transactionDetail = getRecentTransactionDetail(participation, LocalDate.now().atStartOfDay());
         updateRemittance(transactionDetail.getAmount(), participation);
         return true;
     }
@@ -85,14 +84,14 @@ public class RemittanceService {
      * 조건에 만족하는 기록을 조회할 수 없으면 예외가 발생합니다.
      *
      * @param participation 참여
-     * @param time          조회 시작 일자
+     * @param startTime          조회 시작 일자
      * @return 송금 기록
      */
-    private TransactionDetail getRecentTransactionDetail(Participation participation, LocalDateTime time) {
+    private TransactionDetail getRecentTransactionDetail(Participation participation, LocalDateTime startTime) {
         User user = participation.getUser();
         Challenge challenge = participation.getChallenge();
-        return accountDetailsSystem.getDepositHistory(user, time.toLocalDate()).stream()
-                .filter(t -> t.isValid(challenge, time))
+        return accountDetailsSystem.getDepositHistory(user, startTime.toLocalDate()).stream()
+                .filter(t -> t.isValid(challenge, startTime))
                 .max((o1, o2) -> o2.getTime().compareTo(o1.getTime()))
                 .orElseThrow(() -> new CBadRequestException("송금이 이루어지지 않았거나, 적합한 금액이 아닙니다."));
     }
