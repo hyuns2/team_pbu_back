@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import projectbuildup.mivv.domain.archiving.dto.ArchivingDto;
+import projectbuildup.mivv.domain.archiving.entity.CardEntity;
 import projectbuildup.mivv.domain.archiving.entity.CardType;
 import projectbuildup.mivv.domain.archiving.entity.CouponConditionCardEntity;
 import projectbuildup.mivv.domain.archiving.entity.UserCardEntity;
@@ -18,6 +19,7 @@ import projectbuildup.mivv.global.common.imageStore.Image;
 import projectbuildup.mivv.global.common.imageStore.ImageType;
 import projectbuildup.mivv.global.common.imageStore.ImageUploader;
 import projectbuildup.mivv.global.error.exception.CCardNotFoundException;
+import projectbuildup.mivv.global.error.exception.CCardTypeNotMatchException;
 import projectbuildup.mivv.global.error.exception.CCouponNotFoundException;
 import projectbuildup.mivv.global.error.exception.CInvalidCardConditionException;
 
@@ -45,7 +47,7 @@ public class CouponArchivingService {
      * @throws IOException
      * @throws CInvalidCardConditionException 카드 조건이 없을 시
      */
-    public void createCouponConditionCard(final ArchivingDto.createCouponCardRequestDto dto) throws IOException {
+    public void createCouponConditionCard(final ArchivingDto.createOrUpdateCouponCardRequestDto dto) throws IOException {
 
         if (dontHaveAnyConditions(dto)) {
             throw new CInvalidCardConditionException();
@@ -53,13 +55,13 @@ public class CouponArchivingService {
 
         Image image = imageUploader.upload(dto.getImage(), ImageType.CARD);
 
-        CouponConditionCardEntity entity = ArchivingDto.createCouponCardRequestDto.toEntity(dto, image.getImagePath());
+        CouponConditionCardEntity entity = ArchivingDto.createOrUpdateCouponCardRequestDto.toEntity(dto, image.getImagePath());
 
         cardRepo.save(entity);
 
     }
 
-    private boolean dontHaveAnyConditions(ArchivingDto.createCouponCardRequestDto dto) {
+    private boolean dontHaveAnyConditions(ArchivingDto.createOrUpdateCouponCardRequestDto dto) {
         return (dto.getWhatNumber() == 0 && dto.getHowSuccessive() == 0);
     }
 
@@ -72,16 +74,22 @@ public class CouponArchivingService {
      * @throws CCardNotFoundException 카드 찾기 실패시
      */
     @Transactional
-    public void updateCouponConditionCard(final Long id, final ArchivingDto.updateCouponCardRequestDto dto) throws IOException {
+    public void updateCouponConditionCard(final Long id, final ArchivingDto.createOrUpdateCouponCardRequestDto dto) throws IOException {
 
-        Optional<CouponConditionCardEntity> target = (Optional<CouponConditionCardEntity>) cardRepo.findById(id);
+        if (dontHaveAnyConditions(dto)) {
+            throw new CInvalidCardConditionException();
+        }
+
+        Optional<CardEntity> target = cardRepo.findById(id);
         if (target.isEmpty()) {
             throw new CCardNotFoundException();
         }
+        if (!target.get().getType().equals(CardType.COUPON)) {
+            throw new CCardTypeNotMatchException();
+        }
 
+        CouponConditionCardEntity result = (CouponConditionCardEntity) target.get();
         Image image = imageUploader.upload(dto.getImage(), ImageType.CARD);
-
-        CouponConditionCardEntity result = target.get();
         result.updateCard(dto, image.getImagePath());
 
     }

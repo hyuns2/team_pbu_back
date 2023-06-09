@@ -4,9 +4,10 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import projectbuildup.mivv.domain.archiving.dto.ArchivingDto;
-import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -42,20 +43,14 @@ public class CardEntity {
     @OneToMany(mappedBy = "cardEntity", cascade = CascadeType.ALL)
     private List<UserCardEntity> userCards = new ArrayList<>();
 
-    public void updateCard(ArchivingDto.updateGeneralCardRequestDto dto, String imagePath) throws IOException {
-
-        if (dto.getTitle() != null) {
-            this.title = dto.getTitle();
-        }
-        if (dto.getSubTitle() != null) {
-            this.subTitle = dto.getSubTitle();
-        }
-        if (dto.getSentences().size() > 0) {
-            this.sentences = dto.getSentences().toString();
-        }
-        if (dto.getImage() != null) {
-            this.imagePath = imagePath;
-        }
+    public void updateCard(ArchivingDto.createOrUpdateGeneralCardRequestDto dto, String imagePath) {
+        this.type = CardType.GENERAL;
+        this.title = dto.getTitle();
+        this.subTitle = dto.getSubTitle();
+        this.sentences = dto.getSentences().stream()
+                .map(Object::toString)
+                .collect(Collectors.joining(", "));
+        this.imagePath = imagePath;
     }
 
 }
