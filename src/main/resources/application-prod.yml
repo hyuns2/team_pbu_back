@@ -26,25 +26,25 @@ spring:
       host: localhost
       port: 6379
   mail:
-    host: smtp.gmail.com # SMTP 서버 호스트
-    port: 587 # SMTP 서버 포트
-    username: reply.projectbuildup # SMTP 서버 로그인 아이디 (발신자)
-    password: myynkvtrchdqzjcl    # SMTP 서버 로그인 패스워드 (앱 비밀번호)
+    host: smtp.gmail.com
+    port: 587
+    username: reply.projectbuildup
+    password: myynkvtrchdqzjcl
     properties:
       mail:
         smtp:
-          auth: true # 사용자 인증 시도 여부 (기본값 : false)
-          timeout: 5000 # Socket Read Timeout 시간(ms) (기본값 : 무한대)
+          auth: true
+          timeout: 5000
           starttls:
-            enable: true # StartTLS 활성화 여부 (기본값 : false)
+            enable: true
 
 springdoc:
-  use-fqn: true # 정규화된 스키마명 사용 설정
+  use-fqn: true
   api-docs:
-    enabled: false
+    enabled: false # Spring Doc 사용 X
   swagger-ui:
-    display-request-duration: true  # try it out 을 했을 때 request duration 을 추가로 찍어줌
-    tags-sorter: alpha # @Tag를 알파벳 순으로 정렬
+    display-request-duration: true
+    tags-sorter: alpha
 
 api:
   password-change: http://localhost:8080/api/password/change
@@ -57,5 +57,5 @@ path:
 
 jwt:
   expiration:
-    access: 60 * 30 # (30분) 60 * 60 * 24 * 365 (1년)
-    refresh: 60 # 60 * 60 * 24 * 365 (1년)
+    access:  1800 # 60 * 30 (30분)
+    refresh: 604800 # 60 * 60 * 24 * 7 (일주일)
