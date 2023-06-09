@@ -8,4 +8,5 @@ import lombok.NoArgsConstructor;
 public class AccountCertifyTransferDto {
     String organizationCode;
     String accountNumbers;
+    String verificationCode;
 }

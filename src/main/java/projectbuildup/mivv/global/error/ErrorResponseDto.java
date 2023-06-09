@@ -24,4 +24,11 @@ public class ErrorResponseDto {
         this.name = errorCode.name();
         this.message = errorCode.getMessage() + " " + message;
     }
+
+    public ErrorResponseDto(String errorCode, String message){
+        this.status = 403;
+        this.code = Integer.parseInt("61" + errorCode.substring("CF-".length()));
+        this.name = "CODEF_ERROR";
+        this.message = message;
+    }
 }
