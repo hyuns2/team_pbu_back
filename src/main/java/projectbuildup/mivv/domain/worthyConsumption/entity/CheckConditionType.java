@@ -7,9 +7,9 @@ import lombok.RequiredArgsConstructor;
 @AllArgsConstructor
 @Getter
 public enum CheckConditionType {
-    NOT_DATE("발급 기간이 아닙니다."),
-    ALREADY_SPEND("가치소비의 쿠폰이 이미 소진되었습니다."),
-    OK("발급 가능한 쿠폰이 있습니다.");
+    NOT_INVALID_DATE("발급 기간이 아닙니다."),
+    ISSUED("쿠폰 발급 완료"),
+    AVAILABLE("발급 가능");
 
     private final String title;
 }

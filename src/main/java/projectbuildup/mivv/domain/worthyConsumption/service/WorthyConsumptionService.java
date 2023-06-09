@@ -15,10 +15,7 @@ import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.domain.user.repository.UserRepository;
 import projectbuildup.mivv.domain.worthyConsumption.dto.WorthyConsumptionDto;
 import projectbuildup.mivv.domain.worthyConsumption.dto.response.WorthyConsumptionResponseDto;
-import projectbuildup.mivv.domain.worthyConsumption.entity.Condition;
-import projectbuildup.mivv.domain.worthyConsumption.entity.RecommendationReason;
-import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumption;
-import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumptionUrl;
+import projectbuildup.mivv.domain.worthyConsumption.entity.*;
 import projectbuildup.mivv.domain.worthyConsumption.repository.WorthyConsumptionRepository;
 import projectbuildup.mivv.global.common.imageStore.Image;
 import projectbuildup.mivv.global.common.imageStore.ImageType;
@@ -54,7 +51,7 @@ public class WorthyConsumptionService {
      * 가치소비를 생성하는 로직입니다.
      * @param
      */
-    public void createWorthyConsumption(WorthyConsumptionDto.Creation worthyConsumptionDto) throws IOException {
+    public void createWorthyConsumption(WorthyConsumptionDto.Request worthyConsumptionDto) throws IOException {
         Image logo = imageUploader.upload(worthyConsumptionDto.getLogo(),ImageType.VALUE);
         Image videoThumbNail = imageUploader.upload(worthyConsumptionDto.getVideoThumbNail(),ImageType.VALUE);
         Video video = videoUploader.upload(worthyConsumptionDto.getVideo(), "values");
@@ -83,22 +80,29 @@ public class WorthyConsumptionService {
      * @param worthyConsumptionId
      * @return
      */
-    public WorthyConsumptionResponseDto.ReadSummaryResponse readSummaryWorthyConsumption(Long worthyConsumptionId){
+    public WorthyConsumptionResponseDto.ReadSummaryResponse readSummaryWorthyConsumption(Long worthyConsumptionId, Long userId){
         WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionId).orElseThrow(CWorthyConsumptionNotFoundException:: new);
+        User user = userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
+
+        Boolean isLiked = likesWorthyConsumptionRepository.findByUserAndWorthyConsumption(user, worthyConsumption).isPresent() ? Boolean.TRUE : Boolean.FALSE;
+
         Long couponId = getCouponForMonth(worthyConsumption);
         Coupon coupon = couponRepository.findById(couponId).orElseThrow(CCouponNotFoundException::new);
-        return new WorthyConsumptionResponseDto.ReadSummaryResponse(worthyConsumption, coupon);
+        return new WorthyConsumptionResponseDto.ReadSummaryResponse(worthyConsumption, coupon, isLiked);
     }
     public WorthyConsumptionResponseDto.ReadBasicResponse readBasicWorthyConsumption(Long worthyConsumptionId, Long userId){
         WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionId).orElseThrow(CWorthyConsumptionNotFoundException:: new);
         User user = userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
 
-        checkConditionToIssuableCoupon(worthyConsumption);
+        checkConditionToIssuableCoupon(user, worthyConsumption);
+
         Long couponId = getCouponForMonth(worthyConsumption);
         Coupon coupon = couponRepository.findById(couponId).orElseThrow(CCouponNotFoundException::new);
+
         long count = checkUserIssueCount(user, worthyConsumption);
+
         Boolean isLiked = likesWorthyConsumptionRepository.findByUserAndWorthyConsumption(user, worthyConsumption).isPresent() ? Boolean.TRUE : Boolean.FALSE;
-        return new WorthyConsumptionResponseDto.ReadBasicResponse(worthyConsumption, isLiked, coupon, count);
+        return new WorthyConsumptionResponseDto.ReadBasicResponse(worthyConsumption, coupon, isLiked, count);
     }
     public WorthyConsumptionResponseDto.ReadDetailResponse readDetailWorthyConsumption(Long worthyConsumptionId){
         WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionId).orElseThrow(CWorthyConsumptionNotFoundException:: new);
@@ -112,7 +116,7 @@ public class WorthyConsumptionService {
                     Long couponId = getCouponForMonth(worthyConsumption);
                     Coupon coupon = couponRepository.findById(couponId).orElseThrow(CCouponNotFoundException::new);
                     long count = checkUserIssueCount(user, worthyConsumption);
-                    return new WorthyConsumptionResponseDto.ReadBasicResponse(worthyConsumption, liked, coupon, count);
+                    return new WorthyConsumptionResponseDto.ReadBasicResponse(worthyConsumption, coupon, liked, count);
                 })
                 .collect(Collectors.toList());
     }
@@ -121,16 +125,19 @@ public class WorthyConsumptionService {
      * 가치소비를 수정하는 로직입니다. Patch 방식으로 수정함
      * @param
      */
-    public void updateWorthyConsumption(Long worthyConsumptionId, WorthyConsumptionDto.Update worthyConsumptionDto) throws IOException {
+    public void updateWorthyConsumption(Long worthyConsumptionId, WorthyConsumptionDto.Request worthyConsumptionDto) throws IOException {
         WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionId).orElseThrow(CWorthyConsumptionNotFoundException:: new);
 
         updateUrl(worthyConsumption, worthyConsumptionDto);
         worthyConsumption.getCondition().update(worthyConsumptionDto);
-        worthyConsumption.update(worthyConsumptionDto);
+        List<RecommendationReason> recommendationReasons = worthyConsumptionDto.getRecommendationReasons().stream()
+                .map(dto -> mapToRecommendationReason(dto.getTitle(), dto.getDescription()))
+                .collect(Collectors.toList());
+        worthyConsumption.update(worthyConsumptionDto, recommendationReasons);
 
         worthyConsumptionRepository.save(worthyConsumption);
     }
-    public void updateUrl(WorthyConsumption worthyConsumption, WorthyConsumptionDto.Update worthyConsumptionDto) throws IOException {
+    public void updateUrl(WorthyConsumption worthyConsumption, WorthyConsumptionDto.Request worthyConsumptionDto) throws IOException {
         Image logo = imageUploader.upload(worthyConsumptionDto.getLogo(),ImageType.VALUE);
         Image videoThumbNail = imageUploader.upload(worthyConsumptionDto.getVideoThumbNail(),ImageType.VALUE);
         Video video = videoUploader.upload(worthyConsumptionDto.getVideo(), "values");
@@ -147,32 +154,37 @@ public class WorthyConsumptionService {
          */
     public void deleteWorthyConsumption(Long worthyConsumptionId){
         WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionId).orElseThrow(CWorthyConsumptionNotFoundException:: new);
+        likesWorthyConsumptionRepository.deleteAllByWorthyConsumption(worthyConsumption);
+        //찜하기에서 사용자가 찜한 가치소비 리스트 삭제해야 됨.
+
         worthyConsumptionRepository.delete(worthyConsumption);
     }
-
     /**
      * 가치소비의 쿠폰이 발급 가능한 상황인지 판단하는 로직입니다.
      * 우선 오늘 날짜와 발급 가능 날짜를 판단하고
      * 발급받은 사람 수를 세어 최종 판단을 합니다.
      * 쿠폰이 여러개 있는 경우에 해당 달에 맞는 쿠폰이 뭔지 파악해야하는데, 이건 기획단에 한번 더 물어보고 짜려고 합니다.(기준 모호)
      */
-    public void checkConditionToIssuableCoupon(WorthyConsumption worthyConsumption){
-        worthyConsumption.getCondition().checkIssuableCouponStatus(OK);
-        checkMaxParticipantsForCoupon(worthyConsumption.getCoupons().get(0).getId(), worthyConsumption);
-        checkConventionDateForCoupon(worthyConsumption);
+    public void checkConditionToIssuableCoupon(User user, WorthyConsumption worthyConsumption){
+        worthyConsumption.getCondition().checkIssuableCouponStatus(AVAILABLE);
+
+        Long couponId = getCouponForMonth(worthyConsumption);
+        Coupon coupon = couponRepository.findById(couponId).orElseThrow(CCouponNotFoundException::new);
+
+        checkValidDateToIssuableCoupon(worthyConsumption, coupon);
+        checkAlreadyIssuedCoupon(user, worthyConsumption, coupon);
+
         worthyConsumptionRepository.save(worthyConsumption);
     }
-    public void checkConventionDateForCoupon(WorthyConsumption worthyConsumption){
-        if(!(worthyConsumption.getCondition().getConventionStartDate().isBefore(LocalDate.now())//테스트시 now 설정 X
-                &&worthyConsumption.getCondition().getConventionEndDate().isAfter(LocalDate.now())))
-            worthyConsumption.getCondition().checkIssuableCouponStatus(NOT_DATE);
-    }
-    public void checkMaxParticipantsForCoupon(Long couponId, WorthyConsumption worthyConsumption){
-        int nowParticipants = couponIssuanceRepository.countByCouponId(couponId);
-        if(nowParticipants>=worthyConsumption.getCondition().getMaxIssuance())
-            worthyConsumption.getCondition().checkIssuableCouponStatus(ALREADY_SPEND);
-    }
+    public void checkValidDateToIssuableCoupon(WorthyConsumption worthyConsumption, Coupon coupon){
+        if(coupon.getIssuableEndDate().isBefore(LocalDate.now())||coupon.getIssuableStartDate().isAfter(LocalDate.now()))
+            worthyConsumption.getCondition().checkIssuableCouponStatus(NOT_INVALID_DATE);
 
+    }
+    public void checkAlreadyIssuedCoupon(User user, WorthyConsumption worthyConsumption, Coupon coupon){
+        if(couponIssuanceRepository.findByUserAndCoupon(user, coupon).isPresent())
+            worthyConsumption.getCondition().checkIssuableCouponStatus(ISSUED);
+    }
     /**
      * 해당 월에 맞는 쿠폰을 조회합니다.
      * @param worthyConsumption

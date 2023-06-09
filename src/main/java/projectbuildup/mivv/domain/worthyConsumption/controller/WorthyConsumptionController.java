@@ -42,7 +42,7 @@ public class WorthyConsumptionController {
     @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<HttpStatus> createWorthyConsumption(@Valid @ModelAttribute("createWorthyConsumptions") WorthyConsumptionDto.Creation worthyConsumptionDto) throws IOException {
+    public ResponseEntity<HttpStatus> createWorthyConsumption(@Valid @ModelAttribute("createWorthyConsumptions") WorthyConsumptionDto.Request worthyConsumptionDto) throws IOException {
         worthyConsumptionService.createWorthyConsumption(worthyConsumptionDto);
             return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -59,9 +59,11 @@ public class WorthyConsumptionController {
      * @return
      */
     @Operation(summary = "가치소비의 요약본 조회", description = "찜, 가치소비 안 작은 네모에 들어가는 정보를 요약본이라고 하며, 이를 조회합니다.")
+    @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/{worthyConsumptionId}/summary")
-    public ResponseEntity<WorthyConsumptionResponseDto.ReadSummaryResponse> getWorthyConsumptionSummary(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId){
-        WorthyConsumptionResponseDto.ReadSummaryResponse worthyConsumptionResponseDto = worthyConsumptionService.readSummaryWorthyConsumption(worthyConsumptionId);
+    public ResponseEntity<WorthyConsumptionResponseDto.ReadSummaryResponse> getWorthyConsumptionSummary(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId, @AuthenticationPrincipal User user){
+        WorthyConsumptionResponseDto.ReadSummaryResponse worthyConsumptionResponseDto = worthyConsumptionService.readSummaryWorthyConsumption(worthyConsumptionId, user.getId());
         return new ResponseEntity<>(worthyConsumptionResponseDto, HttpStatus.OK);
     }
     @Operation(summary = "가치소비 조회", description = "가치소비를 조회합니다.")
@@ -104,7 +106,7 @@ public class WorthyConsumptionController {
     @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping(value = "{worthyConsumptionId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<HttpStatus> updateWorthyConsumption(@PathVariable(name = "worthyConsumptionId")Long worthyConsumptionId, @ModelAttribute("updateWorthyConsumptions") WorthyConsumptionDto.Update worthyConsumptionDto) throws IOException {
+    public ResponseEntity<HttpStatus> updateWorthyConsumption(@PathVariable(name = "worthyConsumptionId")Long worthyConsumptionId, @ModelAttribute("updateWorthyConsumptions") WorthyConsumptionDto.Request worthyConsumptionDto) throws IOException {
         worthyConsumptionService.updateWorthyConsumption(worthyConsumptionId, worthyConsumptionDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }

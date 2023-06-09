@@ -23,50 +23,66 @@ public class WorthyConsumptionResponseDto {
         private String title;
         private Integer originalPrice;
         private Integer salePrice;
-        private String availablePrice;
-        private Long lastMonthAmount;
+        private String priceTag;
+        private Long availablePrice;
+
         private Integer maxIssuance;
         private List<String> summary;
         private String logoPath;
 
-        public ReadSummaryResponse(WorthyConsumption worthyConsumption, Coupon coupon) {
+        boolean issueCountLimit;
+
+        Boolean liked;
+
+        public ReadSummaryResponse(WorthyConsumption worthyConsumption, Coupon coupon, Boolean liked) {
             this.id = worthyConsumption.getId();
             this.title = worthyConsumption.getTitle();
             this.originalPrice = worthyConsumption.getOriginalPrice();
             this.salePrice = worthyConsumption.getSalePrice();
-            this.availablePrice = worthyConsumption.getAvailablePrice();
-            this.lastMonthAmount = worthyConsumption.getCondition().getLastMonthAmount();
+            this.priceTag = worthyConsumption.getPriceTag();
+            this.availablePrice = worthyConsumption.getCondition().getAvailablePrice();
+            //this.issueCountLimit
             this.maxIssuance = worthyConsumption.getCondition().getMaxIssuance();
             this.summary = coupon.getSummary();
             this.logoPath = worthyConsumption.getWorthyConsumptionUrl().getLogoPath();
+
+            this.liked = liked;
         }
     }
     @NoArgsConstructor @AllArgsConstructor
     @Getter @Setter
     public static class ReadBasicResponse extends ReadSummaryResponse{
         private List<String> hashtags;
+
         private String videoThumbNailPath;
         private String videoPath;
         private String imagePath;
+
         private CheckConditionType checkConditionType;
-        private Boolean isLiked;
         private Long couponId;
         private LocalDate conventionStartDate;
         private LocalDate conventionEndDate;
+
+        private LocalDate issuableStartDate;
+        private LocalDate issuableEndDate;
+
         private CouponType couponType;
         private long issueCount;
 
-        public ReadBasicResponse(WorthyConsumption worthyConsumption, Boolean isLiked, Coupon coupon, long issueCount) {
-            super(worthyConsumption, coupon);
-            this.videoThumbNailPath = worthyConsumption.getWorthyConsumptionUrl().getVideoThumbNailPath();
+        public ReadBasicResponse(WorthyConsumption worthyConsumption, Coupon coupon, Boolean isLiked, long issueCount) {
+            super(worthyConsumption, coupon, isLiked);
             this.hashtags = worthyConsumption.getHashtags();
+
+            this.videoThumbNailPath = worthyConsumption.getWorthyConsumptionUrl().getVideoThumbNailPath();
             this.videoPath = worthyConsumption.getWorthyConsumptionUrl().getVideoPath();
             this.imagePath = worthyConsumption.getWorthyConsumptionUrl().getImagePath();
+
             this.checkConditionType = worthyConsumption.getCondition().getCheckConditionType();
-            this.isLiked = isLiked;
             this.couponId = coupon.getId();
             this.conventionStartDate = worthyConsumption.getCondition().getConventionStartDate();
             this.conventionEndDate = worthyConsumption.getCondition().getConventionEndDate();
+            this.issuableStartDate = coupon.getIssuableStartDate();
+            this.issuableEndDate = coupon.getIssuableEndDate();
             this.couponType = coupon.getCouponType();
             this.issueCount = issueCount;
         }
@@ -78,35 +94,46 @@ public class WorthyConsumptionResponseDto {
         private Long id;
         private String title;
         private List<String> hashtags;
+
         private String logoPath;
+        private String videoPath;
         private String videoThumbNailPath;
-        private String detailImageUrl;
-        private String detailBackgroundImageUrl;
-        private String videoUrl;
+        private String imagePath;
+        private String detailImagePath;
+        private String detailBackgroundImagePath;
+        private String placeImagePath;
+
+
         private List<RecommendationReasonDto> recommendationReasons;
         private Integer originalPrice;
         private Integer salePrice;
-        private String availablePrice;
-        private String placeImageUrl;
+        private String priceTag;
+
         private String availablePlace;
+        private String availableSpecificPlace;
 
         public ReadDetailResponse(WorthyConsumption worthyConsumption) {
             this.id = worthyConsumption.getId();
             this.title = worthyConsumption.getTitle();
             this.hashtags = worthyConsumption.getHashtags();
+
             this.logoPath = worthyConsumption.getWorthyConsumptionUrl().getLogoPath();
+            this.videoPath = worthyConsumption.getWorthyConsumptionUrl().getVideoPath();
             this.videoThumbNailPath = worthyConsumption.getWorthyConsumptionUrl().getVideoThumbNailPath();
-            this.detailImageUrl = worthyConsumption.getWorthyConsumptionUrl().getDetailImagePath();
-            this.detailBackgroundImageUrl = worthyConsumption.getWorthyConsumptionUrl().getDetailBackgroundImagePath();
-            this.videoUrl = worthyConsumption.getWorthyConsumptionUrl().getVideoPath();
+            this.imagePath = worthyConsumption.getWorthyConsumptionUrl().getImagePath();
+            this.detailImagePath = worthyConsumption.getWorthyConsumptionUrl().getDetailImagePath();
+            this.detailBackgroundImagePath = worthyConsumption.getWorthyConsumptionUrl().getDetailBackgroundImagePath();
+            this.placeImagePath = worthyConsumption.getWorthyConsumptionUrl().getPlaceImagePath();
+
             this.recommendationReasons = worthyConsumption.getRecommendationReasons().stream()
                     .map(RecommendationReasonDto::new)
                     .collect(Collectors.toList());
             this.originalPrice = worthyConsumption.getOriginalPrice();
             this.salePrice = worthyConsumption.getSalePrice();
-            this.availablePrice = worthyConsumption.getAvailablePrice();
-            this.placeImageUrl = worthyConsumption.getWorthyConsumptionUrl().getPlaceImagePath();
+            this.priceTag = worthyConsumption.getPriceTag();
+
             this.availablePlace = worthyConsumption.getAvailablePlace();
+            this.availableSpecificPlace = worthyConsumption.getAvailableSpecificPlace();
         }
 
 

@@ -53,7 +53,7 @@ public class CouponService {
         Image image = imageUploader.upload(couponDto.getImage(), ImageType.COUPON);
         Coupon coupon = Coupon.toEntity(couponDto, image.getImagePath());
         worthyConsumption.addCoupon(coupon);
-        worthyConsumption.getCondition().checkIssuableCouponStatus(CheckConditionType.OK);
+        worthyConsumption.getCondition().checkIssuableCouponStatus(CheckConditionType.AVAILABLE);
         worthyConsumptionRepository.save(worthyConsumption);
     }
     public List<CouponDto.Response> readAllCoupon(){
@@ -84,6 +84,7 @@ public class CouponService {
     }
     public void deleteCoupon(Long couponId){
         Coupon coupon = couponRepository.findById(couponId).orElseThrow(CCouponNotFoundException::new);
+        couponIssuanceRepository.deleteAllByCoupon(coupon);
         couponRepository.delete(coupon);
     }
 

@@ -48,6 +48,16 @@ public class Coupon extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "coupon_type")
     private CouponType couponType;
+
+    @Column(name = "issue_count_limit", nullable = false)
+    private Boolean issueCountLimit;
+    @NonNull
+    private String howToUse;
+    @ElementCollection
+    @NonNull
+    @Column(name = "caution")
+    private List<String> caution;
+
     public static Coupon toEntity(CouponDto.Request couponDto, String imagePath){
         return Coupon.builder()
                 .title(couponDto.getTitle())

@@ -18,7 +18,7 @@ import java.util.List;
 public class WorthyConsumptionDto {
     @Getter @Setter @Builder
     @NoArgsConstructor @AllArgsConstructor
-    public static class Creation extends WorthyConsumptionUrlDto.Creation {
+    public static class Request extends WorthyConsumptionUrlDto.Request {
         @NotBlank(message = "가치소비의 이름을 입력해주세요")
         String title;
         @NotNull
@@ -29,15 +29,21 @@ public class WorthyConsumptionDto {
         Integer salePrice;
         @NotNull
         List<RecommendationReasonDto> recommendationReasons;
-        String availablePrice;
+        String priceTag;
+        @NotNull
         String availablePlace;
-        private Integer maxIssuance;
+        @NotNull
+        String availableSpecificPlace;
 
+        //Condition
+        @NotNull
+        private Integer maxIssuance;
+        @NotNull
+        private Long availablePrice;
         @NotNull(message = "가치소비의 협약 시작 날짜를 입력해주세요")
         @Schema(example = "2001-03-02")
         @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
         private LocalDate conventionStartDate;
-
         @NotNull(message = "가치소비의 협약 끝 날짜를 입력해주세요")
         @Schema(example = "2101-03-02")
         @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
@@ -51,34 +57,36 @@ public class WorthyConsumptionDto {
                     .worthyConsumptionUrl(worthyConsumptionUrl)
                     .originalPrice(originalPrice)
                     .salePrice(salePrice)
-                    .availablePrice(availablePrice)
+                    .recommendationReasons(recommendationReasons)
+                    .priceTag(priceTag)
                     .availablePlace(availablePlace)
+                    .availableSpecificPlace(availableSpecificPlace)
                     .condition(condition)
                     .build();
         }
     }
-    @Data @AllArgsConstructor
-    public class Update extends WorthyConsumptionUrlDto.Update{
-        String title;
-        @NotNull
-        List<String> hashtags;
-        Integer originalPrice;
-        Integer salePrice;
-        @NotNull
-        List<RecommendationReason> recommendationReasons;
-        String availablePrice;
-        String availablePlace;
-        private Integer maxIssuance;
-
-        @Schema(example = "2001-03-02")
-        @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
-        private LocalDate conventionStartDate;
-
-        @Schema(example = "2101-03-02")
-        @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
-        private LocalDate conventionEndDate;
-        private Long lastMonthAmount;
-    }
+//    @Data @AllArgsConstructor
+//    public class Update extends WorthyConsumptionUrlDto.Update{
+//        String title;
+//        @NotNull
+//        List<String> hashtags;
+//        Integer originalPrice;
+//        Integer salePrice;
+//        @NotNull
+//        List<RecommendationReason> recommendationReasons;
+//        String availablePrice;
+//        String availablePlace;
+//        private Integer maxIssuance;
+//
+//        @Schema(example = "2001-03-02")
+//        @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
+//        private LocalDate conventionStartDate;
+//
+//        @Schema(example = "2101-03-02")
+//        @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
+//        private LocalDate conventionEndDate;
+//        private Long lastMonthAmount;
+//    }
     @NoArgsConstructor @AllArgsConstructor
     @Getter @Setter
     @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
