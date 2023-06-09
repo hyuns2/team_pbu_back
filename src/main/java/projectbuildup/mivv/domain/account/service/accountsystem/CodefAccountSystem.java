@@ -39,7 +39,7 @@ public class CodefAccountSystem implements AccountSystem {
         if (!ownAccounts.contains(accountDto.getAccountNumbers())) {
             throw new CAccountNotFoundException();
         }
-        return new Account(accountDto.getAccountNumbers(), BankType.findByCode(accountDto.getOrganizationCode()), OpenBanking.CODEF, connectedId);
+        return new Account(accountDto.getAccountNumbers(), BankType.findByCode(accountDto.getOrganizationCode()), OpenBanking.CODEF, connectedId, user);
     }
 
     private String issueConnectedId(AccountRegisterDto accountDto) {

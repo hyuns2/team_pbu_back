@@ -57,11 +57,10 @@ public class User extends BaseTimeEntity implements UserDetails {
     @AssertTrue
     @Column(name = "agreement", nullable = false, length = 1)
     boolean agreement;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "identity_verification_id", foreignKey = @ForeignKey(name = "fk_user_to_iv"), nullable = false)
+    @OneToOne
+    @JoinColumn(name = "identity_verification_id", foreignKey = @ForeignKey(name = "fk_user_to_iv"))
     IdentityVerification identityVerification;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "account_id", foreignKey = @ForeignKey(name = "fk_user_to_account"))
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     Account account;
 
     @Column(name = "deleted_at")

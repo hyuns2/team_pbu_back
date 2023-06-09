@@ -144,7 +144,7 @@ public class RemittanceService {
         participation.addCount();
         double score = rankScoreCalculator.calculate(remittance);
         rankingService.updateScore(participation.getUser(), participation.getChallenge(), score);
-//        remittanceArchivingService.assignNumericalConditionCards(participation.getUser());
+        remittanceArchivingService.assignRemittanceConditionCards(participation.getUser());
     }
 
 

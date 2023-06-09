@@ -23,6 +23,7 @@ public class AccountRegisterService {
     private final AccountSystem accountSystem;
     private final UserRepository userRepository;
     private final IdentityVerificationRepository identityVerificationRepository;
+    private final AccountRepository accountRepository;
 
     /**
      * 계좌를 등록합니다.
@@ -34,8 +35,7 @@ public class AccountRegisterService {
         IdentityVerification identityVerification = identityVerificationRepository.findByCode(requestDto.getVerificationCode()).orElseThrow(CResourceNotFoundException::new);
         User user = userRepository.findByIdentityVerification(identityVerification).orElseThrow(CUserNotFoundException::new);
         Account account = accountSystem.createAccount(requestDto, user);
-        user.setAccount(account);
-        userRepository.save(user);
+        accountRepository.save(account);
     }
 
     /**
