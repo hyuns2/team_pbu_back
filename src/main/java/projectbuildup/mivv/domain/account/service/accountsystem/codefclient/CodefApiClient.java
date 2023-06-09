@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 @Component
+@Primary
 @Slf4j
 public class CodefApiClient implements CodefClient {
     @Value("${codef.api-client-id}")
@@ -42,7 +43,7 @@ public class CodefApiClient implements CodefClient {
     @PostConstruct
     public void init() {
         codef = new EasyCodef();
-        codef.setClientInfoForDemo(CLIENT_ID, CLIENT_SECRET);
+        codef.setClientInfo(CLIENT_ID, CLIENT_SECRET);
         codef.setPublicKey(PUBLIC_KEY);
     }
 

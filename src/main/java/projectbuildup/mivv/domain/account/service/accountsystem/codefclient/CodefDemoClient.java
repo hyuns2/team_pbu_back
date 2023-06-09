@@ -29,7 +29,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Primary
 @Component
 @Slf4j
 public class CodefDemoClient implements CodefClient {
