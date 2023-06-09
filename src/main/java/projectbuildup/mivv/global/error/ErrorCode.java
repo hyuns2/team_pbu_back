@@ -49,7 +49,9 @@ public enum ErrorCode {
     // 15000 ~ : 문의, 아카이빙, 알림 관련 에러
     INQUIRY_OVER_ERROR(-15000, "문의 개수 한도를 초과했습니다.", HttpStatus.BAD_REQUEST),
     INQUIRY_NOT_FOUND(-15100, "해당하는 문의를 찾을 수 없습니다.", HttpStatus.BAD_REQUEST),
+    INQUIRY_NOT_MATCH(-15200, "해당 문의는 현재 유저의 문의가 아닙니다.", HttpStatus.BAD_REQUEST),
     CARD_NOT_FOUND(-16000, "해당하는 카드를 찾을 수 없습니다.", HttpStatus.BAD_REQUEST),
+    CARD_TYPE_NOT_MATCH(-15200, "입력한 카드 ID의 타입을 확인해주세요.", HttpStatus.BAD_REQUEST),
     INVALID_CARD_CONDITION(-16100, "카드 조건은 하나 이상이여야 합니다.", HttpStatus.BAD_REQUEST),
     NOTIFICATION_NOT_FOUND(-17000, "해당하는 알림을 찾을 수 없습니다.", HttpStatus.BAD_REQUEST),
 

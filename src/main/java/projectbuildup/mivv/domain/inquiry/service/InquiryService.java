@@ -10,6 +10,7 @@ import projectbuildup.mivv.domain.inquiry.entity.InquiryEntity;
 import projectbuildup.mivv.domain.inquiry.repository.InquiryRepository;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.global.error.exception.CInquiryNotFoundException;
+import projectbuildup.mivv.global.error.exception.CInquiryNotMatchException;
 import projectbuildup.mivv.global.error.exception.CInquiryOverException;
 
 import java.util.List;
@@ -41,7 +42,7 @@ public class InquiryService {
     }
 
     private boolean isUnavailableToInquiry(InquiryEntity entity) {
-        return (repo.countByUser_idAndAnswer(entity.getUser().getId(), entity.getAnswer()) > 1);
+        return (repo.countByUser_idAndAnswer(entity.getUser().getId(), null) > 1);
     }
 
     /**
@@ -68,7 +69,7 @@ public class InquiryService {
      * @return List<InquiryDto.InquiryResponseDto> 사용자 문의들의 정보
      */
     public List<InquiryDto.InquiryResponseDto> retrieveForUser(final User user) {
-        List<InquiryEntity> resultEntity = repo.findByUser_id(user.getId());
+        List<InquiryEntity> resultEntity = repo.findByUserIdOrderByTimeStampDesc(user.getId());
 
         return resultEntity.stream().map(InquiryDto.InquiryResponseDto::new).collect(Collectors.toList());
     }
@@ -90,10 +91,15 @@ public class InquiryService {
      * @param id 문의 id
      * @throws CInquiryNotFoundException 문의 찾기 실패시
      */
-    public void deleteInquiry(final Long id) {
+    public void deleteInquiry(final User user, final Long id) {
         Optional<InquiryEntity> target = repo.findById(id);
         if (target.isEmpty()) {
             throw new CInquiryNotFoundException();
+        }
+
+        User inquiryOwner = target.get().getUser();
+        if (!inquiryOwner.getId().equals(user.getId())) {
+            throw new CInquiryNotMatchException();
         }
 
         repo.deleteById(id);

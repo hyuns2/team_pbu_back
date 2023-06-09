@@ -158,6 +158,13 @@ public class ExceptionAdvice {
         return new ResponseEntity<>(new ErrorResponseDto(errorCode), errorCode.getStatusCode());
     }
 
+    @ExceptionHandler(CInquiryNotMatchException.class)
+    protected ResponseEntity<ErrorResponseDto> handle(CInquiryNotMatchException e) {
+        ErrorCode errorCode = e.getErrorCode();
+        e.printStackTrace();
+        return new ResponseEntity<>(new ErrorResponseDto(errorCode), errorCode.getStatusCode());
+    }
+
     @ExceptionHandler(CSavingCountOverException.class)
     protected ResponseEntity<ErrorResponseDto> handle(CSavingCountOverException e) {
         ErrorCode errorCode = e.getErrorCode();
@@ -167,6 +174,13 @@ public class ExceptionAdvice {
 
     @ExceptionHandler(CCardNotFoundException.class)
     protected ResponseEntity<ErrorResponseDto> handle(CCardNotFoundException e) {
+        ErrorCode errorCode = e.getErrorCode();
+        e.printStackTrace();
+        return new ResponseEntity<>(new ErrorResponseDto(errorCode), errorCode.getStatusCode());
+    }
+
+    @ExceptionHandler(CCardTypeNotMatchException.class)
+    protected ResponseEntity<ErrorResponseDto> handle(CCardTypeNotMatchException e) {
         ErrorCode errorCode = e.getErrorCode();
         e.printStackTrace();
         return new ResponseEntity<>(new ErrorResponseDto(errorCode), errorCode.getStatusCode());

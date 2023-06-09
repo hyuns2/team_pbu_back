@@ -20,7 +20,7 @@ public class ArchivingDto {
 
     @AllArgsConstructor
     @Data
-    public static class createRemittanceCardRequestDto {
+    public static class createOrUpdateRemittanceCardRequestDto {
 
         @NotBlank
         @Length(min = 2, max = 30)
@@ -53,7 +53,7 @@ public class ArchivingDto {
         @Schema(description = "발급조건 일수")
         private Integer term;
 
-        public static RemittanceConditionCardEntity toEntity(final createRemittanceCardRequestDto dto, String imagePath) throws IOException {
+        public static RemittanceConditionCardEntity toEntity(final createOrUpdateRemittanceCardRequestDto dto, String imagePath) throws IOException {
 
             return RemittanceConditionCardEntity.builder()
                     .type(CardType.REMITTANCE)
@@ -73,37 +73,7 @@ public class ArchivingDto {
 
     @AllArgsConstructor
     @Data
-    public static class updateRemittanceCardRequestDto {
-
-        @Length(max = 30)
-        @Schema(description = "카드 제목")
-        private String title;
-
-        @Length(max = 30)
-        @Schema(description = "카드 부제목")
-        private String subTitle;
-
-        @Size(max = 2)
-        @Schema(description = "카드 명언")
-        private List<@Length(max = 30) String> sentences;
-
-        @Schema(description = "카드 이미지 파일")
-        private MultipartFile image;
-
-        @Schema(description = "발급조건 금액")
-        private Integer charge;
-
-        @Schema(description = "발급조건 횟수")
-        private Integer count;
-
-        @Schema(description = "발급조건 일수")
-        private Integer term;
-
-    }
-
-    @AllArgsConstructor
-    @Data
-    public static class createGeneralCardRequestDto {
+    public static class createOrUpdateGeneralCardRequestDto {
 
         @NotBlank
         @Length(min = 2, max = 30)
@@ -124,7 +94,7 @@ public class ArchivingDto {
         @Schema(description = "카드 이미지 파일")
         private MultipartFile image;
 
-        public static CardEntity toEntity(final ArchivingDto.createGeneralCardRequestDto dto, String imagePath) throws IOException {
+        public static CardEntity toEntity(final createOrUpdateGeneralCardRequestDto dto, String imagePath) throws IOException {
 
             return CardEntity.builder()
                     .type(CardType.GENERAL)
@@ -141,27 +111,6 @@ public class ArchivingDto {
 
     @AllArgsConstructor
     @Data
-    public static class updateGeneralCardRequestDto {
-
-        @Length(max = 30)
-        @Schema(description = "카드 제목")
-        private String title;
-
-        @Length(max = 30)
-        @Schema(description = "카드 부제목")
-        private String subTitle;
-
-        @Size(max = 2)
-        @Schema(description = "카드 명언")
-        private List<@Length(max = 30) String> sentences;
-
-        @Schema(description = "카드 이미지 파일")
-        private MultipartFile image;
-
-    }
-
-    @AllArgsConstructor
-    @Data
     public static class AssignGeneralCardsRequestDto {
         @NotNull
         @Schema(description = "카드 고유번호")
@@ -174,7 +123,7 @@ public class ArchivingDto {
 
     @AllArgsConstructor
     @Data
-    public static class createCouponCardRequestDto {
+    public static class createOrUpdateCouponCardRequestDto {
 
         @NotBlank
         @Length(min = 2, max = 30)
@@ -203,7 +152,7 @@ public class ArchivingDto {
         @Schema(description = "몇개월 연속 쿠폰 발급자에게 카드를 부여할건가")
         private Integer howSuccessive;
 
-        public static CouponConditionCardEntity toEntity(final ArchivingDto.createCouponCardRequestDto dto, String imagePath) throws IOException {
+        public static CouponConditionCardEntity toEntity(final createOrUpdateCouponCardRequestDto dto, String imagePath) throws IOException {
 
             return CouponConditionCardEntity.builder()
                     .type(CardType.COUPON)
@@ -218,33 +167,6 @@ public class ArchivingDto {
                     .build();
 
         }
-    }
-
-    @AllArgsConstructor
-    @Data
-    public static class updateCouponCardRequestDto {
-
-        @Length(max = 30)
-        @Schema(description = "카드 제목")
-        private String title;
-
-        @Length(max = 30)
-        @Schema(description = "카드 부제목")
-        private String subTitle;
-
-        @Size(max = 2)
-        @Schema(description = "카드 명언")
-        private List<@Length(max = 30) String> sentences;
-
-        @Schema(description = "카드 이미지 파일")
-        private MultipartFile image;
-
-        @Schema(description = "몇번째 쿠폰 발급자에게 카드를 부여할건가")
-        private Integer whatNumber;
-
-        @Schema(description = "몇개월 연속 쿠폰 발급자에게 카드를 부여할건가")
-        private Integer howSuccessive;
-
     }
 
     @AllArgsConstructor

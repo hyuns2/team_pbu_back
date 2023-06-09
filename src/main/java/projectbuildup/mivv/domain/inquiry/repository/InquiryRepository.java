@@ -15,7 +15,7 @@ public interface InquiryRepository extends JpaRepository<InquiryEntity, Long> {
 
     Optional<InquiryEntity> findById(Long id);
 
-    List<InquiryEntity> findByUser_id(Long user_id);
+    List<InquiryEntity> findByUserIdOrderByTimeStampDesc(Long user_id);
 
     void deleteById(Long id);
 

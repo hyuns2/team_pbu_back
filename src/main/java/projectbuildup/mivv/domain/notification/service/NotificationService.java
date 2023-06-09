@@ -1,6 +1,7 @@
 package projectbuildup.mivv.domain.notification.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import projectbuildup.mivv.domain.notification.dto.NotificationDto;
 import projectbuildup.mivv.domain.notification.entity.NotificationEntity;
@@ -79,7 +80,7 @@ public class NotificationService {
      * @return List<NotificationDto.NotificationResponseDto> 전체 알림 정보
      */
     public List<NotificationDto.NotificationResponseDto> retrieveNotifications() {
-        List<NotificationEntity> result = repo.findAll();
+        List<NotificationEntity> result = repo.findAll(Sort.by(Sort.Direction.DESC, "timeStamp"));
 
         return result.stream().map(NotificationDto.NotificationResponseDto::new).collect(Collectors.toList());
     }
