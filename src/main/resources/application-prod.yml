@@ -46,6 +46,25 @@ springdoc:
     display-request-duration: true
     tags-sorter: alpha
 
+logging:
+  pattern:
+    console: "%d{yy-MM-dd HH:mm:ss} %clr(%-5level) [%thread] %logger[%method:%line] - %msg%n"
+    file: "%d{yy-MM-dd HH:mm:ss} %-5level [%thread] %logger[%method:%line] - %msg%n"
+  logback:
+    rollingpolicy:
+      file-name-pattern: "/logs/app/%d{yy-MM-dd}/log_%i.gz"
+      max-history: 30
+      max-file-size: 20KB
+      total-size-cap: 100MB
+  level:
+    root: info
+    org.springframework: info
+    org.hibernate:
+      SQL: info
+      type: trace
+  file:
+    name: "/logs/app/current.log"
+
 api:
   password-change: http://localhost:8080/api/password/change
 
