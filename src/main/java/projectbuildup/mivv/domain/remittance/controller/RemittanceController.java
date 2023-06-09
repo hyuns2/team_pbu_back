@@ -18,6 +18,7 @@ import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.global.constant.ExampleValue;
 import projectbuildup.mivv.global.constant.Header;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -33,9 +34,10 @@ public class RemittanceController {
     @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('USER')")
     @PostMapping("/remittance/challenges/{challengeId}")
-    public ResponseEntity<Void> checkSaving(@PathVariable Long challengeId, @AuthenticationPrincipal User user) {
-        RemittanceDto.RemitRequest requestDto = new RemittanceDto.RemitRequest(user.getId(), challengeId);
-        remittanceService.checkSaving(requestDto, Optional.empty());
+    public ResponseEntity<Void> checkSaving(@PathVariable Long challengeId, @AuthenticationPrincipal User user, @RequestBody RemittanceDto.RemitRequest requestDto) {
+        requestDto.setUserId(user.getId());
+        requestDto.setChallengeId(challengeId);
+        remittanceService.checkSaving(requestDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -44,7 +46,7 @@ public class RemittanceController {
     @PreAuthorize("hasRole('USER')")
     @PostMapping("/remittance/test/challenges/{challengeId}")
     public ResponseEntity<Void> remitForTest(@PathVariable Long challengeId, @AuthenticationPrincipal User user) {
-        RemittanceDto.RemitRequest requestDto = new RemittanceDto.RemitRequest(user.getId(), challengeId);
+        RemittanceDto.RemitRequest requestDto = new RemittanceDto.RemitRequest(user.getId(), challengeId, "");
         remittanceService.checkSavingForTest(requestDto, Optional.empty());
         return new ResponseEntity<>(HttpStatus.OK);
     }
