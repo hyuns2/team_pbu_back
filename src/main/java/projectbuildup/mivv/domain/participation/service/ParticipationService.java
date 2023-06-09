@@ -4,7 +4,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import projectbuildup.mivv.domain.remittance.repository.RemittanceRepository;
 import projectbuildup.mivv.domain.challenge.entity.Challenge;
 import projectbuildup.mivv.domain.challenge.repository.ChallengeRepository;
 import projectbuildup.mivv.domain.participation.entity.Participation;
@@ -57,7 +56,6 @@ public class ParticipationService {
         User user = userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
         Challenge challenge = challengeRepository.findById(challengeId).orElseThrow(CResourceNotFoundException::new);
         Participation participation = participationRepository.findByChallengeAndUser(challenge, user).orElseThrow(() -> new CBadRequestException("참여 중인 챌린지가 아닙니다. "));
-        savingCountRepository.delete(participation.getSavingCount());
         participationRepository.delete(participation);
     }
 }

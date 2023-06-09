@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import projectbuildup.mivv.domain.account.entity.TransactionDetail;
 import projectbuildup.mivv.domain.account.service.accountdetails.AccountDetailsSystem;
+import projectbuildup.mivv.domain.archiving.service.RemittanceArchivingService;
 import projectbuildup.mivv.domain.challenge.dto.RankDto;
 import projectbuildup.mivv.domain.challenge.service.RankScoreCalculator;
 import projectbuildup.mivv.domain.challenge.service.RankingService;
@@ -53,6 +54,7 @@ public class RemittanceService {
     @Autowired
     @Qualifier("testAccountDetailsSystem")
     AccountDetailsSystem testAccountDetailsSystem;
+    RemittanceArchivingService remittanceArchivingService;
 
 
     /**
@@ -139,7 +141,7 @@ public class RemittanceService {
     private void updateRemittance(long amount, Participation participation) {
         Remittance remittance = Remittance.newDeposit(amount, participation);
         remittanceRepository.save(remittance);
-        savingCountService.addCount(participation);
+        participation.addCount();
         double score = rankScoreCalculator.calculate(remittance);
         rankingService.updateScore(participation.getUser(), participation.getChallenge(), score);
 //        remittanceArchivingService.assignNumericalConditionCards(participation.getUser());

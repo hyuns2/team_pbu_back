@@ -3,12 +3,10 @@ package projectbuildup.mivv.domain.participation.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import projectbuildup.mivv.domain.remittance.entity.Remittance;
 import projectbuildup.mivv.domain.challenge.entity.Challenge;
-import projectbuildup.mivv.domain.saving_count.entity.SavingCount;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.global.common.BaseTimeEntity;
 
@@ -37,9 +35,8 @@ public class Participation extends BaseTimeEntity {
     @JoinColumn(name = "challenge_id", foreignKey = @ForeignKey(name = "fk_participation_to_challenge"), nullable = false)
     private Challenge challenge;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "saving_count_id", foreignKey = @ForeignKey(name = "fk_participation_to_count"), nullable = false)
-    private SavingCount savingCount;
+    @Column(name = "saving_count_of_day")
+    long savingCountOfDay;
 
     @OneToMany(mappedBy = "participation", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Remittance> remittanceList;
@@ -50,15 +47,19 @@ public class Participation extends BaseTimeEntity {
     public Participation(User user, Challenge challenge) {
         this.user = user;
         this.challenge = challenge;
-        this.savingCount = new SavingCount();
+        this.savingCountOfDay = 0L;
     }
 
     public boolean canRemit() {
         long limit = challenge.getLimitedNumberOfTimes();
-        return savingCount.getCount() < limit;
+        return this.savingCountOfDay < limit;
     }
 
-    public void setSavingCount(SavingCount savingCount) {
-        this.savingCount = savingCount;
+    public void addCount() {
+        this.savingCountOfDay++;
+    }
+
+    public void initialize() {
+        this.savingCountOfDay = 0;
     }
 }
