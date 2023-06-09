@@ -12,6 +12,7 @@ import projectbuildup.mivv.domain.archiving.dto.ArchivingDto;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder
@@ -27,25 +28,16 @@ public class CouponConditionCardEntity extends CardEntity {
     @Column(name = "how_successive", nullable = false)
     protected Integer howSuccessive;
 
-    public void updateCard(ArchivingDto.updateCouponCardRequestDto dto, String imagePath) throws IOException {
-        if (dto.getTitle() != null) {
-            this.title = dto.getTitle();
-        }
-        if (dto.getSubTitle() != null) {
-            this.subTitle = dto.getSubTitle();
-        }
-        if (dto.getSentences().size() > 0) {
-            this.sentences = dto.getSentences().toString();
-        }
-        if (dto.getImage() != null) {
-            this.imagePath = imagePath;
-        }
-        if (dto.getWhatNumber() != null) {
-            this.whatNumber = dto.getWhatNumber();
-        }
-        if (dto.getHowSuccessive() != null) {
-            this.howSuccessive = dto.getHowSuccessive();
-        }
+    public void updateCard(ArchivingDto.createOrUpdateCouponCardRequestDto dto, String imagePath) {
+        this.type = CardType.COUPON;
+        this.title = dto.getTitle();
+        this.subTitle = dto.getSubTitle();
+        this.sentences = dto.getSentences().stream()
+                .map(Object::toString)
+                .collect(Collectors.joining(", "));
+        this.imagePath = imagePath;
+        this.whatNumber = dto.getWhatNumber();
+        this.howSuccessive = dto.getHowSuccessive();
     }
 
 }

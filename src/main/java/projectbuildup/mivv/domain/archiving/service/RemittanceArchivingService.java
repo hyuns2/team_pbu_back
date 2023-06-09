@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import projectbuildup.mivv.domain.archiving.dto.ArchivingDto;
+import projectbuildup.mivv.domain.archiving.entity.CardEntity;
 import projectbuildup.mivv.domain.archiving.entity.CardType;
 import projectbuildup.mivv.domain.archiving.entity.RemittanceConditionCardEntity;
 import projectbuildup.mivv.domain.archiving.entity.UserCardEntity;
@@ -15,6 +16,7 @@ import projectbuildup.mivv.global.common.imageStore.Image;
 import projectbuildup.mivv.global.common.imageStore.ImageType;
 import projectbuildup.mivv.global.common.imageStore.ImageUploader;
 import projectbuildup.mivv.global.error.exception.CCardNotFoundException;
+import projectbuildup.mivv.global.error.exception.CCardTypeNotMatchException;
 import projectbuildup.mivv.global.error.exception.CInvalidCardConditionException;
 
 import java.io.IOException;
@@ -40,7 +42,7 @@ public class RemittanceArchivingService {
      * @throws IOException
      * @throws CInvalidCardConditionException 카드 조건이 없을 시
      */
-    public void createRemittanceConditionCard(final ArchivingDto.createRemittanceCardRequestDto dto) throws IOException {
+    public void createRemittanceConditionCard(final ArchivingDto.createOrUpdateRemittanceCardRequestDto dto) throws IOException {
 
         if (dontHaveAnyConditions(dto)) {
             throw new CInvalidCardConditionException();
@@ -48,13 +50,13 @@ public class RemittanceArchivingService {
 
         Image image = imageUploader.upload(dto.getImage(), ImageType.CARD);
 
-        RemittanceConditionCardEntity entity = ArchivingDto.createRemittanceCardRequestDto.toEntity(dto, image.getImagePath());
+        RemittanceConditionCardEntity entity = ArchivingDto.createOrUpdateRemittanceCardRequestDto.toEntity(dto, image.getImagePath());
 
         cardRepo.save(entity);
 
     }
 
-    private boolean dontHaveAnyConditions(ArchivingDto.createRemittanceCardRequestDto dto) {
+    private boolean dontHaveAnyConditions(ArchivingDto.createOrUpdateRemittanceCardRequestDto dto) {
         return (dto.getCharge() == 0 && dto.getCount() == 0 && dto.getTerm() == 0);
     }
 
@@ -67,16 +69,22 @@ public class RemittanceArchivingService {
      * @throws CCardNotFoundException 카드 찾기 실패시
      */
     @Transactional
-    public void updateRemittanceConditionCard(final Long id, final ArchivingDto.updateRemittanceCardRequestDto dto) throws IOException {
+    public void updateRemittanceConditionCard(final Long id, final ArchivingDto.createOrUpdateRemittanceCardRequestDto dto) throws IOException {
 
-        Optional<RemittanceConditionCardEntity> target = (Optional<RemittanceConditionCardEntity>) cardRepo.findById(id);
+        if (dontHaveAnyConditions(dto)) {
+            throw new CInvalidCardConditionException();
+        }
+
+        Optional<CardEntity> target = cardRepo.findById(id);
         if (target.isEmpty()) {
             throw new CCardNotFoundException();
         }
+        if (!target.get().getType().equals(CardType.REMITTANCE)) {
+            throw new CCardTypeNotMatchException();
+        }
 
+        RemittanceConditionCardEntity result = (RemittanceConditionCardEntity) target.get();
         Image image = imageUploader.upload(dto.getImage(), ImageType.CARD);
-
-        RemittanceConditionCardEntity result = target.get();
         result.updateCard(dto, image.getImagePath());
 
     }

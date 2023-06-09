@@ -5,6 +5,8 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 import projectbuildup.mivv.domain.archiving.dto.ArchivingDto;
 
+import java.util.stream.Collectors;
+
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder
 @Getter
@@ -22,28 +24,17 @@ public class RemittanceConditionCardEntity extends CardEntity {
     @Column(name = "term", nullable = false)
     protected Integer term;
 
-    public void updateCard(ArchivingDto.updateRemittanceCardRequestDto dto, String imagePath) {
-        if (dto.getTitle() != null) {
-            this.title = dto.getTitle();
-        }
-        if (dto.getSubTitle() != null) {
-            this.subTitle = dto.getSubTitle();
-        }
-        if (dto.getSentences().size() > 0) {
-            this.sentences = dto.getSentences().toString();
-        }
-        if (dto.getImage() != null) {
-            this.imagePath = imagePath;
-        }
-        if (dto.getCharge() != null) {
-            this.charge = dto.getCharge();
-        }
-        if (dto.getCount() != null) {
-            this.count = dto.getCount();
-        }
-        if (dto.getTerm() != null) {
-            this.term = dto.getTerm();
-        }
+    public void updateCard(ArchivingDto.createOrUpdateRemittanceCardRequestDto dto, String imagePath) {
+        this.type = CardType.REMITTANCE;
+        this.title = dto.getTitle();
+        this.subTitle = dto.getSubTitle();
+        this.sentences = dto.getSentences().stream()
+                .map(Object::toString)
+                .collect(Collectors.joining(", "));
+        this.imagePath = imagePath;
+        this.charge = dto.getCharge();
+        this.count = dto.getCount();
+        this.term = dto.getTerm();
     }
 
     public boolean equals(RemittanceConditionCardEntity remittanceConditionCardEntity) {

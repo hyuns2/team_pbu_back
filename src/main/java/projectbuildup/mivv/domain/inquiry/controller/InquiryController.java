@@ -74,7 +74,7 @@ public class InquiryController {
     @PreAuthorize("hasRole('USER')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteInquiry(@AuthenticationPrincipal User user, @PathVariable Long id) {
-        service.deleteInquiry(id);
+        service.deleteInquiry(user, id);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
