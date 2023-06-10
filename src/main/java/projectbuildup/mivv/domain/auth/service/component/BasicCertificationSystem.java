@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 import projectbuildup.mivv.domain.user.entity.IdentityVerification;
 
 @Component
-@Primary
 @RequiredArgsConstructor
 public class BasicCertificationSystem implements CertificationSystem{
     @Override
