@@ -17,7 +17,7 @@ public class WorthyConsumptionUrlDto {
     @Getter @Setter
     @AllArgsConstructor @NoArgsConstructor
     @Schema(description = "가치소비 영상 및 이미지 URL 생성 DTO")
-    public static class Creation {
+    public static class Request {
         @NotNull
         private MultipartFile logo;
         @NotNull
@@ -34,25 +34,25 @@ public class WorthyConsumptionUrlDto {
         private MultipartFile placeImage;
 
     }
-    @Getter @Setter
-    @AllArgsConstructor @NoArgsConstructor
-    @Schema(description = "가치소비 영상 및 이미지 URL 수정 DTO")
-    public static class Update {
-        @NotNull
-        private MultipartFile logo;
-        @NotNull
-        private MultipartFile video;
-        @NotNull
-        private MultipartFile videoThumbNail;
-        @NotNull
-        private MultipartFile image;
-        @NotNull
-        private MultipartFile detailImage;
-        @NotNull
-        private MultipartFile detailBackgroundImage;
-        @NotNull
-        private MultipartFile placeImage;
-
-    }
+//    @Getter @Setter
+//    @AllArgsConstructor @NoArgsConstructor
+//    @Schema(description = "가치소비 영상 및 이미지 URL 수정 DTO")
+//    public static class Update {
+//        @NotNull
+//        private MultipartFile logo;
+//        @NotNull
+//        private MultipartFile video;
+//        @NotNull
+//        private MultipartFile videoThumbNail;
+//        @NotNull
+//        private MultipartFile image;
+//        @NotNull
+//        private MultipartFile detailImage;
+//        @NotNull
+//        private MultipartFile detailBackgroundImage;
+//        @NotNull
+//        private MultipartFile placeImage;
+//
+//    }
 
 }

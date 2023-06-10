@@ -65,7 +65,7 @@ public class CouponIssuanceService {
     /**
      * 사용자가 쿠폰을 보유하고 있는지 검증하는 로직입니다.
      * @param user
-     * @param coupon
+     * @param worthyConsumption
      */
     private void isUpperCount(User user, WorthyConsumption worthyConsumption){
         if(worthyConsumptionService.checkUserIssueCount(user, worthyConsumption)>=worthyConsumption.getCondition().getMaxIssuance()){
@@ -80,7 +80,7 @@ public class CouponIssuanceService {
     }
     private void isAchievedLastAmount(User user, Coupon coupon){
         long userLastSumAmount = remittanceRepository.findSumAmountByUser(user);
-        long limitLastSumAmount = coupon.getWorthyConsumption().getCondition().getLastMonthAmount();
+        long limitLastSumAmount = coupon.getWorthyConsumption().getCondition().getAvailablePrice();
         if(userLastSumAmount < limitLastSumAmount)
             throw new CBadRequestException("전월 달성 금액 미달입니다.");
     }

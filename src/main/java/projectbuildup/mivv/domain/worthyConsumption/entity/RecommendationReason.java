@@ -17,4 +17,14 @@ public class RecommendationReason {
     private String title;
     @Column(name = "description")
     private String description;
+    @Setter
+    @JoinColumn(name = "worthy_consumption_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private WorthyConsumption worthyConsumption;
+
+    public RecommendationReason(String title, String description, WorthyConsumption worthyConsumption) {
+        this.title = title;
+        this.description = description;
+        this.worthyConsumption = worthyConsumption;
+    }
 }

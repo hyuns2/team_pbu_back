@@ -1,14 +1,13 @@
 package projectbuildup.mivv.domain.coupon.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 import projectbuildup.mivv.domain.coupon.entity.Coupon;
 import projectbuildup.mivv.domain.coupon.entity.CouponType;
@@ -49,30 +48,54 @@ public class CouponDto {
         @NotNull
         @Schema(description = "쿠폰 종류")
         private CouponType couponType;
+        @NotNull
+        private Boolean issueCountLimit;
+        @NotNull
+        private String howToUse;
+        @NotNull
+        private List<String> caution;
+        @NotNull
+        private String priceTag;
     }
     @Getter
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Response{
         private Long id;
+
+        String logoPath;
+        String imagePath;
+
         String title;
         int originalPrice;
         int salePrice;
         String priceTag;
-        private String imagePath;
+
         LocalDate limitStartDate;
         LocalDate limitEndDate;
+
         CouponType couponType;
+
+        String howToUse;
+        List<String> caution;
+
         public Response(Coupon coupon){
             this.id = coupon.getId();
+
             this.title = coupon.getTitle();
             this.originalPrice = coupon.getWorthyConsumption().getOriginalPrice();
             this.salePrice = coupon.getWorthyConsumption().getSalePrice();
-            this.priceTag = coupon.getWorthyConsumption().getAvailablePrice();
+            this.priceTag = coupon.getPriceTag();
+
+            this.logoPath = coupon.getWorthyConsumption().getWorthyConsumptionUrl().getLogoPath();
             this.imagePath = coupon.getImagePath();
+
             this.limitStartDate = coupon.getLimitStartDate();
             this.limitEndDate = coupon.getLimitEndDate();
+
             this.couponType = coupon.getCouponType();
+            this.howToUse = coupon.getHowToUse();
+            this.caution = coupon.getCaution();
         }
     }
 }

@@ -2,6 +2,7 @@ package projectbuildup.mivv.domain.couponIssuance.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 import projectbuildup.mivv.domain.coupon.entity.Coupon;
 import projectbuildup.mivv.domain.couponIssuance.entity.CouponIssuance;
 import projectbuildup.mivv.domain.user.entity.User;
@@ -21,8 +22,10 @@ public interface CouponIssuanceRepository extends JpaRepository<CouponIssuance, 
 
     @Query("select c.createdTime from CouponIssuance c where c.user = ?1 order by c.createdTime DESC")
     List<LocalDateTime> findCreatedTimeByUserId(User user);
-
+    @Transactional
     void deleteAllByUser(User user);
+    @Transactional
+    void deleteAllByCoupon(Coupon coupon);
 
     @Query("select u from CouponIssuance c left join User u on c.user = u where c.coupon.id = ?1")
     List<User> findUsersByCouponId(Long couponId);
