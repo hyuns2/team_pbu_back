@@ -45,7 +45,7 @@ public class KgClient {
             conn.setDoOutput(true);
 
             JSONObject reqJson = new JSONObject();
-            reqJson.put("mid", "INIiasTest");  // 테스트 MID 입니다. 계약한 상점 MID 로 변경 필요
+            reqJson.put("mid", MID);
             reqJson.put("txId", txId);
 
             if (conn.getDoOutput()) {
@@ -81,14 +81,6 @@ public class KgClient {
             log.error("KG 이니시스 본인인증 중 예외 발생 ! (에러 코드 : {})", responseData.getResultCode());
             throw new CInternalServerException();
         }
-    }
-
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @Getter
-    private static class RequestBody {
-        private String mid;
-        private String txId;
     }
 
     @Getter
