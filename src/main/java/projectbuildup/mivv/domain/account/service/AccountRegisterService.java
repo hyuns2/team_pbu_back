@@ -13,6 +13,7 @@ import projectbuildup.mivv.domain.auth.repository.IdentityVerificationRepository
 import projectbuildup.mivv.domain.user.entity.IdentityVerification;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.domain.user.repository.UserRepository;
+import projectbuildup.mivv.global.error.exception.CAccountExistException;
 import projectbuildup.mivv.global.error.exception.CNotOwnAccountException;
 import projectbuildup.mivv.global.error.exception.CResourceNotFoundException;
 import projectbuildup.mivv.global.error.exception.CUserNotFoundException;
@@ -35,6 +36,9 @@ public class AccountRegisterService {
     public void registerAccount(AccountRegisterDto requestDto) {
         IdentityVerification identityVerification = identityVerificationRepository.findByCode(requestDto.getVerificationCode()).orElseThrow(CResourceNotFoundException::new);
         User user = userRepository.findByIdentityVerification(identityVerification).orElseThrow(CUserNotFoundException::new);
+        if (user.getAccount() != null){
+            throw new CAccountExistException();
+        }
         Account account = accountSystem.createAccount(requestDto, user);
         accountRepository.save(account);
     }
