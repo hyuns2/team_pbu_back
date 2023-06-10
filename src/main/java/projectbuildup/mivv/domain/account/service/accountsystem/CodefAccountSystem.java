@@ -15,7 +15,6 @@ import projectbuildup.mivv.domain.auth.repository.IdentityVerificationRepository
 import projectbuildup.mivv.domain.user.entity.IdentityVerification;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.global.error.exception.CAccountNotFoundException;
-import projectbuildup.mivv.global.error.exception.CBadRequestException;
 import projectbuildup.mivv.global.error.exception.CNotOwnAccountException;
 import projectbuildup.mivv.global.error.exception.CResourceNotFoundException;
 
@@ -39,7 +38,7 @@ public class CodefAccountSystem implements AccountSystem {
         if (!ownAccounts.contains(accountDto.getAccountNumbers())) {
             throw new CAccountNotFoundException();
         }
-        return new Account(accountDto.getAccountNumbers(), BankType.findByCode(accountDto.getOrganizationCode()), OpenBanking.CODEF, connectedId);
+        return new Account(accountDto.getAccountNumbers(), BankType.findByCode(accountDto.getOrganizationCode()), OpenBanking.CODEF, connectedId, user);
     }
 
     private String issueConnectedId(AccountRegisterDto accountDto) {
@@ -55,14 +54,31 @@ public class CodefAccountSystem implements AccountSystem {
                 .toList();
         return new OwnAccounts(accounts);
     }
+
+    /**
+     * 입력한 계좌의 예금주를 조회합니다.
+     *
+     * @param organizationCode 기관코드
+     * @param accountNumbers   계좌번호
+     * @param verificationCode 본인인증 코드
+     * @return 계좌 예금주명
+     */
     @Override
-    public String certifyTransfer(AccountCertifyTransferDto requestDto) {
-        IdentityVerification identityVerification = identityVerificationRepository.findByCode(requestDto.getVerificationCode()).orElseThrow(CResourceNotFoundException::new);
+    public String getAccountOwner(String organizationCode, String accountNumbers, String verificationCode) {
+        IdentityVerification identityVerification = identityVerificationRepository.findByCode(verificationCode).orElseThrow(CResourceNotFoundException::new);
         String birthDate = identityVerification.getBirthDate().substring(2);
-        String name =  (String) codefClient.holderAuthentication(requestDto.getOrganizationCode(), requestDto.getAccountNumbers(), birthDate).get("name");
-        if (identityVerification.getName().equals(name)){
-            return (String) codefClient.certifyTransfer(requestDto.getOrganizationCode(), requestDto.getAccountNumbers()).get("authCode");
-        }
-        throw new CNotOwnAccountException();
+        return (String) codefClient.holderAuthentication(organizationCode, accountNumbers, birthDate).get("name");
+    }
+
+    /**
+     * 입력한 계좌로 1원 인증 코드를 전송합니다.
+     *
+     * @param organizationCode 기관코드
+     * @param accountNumbers   계좌번호
+     * @return 1원 인증 코드 (4자리 숫자)
+     */
+    @Override
+    public String certifyTransfer(String organizationCode, String accountNumbers) {
+        return (String) codefClient.certifyTransfer(organizationCode, accountNumbers).get("authCode");
     }
 }

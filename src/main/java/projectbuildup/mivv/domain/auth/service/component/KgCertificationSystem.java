@@ -2,6 +2,7 @@ package projectbuildup.mivv.domain.auth.service.component;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 import projectbuildup.mivv.domain.user.entity.IdentityVerification;
 import projectbuildup.mivv.global.error.exception.CInternalServerException;
@@ -9,6 +10,7 @@ import projectbuildup.mivv.global.error.exception.CInternalServerException;
 import java.nio.charset.StandardCharsets;
 
 @Component
+@Primary
 @Slf4j
 @RequiredArgsConstructor
 public class KgCertificationSystem implements CertificationSystem {

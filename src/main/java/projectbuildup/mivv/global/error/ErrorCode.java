@@ -13,6 +13,7 @@ public enum ErrorCode {
     BAD_REQUEST(-1002, "잘못된 접근입니다.", HttpStatus.BAD_REQUEST),
     SAVING_COUNT_OVER(-1003, "절약 가능 횟수를 모두 사용하였습니다.", HttpStatus.BAD_REQUEST),
     ACCOUNT_NOT_FOUND(-1004, "해당 계좌를 조회할 수 없습니다.", HttpStatus.NOT_FOUND),
+    ACCOUNT_EXIST(-1005, "연결된 계좌가 이미 존재합니다.", HttpStatus.BAD_REQUEST),
 
     // 6000 ~ : 권한, 인증 에러
     LOGIN_FAILED(-6001, "로그인에 실패했습니다.", HttpStatus.UNAUTHORIZED),

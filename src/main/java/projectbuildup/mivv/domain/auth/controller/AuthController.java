@@ -36,15 +36,6 @@ public class AuthController {
     private final AuthService authService;
     private final IdentityVerificationService identityVerificationService;
 
-    @Operation(summary = "본인인증", description = "본인인증 API 호출 결과로 받은 key를 이용해 본인인증을 수행합니다. 반환받은 verificationCode는 로그인 및 회원가입 시 사용됩니다. " +
-            "만약 이미 회원가입 된 계정이 있다면, isNewUser = true를 반환합니다.")
-    @GetMapping("/auth/certify")
-    @PreAuthorize("permitAll()")
-    public ResponseEntity<VerificationResponseDto> certify(@RequestBody @Valid AuthDto.CertifyRequest requestDto) {
-        VerificationResponseDto responseDto = identityVerificationService.verifyIdentity(requestDto);
-        return new ResponseEntity<>(responseDto, HttpStatus.OK);
-    }
-
     @Hidden
     @Operation(summary = "KG이니시스 본인인증 (성공시 호출됨)", description = " 반환받은 verificationCode는 로그인 및 회원가입 시 사용됩니다. " +
             "만약 이미 회원가입 된 계정이 있다면, isNewUser = true를 반환합니다.")
@@ -54,7 +45,7 @@ public class AuthController {
         String txId = request.getParameter("txId");
         String authRequestUrl = request.getParameter("authRequestUrl");
         String token = request.getParameter("token");
-        VerificationResponseDto responseDto = identityVerificationService.verifyIdentityByKg(new AuthDto.CertifyRequest(txId, authRequestUrl, token));
+        VerificationResponseDto responseDto = identityVerificationService.verifyIdentity(new AuthDto.CertifyRequest(txId, authRequestUrl, token));
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 

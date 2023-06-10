@@ -13,10 +13,10 @@ import java.util.List;
 
 public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
 
-    @Query("select c from  Challenge c inner join Participation p on p.challenge = c where p.user = :user ")
+    @Query("select c from  Challenge c inner join Participation p on p.challenge = c where p.user = :user and p.deletedAt IS NULL")
     Page<Challenge> findOngoingChallenge(@Param("user") User user, Pageable pageable);
 
-    @Query("select ac from Challenge ac where not exists (select c from  Challenge c inner join Participation p on p.challenge = c where p.user = :user and ac.id = c.id ) ")
+    @Query("select ac from Challenge ac where not exists (select c from  Challenge c inner join Participation p on p.challenge = c where p.user = :user and ac.id = c.id and p.deletedAt IS NULL ) ")
     Page<Challenge> findJoinableChallenge(@Param("user") User user, Pageable pageable);
 
 }

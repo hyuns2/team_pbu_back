@@ -2,6 +2,7 @@ package projectbuildup.mivv.domain.likes.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import projectbuildup.mivv.domain.likes.entity.LikesCategory;
 import projectbuildup.mivv.domain.likes.entity.LikesShorts;
 import projectbuildup.mivv.domain.shorts.entity.Shorts;
@@ -12,6 +13,7 @@ import java.util.Optional;
 
 @Repository
 public interface LikesShortsRepository extends JpaRepository<LikesShorts, Long> {
+    @Transactional
     void deleteLikesShortsByUserAndShorts(User user, Shorts shorts);
     List<LikesShorts> findAllByUser(User user);
     Optional<LikesShorts> findByUserAndShorts(User user, Shorts shorts);

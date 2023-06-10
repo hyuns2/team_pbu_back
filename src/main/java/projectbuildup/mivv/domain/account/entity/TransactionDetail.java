@@ -29,6 +29,6 @@ public class TransactionDetail implements Comparable<TransactionDetail> {
     }
 
     public boolean isValid(Challenge challenge, LocalDateTime startTime) {
-        return challenge.getMinSavingAmount() <= this.amount && this.amount <= challenge.getMaxSavingAmount() && this.time.isAfter(startTime);
+        return this.time.isAfter(startTime) && challenge.getMinSavingAmount() <= this.amount && this.amount <= challenge.getMaxSavingAmount();
     }
 }

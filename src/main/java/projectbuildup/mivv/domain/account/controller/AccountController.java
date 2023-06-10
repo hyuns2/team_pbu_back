@@ -27,6 +27,13 @@ import projectbuildup.mivv.global.constant.Header;
 public class AccountController {
     private final AccountRegisterService accountRegisterService;
 
+    @Operation(summary = "계좌 예금주 일치 확인", description = "")
+    @PostMapping("/account/check-owner")
+    public ResponseEntity<Boolean> checkAccountOwner(@RequestBody AccountCertifyTransferDto requestDto) {
+        boolean response = accountRegisterService.checkAccountOwner(requestDto);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @Operation(summary = "1원 인증", description = "인증코드가 반환됩니다. 사용자가 입력한 코드와 대조하여 같다면, 인증에 성공한 것으로 간주합니다. 만약 본인 명의의 계좌가 아닌 경우, 예외가 반환됩니다.")
     @PostMapping("/account/certify-transfer")
     public ResponseEntity<String> certifyTransfer(@RequestBody AccountCertifyTransferDto requestDto) {
@@ -38,6 +45,15 @@ public class AccountController {
     @PostMapping("/account/register")
     public ResponseEntity<Void> registerAccount(@RequestBody AccountRegisterDto requestDto) {
         accountRegisterService.registerAccount(requestDto);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Operation(summary = "계좌 초기화", description = "")
+    @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
+    @PreAuthorize("hasRole('USER')")
+    @PostMapping("/account/reset")
+    public ResponseEntity<Void> resetAccount(@AuthenticationPrincipal User user) {
+        accountRegisterService.resetAccount(user.getId());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

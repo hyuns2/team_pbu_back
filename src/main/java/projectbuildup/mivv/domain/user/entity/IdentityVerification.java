@@ -17,8 +17,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Where(clause = "deleted_at IS NULL")
-@SQLDelete(sql = "UPDATE identity_verification SET deleted_at = CURRENT_TIMESTAMP where id = ?")
 @Table(name = "identity_verification")
 public class IdentityVerification extends BaseTimeEntity {
     private final static String DUMMY_NAME = "심재헌";
@@ -45,8 +43,6 @@ public class IdentityVerification extends BaseTimeEntity {
     @OneToOne(mappedBy = "identityVerification", fetch = FetchType.LAZY)
     User user;
 
-    @Column(name = "deleted_at")
-    LocalDateTime deletedAt;
     public static IdentityVerification generateDummyVerification(){
         String dummyCode = RandomStringUtils.randomAlphabetic(16);
         return IdentityVerification.builder()
@@ -65,4 +61,6 @@ public class IdentityVerification extends BaseTimeEntity {
                 .code(dummyCode)
                 .build();
     }
+
+
 }

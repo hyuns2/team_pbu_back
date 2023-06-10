@@ -11,5 +11,6 @@ codef:
   api-client-secret: de4e74a1-f978-405b-a368-a73673276963
   public-key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAx1ohEpXp9O0eqAG4OQuNnyj2RvqTMqsLW3ZYmZxePiujf2HsW4VXQ4T1/S0tIP5NgGgY2azeOs4pPGVnFg9B8j3aqFJR0hgHtGO1DiuaOLLSvJe7k/89MahdozXk/D7H6g6APg6g7T7ZabGJwG1ED2FzVH/HtqdfJ/g4XGmSlconTS8K0U2kFgxkK1jjhdaZxCgZ5c7cYiDyQ5EgEHDNdAQSi/OIkDdZF6kXezg5xVo2Q5uvsZQHhb9JHaO1cXfYjDH1EuYdf7KwPYpLfvLE8M1glPDKlZ0Yea5RwBsRbjNUJQVaK1CMXq94+vdLHMMKhbd9IwCe4bRLcaCV8wDRfwIDAQAB
 kg:
-  mid: INIiasTest  #테스트용
+  mid: gasomanpb1
+#  mid: INIiasTest
 

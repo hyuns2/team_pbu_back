@@ -13,7 +13,7 @@ import java.util.List;
 
 @Entity @Table(name = "coupon")
 @Getter
-@AllArgsConstructor @NoArgsConstructor
+@AllArgsConstructor @NoArgsConstructor(force = true)
 @Builder
 public class Coupon extends BaseTimeEntity {
 
@@ -48,6 +48,19 @@ public class Coupon extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "coupon_type")
     private CouponType couponType;
+    @Column(name = "issue_count_limit", nullable = false)
+    private Boolean issueCountLimit;
+    @NonNull
+    @Column(name = "how_to_use", nullable = false)
+    private String howToUse;
+    @ElementCollection
+    @NonNull
+    @Column(name = "coupon_caution")
+    private List<String> caution;
+    @NonNull
+    @Column(name = "price_tag")
+    private String priceTag;
+
     public static Coupon toEntity(CouponDto.Request couponDto, String imagePath){
         return Coupon.builder()
                 .title(couponDto.getTitle())
@@ -59,6 +72,10 @@ public class Coupon extends BaseTimeEntity {
                 .limitEndDate(couponDto.getLimitEndDate())
                 .summary(couponDto.getSummary())
                 .couponType(couponDto.getCouponType())
+                .issueCountLimit(couponDto.getIssueCountLimit())
+                .howToUse(couponDto.getHowToUse())
+                .caution(couponDto.getCaution())
+                .priceTag(couponDto.getPriceTag())
                 .build();
     }
     public void update(CouponDto.Request couponDto, String imagePath){
@@ -71,6 +88,10 @@ public class Coupon extends BaseTimeEntity {
         this.issuableEndDate = couponDto.getIssuableEndDate();
         this.summary = couponDto.getSummary();
         this.couponType = couponDto.getCouponType();
+        this.issueCountLimit = couponDto.getIssueCountLimit();
+        this.howToUse = couponDto.getHowToUse();
+        this.caution = couponDto.getCaution();
+        this.priceTag = couponDto.getPriceTag();
     }
 
 
