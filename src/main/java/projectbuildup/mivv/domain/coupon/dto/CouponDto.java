@@ -78,6 +78,7 @@ public class CouponDto {
 
         String howToUse;
         List<String> caution;
+        List<String> summary;
 
         public Response(Coupon coupon){
             this.id = coupon.getId();
@@ -96,6 +97,7 @@ public class CouponDto {
             this.couponType = coupon.getCouponType();
             this.howToUse = coupon.getHowToUse();
             this.caution = coupon.getCaution();
+            this.summary = coupon.getSummary();
         }
     }
 }
