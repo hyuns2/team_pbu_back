@@ -10,6 +10,8 @@ public class File {
     private String originalFileName;
     //서버의 파일명
     private String storeFilename;
-    //서버 저장경로
+    //서버의 파일 경로
     private String filePath;
+    //파일 url 경로
+    private String filePathWithUrl;
 }

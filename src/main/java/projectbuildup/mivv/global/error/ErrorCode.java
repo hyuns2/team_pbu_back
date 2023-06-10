@@ -40,6 +40,7 @@ public enum ErrorCode {
     FILE_NOT_INPUT_ERROR(8002, "파일 수신에 실패했습니다.", HttpStatus.BAD_REQUEST),
     ILLEGAL_FILE_EXTENSION_ERROR(-8003, "해당 파일 확장자는 지원하지 않습니다.", HttpStatus.BAD_REQUEST),
     INVALID_CELL_ERROR(8004, "엑셀 파일의 데이터가 유효하지 않습니다.", HttpStatus.BAD_REQUEST),
+    INVALID_DATETIME_ERROR(8005, "유효한 날짜 또는 시간이 아닙니다.", HttpStatus.BAD_REQUEST),
 
     // 9000 ~ : 서버 에러
     INTERNAL_SERVER_ERROR(-9999, "서버 에러입니다.", HttpStatus.INTERNAL_SERVER_ERROR),

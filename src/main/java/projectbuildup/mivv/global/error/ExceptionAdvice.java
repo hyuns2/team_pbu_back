@@ -209,6 +209,20 @@ public class ExceptionAdvice {
         return new ResponseEntity<>(new ErrorResponseDto(errorCode, message), errorCode.getStatusCode());
     }
 
+    @ExceptionHandler(CCouponNotFoundException.class)
+    protected ResponseEntity<ErrorResponseDto> handle(CCouponNotFoundException e) {
+        ErrorCode errorCode = e.getErrorCode();
+        e.printStackTrace();
+        return new ResponseEntity<>(new ErrorResponseDto(errorCode), errorCode.getStatusCode());
+    }
+
+    @ExceptionHandler(CInvalidDateTimeException.class)
+    protected ResponseEntity<ErrorResponseDto> handle(CInvalidDateTimeException e) {
+        ErrorCode errorCode = e.getErrorCode();
+        e.printStackTrace();
+        return new ResponseEntity<>(new ErrorResponseDto(errorCode), errorCode.getStatusCode());
+    }
+
     @ExceptionHandler(CUnknownIpException.class)
     protected ResponseEntity<ErrorResponseDto> handle(CUnknownIpException e) {
         ErrorCode errorCode = e.getErrorCode();
