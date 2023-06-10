@@ -158,6 +158,7 @@ public class GeneralArchivingService {
 
     private void checkAndAssignGeneralConditionCards(MultipartFile dtoFile, CardEntity cardEntity) throws IOException {
         File file = fileUploader.storeExcelFile(dtoFile);
+        file.setReadable(true);
 
         InputStream inputStream = new FileInputStream(file.getFilePath());
         Workbook workBook = WorkbookFactory.create(inputStream);
