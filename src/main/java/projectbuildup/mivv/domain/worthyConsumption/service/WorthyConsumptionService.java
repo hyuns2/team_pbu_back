@@ -28,6 +28,7 @@ import projectbuildup.mivv.global.error.exception.CWorthyConsumptionNotFoundExce
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -66,12 +67,20 @@ public class WorthyConsumptionService {
         Condition condition = new Condition(worthyConsumptionDto);
         WorthyConsumption worthyConsumption = worthyConsumptionDto.toEntity(worthyConsumptionUrl, condition);
 
-        log.info("확인3 {}", worthyConsumptionDto.getRecommendationReasons().size());
-        List<RecommendationReason> recommendationReasons = worthyConsumptionDto.getRecommendationReasons().stream()
+        log.info("확인3 {}", worthyConsumptionDto.getRecommendationReasonDtos().size());
+//        List<RecommendationReason> recommendationReasons = worthyConsumptionDto.getRecommendationReasons().stream()
+//                .map(dto -> mapToRecommendationReason(dto.getTitle(), dto.getDescription(), worthyConsumption))
+//                .collect(Collectors.toList());
+        List<RecommendationReason> recommendationReasons = worthyConsumptionDto.getRecommendationReasonDtos().stream()
                 .map(dto -> mapToRecommendationReason(dto.getTitle(), dto.getDescription(), worthyConsumption))
                 .collect(Collectors.toList());
-
         worthyConsumption.setRecommendationReasons(recommendationReasons);
+        worthyConsumptionRepository.save(worthyConsumption);
+    }
+    public void createWorthyConsumptionRR(WorthyConsumptionDto.RecommendationReasonDto dto, Long worthyConsumptionId){
+        WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionId).orElseThrow();
+        RecommendationReason recommendationReason = dto.toEntity(worthyConsumption);
+        worthyConsumption.addRR(recommendationReason);
         worthyConsumptionRepository.save(worthyConsumption);
     }
     private RecommendationReason mapToRecommendationReason(String title, String description, WorthyConsumption worthyConsumption) {
@@ -135,7 +144,7 @@ public class WorthyConsumptionService {
 
         updateUrl(worthyConsumption, worthyConsumptionDto);
         worthyConsumption.getCondition().update(worthyConsumptionDto);
-        List<RecommendationReason> recommendationReasons = worthyConsumptionDto.getRecommendationReasons().stream()
+        List<RecommendationReason> recommendationReasons = worthyConsumptionDto.getRecommendationReasonDtos().stream()
                 .map(dto -> mapToRecommendationReason(dto.getTitle(), dto.getDescription(), worthyConsumption))
                 .collect(Collectors.toList());
         worthyConsumption.update(worthyConsumptionDto, recommendationReasons);
@@ -168,6 +177,11 @@ public class WorthyConsumptionService {
             couponIssuanceRepository.deleteAllByCoupon(coupon);
         }
         worthyConsumptionRepository.delete(worthyConsumption);
+    }
+    public void deleteWorthyConsumptionRR(Long worthyConsumptionId){
+        WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionId).orElseThrow(CWorthyConsumptionNotFoundException:: new);
+        worthyConsumption.deleteRR();
+        worthyConsumptionRepository.save(worthyConsumption);
     }
     /**
      * 가치소비의 쿠폰이 발급 가능한 상황인지 판단하는 로직입니다.
