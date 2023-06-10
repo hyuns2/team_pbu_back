@@ -174,4 +174,5 @@ public class CouponIssuanceService {
         if(coupon.getPin() != pin)
             throw new CBadRequestException("핀 번호가 일치하지 않습니다.");
     }
+
 }

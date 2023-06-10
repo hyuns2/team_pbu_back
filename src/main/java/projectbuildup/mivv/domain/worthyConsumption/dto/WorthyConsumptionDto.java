@@ -31,9 +31,6 @@ public class WorthyConsumptionDto {
         Integer originalPrice;
         @NotNull(message = "가치소비의 할인 가격을 입력해주세요") @Positive
         Integer salePrice;
-        //@NotNull
-
-        List<WorthyConsumptionDto.RecommendationReasonDto> recommendationReasonDtos;
         @NotNull
         String availablePlace;
         @NotNull

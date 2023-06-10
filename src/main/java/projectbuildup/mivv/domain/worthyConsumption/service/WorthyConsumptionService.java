@@ -67,14 +67,7 @@ public class WorthyConsumptionService {
         Condition condition = new Condition(worthyConsumptionDto);
         WorthyConsumption worthyConsumption = worthyConsumptionDto.toEntity(worthyConsumptionUrl, condition);
 
-        log.info("확인3 {}", worthyConsumptionDto.getRecommendationReasonDtos().size());
-//        List<RecommendationReason> recommendationReasons = worthyConsumptionDto.getRecommendationReasons().stream()
-//                .map(dto -> mapToRecommendationReason(dto.getTitle(), dto.getDescription(), worthyConsumption))
-//                .collect(Collectors.toList());
-        List<RecommendationReason> recommendationReasons = worthyConsumptionDto.getRecommendationReasonDtos().stream()
-                .map(dto -> mapToRecommendationReason(dto.getTitle(), dto.getDescription(), worthyConsumption))
-                .collect(Collectors.toList());
-        worthyConsumption.setRecommendationReasons(recommendationReasons);
+
         worthyConsumptionRepository.save(worthyConsumption);
     }
     public void createWorthyConsumptionRR(WorthyConsumptionDto.RecommendationReasonDto dto, Long worthyConsumptionId){
@@ -144,10 +137,10 @@ public class WorthyConsumptionService {
 
         updateUrl(worthyConsumption, worthyConsumptionDto);
         worthyConsumption.getCondition().update(worthyConsumptionDto);
-        List<RecommendationReason> recommendationReasons = worthyConsumptionDto.getRecommendationReasonDtos().stream()
-                .map(dto -> mapToRecommendationReason(dto.getTitle(), dto.getDescription(), worthyConsumption))
-                .collect(Collectors.toList());
-        worthyConsumption.update(worthyConsumptionDto, recommendationReasons);
+//        List<RecommendationReason> recommendationReasons = worthyConsumptionDto.getRecommendationReasonDtos().stream()
+//                .map(dto -> mapToRecommendationReason(dto.getTitle(), dto.getDescription(), worthyConsumption))
+//                .collect(Collectors.toList());
+        worthyConsumption.update(worthyConsumptionDto);
 
         worthyConsumptionRepository.save(worthyConsumption);
     }
