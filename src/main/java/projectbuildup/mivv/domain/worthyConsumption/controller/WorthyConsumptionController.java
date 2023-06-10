@@ -47,6 +47,15 @@ public class WorthyConsumptionController {
         worthyConsumptionService.createWorthyConsumption(worthyConsumptionDto);
             return new ResponseEntity<>(HttpStatus.CREATED);
     }
+    @Operation(summary = "가치소비 추천이유 생성", description = "가치소비 추천이유를 등록합니다.")
+    @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping(value = "/{worthyConsumptionId}/rr", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<HttpStatus> createWorthyConsumptionRR(@ModelAttribute("createWorthyConsumptionsRR") WorthyConsumptionDto.RecommendationReasonDto dto, @PathVariable(name = "worthyConsumptionId")Long worthyConsumptionId) throws IOException {
+        log.info("확인");
+        worthyConsumptionService.createWorthyConsumptionRR(dto, worthyConsumptionId);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
 
     /**
      * 가치소비를 조회합니다.
@@ -123,6 +132,14 @@ public class WorthyConsumptionController {
     @DeleteMapping("/{worthyConsumptionId}")
     public ResponseEntity<HttpStatus> deleteWorthyConsumption(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId){
         worthyConsumptionService.deleteWorthyConsumption(worthyConsumptionId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @Operation(summary = "가치소비 추천이유 삭제", description = "가치소비 추천이유를 삭제합니다.")
+    @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/{worthyConsumptionId}/rr")
+    public ResponseEntity<HttpStatus> deleteWorthyConsumptionRR(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId){
+        worthyConsumptionService.deleteWorthyConsumptionRR(worthyConsumptionId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

@@ -73,4 +73,11 @@ public class WorthyConsumption extends BaseTimeEntity {
         //coupons.add(coupon);
         //coupon.setWorthyConsumption(this);
     }
+    public void addRR(RecommendationReason recommendationReason){
+        recommendationReason.setWorthyConsumption(this);
+        recommendationReason.getWorthyConsumption().getRecommendationReasons().add(recommendationReason);
+    }
+    public void deleteRR(){
+        this.recommendationReasons.clear();
+    }
 }
