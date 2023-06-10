@@ -30,6 +30,9 @@ public class WorthyConsumptionResponseDto {
         private List<String> summary;
         private String logoPath;
 
+        private LocalDate issuableStartDate;
+        private LocalDate issuableEndDate;
+
         boolean issueCountLimit;
 
         Boolean liked;
@@ -39,13 +42,13 @@ public class WorthyConsumptionResponseDto {
             this.title = worthyConsumption.getTitle();
             this.originalPrice = worthyConsumption.getOriginalPrice();
             this.salePrice = worthyConsumption.getSalePrice();
-            this.priceTag = worthyConsumption.getPriceTag();
+            this.priceTag = coupon.getPriceTag();
             this.availablePrice = worthyConsumption.getCondition().getAvailablePrice();
-            //this.issueCountLimit
             this.maxIssuance = worthyConsumption.getCondition().getMaxIssuance();
             this.summary = coupon.getSummary();
             this.logoPath = worthyConsumption.getWorthyConsumptionUrl().getLogoPath();
-
+            this.issuableStartDate = coupon.getIssuableStartDate();
+            this.issuableEndDate = coupon.getIssuableEndDate();
             this.liked = liked;
         }
     }
@@ -63,9 +66,6 @@ public class WorthyConsumptionResponseDto {
         private LocalDate conventionStartDate;
         private LocalDate conventionEndDate;
 
-        private LocalDate issuableStartDate;
-        private LocalDate issuableEndDate;
-
         private CouponType couponType;
         private long issueCount;
 
@@ -81,8 +81,7 @@ public class WorthyConsumptionResponseDto {
             this.couponId = coupon.getId();
             this.conventionStartDate = worthyConsumption.getCondition().getConventionStartDate();
             this.conventionEndDate = worthyConsumption.getCondition().getConventionEndDate();
-            this.issuableStartDate = coupon.getIssuableStartDate();
-            this.issuableEndDate = coupon.getIssuableEndDate();
+
             this.couponType = coupon.getCouponType();
             this.issueCount = issueCount;
         }
@@ -112,7 +111,7 @@ public class WorthyConsumptionResponseDto {
         private String availablePlace;
         private String availablePlaceDetail;
 
-        public ReadDetailResponse(WorthyConsumption worthyConsumption) {
+        public ReadDetailResponse(WorthyConsumption worthyConsumption, Coupon coupon) {
             this.id = worthyConsumption.getId();
             this.title = worthyConsumption.getTitle();
             this.hashtags = worthyConsumption.getHashtags();
@@ -130,7 +129,7 @@ public class WorthyConsumptionResponseDto {
                     .collect(Collectors.toList());
             this.originalPrice = worthyConsumption.getOriginalPrice();
             this.salePrice = worthyConsumption.getSalePrice();
-            this.priceTag = worthyConsumption.getPriceTag();
+            this.priceTag = coupon.getPriceTag();
 
             this.availablePlace = worthyConsumption.getAvailablePlace();
             this.availablePlaceDetail = worthyConsumption.getAvailablePlaceDetail();

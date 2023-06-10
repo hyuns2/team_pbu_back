@@ -43,6 +43,7 @@ public class WorthyConsumptionController {
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<HttpStatus> createWorthyConsumption(@Valid @ModelAttribute("createWorthyConsumptions") WorthyConsumptionDto.Request worthyConsumptionDto) throws IOException {
+        log.info("확인");
         worthyConsumptionService.createWorthyConsumption(worthyConsumptionDto);
             return new ResponseEntity<>(HttpStatus.CREATED);
     }

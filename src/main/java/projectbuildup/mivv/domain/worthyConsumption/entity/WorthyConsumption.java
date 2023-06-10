@@ -34,11 +34,9 @@ public class WorthyConsumption extends BaseTimeEntity {
     @NonNull
     @Column(name = "sale_price")
     private int salePrice;
+    @Setter
     @OneToMany(mappedBy = "worthyConsumption", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RecommendationReason> recommendationReasons = new ArrayList<RecommendationReason>();
-    @NonNull
-    @Column(name = "price_tag")
-    private String priceTag;
     @NonNull
     @Column(name = "available_place")
     private String availablePlace;
@@ -65,7 +63,6 @@ public class WorthyConsumption extends BaseTimeEntity {
         this.hashtags = worthyConsumptionDto.getHashtags();
         this.originalPrice = worthyConsumptionDto.getOriginalPrice();
         this.salePrice = worthyConsumptionDto.getSalePrice();
-        this.priceTag = worthyConsumptionDto.getPriceTag();
         this.availablePlace = worthyConsumptionDto.getAvailablePlace();
         this.availablePlaceDetail = worthyConsumptionDto.getAvailablePlaceDetail();
         this.recommendationReasons = recommendationReasons;

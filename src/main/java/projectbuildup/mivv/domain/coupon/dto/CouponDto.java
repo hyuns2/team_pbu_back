@@ -85,7 +85,7 @@ public class CouponDto {
             this.title = coupon.getTitle();
             this.originalPrice = coupon.getWorthyConsumption().getOriginalPrice();
             this.salePrice = coupon.getWorthyConsumption().getSalePrice();
-            this.priceTag = coupon.getWorthyConsumption().getPriceTag();
+            this.priceTag = coupon.getPriceTag();
 
             this.logoPath = coupon.getWorthyConsumption().getWorthyConsumptionUrl().getLogoPath();
             this.imagePath = coupon.getImagePath();

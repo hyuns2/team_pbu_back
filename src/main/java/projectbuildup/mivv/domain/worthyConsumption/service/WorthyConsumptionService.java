@@ -52,6 +52,7 @@ public class WorthyConsumptionService {
      * @param
      */
     public void createWorthyConsumption(WorthyConsumptionDto.Request worthyConsumptionDto) throws IOException {
+        log.info("확인1");
         Image logo = imageUploader.upload(worthyConsumptionDto.getLogo(),ImageType.VALUE);
         Image videoThumbNail = imageUploader.upload(worthyConsumptionDto.getVideoThumbNail(),ImageType.VALUE);
         Video video = videoUploader.upload(worthyConsumptionDto.getVideo(), "values");
@@ -59,20 +60,22 @@ public class WorthyConsumptionService {
         Image detailImage = imageUploader.upload(worthyConsumptionDto.getDetailImage(), ImageType.VALUE);
         Image detailBackgroundImage = imageUploader.upload(worthyConsumptionDto.getDetailBackgroundImage(), ImageType.VALUE);
         Image placeImage = imageUploader.upload(worthyConsumptionDto.getPlaceImage(), ImageType.VALUE);
+        log.info("확인2");
 
         WorthyConsumptionUrl worthyConsumptionUrl = new WorthyConsumptionUrl(logo.getImagePath(), videoThumbNail.getImagePath(), video.getVideoPath(), image.getImagePath(), detailImage.getImagePath(), detailBackgroundImage.getImagePath(), placeImage.getImagePath());
         Condition condition = new Condition(worthyConsumptionDto);
+        WorthyConsumption worthyConsumption = worthyConsumptionDto.toEntity(worthyConsumptionUrl, condition);
+
+        log.info("확인3 {}", worthyConsumptionDto.getRecommendationReasons().size());
         List<RecommendationReason> recommendationReasons = worthyConsumptionDto.getRecommendationReasons().stream()
-                .map(dto -> mapToRecommendationReason(dto.getTitle(), dto.getDescription()))
+                .map(dto -> mapToRecommendationReason(dto.getTitle(), dto.getDescription(), worthyConsumption))
                 .collect(Collectors.toList());
-        WorthyConsumption worthyConsumption = worthyConsumptionDto.toEntity(worthyConsumptionUrl, condition, recommendationReasons);
+
+        worthyConsumption.setRecommendationReasons(recommendationReasons);
         worthyConsumptionRepository.save(worthyConsumption);
     }
-    private RecommendationReason mapToRecommendationReason(String title, String description) {
-        return RecommendationReason.builder()
-                .title(title)
-                .description(description)
-                .build();
+    private RecommendationReason mapToRecommendationReason(String title, String description, WorthyConsumption worthyConsumption) {
+        return new RecommendationReason(title, description, worthyConsumption);
     }
 
     /**
@@ -106,7 +109,9 @@ public class WorthyConsumptionService {
     }
     public WorthyConsumptionResponseDto.ReadDetailResponse readDetailWorthyConsumption(Long worthyConsumptionId){
         WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionId).orElseThrow(CWorthyConsumptionNotFoundException:: new);
-        return new WorthyConsumptionResponseDto.ReadDetailResponse(worthyConsumption);
+        Long couponId = getCouponForMonth(worthyConsumption);
+        Coupon coupon = couponRepository.findById(couponId).orElseThrow(CCouponNotFoundException::new);
+        return new WorthyConsumptionResponseDto.ReadDetailResponse(worthyConsumption, coupon);
     }
     public List<WorthyConsumptionResponseDto.ReadBasicResponse> readAllWorthyConsumption(Long userId){
         User user = userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
@@ -131,7 +136,7 @@ public class WorthyConsumptionService {
         updateUrl(worthyConsumption, worthyConsumptionDto);
         worthyConsumption.getCondition().update(worthyConsumptionDto);
         List<RecommendationReason> recommendationReasons = worthyConsumptionDto.getRecommendationReasons().stream()
-                .map(dto -> mapToRecommendationReason(dto.getTitle(), dto.getDescription()))
+                .map(dto -> mapToRecommendationReason(dto.getTitle(), dto.getDescription(), worthyConsumption))
                 .collect(Collectors.toList());
         worthyConsumption.update(worthyConsumptionDto, recommendationReasons);
 
@@ -155,8 +160,13 @@ public class WorthyConsumptionService {
     public void deleteWorthyConsumption(Long worthyConsumptionId){
         WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionId).orElseThrow(CWorthyConsumptionNotFoundException:: new);
         likesWorthyConsumptionRepository.deleteAllByWorthyConsumption(worthyConsumption);
-        //찜하기에서 사용자가 찜한 가치소비 리스트 삭제해야 됨.
 
+        //찜하기에서 사용자가 찜한 가치소비 리스트 삭제해야 됨.
+// Remove coupons and coupon issuances
+        List<Coupon> coupons = worthyConsumption.getCoupons();
+        for (Coupon coupon : coupons) {
+            couponIssuanceRepository.deleteAllByCoupon(coupon);
+        }
         worthyConsumptionRepository.delete(worthyConsumption);
     }
     /**

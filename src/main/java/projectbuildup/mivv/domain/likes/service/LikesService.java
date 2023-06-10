@@ -102,7 +102,7 @@ public class LikesService {
                 .map(worthyConsumption -> {
                     Long couponId = worthyConsumptionService.getCouponForMonth(worthyConsumption);
                     Coupon coupon = couponRepository.findById(couponId).orElseThrow(CCouponNotFoundException::new);
-                    return new WorthyConsumptionResponseDto.ReadSummaryResponse(worthyConsumption, coupon);
+                    return new WorthyConsumptionResponseDto.ReadSummaryResponse(worthyConsumption, coupon, Boolean.TRUE);
                 })
                 .toList();
     }
