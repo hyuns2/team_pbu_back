@@ -150,17 +150,19 @@ public class GeneralArchivingService {
         if (targetCard.isEmpty()) {
             throw new CCardNotFoundException();
         }
+        if (!target.get().getType().equals(CardType.GENERAL)) {
+            throw new CCardTypeNotMatchException();
+        }
+        
         CardEntity cardEntity = targetCard.get();
-
         checkAndAssignGeneralConditionCards(dto.getFile(), cardEntity);
 
     }
 
     private void checkAndAssignGeneralConditionCards(MultipartFile dtoFile, CardEntity cardEntity) throws IOException {
         File file = fileUploader.storeExcelFile(dtoFile);
-        file.setReadable(true);
-
         InputStream inputStream = new FileInputStream(file.getFilePath());
+        
         Workbook workBook = WorkbookFactory.create(inputStream);
         Sheet sheet = workBook.getSheetAt(0);
 
