@@ -40,8 +40,8 @@ public class JwtProvider {
     }
 
     public TokenDto generateToken(User user) {
-        String accessToken = createToken(user, 1000 * JwtExpiration.ACCESS_TOKEN.getTime());
-        String refreshToken = createToken(user, 1000 * JwtExpiration.REFRESH_TOKEN.getTime());
+        String accessToken = createToken(user, 1000 * JwtExpiration.ACCESS_SEC);
+        String refreshToken = createToken(user, 1000 * JwtExpiration.REFRESH_SEC);
         return TokenDto.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)

@@ -15,7 +15,7 @@ public class FileUploader {
     @Value("${path.files}")
     String STORE_PATH;
     
-    @Value("{path.ipUrl}")
+    @Value("${path.ipUrl}")
     String ipUrl;
 
     // 엑셀파일만 저장하는 메소드

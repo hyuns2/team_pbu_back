@@ -1,6 +1,5 @@
 package projectbuildup.mivv.global.error;
 
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
@@ -13,7 +12,8 @@ public enum ErrorCode {
     RESOURCE_NOT_FOUND(-1000, "해당 리소스를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
     BAD_REQUEST(-1002, "잘못된 접근입니다.", HttpStatus.BAD_REQUEST),
     SAVING_COUNT_OVER(-1003, "절약 가능 횟수를 모두 사용하였습니다.", HttpStatus.BAD_REQUEST),
-
+    ACCOUNT_NOT_FOUND(-1004, "해당 계좌를 조회할 수 없습니다.", HttpStatus.NOT_FOUND),
+    ACCOUNT_EXIST(-1005, "연결된 계좌가 이미 존재합니다.", HttpStatus.BAD_REQUEST),
 
     // 6000 ~ : 권한, 인증 에러
     LOGIN_FAILED(-6001, "로그인에 실패했습니다.", HttpStatus.UNAUTHORIZED),
@@ -25,6 +25,7 @@ public enum ErrorCode {
     WRONG_PASSWORD(-6009, "잘못된 비밀번호입니다.", HttpStatus.UNAUTHORIZED),
     VERIFICATION_NOT_FOUND(-6010, "본인인증 정보가 없습니다.", HttpStatus.NOT_FOUND),
     WORTHY_CONSUMPTION_NOT_FOUND(-6011, "가치소비를 조회할 수 없습니다.", HttpStatus.UNAUTHORIZED),
+    NOT_OWN_ACCOUNT(-6012, "사용자 명의의 계좌가 아닙니다.", HttpStatus.UNAUTHORIZED),
 
     // 7000 ~ : 시큐리티 에러
     NOT_AUTHORIZED(-7000, "해당 리소스에 접근하기 위한 권한이 없습니다. 시큐리티 권한 인증에 실패했습니다.", HttpStatus.FORBIDDEN),
@@ -49,7 +50,9 @@ public enum ErrorCode {
     // 15000 ~ : 문의, 아카이빙, 알림 관련 에러
     INQUIRY_OVER_ERROR(-15000, "문의 개수 한도를 초과했습니다.", HttpStatus.BAD_REQUEST),
     INQUIRY_NOT_FOUND(-15100, "해당하는 문의를 찾을 수 없습니다.", HttpStatus.BAD_REQUEST),
+    INQUIRY_NOT_MATCH(-15200, "해당 문의는 현재 유저의 문의가 아닙니다.", HttpStatus.BAD_REQUEST),
     CARD_NOT_FOUND(-16000, "해당하는 카드를 찾을 수 없습니다.", HttpStatus.BAD_REQUEST),
+    CARD_TYPE_NOT_MATCH(-15200, "입력한 카드 ID의 타입을 확인해주세요.", HttpStatus.BAD_REQUEST),
     INVALID_CARD_CONDITION(-16100, "카드 조건은 하나 이상이여야 합니다.", HttpStatus.BAD_REQUEST),
     NOTIFICATION_NOT_FOUND(-17000, "해당하는 알림을 찾을 수 없습니다.", HttpStatus.BAD_REQUEST),
 

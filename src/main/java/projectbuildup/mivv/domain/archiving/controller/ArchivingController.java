@@ -38,7 +38,7 @@ public class ArchivingController {
     @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/admin/remittance-card", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> createRemittanceConditionCard(@AuthenticationPrincipal User user, @Valid @ModelAttribute("createNumericalCards") ArchivingDto.createRemittanceCardRequestDto dto) throws IOException {
+    public ResponseEntity<?> createRemittanceConditionCard(@AuthenticationPrincipal User user, @Valid @ModelAttribute("createNumericalCards") ArchivingDto.createOrUpdateRemittanceCardRequestDto dto) throws IOException {
         rService.createRemittanceConditionCard(dto);
 
         return new ResponseEntity<>(HttpStatus.OK);
@@ -48,7 +48,7 @@ public class ArchivingController {
     @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/admin/general-card", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> createGeneralConditionCard(@AuthenticationPrincipal User user, @Valid @ModelAttribute("createGeneralCards") ArchivingDto.createGeneralCardRequestDto dto) throws IOException {
+    public ResponseEntity<?> createGeneralConditionCard(@AuthenticationPrincipal User user, @Valid @ModelAttribute("createGeneralCards") ArchivingDto.createOrUpdateGeneralCardRequestDto dto) throws IOException {
         gService.createGeneralConditionCard(dto);
 
         return new ResponseEntity<>(HttpStatus.OK);
@@ -58,7 +58,7 @@ public class ArchivingController {
     @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/admin/coupon-card", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> createCouponConditionCard(@AuthenticationPrincipal User user, @Valid @ModelAttribute("createCouponCards") ArchivingDto.createCouponCardRequestDto dto) throws IOException {
+    public ResponseEntity<?> createCouponConditionCard(@AuthenticationPrincipal User user, @Valid @ModelAttribute("createCouponCards") ArchivingDto.createOrUpdateCouponCardRequestDto dto) throws IOException {
         cService.createCouponConditionCard(dto);
 
         return new ResponseEntity<>(HttpStatus.OK);
@@ -67,8 +67,8 @@ public class ArchivingController {
     @Operation(summary = "절약 카드 수정", description = "관리자가 절약 카드를 수정합니다.")
     @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('ADMIN')")
-    @PatchMapping(value = "/admin/remittance-card/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> updateRemittanceConditionCard(@AuthenticationPrincipal User user, @PathVariable("id") Long id, @Valid @ModelAttribute("updateRemittanceCards") ArchivingDto.updateRemittanceCardRequestDto dto) throws IOException {
+    @PutMapping(value = "/admin/remittance-card/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> updateRemittanceConditionCard(@AuthenticationPrincipal User user, @PathVariable("id") Long id, @Valid @ModelAttribute("updateRemittanceCards") ArchivingDto.createOrUpdateRemittanceCardRequestDto dto) throws IOException {
         rService.updateRemittanceConditionCard(id, dto);
 
         return new ResponseEntity<>(HttpStatus.OK);
@@ -77,8 +77,8 @@ public class ArchivingController {
     @Operation(summary = "일반 카드 수정", description = "관리자가 일반 카드를 수정합니다.")
     @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('ADMIN')")
-    @PatchMapping(value = "/admin/general-card/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> updateGeneralConditionCard(@AuthenticationPrincipal User user, @PathVariable("id") Long id, @Valid @ModelAttribute("updateGeneralCards") ArchivingDto.updateGeneralCardRequestDto dto) throws IOException {
+    @PutMapping(value = "/admin/general-card/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> updateGeneralConditionCard(@AuthenticationPrincipal User user, @PathVariable("id") Long id, @Valid @ModelAttribute(name="updateGeneralCards") ArchivingDto.createOrUpdateGeneralCardRequestDto dto) throws IOException {
         gService.updateGeneralConditionCard(id, dto);
 
         return new ResponseEntity<>(HttpStatus.OK);
@@ -87,8 +87,8 @@ public class ArchivingController {
     @Operation(summary = "소비 카드 수정", description = "관리자가 소비 카드를 수정합니다.")
     @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('ADMIN')")
-    @PatchMapping(value = "/admin/coupon-card/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> updateCouponConditionCard(@AuthenticationPrincipal User user, @PathVariable("id") Long id, @Valid @ModelAttribute("updateCouponCards") ArchivingDto.updateCouponCardRequestDto dto) throws IOException {
+    @PutMapping(value = "/admin/coupon-card/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> updateCouponConditionCard(@AuthenticationPrincipal User user, @PathVariable("id") Long id, @Valid @ModelAttribute("updateCouponCards") ArchivingDto.createOrUpdateCouponCardRequestDto dto) throws IOException {
         cService.updateCouponConditionCard(id, dto);
 
         return new ResponseEntity<>(HttpStatus.OK);

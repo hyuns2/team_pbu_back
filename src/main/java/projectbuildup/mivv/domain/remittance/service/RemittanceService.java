@@ -3,10 +3,14 @@ package projectbuildup.mivv.domain.remittance.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import projectbuildup.mivv.domain.account.entity.TransactionDetail;
 import projectbuildup.mivv.domain.account.service.accountdetails.AccountDetailsSystem;
-import projectbuildup.mivv.domain.account.service.accountdetails.CodefAccountDetailsSystem;
+import projectbuildup.mivv.domain.archiving.service.RemittanceArchivingService;
 import projectbuildup.mivv.domain.challenge.dto.RankDto;
+import projectbuildup.mivv.domain.challenge.service.RankScoreCalculator;
 import projectbuildup.mivv.domain.challenge.service.RankingService;
 import projectbuildup.mivv.domain.remittance.dto.RemittanceCount;
 import projectbuildup.mivv.domain.remittance.entity.Remittance;
@@ -27,11 +31,7 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 
 import static java.lang.Thread.sleep;
 
@@ -42,51 +42,110 @@ import static java.lang.Thread.sleep;
 public class RemittanceService {
     private final ChallengeRepository challengeRepository;
     private final UserRepository userRepository;
-    private final ExecutorService executorService;
     private final ParticipationRepository participationRepository;
-    private final RemittanceChecker remittanceChecker;
     private final RemittanceRepository remittanceRepository;
     private final RankingService rankingService;
+    private final RankScoreCalculator rankScoreCalculator;
+    private final RemittanceArchivingService remittanceArchivingService;
+
+    @Autowired
+    @Qualifier("codefAccountDetailsSystem")
+    AccountDetailsSystem accountDetailsSystem;
+
+    @Autowired
+    @Qualifier("testAccountDetailsSystem")
+    AccountDetailsSystem testAccountDetailsSystem;
+
 
     /**
-     * 5분간 계좌 내역을 비동기로 확인하며, 실제 송금이 이루어졌는지 확인합니다.
-     * 송금액이 확인된 경우, Remittance 가 생성됩니다.
+     * 사용자의 계좌 내역을 조회하여 송금액을 갱신합니다.
+     * 일일 참여 횟수를 초과한 경우, 예외가 발생합니다.
      *
-     * @param requestDto 회원 아이디넘버, 챌린지 아이디넘버, 절약금액
+     * @param requestDto 유저 아이디넘버, 챌린지 아이디넘버, 시작 시간
+     * @return true/exception
      */
     @Transactional
-    public Future<Boolean> remit(RemittanceDto.RemitRequest requestDto, Optional<LocalDateTime> currentTime) {
+    public boolean checkSaving(RemittanceDto.RemitRequest requestDto) {
         Challenge challenge = challengeRepository.findById(requestDto.getChallengeId()).orElseThrow(CResourceNotFoundException::new);
         User user = userRepository.findById(requestDto.getUserId()).orElseThrow(CUserNotFoundException::new);
-        Participation participation = participationRepository.findByChallengeAndUser(challenge, user).orElseThrow(() -> new CBadRequestException("참여 중인 챌린지에만 송금할 수 있습니다."));
-        validate(challenge, participation, requestDto.getAmount());
-        return executorService.submit(() -> remittanceChecker.check(requestDto.getAmount(), participation, currentTime.orElse(LocalDateTime.now())));
-    }
+        Participation participation = participationRepository.findByChallengeAndUser(challenge, user)
+                .orElseThrow(() -> new CBadRequestException("참여 중인 챌린지에만 송금할 수 있습니다."));
 
-    public Future<Boolean> remitTest(RemittanceDto.RemitRequest requestDto, Optional<LocalDateTime> currentTime) {
-        Challenge challenge = challengeRepository.findById(requestDto.getChallengeId()).orElseThrow(CResourceNotFoundException::new);
-        User user = userRepository.findById(requestDto.getUserId()).orElseThrow(CUserNotFoundException::new);
-        Participation participation = participationRepository.findByChallengeAndUser(challenge, user).orElseThrow(() -> new CBadRequestException("참여 중인 챌린지에만 송금할 수 있습니다."));
-        return executorService.submit(() -> remittanceChecker.checkTest(requestDto.getAmount(), participation, currentTime.orElse(LocalDateTime.now())));
+        if (!participation.canRemit()) {
+            throw new CBadRequestException("일일 절약 한도를 초과했습니다.");
+        }
+        TransactionDetail transactionDetail = getRecentTransactionDetail(participation, LocalDate.now().atStartOfDay());
+        updateRemittance(transactionDetail.getAmount(), participation);
+        return true;
     }
 
     /**
-     * 송금할 수 있는 상태인지 검증합니다.
-     * 참여 중인 챌린지가 아닌 경우 CSavingCountOverException을 던집니다.
-     * 챌린지의 최소 송금 금액과 최대 송금 금액을 만족하지 않는 경우 CIllegalArgumentException을 던집니다.
+     * 챌린지 송금액 범위에 부합하는 가장 최근의 송금 기록을 가져옵니다.
+     * 조건에 만족하는 기록을 조회할 수 없으면 예외가 발생합니다.
      *
-     * @param challenge     챌린지
-     * @param participation 참여 정보
-     * @param amount        송금 금액
+     * @param participation 참여
+     * @param startTime          조회 시작 일자
+     * @return 송금 기록
      */
-    private void validate(Challenge challenge, Participation participation, long amount) {
-        if (!participation.canRemit()) {
-            throw new CSavingCountOverException();
-        }
-        if (!challenge.canRemit(amount)) {
-            throw new CIllegalArgumentException("송금할 수 있는 금액의 범위를 벗어났습니다.");
-        }
+    private TransactionDetail getRecentTransactionDetail(Participation participation, LocalDateTime startTime) {
+        User user = participation.getUser();
+        Challenge challenge = participation.getChallenge();
+        return accountDetailsSystem.getDepositHistory(user, startTime.toLocalDate()).stream()
+                .filter(t -> t.isValid(challenge, startTime))
+                .max((o1, o2) -> o2.getTime().compareTo(o1.getTime()))
+                .orElseThrow(() -> new CBadRequestException("송금이 이루어지지 않았거나, 적합한 금액이 아닙니다."));
     }
+
+    /**
+     * 테스트 뱅킹 클라이언트로 송금을 확인합니다.
+     * 송금 확인에 성공할 경우, 1000원이 갱신됩니다.
+     *
+     * @param requestDto 유저 아이디넘버, 챌린지 아이디넘버
+     * @param startTime  시작 시간
+     * @return
+     */
+    public boolean checkSavingForTest(RemittanceDto.RemitRequest requestDto, Optional<LocalDateTime> startTime) {
+        Challenge challenge = challengeRepository.findById(requestDto.getChallengeId()).orElseThrow(CResourceNotFoundException::new);
+        User user = userRepository.findById(requestDto.getUserId()).orElseThrow(CUserNotFoundException::new);
+        Participation participation = participationRepository.findByChallengeAndUser(challenge, user).orElseThrow(() -> new CBadRequestException("참여 중인 챌린지에만 송금할 수 있습니다."));
+        LocalDateTime time = startTime.orElse(LocalDateTime.of(2019, 5, 11, 3, 38, 0));
+        TransactionDetail transactionDetail = getTransactionDetailForTest(participation, time);
+        log.info("{}", transactionDetail);
+        updateRemittance(1000L, participation);
+        return true;
+    }
+
+    private TransactionDetail getTransactionDetailForTest(Participation participation, LocalDateTime time) {
+        User user = participation.getUser();
+        if (!participation.canRemit()) {
+            throw new CBadRequestException("일일 절약 한도를 초과했습니다.");
+        }
+        return testAccountDetailsSystem.getDepositHistory(user, time.toLocalDate()).stream()
+                .max((o1, o2) -> o2.getTime().compareTo(o1.getTime()))
+                .orElseThrow(() -> new CBadRequestException("송금이 이루어지지 않았거나, 적합한 금액이 아닙니다."));
+    }
+
+    /**
+     * 송금액 조회에 성공할 경우, 실행되는 메서드입니다.
+     * - 송금 정보를 DB에 기록합니다.
+     * - 금일 절약 횟수를 1 증가시킵니다.
+     * - 랭킹 점수를 증가시킵니다.
+     * - 챌린지의 총 절약 금액 정보를 갱신합니다.
+     * - 수치 조건 카드의 발급을 확인합니다.
+     *
+     * @param amount        송금액
+     * @param participation 참여 정보
+     */
+    @Transactional
+    private void updateRemittance(long amount, Participation participation) {
+        Remittance remittance = Remittance.newDeposit(amount, participation);
+        remittanceRepository.save(remittance);
+        participation.addCount();
+        double score = rankScoreCalculator.calculate(remittance);
+        rankingService.updateScore(participation.getUser(), participation.getChallenge(), score);
+        remittanceArchivingService.assignRemittanceConditionCards(participation.getUser());
+    }
+
 
     /**
      * 해당 연월에 기록된 절약 내역을 모두 조회합니다.

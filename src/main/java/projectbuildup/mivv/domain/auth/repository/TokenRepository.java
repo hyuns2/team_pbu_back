@@ -30,7 +30,7 @@ public class TokenRepository {
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
         String key = PREFIX_REFRESH + refreshToken;
         valueOperations.set(key, value);
-        redisTemplate.expire(key, JwtExpiration.REFRESH_TOKEN.getTime(), TimeUnit.SECONDS);
+        redisTemplate.expire(key, JwtExpiration.REFRESH_SEC, TimeUnit.SECONDS);
     }
 
     private String convertToString(Object value){
@@ -52,7 +52,7 @@ public class TokenRepository {
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
         String key = PREFIX_BLOCKED + accessToken;
         valueOperations.set(key, "empty");
-        redisTemplate.expire(key, JwtExpiration.ACCESS_TOKEN.getTime(), TimeUnit.SECONDS);
+        redisTemplate.expire(key, JwtExpiration.ACCESS_SEC, TimeUnit.SECONDS);
     }
 
     /**

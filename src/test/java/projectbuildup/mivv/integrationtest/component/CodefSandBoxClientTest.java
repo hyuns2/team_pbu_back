@@ -103,7 +103,11 @@ public class CodefSandBoxClientTest {
             TransactionDetail detail = TransactionDetail.of(amount, (String) elem.get("resAccountTrDate"), (String) elem.get("resAccountTrTime"));
             returnList.add(detail);
         }
-        log.info("{}", returnList);
+        //      [
+        //          TransactionDetail(amount=600000, time=2019-05-29T16:29:20),
+        //          TransactionDetail(amount=300000, time=2019-05-23T14:13:19),
+        //          TransactionDetail(amount=11, time=2019-05-11T03:38:08)
+        //       ]
 
         //then
         assertThat(returnList.size()).isEqualTo(3);
@@ -112,5 +116,18 @@ public class CodefSandBoxClientTest {
         assertThat(returnList.get(2).getAmount()).isEqualTo(11L);
     }
 
+    @Test
+    @DisplayName("계좌 실명 인증을 수행한다. ")
+    void test4() {
+        // given
+
+        // when
+        Map<String, Object> dataField = codefSandBoxClient.holderAuthentication("0020", "1002000111222", "900101");
+        String result = (String) dataField.get("name");
+
+        // then
+        log.info(result);
+        assertThat(result).isEqualTo("코뿔소");
+    }
 }
 

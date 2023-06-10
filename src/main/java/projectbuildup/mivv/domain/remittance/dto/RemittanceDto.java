@@ -2,10 +2,12 @@ package projectbuildup.mivv.domain.remittance.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 import projectbuildup.mivv.domain.challenge.dto.RankDto;
 import projectbuildup.mivv.domain.remittance.entity.Remittance;
 
@@ -24,8 +26,12 @@ public class RemittanceDto {
         private Long userId;
         @Schema(hidden = true)
         private Long challengeId;
-        @Schema(description = "송금할 금액")
-        private Long amount;
+        @NotNull
+        String startTime;
+//        @NotNull
+//        @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+//        @Schema(example = "2023-10-00T13:00:00")
+//        LocalDateTime startTime;
     }
 
 

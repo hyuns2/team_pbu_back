@@ -53,6 +53,7 @@ public class ChallengeDto {
     }
 
     @Getter
+    @Setter
     @NoArgsConstructor
     public static class UpdateRequest {
         @Schema(hidden = true)
@@ -77,7 +78,7 @@ public class ChallengeDto {
 
         @Schema(description = "하루 송금 횟수 제한")
         @Min(1)
-        private long remittanceAvailableCount;
+        private long limitedNumberOfTimes;
 
         @Schema(description = "이미지")
         @NotNull

@@ -18,6 +18,7 @@ import projectbuildup.mivv.global.common.fileStore.File;
 import projectbuildup.mivv.global.common.imageStore.ImageType;
 import projectbuildup.mivv.global.common.imageStore.ImageUploader;
 import projectbuildup.mivv.global.error.exception.CCardNotFoundException;
+import projectbuildup.mivv.global.error.exception.CCardTypeNotMatchException;
 import projectbuildup.mivv.global.error.exception.CInvalidCellException;
 import projectbuildup.mivv.global.error.exception.CUserNotFoundException;
 import projectbuildup.mivv.global.common.imageStore.Image;
@@ -48,11 +49,11 @@ public class GeneralArchivingService {
      * @param dto 카드 제목, 부제목, 명언, 이미지파일
      * @throws IOException
      */
-    public void createGeneralConditionCard(final ArchivingDto.createGeneralCardRequestDto dto) throws IOException {
+    public void createGeneralConditionCard(final ArchivingDto.createOrUpdateGeneralCardRequestDto dto) throws IOException {
 
         Image image = imageUploader.upload(dto.getImage(), ImageType.CARD);
 
-        CardEntity entity = ArchivingDto.createGeneralCardRequestDto.toEntity(dto, image.getImagePath());
+        CardEntity entity = ArchivingDto.createOrUpdateGeneralCardRequestDto.toEntity(dto, image.getImagePath());
         cardRepo.save(entity);
 
     }
@@ -66,16 +67,18 @@ public class GeneralArchivingService {
      * @throws CCardNotFoundException 카드 찾기 실패시
      */
     @Transactional
-    public void updateGeneralConditionCard(final Long id, final ArchivingDto.updateGeneralCardRequestDto dto) throws IOException {
+    public void updateGeneralConditionCard(final Long id, final ArchivingDto.createOrUpdateGeneralCardRequestDto dto) throws IOException {
 
         Optional<CardEntity> target = cardRepo.findById(id);
         if (target.isEmpty()) {
             throw new CCardNotFoundException();
         }
-
-        Image image = imageUploader.upload(dto.getImage(), ImageType.CARD);
+        if (!target.get().getType().equals(CardType.GENERAL)) {
+            throw new CCardTypeNotMatchException();
+        }
 
         CardEntity result = target.get();
+        Image image = imageUploader.upload(dto.getImage(), ImageType.CARD);
         result.updateCard(dto, image.getImagePath());
 
     }
@@ -147,16 +150,19 @@ public class GeneralArchivingService {
         if (targetCard.isEmpty()) {
             throw new CCardNotFoundException();
         }
+        if (!targetCard.get().getType().equals(CardType.GENERAL)) {
+            throw new CCardTypeNotMatchException();
+        }
+        
         CardEntity cardEntity = targetCard.get();
-
         checkAndAssignGeneralConditionCards(dto.getFile(), cardEntity);
 
     }
 
     private void checkAndAssignGeneralConditionCards(MultipartFile dtoFile, CardEntity cardEntity) throws IOException {
         File file = fileUploader.storeExcelFile(dtoFile);
-
         InputStream inputStream = new FileInputStream(file.getFilePath());
+        
         Workbook workBook = WorkbookFactory.create(inputStream);
         Sheet sheet = workBook.getSheetAt(0);
 

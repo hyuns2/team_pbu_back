@@ -1,23 +1,22 @@
 package projectbuildup.mivv.global.constant;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
-@Getter
-@AllArgsConstructor
-public enum JwtExpiration {
+@Component
+public class JwtExpiration {
 
-      /* 정상 */
-//    ACCESS_TOKEN(60 * 30L), //30분
-//    REFRESH_TOKEN(60 * 60 * 24 * 7L); //7일
+    public static Long ACCESS_SEC;
+    public static Long REFRESH_SEC;
 
-//    /* 테스트용(단기) */
-//    ACCESS_TOKEN(1L), //1초
-//    REFRESH_TOKEN(10000000L); //1초
+    @Value("${jwt.expiration.access}")
+    public void setAccess(String value){
+        ACCESS_SEC = Long.parseLong(value);
+    }
 
-    /* 테스트용(장기) */
-    ACCESS_TOKEN(60 * 60 * 24 * 365L), //1년
-    REFRESH_TOKEN(60 * 60 * 24 * 365L); //1년
-
-    private final Long time;
+    @Value("${jwt.expiration.refresh}")
+    public void setRefresh(String value){
+        REFRESH_SEC = Long.parseLong(value);
+    }
 }

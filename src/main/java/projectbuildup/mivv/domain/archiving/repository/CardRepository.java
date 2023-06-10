@@ -5,9 +5,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import projectbuildup.mivv.domain.archiving.entity.CardEntity;
 import projectbuildup.mivv.domain.archiving.entity.CardType;
+import projectbuildup.mivv.domain.archiving.entity.CouponConditionCardEntity;
+import projectbuildup.mivv.domain.archiving.entity.RemittanceConditionCardEntity;
 import projectbuildup.mivv.domain.user.entity.User;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Repository

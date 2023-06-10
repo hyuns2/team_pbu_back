@@ -2,6 +2,7 @@ package projectbuildup.mivv.global.error;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
@@ -158,6 +159,13 @@ public class ExceptionAdvice {
         return new ResponseEntity<>(new ErrorResponseDto(errorCode), errorCode.getStatusCode());
     }
 
+    @ExceptionHandler(CInquiryNotMatchException.class)
+    protected ResponseEntity<ErrorResponseDto> handle(CInquiryNotMatchException e) {
+        ErrorCode errorCode = e.getErrorCode();
+        e.printStackTrace();
+        return new ResponseEntity<>(new ErrorResponseDto(errorCode), errorCode.getStatusCode());
+    }
+
     @ExceptionHandler(CSavingCountOverException.class)
     protected ResponseEntity<ErrorResponseDto> handle(CSavingCountOverException e) {
         ErrorCode errorCode = e.getErrorCode();
@@ -167,6 +175,13 @@ public class ExceptionAdvice {
 
     @ExceptionHandler(CCardNotFoundException.class)
     protected ResponseEntity<ErrorResponseDto> handle(CCardNotFoundException e) {
+        ErrorCode errorCode = e.getErrorCode();
+        e.printStackTrace();
+        return new ResponseEntity<>(new ErrorResponseDto(errorCode), errorCode.getStatusCode());
+    }
+
+    @ExceptionHandler(CCardTypeNotMatchException.class)
+    protected ResponseEntity<ErrorResponseDto> handle(CCardTypeNotMatchException e) {
         ErrorCode errorCode = e.getErrorCode();
         e.printStackTrace();
         return new ResponseEntity<>(new ErrorResponseDto(errorCode), errorCode.getStatusCode());
@@ -215,4 +230,32 @@ public class ExceptionAdvice {
         return new ResponseEntity<>(new ErrorResponseDto(errorCode), errorCode.getStatusCode());
     }
 
+    @ExceptionHandler(CAccountNotFoundException.class)
+    protected ResponseEntity<ErrorResponseDto> handle(CAccountNotFoundException e) {
+        ErrorCode errorCode = e.getErrorCode();
+        e.printStackTrace();
+        return new ResponseEntity<>(new ErrorResponseDto(errorCode), errorCode.getStatusCode());
+    }
+
+    @ExceptionHandler(CCodefException.class)
+    protected ResponseEntity<ErrorResponseDto> handle(CCodefException e) {
+        String code = e.getCodefCode();
+        String message = e.getCodefMessage();
+        e.printStackTrace();
+        return new ResponseEntity<>(new ErrorResponseDto(code, message), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(CNotOwnAccountException.class)
+    protected ResponseEntity<ErrorResponseDto> handle(CNotOwnAccountException e) {
+        ErrorCode errorCode = e.getErrorCode();
+        e.printStackTrace();
+        return new ResponseEntity<>(new ErrorResponseDto(errorCode), errorCode.getStatusCode());
+    }
+
+    @ExceptionHandler(CAccountExistException.class)
+    protected ResponseEntity<ErrorResponseDto> handle(CAccountExistException e) {
+        ErrorCode errorCode = e.getErrorCode();
+        e.printStackTrace();
+        return new ResponseEntity<>(new ErrorResponseDto(errorCode), errorCode.getStatusCode());
+    }
 }

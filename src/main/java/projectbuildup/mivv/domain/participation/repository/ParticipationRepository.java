@@ -1,5 +1,7 @@
 package projectbuildup.mivv.domain.participation.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,8 +18,10 @@ public interface ParticipationRepository extends JpaRepository<Participation, Lo
     void deleteByChallengeAndUser(Challenge challenge, User user);
 
     List<Participation> findAllByChallenge(Challenge challenge);
-
     List<Participation> findAllByUser(User user);
+
+    Page<Participation> findAllByUser(User user, Pageable pageable);
+
 
     void deleteAllByUser(User user);
 }

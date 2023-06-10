@@ -18,6 +18,7 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
@@ -28,7 +29,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Primary
 @Component
 @Slf4j
 public class CodefDemoClient implements CodefClient {
@@ -60,21 +60,27 @@ public class CodefDemoClient implements CodefClient {
         }
     }
 
-    private void fillMapParameter(HashMap<String, Object> accountMap, AccountRegisterDto accountDto) throws NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, InvalidKeySpecException, BadPaddingException, InvalidKeyException {
+    private void fillMapParameter(HashMap<String, Object> accountMap, AccountRegisterDto accountDto) {
         final String DAEGU_BANK = "0031";
         String id = accountDto.getBankId();
         String password = accountDto.getBankPassword();
-        String encodedPassword = EasyCodefUtil.encryptRSA(password, codef.getPublicKey());
-        accountMap.put("countryCode", "KR");
-        accountMap.put("businessType", "BK");
-        accountMap.put("organization", accountDto.getOrganizationCode());
-        accountMap.put("clientType", "P");
-        accountMap.put("loginType", "1");
-        accountMap.put("id", id);
-        accountMap.put("password", encodedPassword);
-        if (accountDto.getOrganizationCode().equals(DAEGU_BANK)) {
-            accountMap.put("withdrawAccountNo", accountDto.getAccountNumbers());
-            accountMap.put("withdrawAccountPassword", accountDto.getAccountPassword());
+        try {
+            String encodedPassword = EasyCodefUtil.encryptRSA(password, codef.getPublicKey());
+            accountMap.put("countryCode", "KR");
+            accountMap.put("businessType", "BK");
+            accountMap.put("organization", accountDto.getOrganizationCode());
+            accountMap.put("clientType", "P");
+            accountMap.put("loginType", "1");
+            accountMap.put("id", id);
+            accountMap.put("password", encodedPassword);
+            if (accountDto.getOrganizationCode().equals(DAEGU_BANK)) {
+                accountMap.put("withdrawAccountNo", accountDto.getAccountNumbers());
+                accountMap.put("withdrawAccountPassword", accountDto.getAccountPassword());
+            }
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException | NoSuchPaddingException | InvalidKeyException |
+                 IllegalBlockSizeException | BadPaddingException e) {
+            log.error("암호화 중 오류가 발생했습니다.");
+            throw new CInternalServerException();
         }
     }
 
@@ -95,8 +101,8 @@ public class CodefDemoClient implements CodefClient {
             parameterMap.put("accountList", accountList);
             String result = codef.createAccount(EasyCodefServiceType.DEMO, parameterMap);
             return getDataField(result);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (UnsupportedEncodingException | JsonProcessingException | InterruptedException e) {
+            log.error("통신 중 오류가 발생했습니다.");
             throw new CInternalServerException();
         }
     }
@@ -109,7 +115,6 @@ public class CodefDemoClient implements CodefClient {
      * @return 보유 계좌 목록 (코드에프 테스트 계정의 경우 accountList = [06170204000000, 23850204000000, 54780300000000])
      */
     @Override
-
     public Map<String, Object> getOwnAccounts(String bankType, String connectedId) {
         HashMap<String, Object> parameterMap = new HashMap<>();
         try {
@@ -118,8 +123,8 @@ public class CodefDemoClient implements CodefClient {
             String CODEF_OWN_ACCOUNT_API = "/v1/kr/bank/p/account/account-list";
             String result = codef.requestProduct(CODEF_OWN_ACCOUNT_API, EasyCodefServiceType.DEMO, parameterMap);
             return getDataField(result);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (UnsupportedEncodingException | JsonProcessingException | InterruptedException e) {
+            log.error("통신 중 오류가 발생했습니다.");
             throw new CInternalServerException();
         }
     }
@@ -135,7 +140,6 @@ public class CodefDemoClient implements CodefClient {
      * @return 응답값의 data 필드
      */
     @Override
-
     public Map<String, Object> getTransactionList(String connectedId, String bankCode, String accountNumbers, LocalDate startDate) {
         String CODEF_TRANSACTION_LIST_API = "/v1/kr/bank/p/account/transaction-list";
         LocalDate endDate = LocalDate.now();
@@ -151,8 +155,8 @@ public class CodefDemoClient implements CodefClient {
         try {
             String result = codef.requestProduct(CODEF_TRANSACTION_LIST_API, EasyCodefServiceType.DEMO, parameterMap);
             return getDataField(result);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (UnsupportedEncodingException | JsonProcessingException | InterruptedException e) {
+            log.error("통신 중 오류가 발생했습니다.");
             throw new CInternalServerException();
         }
     }
@@ -166,39 +170,36 @@ public class CodefDemoClient implements CodefClient {
      * @return 응답값의 data 필드
      */
     @Override
-
     public Map<String, Object> certifyTransfer(String organizationCode, String accountNumbers) {
         HashMap<String, Object> parameterMap = new HashMap<>();
         parameterMap.put("organization", organizationCode);
         parameterMap.put("account", accountNumbers);
-        parameterMap.put("inPrintType", "1");
+        parameterMap.put("inPrintType", "0");
         try {
             String CODEF_TRANSFER_AUTHENTICATION_API = "/v1/kr/bank/a/account/transfer-authentication";
             String result = codef.requestProduct(CODEF_TRANSFER_AUTHENTICATION_API, EasyCodefServiceType.DEMO, parameterMap);
             return getDataField(result);
-        } catch (Exception e) {
-            e.printStackTrace();
-            log.error("API 통신 중 오류가 발생했습니다.");
+        } catch (UnsupportedEncodingException | JsonProcessingException | InterruptedException e) {
+            log.error("통신 중 오류가 발생했습니다.");
             throw new CInternalServerException();
         }
     }
 
-    /**
-     * 에러 코드를 확인하고, 정상 응답인 경우, data 필드를 리턴합니다.
-     *
-     * @param result JSON 응답 원본
-     * @return 응답값의 data 필드
-     */
-    private Map<String, Object> getDataField(String result) {
+    @Override
+    public Map<String, Object> holderAuthentication(String organizationCode, String accountNumbers, String birthDate) {
+        String CODEF_HOLDER_AUTHENTICATION_API = "/v1/kr/bank/a/account/holder-authentication";
+        HashMap<String, Object> parameterMap = new HashMap<>();
+        parameterMap.put("organization", organizationCode);
+        parameterMap.put("account", accountNumbers);
+        parameterMap.put("identity", birthDate);
         try {
-            Map<String, Object> resultMap = new ObjectMapper().readValue(result, HashMap.class);
-            String code = (String) resultMap.get("code");
-            if (code.equals("CF-00000")) {
-                return (HashMap<String, Object>) resultMap.get("data");
-            }
-            throw new CIllegalArgumentException("인증 과정에서 오류가 발생했습니다. 코드에프 에러코드: " + code);
-        } catch (JsonProcessingException e) {
+            String result = codef.requestProduct(CODEF_HOLDER_AUTHENTICATION_API, EasyCodefServiceType.DEMO, parameterMap);
+            return getDataField(result);
+        } catch (UnsupportedEncodingException | JsonProcessingException | InterruptedException e) {
+            log.error("통신 중 오류가 발생했습니다.");
             throw new CInternalServerException();
         }
     }
+
+
 }

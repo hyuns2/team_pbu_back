@@ -6,15 +6,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import projectbuildup.mivv.domain.account.repository.AccountRepository;
 import projectbuildup.mivv.domain.archiving.repository.UserCardRepository;
 import projectbuildup.mivv.domain.auth.dto.AuthDto;
 import projectbuildup.mivv.domain.auth.repository.IdentityVerificationRepository;
 import projectbuildup.mivv.domain.auth.repository.TokenRepository;
-import projectbuildup.mivv.domain.couponIssuance.entity.CouponIssuance;
 import projectbuildup.mivv.domain.couponIssuance.repository.CouponIssuanceRepository;
-import projectbuildup.mivv.domain.inquiry.entity.InquiryEntity;
 import projectbuildup.mivv.domain.inquiry.repository.InquiryRepository;
-import projectbuildup.mivv.domain.likes.entity.LikesWorthyConsumption;
 import projectbuildup.mivv.domain.likes.repository.LikesShortsRepository;
 import projectbuildup.mivv.domain.likes.repository.LikesWorthyConsumptionRepository;
 import projectbuildup.mivv.domain.participation.repository.ParticipationRepository;
@@ -25,8 +23,6 @@ import projectbuildup.mivv.global.error.exception.*;
 import projectbuildup.mivv.global.security.jwt.JwtProvider;
 import projectbuildup.mivv.global.security.jwt.JwtValidator;
 import projectbuildup.mivv.global.security.jwt.TokenDto;
-
-import java.util.List;
 
 @Service
 @Slf4j
@@ -45,6 +41,7 @@ public class AuthService {
     private final LikesWorthyConsumptionRepository likesWorthyConsumptionRepository;
     private final UserCardRepository userCardRepository;
     private final CouponIssuanceRepository couponIssuanceRepository;
+    private final AccountRepository accountRepository;
 
     /**
      * 회원 가입합니다.
@@ -102,8 +99,7 @@ public class AuthService {
     @Transactional
     public void withdraw(AuthDto.UnlinkRequestDto requestDto) {
         User user = userRepository.findById(requestDto.getUserId()).orElseThrow(CUserNotFoundException::new);
-        deleteRelatedData(user);
-        userRepository.deleteById(user.getId());
+        deleteData(user);
         logout(requestDto);
     }
 
@@ -113,13 +109,16 @@ public class AuthService {
      * @param user 사용자
      */
     @Transactional
-    private void deleteRelatedData(User user) {
+    private void deleteData(User user) {
         inquiryRepository.deleteAllByUser(user);
         participationRepository.deleteAllByUser(user);
         likesShortsRepository.deleteAllByUser(user);
         likesWorthyConsumptionRepository.deleteAllByUser(user);
         userCardRepository.deleteAllByUser(user);
         couponIssuanceRepository.deleteAllByUser(user);
+        accountRepository.delete(user.getAccount());
+        identityVerificationRepository.delete(user.getIdentityVerification());
+        userRepository.delete(user);
     }
 
     /**
@@ -152,4 +151,5 @@ public class AuthService {
     public boolean checkNickname(String nickname) {
         return userRepository.findByNickname(nickname).isEmpty();
     }
+
 }

@@ -2,10 +2,16 @@ package projectbuildup.mivv.domain.auth.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import projectbuildup.mivv.domain.account.entity.UserState;
 
 @Getter
 @AllArgsConstructor
 public class VerificationResponseDto {
     String verificationCode;
-    boolean isNewUser;
+    String userState;
+    boolean success;
+
+    public static VerificationResponseDto newFailResponse(){
+        return new VerificationResponseDto(null, null, false);
+    }
 }
