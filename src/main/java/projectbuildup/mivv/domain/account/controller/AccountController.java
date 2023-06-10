@@ -47,4 +47,13 @@ public class AccountController {
         accountRegisterService.registerAccount(requestDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @Operation(summary = "계좌 초기화", description = "")
+    @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
+    @PreAuthorize("hasRole('USER')")
+    @PostMapping("/account/reset")
+    public ResponseEntity<Void> resetAccount(@AuthenticationPrincipal User user) {
+        accountRegisterService.resetAccount(user.getId());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
