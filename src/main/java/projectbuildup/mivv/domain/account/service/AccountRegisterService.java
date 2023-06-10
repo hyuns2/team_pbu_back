@@ -10,6 +10,7 @@ import projectbuildup.mivv.domain.account.entity.Account;
 import projectbuildup.mivv.domain.account.repository.AccountRepository;
 import projectbuildup.mivv.domain.account.service.accountsystem.AccountSystem;
 import projectbuildup.mivv.domain.auth.repository.IdentityVerificationRepository;
+import projectbuildup.mivv.domain.participation.repository.ParticipationRepository;
 import projectbuildup.mivv.domain.user.entity.IdentityVerification;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.domain.user.repository.UserRepository;
@@ -26,6 +27,8 @@ public class AccountRegisterService {
     private final UserRepository userRepository;
     private final IdentityVerificationRepository identityVerificationRepository;
     private final AccountRepository accountRepository;
+    private final ParticipationRepository participationRepository;
+
 
     /**
      * 계좌를 등록합니다.
@@ -36,11 +39,35 @@ public class AccountRegisterService {
     public void registerAccount(AccountRegisterDto requestDto) {
         IdentityVerification identityVerification = identityVerificationRepository.findByCode(requestDto.getVerificationCode()).orElseThrow(CResourceNotFoundException::new);
         User user = userRepository.findByIdentityVerification(identityVerification).orElseThrow(CUserNotFoundException::new);
-        if (user.getAccount() != null){
+        if (user.getAccount() != null) {
             throw new CAccountExistException();
         }
         Account account = accountSystem.createAccount(requestDto, user);
         accountRepository.save(account);
+    }
+
+    /**
+     * 계좌를 초기화합니다.
+     * 챌린지 참여 정보가 함께 초기화됩니다.
+     *
+     * @param userId 유저 아이디넘버
+     */
+    @Transactional
+    public void resetAccount(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
+        if (user.getAccount() == null) {
+            throw new CResourceNotFoundException();
+        }
+        deleteParticipationInfo(user);
+        Account account = user.getAccount();
+        accountRepository.delete(account);
+    }
+
+    /**
+     * 챌린지 참여 정보 (송금액, 참여 횟수 등)를 삭제합니다.
+     */
+    private void deleteParticipationInfo(User user) {
+        participationRepository.deleteAllByUser(user);
     }
 
     /**
