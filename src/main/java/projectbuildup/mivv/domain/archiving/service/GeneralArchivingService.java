@@ -150,7 +150,7 @@ public class GeneralArchivingService {
         if (targetCard.isEmpty()) {
             throw new CCardNotFoundException();
         }
-        if (!target.get().getType().equals(CardType.GENERAL)) {
+        if (!targetCard.get().getType().equals(CardType.GENERAL)) {
             throw new CCardTypeNotMatchException();
         }
         
