@@ -54,6 +54,8 @@ public class CouponDto {
         private String howToUse;
         @NotNull
         private List<String> caution;
+        @NotNull
+        private String priceTag;
     }
     @Getter
     @AllArgsConstructor

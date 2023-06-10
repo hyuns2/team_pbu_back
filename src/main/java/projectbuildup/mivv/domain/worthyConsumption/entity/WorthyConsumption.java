@@ -43,8 +43,8 @@ public class WorthyConsumption extends BaseTimeEntity {
     @Column(name = "available_place")
     private String availablePlace;
     @NonNull
-    @Column(name = "available_specific_place")
-    private String availableSpecificPlace;
+    @Column(name = "available_place_detail")
+    private String availablePlaceDetail;
     @Nullable
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "worthy_consumption_url_id")
@@ -67,7 +67,7 @@ public class WorthyConsumption extends BaseTimeEntity {
         this.salePrice = worthyConsumptionDto.getSalePrice();
         this.priceTag = worthyConsumptionDto.getPriceTag();
         this.availablePlace = worthyConsumptionDto.getAvailablePlace();
-        this.availableSpecificPlace = worthyConsumptionDto.getAvailableSpecificPlace();
+        this.availablePlaceDetail = worthyConsumptionDto.getAvailablePlaceDetail();
         this.recommendationReasons = recommendationReasons;
     }
     public void addCoupon(Coupon coupon){

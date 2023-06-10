@@ -110,7 +110,7 @@ public class WorthyConsumptionResponseDto {
         private String priceTag;
 
         private String availablePlace;
-        private String availableSpecificPlace;
+        private String availablePlaceDetail;
 
         public ReadDetailResponse(WorthyConsumption worthyConsumption) {
             this.id = worthyConsumption.getId();
@@ -133,7 +133,7 @@ public class WorthyConsumptionResponseDto {
             this.priceTag = worthyConsumption.getPriceTag();
 
             this.availablePlace = worthyConsumption.getAvailablePlace();
-            this.availableSpecificPlace = worthyConsumption.getAvailableSpecificPlace();
+            this.availablePlaceDetail = worthyConsumption.getAvailablePlaceDetail();
         }
 
 

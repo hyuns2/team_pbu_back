@@ -69,6 +69,9 @@ public class Coupon extends BaseTimeEntity {
                 .limitEndDate(couponDto.getLimitEndDate())
                 .summary(couponDto.getSummary())
                 .couponType(couponDto.getCouponType())
+                .issueCountLimit(couponDto.getIssueCountLimit())
+                .howToUse(couponDto.getHowToUse())
+                .caution(couponDto.getCaution())
                 .build();
     }
     public void update(CouponDto.Request couponDto, String imagePath){

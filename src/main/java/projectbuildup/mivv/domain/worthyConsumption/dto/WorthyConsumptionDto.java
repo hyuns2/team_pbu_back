@@ -33,7 +33,7 @@ public class WorthyConsumptionDto {
         @NotNull
         String availablePlace;
         @NotNull
-        String availableSpecificPlace;
+        String availablePlaceDetail;
 
         //Condition
         @NotNull
@@ -60,7 +60,7 @@ public class WorthyConsumptionDto {
                     .recommendationReasons(recommendationReasons)
                     .priceTag(priceTag)
                     .availablePlace(availablePlace)
-                    .availableSpecificPlace(availableSpecificPlace)
+                    .availablePlaceDetail(availablePlaceDetail)
                     .condition(condition)
                     .build();
         }
