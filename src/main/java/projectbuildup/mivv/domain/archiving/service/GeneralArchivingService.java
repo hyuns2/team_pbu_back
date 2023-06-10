@@ -144,8 +144,6 @@ public class GeneralArchivingService {
      */
     @Transactional
     public void assignGeneralConditionCards(final ArchivingDto.AssignGeneralCardsRequestDto dto) throws IOException {
-
-        // id에 맞는 카드 조회
         Optional<CardEntity> targetCard = cardRepo.findById(dto.getId());
         if (targetCard.isEmpty()) {
             throw new CCardNotFoundException();
@@ -153,16 +151,15 @@ public class GeneralArchivingService {
         if (!targetCard.get().getType().equals(CardType.GENERAL)) {
             throw new CCardTypeNotMatchException();
         }
-        
+
         CardEntity cardEntity = targetCard.get();
         checkAndAssignGeneralConditionCards(dto.getFile(), cardEntity);
-
     }
 
     private void checkAndAssignGeneralConditionCards(MultipartFile dtoFile, CardEntity cardEntity) throws IOException {
         File file = fileUploader.storeExcelFile(dtoFile);
         InputStream inputStream = new FileInputStream(file.getFilePath());
-        
+
         Workbook workBook = WorkbookFactory.create(inputStream);
         Sheet sheet = workBook.getSheetAt(0);
 
@@ -176,7 +173,6 @@ public class GeneralArchivingService {
             List<String> result = checkRowData(row, rowIndex);
 
             assignGeneralConditionCards(cardEntity, result.get(0), result.get(1));
-
         }
     }
 
