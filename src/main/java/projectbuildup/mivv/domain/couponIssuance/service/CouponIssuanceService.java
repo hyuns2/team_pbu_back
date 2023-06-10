@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import projectbuildup.mivv.domain.coupon.dto.CouponDto;
 import projectbuildup.mivv.domain.coupon.entity.Coupon;
+import projectbuildup.mivv.domain.coupon.entity.CouponType;
 import projectbuildup.mivv.domain.coupon.repository.CouponRepository;
 import projectbuildup.mivv.domain.couponIssuance.dto.CouponIssuanceDto;
 import projectbuildup.mivv.domain.couponIssuance.entity.CouponIssuance;
@@ -175,4 +176,19 @@ public class CouponIssuanceService {
             throw new CBadRequestException("핀 번호가 일치하지 않습니다.");
     }
 
+    public Boolean event(Long userId){
+        User user = userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
+        List<CouponIssuance> couponIssuances = couponIssuanceRepository.findAllByUserId(userId).stream().toList();
+        List<Coupon> coupons = couponIssuances.stream()
+                .map(CouponIssuance::getCoupon)
+                .collect(Collectors.toList());
+
+        List<Coupon> eventCoupons = coupons.stream()
+                .filter(coupon -> coupon.getCouponType()== CouponType.EVENT)
+                .toList();
+
+        if(eventCoupons.isEmpty())
+            return Boolean.FALSE;
+        return Boolean.TRUE;
+    }
 }
