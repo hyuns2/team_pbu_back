@@ -80,7 +80,6 @@ public class CouponDto {
         List<String> caution;
         List<String> summary;
 
-
         public Response(Coupon coupon){
             this.id = coupon.getId();
 

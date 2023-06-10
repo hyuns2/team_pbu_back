@@ -33,7 +33,7 @@ public class FileUploader {
         String storeFullPath = STORE_PATH + "/excels/" + storeFileName;
 
         multipartFile.transferTo(new java.io.File(storeFullPath));
-        return new File(uploadFileName, storeFileName, ipUrl + storeFullPath);
+        return new File(uploadFileName, storeFileName, storeFullPath, ipUrl + storeFullPath);
 
     }
 

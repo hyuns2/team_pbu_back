@@ -21,15 +21,13 @@ import projectbuildup.mivv.domain.worthyConsumption.repository.WorthyConsumption
 import projectbuildup.mivv.global.common.imageStore.Image;
 import projectbuildup.mivv.global.common.imageStore.ImageType;
 import projectbuildup.mivv.global.common.imageStore.ImageUploader;
-import projectbuildup.mivv.global.error.exception.CBadRequestException;
-import projectbuildup.mivv.global.error.exception.CCouponNotFoundException;
-import projectbuildup.mivv.global.error.exception.CUserExistException;
-import projectbuildup.mivv.global.error.exception.CWorthyConsumptionNotFoundException;
+import projectbuildup.mivv.global.error.exception.*;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Slf4j
@@ -103,37 +101,41 @@ public class CouponService {
         for (User user: userList) {
             Row bodyRow = sheet.createRow(rowIndex++);
             Cell bodyCell0 = bodyRow.createCell(0);
-            bodyCell0.setCellValue(user.getUsername());
+            bodyCell0.setCellValue(user.getIdentityVerification().getName());
             Cell bodyCell1 = bodyRow.createCell(1);
             bodyCell1.setCellValue(user.getIdentityVerification().getMobile());
         }
 
         response.setContentType("ms-vnd/excel");
-        response.setHeader("Content-Disposition", "attachment;filename=forYou.xlsx");
+        response.setHeader("Content-Disposition", "attachment;filename=" + LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + ".xlsx");
 
         workbook.write(response.getOutputStream());
         workbook.close();
     }
 
-    public void retrieveExcelByCouponType(final HttpServletResponse response, final Long couponId) throws IOException {
+    public void retrieveExcelByCoupon(final HttpServletResponse response, final Long couponId) throws IOException {
+
+        if (couponRepository.findById(couponId).isEmpty()) {
+            throw new CCouponNotFoundException();
+        }
 
         List<User> userList = couponIssuanceRepository.findUsersByCouponId(couponId);
-
         writeExcel(response, userList);
 
     }
 
     public void retrieveExcelByCouponDate(final HttpServletResponse response, final int year, final int month) throws IOException {
-
         LocalDate startTemp = LocalDate.of(year, month, 1);
         LocalDate endTemp = startTemp.withDayOfMonth(startTemp.lengthOfMonth());
 
         LocalDateTime start = startTemp.atTime(LocalTime.MIDNIGHT);
         LocalDateTime end = endTemp.atTime(LocalTime.MAX);
 
+        if (start.isAfter(LocalDateTime.now())) {
+            throw new CInvalidDateTimeException();
+        }
+
         List<User> userList = couponIssuanceRepository.findUsersByCouponDate(start, end);
         writeExcel(response, userList);
-
     }
-
 }
