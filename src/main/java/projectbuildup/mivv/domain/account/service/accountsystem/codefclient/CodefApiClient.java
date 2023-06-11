@@ -199,4 +199,29 @@ public class CodefApiClient implements CodefClient {
             throw new CInternalServerException();
         }
     }
+
+    @Override
+    public Map<String, Object> unlinkAccount(String connectedId, String organizationCode) {
+        String CODEF_UNLINK_API = "/v1/account/delete";
+        HashMap<String, Object> parameterMap = new HashMap<>();
+        HashMap<String, Object> accountMap = new HashMap<>();
+        List<HashMap<String, Object>> accountList = new ArrayList<>();
+        accountMap.put("countryCode", "KR");
+        accountMap.put("businessType", "BK");
+        accountMap.put("clientType", "P");
+        accountMap.put("organization", organizationCode);
+        accountMap.put("loginType", "1");
+        accountList.add(accountMap);
+
+        parameterMap.put("accountList", accountList);
+        parameterMap.put("connectedId", connectedId);
+        try {
+            String result = codef.requestProduct(CODEF_UNLINK_API, EasyCodefServiceType.API, parameterMap);
+            log.info(result);
+            return getDataField(result);
+        } catch (UnsupportedEncodingException | JsonProcessingException | InterruptedException e) {
+            log.error("통신 중 오류가 발생했습니다.");
+            throw new CInternalServerException();
+        }
+    }
 }

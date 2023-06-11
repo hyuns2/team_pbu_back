@@ -9,7 +9,7 @@ import projectbuildup.mivv.domain.account.dto.AccountRegisterDto;
 import projectbuildup.mivv.domain.account.dto.AccountResponseDto;
 import projectbuildup.mivv.domain.account.entity.Account;
 import projectbuildup.mivv.domain.account.repository.AccountRepository;
-import projectbuildup.mivv.domain.account.service.accountsystem.AccountSystem;
+import projectbuildup.mivv.domain.account.service.accountsystem.AccountConnectionSystem;
 import projectbuildup.mivv.domain.auth.repository.IdentityVerificationRepository;
 import projectbuildup.mivv.domain.participation.repository.ParticipationRepository;
 import projectbuildup.mivv.domain.user.entity.IdentityVerification;
@@ -24,7 +24,7 @@ import projectbuildup.mivv.global.error.exception.CUserNotFoundException;
 @Slf4j
 @RequiredArgsConstructor
 public class AccountRegisterService {
-    private final AccountSystem accountSystem;
+    private final AccountConnectionSystem accountConnectionSystem;
     private final UserRepository userRepository;
     private final IdentityVerificationRepository identityVerificationRepository;
     private final AccountRepository accountRepository;
@@ -43,7 +43,7 @@ public class AccountRegisterService {
         if (user.getAccount() != null) {
             throw new CAccountExistException();
         }
-        Account account = accountSystem.createAccount(requestDto, user);
+        Account account = accountConnectionSystem.createAccount(requestDto, user);
         accountRepository.save(account);
     }
 
@@ -60,6 +60,7 @@ public class AccountRegisterService {
             throw new CResourceNotFoundException();
         }
         deleteParticipationInfo(user);
+        accountConnectionSystem.unlinkAccount(user);
         Account account = user.getAccount();
         accountRepository.delete(account);
     }
@@ -78,7 +79,7 @@ public class AccountRegisterService {
      * @return true/false
      */
     public boolean checkAccountOwner(AccountCertifyTransferDto requestDto) {
-        String name = accountSystem.getAccountOwner(requestDto.getOrganizationCode(), requestDto.getAccountNumbers(), requestDto.getVerificationCode());
+        String name = accountConnectionSystem.getAccountOwner(requestDto.getOrganizationCode(), requestDto.getAccountNumbers(), requestDto.getVerificationCode());
         IdentityVerification identityVerification = identityVerificationRepository.findByCode(requestDto.getVerificationCode()).orElseThrow(CResourceNotFoundException::new);
         return identityVerification.getName().equals(name);
     }
@@ -92,7 +93,7 @@ public class AccountRegisterService {
      */
     public String certifyTransfer(AccountCertifyTransferDto requestDto) {
         if (checkAccountOwner(requestDto)) {
-            return accountSystem.certifyTransfer(requestDto.getOrganizationCode(), requestDto.getAccountNumbers());
+            return accountConnectionSystem.certifyTransfer(requestDto.getOrganizationCode(), requestDto.getAccountNumbers());
         }
         throw new CNotOwnAccountException();
     }
