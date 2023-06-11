@@ -9,12 +9,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import projectbuildup.mivv.domain.account.dto.AccountCertifyTransferDto;
 import projectbuildup.mivv.domain.account.dto.AccountRegisterDto;
+import projectbuildup.mivv.domain.account.dto.AccountResponseDto;
 import projectbuildup.mivv.domain.account.service.AccountRegisterService;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.global.constant.ExampleValue;
@@ -55,5 +53,14 @@ public class AccountController {
     public ResponseEntity<Void> resetAccount(@AuthenticationPrincipal User user) {
         accountRegisterService.resetAccount(user.getId());
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Operation(summary = "사용자 계좌 정보 조회", description = "")
+    @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/account/info")
+    public ResponseEntity<AccountResponseDto> getAccountInfo(@AuthenticationPrincipal User user) {
+        AccountResponseDto responseDto = accountRegisterService.getAccountInfo(user.getId());
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 }

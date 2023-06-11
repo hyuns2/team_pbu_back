@@ -17,10 +17,6 @@ spring:
         format_sql: true
         hbm2ddl:
           auto: none
-  sql:
-    init:
-      mode: always
-      schema-locations: schema.sql
   data:
     redis:
       host: localhost

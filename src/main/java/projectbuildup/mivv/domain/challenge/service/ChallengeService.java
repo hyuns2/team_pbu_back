@@ -54,24 +54,39 @@ public class ChallengeService {
     public PagingDto<ChallengeDto.Response> getAllChallenges(PageParam pageParam) {
         Pageable pageable = pageParam.toPageable();
         Page<Challenge> pages = challengeRepository.findAll(pageable);
-        return mapToResponseDto(pages.getNumber(), pages.getTotalPages(), pages.getContent());
+        return this.challengesToResponseDto(pages.getNumber(), pages.getTotalPages(), pages.getContent());
     }
 
-
     /**
-     * Page 형식을 응답 DTO로 매핑합니다.
+     * Page<Challenge> 형식을 응답 DTO로 매핑합니다.
      *
      * @param page       현재 페이지
      * @param totalPage  전체 페이지
      * @param challenges 챌린지 목록
-     * @return
+     * @return 챌린지 목록
      */
-    public PagingDto<ChallengeDto.Response> mapToResponseDto(int page, int totalPage, List<Challenge> challenges) {
+    public PagingDto<ChallengeDto.Response> challengesToResponseDto(int page, int totalPage, List<Challenge> challenges) {
         List<ChallengeDto.Response> response = challenges.stream()
-                .map(c -> new ChallengeDto.Response(c, getTotalSavingAmount(c)))
+                .map(c -> new ChallengeDto.Response(c, getTotalSavingAmount(c), null))
                 .toList();
         return new PagingDto<>(page, totalPage, response);
     }
+
+    /**
+     * Page<Participation> 형식을 응답 DTO로 매핑합니다.
+     *
+     * @param page           현재 페이지
+     * @param totalPage      전체 페이지
+     * @param participations 참여 정보 목록
+     * @return 챌린지 목록
+     */
+    public PagingDto<ChallengeDto.Response> participationsToResponseDto(int page, int totalPage, List<Participation> participations) {
+        List<ChallengeDto.Response> response = participations.stream()
+                .map(p -> new ChallengeDto.Response(p.getChallenge(), getTotalSavingAmount(p.getChallenge()), p.getSavingCountOfDay()))
+                .toList();
+        return new PagingDto<>(page, totalPage, response);
+    }
+
 
     private long getTotalSavingAmount(Challenge challenge) {
         long sum = 0;
