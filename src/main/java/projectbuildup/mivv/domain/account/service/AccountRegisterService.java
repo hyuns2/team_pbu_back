@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import projectbuildup.mivv.domain.account.dto.AccountCertifyTransferDto;
 import projectbuildup.mivv.domain.account.dto.AccountRegisterDto;
+import projectbuildup.mivv.domain.account.dto.AccountResponseDto;
 import projectbuildup.mivv.domain.account.entity.Account;
 import projectbuildup.mivv.domain.account.repository.AccountRepository;
 import projectbuildup.mivv.domain.account.service.accountsystem.AccountSystem;
@@ -94,6 +95,20 @@ public class AccountRegisterService {
             return accountSystem.certifyTransfer(requestDto.getOrganizationCode(), requestDto.getAccountNumbers());
         }
         throw new CNotOwnAccountException();
+    }
+
+    /**
+     * 사용자의 계좌 정보를 반환합니다.
+     *
+     * @param userId 사용자 아이디넘버
+     * @return 계좌 정보
+     */
+    public AccountResponseDto getAccountInfo(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
+        if (user.getAccount() == null) {
+            throw new CResourceNotFoundException();
+        }
+        return new AccountResponseDto(user.getAccount());
     }
 
 }
