@@ -100,14 +100,15 @@ public class ChallengeDto {
         private String subTitle;
         private List<String> description;
         private long limitedNumberOfTimes;
-
         private long maxSavingAmount;
         private long minSavingAmount;
         private long numOfParticipation;
         private Image image;
         private long totalAmount;
+        private Long savingCountOfDay;
 
-        public Response(Challenge challenge, long totalAmount) {
+
+        public Response(Challenge challenge, long totalAmount, Long savingCountOfDay) {
             this.id = challenge.getId();
             this.startDate = challenge.getStartDate();
             this.endDate = challenge.getEndDate();
@@ -120,6 +121,7 @@ public class ChallengeDto {
             this.numOfParticipation = challenge.getParticipationList().size();
             this.image = challenge.getImage();
             this.totalAmount = totalAmount;
+            this.savingCountOfDay = savingCountOfDay;
         }
     }
 }
