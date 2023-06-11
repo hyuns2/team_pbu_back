@@ -58,7 +58,16 @@ public class WorthyConsumption extends BaseTimeEntity {
     private List<Coupon> coupons = new ArrayList<Coupon>();
 
 
-    public void update(WorthyConsumptionDto.Request worthyConsumptionDto, List<RecommendationReason> recommendationReasons){
+//    public void update(WorthyConsumptionDto.Request worthyConsumptionDto, List<RecommendationReason> recommendationReasons){
+//        this.title = worthyConsumptionDto.getTitle();
+//        this.hashtags = worthyConsumptionDto.getHashtags();
+//        this.originalPrice = worthyConsumptionDto.getOriginalPrice();
+//        this.salePrice = worthyConsumptionDto.getSalePrice();
+//        this.availablePlace = worthyConsumptionDto.getAvailablePlace();
+//        this.availablePlaceDetail = worthyConsumptionDto.getAvailablePlaceDetail();
+//        this.recommendationReasons = recommendationReasons;
+//    }
+    public void update(WorthyConsumptionDto.Request worthyConsumptionDto){
         this.title = worthyConsumptionDto.getTitle();
         this.hashtags = worthyConsumptionDto.getHashtags();
         this.originalPrice = worthyConsumptionDto.getOriginalPrice();
@@ -72,5 +81,12 @@ public class WorthyConsumption extends BaseTimeEntity {
         coupon.getWorthyConsumption().getCoupons().add(coupon);
         //coupons.add(coupon);
         //coupon.setWorthyConsumption(this);
+    }
+    public void addRR(RecommendationReason recommendationReason){
+        recommendationReason.setWorthyConsumption(this);
+        recommendationReason.getWorthyConsumption().getRecommendationReasons().add(recommendationReason);
+    }
+    public void deleteRR(){
+        this.recommendationReasons.clear();
     }
 }

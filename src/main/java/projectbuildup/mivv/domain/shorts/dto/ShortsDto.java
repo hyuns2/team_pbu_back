@@ -17,8 +17,9 @@ public class ShortsDto {
         String uploaderName;
         @NotBlank(message = "설명은 필수 입력값입니다.")
         String content;
-        @NotBlank(message = "영상 주소는 필수 입력값입니다.")
+        //@NotBlank(message = "영상 주소는 필수 입력값입니다.")
         //String videoPath;
+
         private MultipartFile video;
         @NotNull(message = "영상의 썸네일 이미지는 필수 입력값입니다.")
         private MultipartFile image;

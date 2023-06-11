@@ -56,6 +56,14 @@ public class CouponIssuanceController {
         List<CouponDto.Response> usableCouponList = couponIssuanceService.getUsedCouponList(user.getId());
         return new ResponseEntity<>(usableCouponList, HttpStatus.OK);
     }
+    @Operation(summary = "이벤트 쿠폰을 발급 이력 조회", description = "사용자가 이벤트 쿠폰을 발급 받았는지 조회합니다.")
+    @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/issue/coupons/event")
+    public ResponseEntity<?> getEventCouponHistory(@AuthenticationPrincipal User user){
+        Boolean eventHistory = couponIssuanceService.event(user.getId());
+        return new ResponseEntity<>(eventHistory, HttpStatus.OK);
+    }
 
     @Operation(summary = "사용자 쿠폰 사용", description = "사용자가 쿠폰을 사용합니다.")
     @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)

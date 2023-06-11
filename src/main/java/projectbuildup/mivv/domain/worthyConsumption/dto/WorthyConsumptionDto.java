@@ -9,6 +9,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
+import org.springframework.transaction.annotation.Transactional;
 import projectbuildup.mivv.domain.worthyConsumption.entity.Condition;
 import projectbuildup.mivv.domain.worthyConsumption.entity.RecommendationReason;
 import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumption;
@@ -30,8 +31,6 @@ public class WorthyConsumptionDto {
         Integer originalPrice;
         @NotNull(message = "가치소비의 할인 가격을 입력해주세요") @Positive
         Integer salePrice;
-        //@NotNull
-        List<RecommendationReasonDto> recommendationReasons;
         @NotNull
         String availablePlace;
         @NotNull
