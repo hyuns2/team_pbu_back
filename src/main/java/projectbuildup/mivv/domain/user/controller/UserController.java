@@ -15,8 +15,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import projectbuildup.mivv.domain.account.entity.UserState;
 import projectbuildup.mivv.domain.user.dto.PasswordChangeDto;
 import projectbuildup.mivv.domain.user.dto.ProfileDto;
+import projectbuildup.mivv.domain.user.dto.UserStateRequestDto;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.domain.user.service.PasswordChanger;
 import projectbuildup.mivv.domain.user.service.UserService;
@@ -86,5 +88,12 @@ public class UserController {
     public ResponseEntity<Void> updateProfile(@Valid @ModelAttribute("updateRequest") ProfileDto.UpdateRequest requestDto, @AuthenticationPrincipal User user) throws IOException {
         userService.updateProfile(user.getId(), requestDto);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Operation(summary = "사용자 상태 조회", description = "SIGNUPED / REGISTERED / NEW 중 하나를 리턴합니다. ")
+    @PutMapping(value = "/state")
+    public ResponseEntity<UserState> getUserState(@RequestBody UserStateRequestDto requestDto) {
+        UserState userState = userService.getUserState(requestDto.getVerificationCode());
+        return new ResponseEntity<>(userState, HttpStatus.OK);
     }
 }
