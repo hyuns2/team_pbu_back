@@ -16,7 +16,7 @@ spring:
         enable_lazy_load_no_trans: true
         format_sql: true
         hbm2ddl:
-          auto: update
+          auto: create
     defer-datasource-initialization: true #더미데이터 용
     show-sql: true
 #  sql: #더미데이터 용
