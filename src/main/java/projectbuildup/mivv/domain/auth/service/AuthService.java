@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import projectbuildup.mivv.domain.account.repository.AccountRepository;
+import projectbuildup.mivv.domain.account.service.AccountRegisterService;
 import projectbuildup.mivv.domain.archiving.repository.UserCardRepository;
 import projectbuildup.mivv.domain.auth.dto.AuthDto;
 import projectbuildup.mivv.domain.auth.repository.IdentityVerificationRepository;
@@ -42,6 +43,7 @@ public class AuthService {
     private final UserCardRepository userCardRepository;
     private final CouponIssuanceRepository couponIssuanceRepository;
     private final AccountRepository accountRepository;
+    private final AccountRegisterService accountRegisterService;
 
     /**
      * 회원 가입합니다.
@@ -99,6 +101,7 @@ public class AuthService {
     @Transactional
     public void withdraw(AuthDto.UnlinkRequestDto requestDto) {
         User user = userRepository.findById(requestDto.getUserId()).orElseThrow(CUserNotFoundException::new);
+        accountRegisterService.resetAccount(user.getId());
         deleteData(user);
         logout(requestDto);
     }
@@ -111,12 +114,10 @@ public class AuthService {
     @Transactional
     private void deleteData(User user) {
         inquiryRepository.deleteAllByUser(user);
-        participationRepository.deleteAllByUser(user);
         likesShortsRepository.deleteAllByUser(user);
         likesWorthyConsumptionRepository.deleteAllByUser(user);
         userCardRepository.deleteAllByUser(user);
         couponIssuanceRepository.deleteAllByUser(user);
-        accountRepository.delete(user.getAccount());
         identityVerificationRepository.delete(user.getIdentityVerification());
         userRepository.delete(user);
     }
