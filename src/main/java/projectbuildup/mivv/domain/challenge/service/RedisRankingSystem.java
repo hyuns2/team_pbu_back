@@ -52,7 +52,10 @@ public class RedisRankingSystem {
      * @return 1등
      */
     public RankDto.Unit getTheFirst(String key) {
-        ZSetOperations.TypedTuple<String> tuple = Objects.requireNonNull(operations.popMax(PREFIX + key));
+        ZSetOperations.TypedTuple<String> tuple = operations.popMax(PREFIX + key);
+        if (tuple == null){
+            return null;
+        }
         String member = Objects.requireNonNull(tuple.getValue());
         Double score = Objects.requireNonNull(tuple.getScore());
         operations.add(PREFIX + key, member, score);
@@ -66,8 +69,12 @@ public class RedisRankingSystem {
      * @param member userId
      * @return 순위
      */
-    public long getUserRank(String key, String member) {
-        return Objects.requireNonNull(operations.reverseRank(PREFIX + key, member)) + 1;
+    public Optional<Long> getUserRank(String key, String member) {
+        Long rank = operations.reverseRank(PREFIX + key, member);
+        if (rank != null) {
+            rank++;
+        }
+        return Optional.ofNullable(rank);
     }
 
     /**
@@ -80,10 +87,17 @@ public class RedisRankingSystem {
      */
     public List<RankDto.Unit> getNearbyRanking(String key, String member) {
         List<RankDto.Unit> result = new ArrayList<>();
+        Set<String> set = operations.reverseRange(PREFIX + key, 0, -1);
+        if (set == null){
+            return null;
+        }
+        List<String> totalUserRanking = set.stream().toList();
+        Optional<Long> userRank = getUserRank(key, member);
+        if (userRank.isEmpty()) {
+            return null;
+        }
 
-        List<String> totalUserRanking = Objects.requireNonNull(operations.reverseRange(PREFIX + key, 0, -1)).stream()
-                .toList();
-        long currentRank = getUserRank(key, member) - NEARBY_SIZE;
+        long currentRank = userRank.get() - NEARBY_SIZE;
         int targetIdx = totalUserRanking.indexOf(member);
         for (int i = targetIdx - NEARBY_SIZE; i <= targetIdx + NEARBY_SIZE; i++) {
             long finalCurrentRank = currentRank++;

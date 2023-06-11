@@ -72,9 +72,9 @@ public class RankingService {
      * @param user 사용자
      * @return 전체 랭킹 순위
      */
-    public long getTotalRank(User user) {
+    public Long getTotalRank(User user) {
         String member = String.valueOf(user.getId());
-        return rankingSystem.getUserRank(TOTAL_RANKING_KEY, member);
+        return rankingSystem.getUserRank(TOTAL_RANKING_KEY, member).orElse(null);
     }
 
     /**
@@ -85,6 +85,13 @@ public class RankingService {
      * @return first, upper, me, lower
      */
     private RankDto.GroupResponse generateResponse(RankDto.UnitResponse theFirst, List<RankDto.UnitResponse> userRanking) {
+        if (theFirst == null){
+            return null;
+        }
+        // 하위 정보를 주도록 해야함
+        if (userRanking == null){
+            return new RankDto.GroupResponse(theFirst, null, null, null);
+        }
         List<RankDto.UnitResponse> upper = userRanking.subList(0, NEARBY_SIZE).stream().filter(Objects::nonNull).toList();
         RankDto.UnitResponse me = userRanking.get(NEARBY_SIZE);
         List<RankDto.UnitResponse> lower = userRanking.subList(NEARBY_SIZE + 1, NEARBY_SIZE + 3).stream().filter(Objects::nonNull).toList();
