@@ -1,6 +1,7 @@
 package projectbuildup.mivv.domain.user.service;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 import projectbuildup.mivv.domain.email.entity.Email;
 import projectbuildup.mivv.domain.email.service.EmailSender;
@@ -9,7 +10,6 @@ import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.domain.user.repository.UserRepository;
 import projectbuildup.mivv.global.error.exception.CBadRequestException;
 import projectbuildup.mivv.global.error.exception.CUserNotFoundException;
-import projectbuildup.mivv.global.utils.DeviceFinder;
 
 @Service
 @RequiredArgsConstructor
@@ -19,14 +19,16 @@ public class PasswordChanger {
     private final EmailSender emailSender;
 
     /**
-     * 비밀번호 재설정 링크가 담긴 메일을 사용자의 이메일 주소로 전송합니다.
+     * 사용자의 이메일로 비밀번호 재설정 코드를 전송합니다.
      *
      * @param user 사용자
+     * @return 재설정 코드
      */
-    public void sendChangeLink(User user) {
-        String uri = passwordChangeLinkGenerator.createLink(user);
-        Email resetLinkEmail = Email.createResetLinkEmail(user.getEmail(), uri);
+    public String sendMail(User user) {
+        String code = RandomStringUtils.randomAlphabetic(8);
+        Email resetLinkEmail = Email.createResetEmail(user.getEmail(), code);
         emailSender.sendMail(resetLinkEmail);
+        return code;
     }
 
     /**

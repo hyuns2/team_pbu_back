@@ -41,13 +41,13 @@ public class UserController {
     public static final String LOCATION = "location";
 
 
-    @Operation(summary = "비밀번호 재설정 링크 전송", description = "회원의 이메일 주소로 비밀번호 재설정 링크가 담긴 메일을 전송합니다.")
+    @Operation(summary = "비밀번호 재설정", description = "회원의 이메일 주소로 비밀번호 재설정 코드를 전송합니다.")
     @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('USER')")
     @PostMapping("/password/change")
-    public ResponseEntity<Void> changePassword(@AuthenticationPrincipal User user) {
-        passwordChanger.sendChangeLink(user);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<String> changePassword(@AuthenticationPrincipal User user) {
+        String response = passwordChanger.sendMail(user);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @Operation(hidden = true, summary = "비밀번호 재설정 링크 확인", description = "사용자가 재설정 링크를 클릭 시, 실행되는 API입니다. 링크의 유효성을 확인하고, 비밀번호 재설정 화면으로 리다이렉트시킵니다.")
