@@ -30,6 +30,7 @@ public class RankingService {
     private final RemittanceRepository remittanceRepository;
     private final ParticipationRepository participationRepository;
     public final static String TOTAL_RANKING_KEY = "TOTAL";
+    public final static String PREFIX = "RANKING_";
 
     /**
      * 전체 랭킹을 조회합니다.

@@ -40,11 +40,11 @@ public class RedisRankingSystem {
      * @param key key
      */
     public Optional<Double> removeKeyAndMember(String key, String member) {
-        Double score = operations.score(key, member);
+        Double score = operations.score(PREFIX + key, member);
         if (score == null){
             return Optional.empty();
         }
-        operations.remove(key, member);
+        operations.remove(PREFIX + key, member);
         return Optional.of(score);
     }
 
@@ -97,7 +97,7 @@ public class RedisRankingSystem {
      */
     public List<RankDto.Unit> getNearbyRanking(String key, String member) {
         List<RankDto.Unit> result = new ArrayList<>();
-        List<String> totalUserRanking = operations.reverseRange(PREFIX + key, 0, -1).stream().toList();
+        List<String> totalUserRanking = Objects.requireNonNull(operations.reverseRange(PREFIX + key, 0, -1)).stream().toList();
         long userRank = getUserRank(key, member);
         long currentRank = userRank - NEARBY_SIZE;
         int targetIdx = totalUserRanking.indexOf(member);
