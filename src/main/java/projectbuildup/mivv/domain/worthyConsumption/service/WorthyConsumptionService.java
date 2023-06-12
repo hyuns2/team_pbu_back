@@ -123,6 +123,7 @@ public class WorthyConsumptionService {
                     Long couponId = getCouponForMonth(worthyConsumption);
                     Coupon coupon = couponRepository.findById(couponId).orElseThrow(CCouponNotFoundException::new);
                     long count = checkUserIssueCount(user, worthyConsumption);
+                    checkConditionToIssuableCoupon(user, worthyConsumption);
                     return new WorthyConsumptionResponseDto.ReadBasicResponse(worthyConsumption, coupon, liked, count);
                 })
                 .collect(Collectors.toList());

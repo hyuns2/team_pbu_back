@@ -81,7 +81,7 @@ public class CouponIssuanceService {
     }
     private void isAchievedLastAmount(User user, Coupon coupon){
         long userLastSumAmount = remittanceRepository.findSumAmountByUser(user);
-        long limitLastSumAmount = coupon.getWorthyConsumption().getCondition().getAvailablePrice();
+        long limitLastSumAmount = coupon.getAvailablePrice();
         if(userLastSumAmount < limitLastSumAmount)
             throw new CBadRequestException("전월 달성 금액 미달입니다.");
     }

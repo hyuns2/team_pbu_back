@@ -60,6 +60,9 @@ public class Coupon extends BaseTimeEntity {
     @NonNull
     @Column(name = "price_tag")
     private String priceTag;
+    @NonNull
+    @Column(name = "available_price")
+    private long availablePrice;
 
     public static Coupon toEntity(CouponDto.Request couponDto, String imagePath){
         return Coupon.builder()
@@ -76,6 +79,7 @@ public class Coupon extends BaseTimeEntity {
                 .howToUse(couponDto.getHowToUse())
                 .caution(couponDto.getCaution())
                 .priceTag(couponDto.getPriceTag())
+                .availablePrice(couponDto.getAvailablePrice())
                 .build();
     }
     public void update(CouponDto.Request couponDto, String imagePath){
@@ -92,6 +96,7 @@ public class Coupon extends BaseTimeEntity {
         this.howToUse = couponDto.getHowToUse();
         this.caution = couponDto.getCaution();
         this.priceTag = couponDto.getPriceTag();
+        this.availablePrice = couponDto.getAvailablePrice();
     }
 
 
