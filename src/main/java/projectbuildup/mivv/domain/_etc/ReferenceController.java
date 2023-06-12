@@ -47,35 +47,35 @@ public class ReferenceController {
         redisTemplate.delete(CHALLENGE_3_KEY);
         redisTemplate.delete(TOTAL_RANKING_KEY);
 
-        operations.incrementScore(CHALLENGE_1_KEY, "9", 9.0001);
-        operations.incrementScore(TOTAL_RANKING_KEY, "9", 9.0001);
+        operations.incrementScore(CHALLENGE_1_KEY, "9", 9001);
+        operations.incrementScore(TOTAL_RANKING_KEY, "9", 9001);
 
-        operations.incrementScore(CHALLENGE_1_KEY, "8", 8.0001);
-        operations.incrementScore(TOTAL_RANKING_KEY, "8", 8.0001);
+        operations.incrementScore(CHALLENGE_1_KEY, "8", 8001);
+        operations.incrementScore(TOTAL_RANKING_KEY, "8", 8001);
 
-        operations.incrementScore(CHALLENGE_1_KEY, "7", 7.0001);
-        operations.incrementScore(TOTAL_RANKING_KEY, "7", 7.0001);
+        operations.incrementScore(CHALLENGE_1_KEY, "7", 7001);
+        operations.incrementScore(TOTAL_RANKING_KEY, "7", 7001);
 
-        operations.incrementScore(CHALLENGE_1_KEY, "6", 6.0001);
-        operations.incrementScore(TOTAL_RANKING_KEY, "6", 6.0001);
+        operations.incrementScore(CHALLENGE_1_KEY, "6", 6001);
+        operations.incrementScore(TOTAL_RANKING_KEY, "6", 6001);
 
-        operations.incrementScore(CHALLENGE_1_KEY, "5", 5.0001);
-        operations.incrementScore(TOTAL_RANKING_KEY, "5", 5.0001);
+        operations.incrementScore(CHALLENGE_1_KEY, "5", 5001);
+        operations.incrementScore(TOTAL_RANKING_KEY, "5", 5001);
 
-        operations.incrementScore(CHALLENGE_1_KEY, "4", 4.0001);
-        operations.incrementScore(TOTAL_RANKING_KEY, "4", 4.0001);
+        operations.incrementScore(CHALLENGE_1_KEY, "4", 4001);
+        operations.incrementScore(TOTAL_RANKING_KEY, "4", 4001);
 
-        operations.incrementScore(CHALLENGE_1_KEY, "3", 3.0001);
-        operations.incrementScore(TOTAL_RANKING_KEY, "3", 3.0001);
+        operations.incrementScore(CHALLENGE_1_KEY, "3", 3001);
+        operations.incrementScore(TOTAL_RANKING_KEY, "3", 3001);
 
-        operations.incrementScore(CHALLENGE_1_KEY, "2", 2.0001);
-        operations.incrementScore(TOTAL_RANKING_KEY, "2", 2.0001);
+        operations.incrementScore(CHALLENGE_1_KEY, "2", 2001);
+        operations.incrementScore(TOTAL_RANKING_KEY, "2", 2001);
 
-        operations.incrementScore(CHALLENGE_1_KEY, "1", 6.0003);
-        operations.incrementScore(TOTAL_RANKING_KEY, "1", 6.0003);
+        operations.incrementScore(CHALLENGE_1_KEY, "1", 6001);
+        operations.incrementScore(TOTAL_RANKING_KEY, "1", 6001);
 
-        operations.incrementScore(CHALLENGE_2_KEY, "1", 10.0001);
-        operations.incrementScore(TOTAL_RANKING_KEY, "1", 10.0001);
+        operations.incrementScore(CHALLENGE_2_KEY, "1", 10001);
+        operations.incrementScore(TOTAL_RANKING_KEY, "1", 10001);
 
         operations.incrementScore(CHALLENGE_3_KEY, "1", 0);
         return new ResponseEntity<>(HttpStatus.OK);

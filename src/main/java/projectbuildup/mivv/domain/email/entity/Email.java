@@ -18,9 +18,9 @@ public class Email {
 
     public static Email createResetEmail(String destination, String uri){
         String str = "코드 : " + uri + "<br>";
-        String subject = "MIVV 인앱 비밀번호 재설정 안내 메일입니다.";
+        String subject = "GASOMANN 인앱 비밀번호 재설정 안내 메일입니다.";
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("<h2> MIVV 인앱 비밀번호 재설정 안내 </h2><br>");
+        stringBuilder.append("<h2> GASOMANN 인앱 비밀번호 재설정 안내 </h2><br>");
         stringBuilder.append("<p>");
         stringBuilder.append("이 이메일은 비밀번호 재설정을 위해 발송된 메일입니다. <br>");
         stringBuilder.append("비밀번호 재설정을 진행하려면 아래의 코드를 앱에 입력해주세요 <br><br>");

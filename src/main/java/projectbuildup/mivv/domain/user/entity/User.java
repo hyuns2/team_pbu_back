@@ -54,7 +54,6 @@ public class User extends BaseTimeEntity implements UserDetails {
             @Column(name = "store_image_name")
     })
     Image profileImage;
-    @AssertTrue
     @Column(name = "agreement", nullable = false, length = 1)
     boolean agreement;
     @OneToOne
