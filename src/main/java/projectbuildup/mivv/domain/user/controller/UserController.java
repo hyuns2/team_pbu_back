@@ -47,8 +47,7 @@ public class UserController {
 
     @Operation(summary = "비밀번호 변경", description = "사용자의 비밀번호를 변경합니다.")
     @PatchMapping("/password/change")
-    public ResponseEntity<Void> changePassword(@RequestBody @Valid PasswordDto.ChangeRequest requestDto, @AuthenticationPrincipal User user) {
-        requestDto.setUserId(user.getId());
+    public ResponseEntity<Void> changePassword(@RequestBody @Valid PasswordDto.ChangeRequest requestDto) {
         passwordChanger.changePassword(requestDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
