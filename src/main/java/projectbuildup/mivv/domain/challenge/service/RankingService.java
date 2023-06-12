@@ -85,11 +85,11 @@ public class RankingService {
      * @return first, upper, me, lower
      */
     private RankDto.GroupResponse generateResponse(RankDto.UnitResponse theFirst, List<RankDto.UnitResponse> userRanking) {
-        if (theFirst == null){
+        if (theFirst == null) {
             return null;
         }
         // 하위 정보를 주도록 해야함
-        if (userRanking == null){
+        if (userRanking == null) {
             return new RankDto.GroupResponse(theFirst, null, null, null);
         }
         List<RankDto.UnitResponse> upper = userRanking.subList(0, NEARBY_SIZE).stream().filter(Objects::nonNull).toList();
@@ -128,19 +128,6 @@ public class RankingService {
                 .build();
     }
 
-    /**
-     * 전체 랭킹 및 챌린지 랭킹의 점수를 갱신합니다.
-     *
-     * @param user      사용자
-     * @param challenge 챌린지
-     * @param score     점수
-     */
-    public void updateScore(User user, Challenge challenge, double score) {
-        String key = String.valueOf(challenge.getId());
-        String member = String.valueOf(user.getId());
-        rankingSystem.incrementScore(key, member, score);
-        rankingSystem.incrementScore(TOTAL_RANKING_KEY, member, score);
-    }
 
     /**
      * 사용자가 참여중인 모든 챌린지에 대한 등수를 조회합니다. (본인 등수만 조회)
@@ -160,5 +147,46 @@ public class RankingService {
             rankList.add(new RankDto.ShortResponse(challenge.getId(), challenge.getMainTitle(), rank));
         }
         return rankList;
+    }
+
+
+    /**
+     * 전체 랭킹 및 챌린지 랭킹의 점수를 갱신합니다.
+     *
+     * @param user      사용자
+     * @param challenge 챌린지
+     * @param score     점수
+     */
+    public void updateScore(User user, Challenge challenge, double score) {
+        String key = String.valueOf(challenge.getId());
+        String member = String.valueOf(user.getId());
+        rankingSystem.incrementScore(key, member, score);
+        rankingSystem.incrementScore(TOTAL_RANKING_KEY, member, score);
+    }
+
+    /**
+     * 사용자의 모든 랭킹 점수를 초기화합니다.
+     *
+     * @param user 사용자
+     */
+    public void resetUserRank(User user) {
+        List<Participation> participations = participationRepository.findAllByUser(user);
+        for (Participation participation : participations) {
+            resetParticipationRank(user, participation.getChallenge());
+        }
+    }
+
+    /**
+     * 해당 챌린지의 랭킹 점수를 초기화합니다.
+     * 초기화한 점수만큼 전체 랭킹 점수도 내려갑니다.
+     *
+     * @param user      사용자
+     * @param challenge 챌린지
+     */
+    public void resetParticipationRank(User user, Challenge challenge) {
+        String key = String.valueOf(challenge.getId());
+        String member = String.valueOf(user.getId());
+        double score = rankingSystem.initUserRank(key, member).orElse(0.0);
+        rankingSystem.incrementScore(TOTAL_RANKING_KEY, member, -score);
     }
 }

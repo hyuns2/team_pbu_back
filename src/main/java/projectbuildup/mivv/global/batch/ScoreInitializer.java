@@ -10,7 +10,6 @@ import projectbuildup.mivv.domain.challenge.service.RankingService;
 import projectbuildup.mivv.domain.challenge.service.RedisRankingSystem;
 
 import java.util.List;
-import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
@@ -28,9 +27,9 @@ public class ScoreInitializer {
         List<Challenge> challenges = challengeRepository.findAll();
         for (Challenge challenge : challenges) {
             String key = String.valueOf(challenge.getId());
-            rankingSystem.initZero(key);
+            rankingSystem.initChallengeRanking(key);
         }
-        rankingSystem.initZero(RankingService.TOTAL_RANKING_KEY);
+        rankingSystem.initChallengeRanking(RankingService.TOTAL_RANKING_KEY);
         log.info("랭킹 초기화 종료");
     }
 }

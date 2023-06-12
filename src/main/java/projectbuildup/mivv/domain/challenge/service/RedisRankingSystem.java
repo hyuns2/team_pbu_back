@@ -30,7 +30,7 @@ public class RedisRankingSystem {
      *
      * @param key key
      */
-    public void initZero(String key) {
+    public void initChallengeRanking(String key) {
         redisTemplate.delete(PREFIX + key);
     }
 
@@ -53,7 +53,7 @@ public class RedisRankingSystem {
      */
     public RankDto.Unit getTheFirst(String key) {
         ZSetOperations.TypedTuple<String> tuple = operations.popMax(PREFIX + key);
-        if (tuple == null){
+        if (tuple == null) {
             return null;
         }
         String member = Objects.requireNonNull(tuple.getValue());
@@ -88,7 +88,7 @@ public class RedisRankingSystem {
     public List<RankDto.Unit> getNearbyRanking(String key, String member) {
         List<RankDto.Unit> result = new ArrayList<>();
         Set<String> set = operations.reverseRange(PREFIX + key, 0, -1);
-        if (set == null){
+        if (set == null) {
             return null;
         }
         List<String> totalUserRanking = set.stream().toList();
@@ -138,5 +138,22 @@ public class RedisRankingSystem {
             return null;
         }
         return rank + 1;
+    }
+
+    /**
+     * 해당 챌린지에서의 회원의 등수 정보를 초기화합니다.
+     * 초기화하기 전의 점수를 리턴합니다.
+     *
+     * @param key    key
+     * @param member member
+     * @return 점수
+     */
+    public Optional<Double> initUserRank(String key, String member) {
+        Double score = operations.score(key, member);
+        if (score == null){
+            return Optional.empty();
+        }
+        operations.remove(key, member);
+        return Optional.of(score);
     }
 }
