@@ -91,7 +91,7 @@ public class UserController {
     }
 
     @Operation(summary = "사용자 상태 조회", description = "SIGNUPED / REGISTERED / NEW 중 하나를 리턴합니다. ")
-    @PutMapping(value = "/state")
+    @PostMapping(value = "/state")
     public ResponseEntity<UserState> getUserState(@RequestBody UserStateRequestDto requestDto) {
         UserState userState = userService.getUserState(requestDto.getVerificationCode());
         return new ResponseEntity<>(userState, HttpStatus.OK);
