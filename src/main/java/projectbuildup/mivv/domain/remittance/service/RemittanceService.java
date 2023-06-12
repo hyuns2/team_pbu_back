@@ -74,7 +74,7 @@ public class RemittanceService {
         if (!participation.canRemit()) {
             throw new CBadRequestException("일일 절약 한도를 초과했습니다.");
         }
-        TransactionDetail transactionDetail = getRecentTransactionDetail(participation, LocalDate.now().atStartOfDay());
+        TransactionDetail transactionDetail = getRecentTransactionDetail(participation, requestDto.getStartTime());
         updateRemittance(transactionDetail.getAmount(), participation);
         return true;
     }
