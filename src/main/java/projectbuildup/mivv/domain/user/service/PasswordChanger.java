@@ -43,7 +43,8 @@ public class PasswordChanger {
      * @param requestDto 변경할 비밀번호, 회원 아이디넘버
      */
     public void changePassword(PasswordDto.ChangeRequest requestDto) {
-        User user = userRepository.findById(requestDto.getUserId()).orElseThrow(CUserNotFoundException::new);
+        IdentityVerification identityVerification = identityVerificationRepository.findByCode(requestDto.getVerificationCode()).orElseThrow(CResourceNotFoundException::new);
+        User user = identityVerification.getUser();
         user.changePassword(requestDto.getPassword());
         userRepository.save(user);
     }

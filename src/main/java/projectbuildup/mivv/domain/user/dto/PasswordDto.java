@@ -16,8 +16,8 @@ public class PasswordDto {
     @Getter
     @Setter
     public static class ChangeRequest{
-        @Schema(hidden = true)
-        Long userId;
+        @NotBlank
+        String verificationCode;
         @NotBlank
         String password;
     }

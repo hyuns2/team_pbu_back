@@ -46,8 +46,6 @@ public class UserController {
     }
 
     @Operation(summary = "비밀번호 변경", description = "사용자의 비밀번호를 변경합니다.")
-    @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
-    @PreAuthorize("hasRole('USER')")
     @PatchMapping("/password/change")
     public ResponseEntity<Void> changePassword(@RequestBody @Valid PasswordDto.ChangeRequest requestDto, @AuthenticationPrincipal User user) {
         requestDto.setUserId(user.getId());
