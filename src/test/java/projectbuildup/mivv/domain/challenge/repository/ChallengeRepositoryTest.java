@@ -12,10 +12,13 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.test.context.ActiveProfiles;
+import projectbuildup.mivv.domain.auth.repository.IdentityVerificationRepository;
 import projectbuildup.mivv.domain.challenge.entity.Challenge;
 import projectbuildup.mivv.domain.participation.entity.Participation;
 import projectbuildup.mivv.domain.participation.repository.ParticipationRepository;
+import projectbuildup.mivv.domain.user.entity.IdentityVerification;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.domain.user.repository.UserRepository;
 import projectbuildup.mivv.global.config.JpaAuditingConfig;
@@ -36,6 +39,9 @@ class ChallengeRepositoryTest {
     ChallengeRepository challengeRepository;
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    IdentityVerificationRepository identityVerificationRepository;
     @Autowired
     ParticipationRepository participationRepository;
 
@@ -43,7 +49,9 @@ class ChallengeRepositoryTest {
     @DisplayName("참여중인 챌린지(제목, ASC/DESC) 조회")
     void test1() {
         // given
-        User user = MockEntityFactory.mockUser(MockEntityFactory.mockIdentityVerification(), "유저1");
+        IdentityVerification iv = MockEntityFactory.mockIdentityVerification();
+        identityVerificationRepository.save(iv);
+        User user = MockEntityFactory.mockUser(iv, "유저1");
         Challenge challenge1 = MockEntityFactory.mockChallenge(MockEntityFactory.mockImage(), "챌린지1");
         Challenge challenge2 = MockEntityFactory.mockChallenge(MockEntityFactory.mockImage(), "챌린지2");
         Challenge challenge3 = MockEntityFactory.mockChallenge(MockEntityFactory.mockImage(), "챌린지3");
@@ -73,8 +81,9 @@ class ChallengeRepositoryTest {
     @DisplayName("참여가능한 챌린지(제목, ASC/DESC) 조회")
     void test2() {
         // given
-        User user = MockEntityFactory.mockUser(MockEntityFactory.mockIdentityVerification(), "유저1");
-        Challenge challenge1 = MockEntityFactory.mockChallenge(MockEntityFactory.mockImage(), "챌린지1");
+        IdentityVerification iv = MockEntityFactory.mockIdentityVerification();
+        identityVerificationRepository.save(iv);
+        User user = MockEntityFactory.mockUser(iv, "유저1");        Challenge challenge1 = MockEntityFactory.mockChallenge(MockEntityFactory.mockImage(), "챌린지1");
         Challenge challenge2 = MockEntityFactory.mockChallenge(MockEntityFactory.mockImage(), "챌린지2");
         Challenge challenge3 = MockEntityFactory.mockChallenge(MockEntityFactory.mockImage(), "챌린지3");
         Challenge challenge4 = MockEntityFactory.mockChallenge(MockEntityFactory.mockImage(), "챌린지4");

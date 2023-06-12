@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
-import projectbuildup.mivv.domain.account.dto.AccountCertifyTransferDto;
 import projectbuildup.mivv.domain.account.dto.AccountRegisterDto;
 import projectbuildup.mivv.domain.account.entity.Account;
 import projectbuildup.mivv.domain.account.entity.BankType;
@@ -15,7 +14,6 @@ import projectbuildup.mivv.domain.auth.repository.IdentityVerificationRepository
 import projectbuildup.mivv.domain.user.entity.IdentityVerification;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.global.error.exception.CAccountNotFoundException;
-import projectbuildup.mivv.global.error.exception.CNotOwnAccountException;
 import projectbuildup.mivv.global.error.exception.CResourceNotFoundException;
 
 import java.util.HashMap;
@@ -26,7 +24,7 @@ import java.util.Map;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class CodefAccountSystem implements AccountSystem {
+public class CodefAccountConnectionSystem implements AccountConnectionSystem {
 
     private final CodefClient codefClient;
     private final IdentityVerificationRepository identityVerificationRepository;
@@ -80,5 +78,17 @@ public class CodefAccountSystem implements AccountSystem {
     @Override
     public String certifyTransfer(String organizationCode, String accountNumbers) {
         return (String) codefClient.certifyTransfer(organizationCode, accountNumbers).get("authCode");
+    }
+
+    /**
+     * 계정을 연결해제 하고, 커넥티드 아이디를 제거합니다.
+     *
+     * @param user 사용자
+     */
+    @Override
+    public void unlinkAccount(User user) {
+        Account account = user.getAccount();
+        String connectedId = account.getConnectionMap().get(OpenBanking.CODEF);
+        codefClient.unlinkAccount(connectedId, account.getBankType().getCode());
     }
 }

@@ -74,7 +74,7 @@ public class RankingService {
      */
     public Long getTotalRank(User user) {
         String member = String.valueOf(user.getId());
-        return rankingSystem.getUserRank(TOTAL_RANKING_KEY, member).orElse(null);
+        return rankingSystem.getUserRank(TOTAL_RANKING_KEY, member);
     }
 
     /**
@@ -85,11 +85,11 @@ public class RankingService {
      * @return first, upper, me, lower
      */
     private RankDto.GroupResponse generateResponse(RankDto.UnitResponse theFirst, List<RankDto.UnitResponse> userRanking) {
-        if (theFirst == null){
+        if (theFirst == null) {
             return null;
         }
         // 하위 정보를 주도록 해야함
-        if (userRanking == null){
+        if (userRanking == null) {
             return new RankDto.GroupResponse(theFirst, null, null, null);
         }
         List<RankDto.UnitResponse> upper = userRanking.subList(0, NEARBY_SIZE).stream().filter(Objects::nonNull).toList();
@@ -128,19 +128,6 @@ public class RankingService {
                 .build();
     }
 
-    /**
-     * 전체 랭킹 및 챌린지 랭킹의 점수를 갱신합니다.
-     *
-     * @param user      사용자
-     * @param challenge 챌린지
-     * @param score     점수
-     */
-    public void updateScore(User user, Challenge challenge, double score) {
-        String key = String.valueOf(challenge.getId());
-        String member = String.valueOf(user.getId());
-        rankingSystem.incrementScore(key, member, score);
-        rankingSystem.incrementScore(TOTAL_RANKING_KEY, member, score);
-    }
 
     /**
      * 사용자가 참여중인 모든 챌린지에 대한 등수를 조회합니다. (본인 등수만 조회)
@@ -155,10 +142,75 @@ public class RankingService {
         for (Participation participation : participations) {
             String key = String.valueOf(participation.getChallenge().getId());
             String member = String.valueOf(user.getId());
-            Long rank = rankingSystem.getRank(key, member);
             Challenge challenge = participation.getChallenge();
-            rankList.add(new RankDto.ShortResponse(challenge.getId(), challenge.getMainTitle(), rank));
+            Long challengeRank = rankingSystem.getParticipationRank(key, member);
+            rankList.add(new RankDto.ShortResponse(challenge.getId(), challenge.getMainTitle(), challengeRank));
         }
         return rankList;
     }
+
+
+    /**
+     * 전체 랭킹 및 챌린지 랭킹의 점수를 갱신합니다.
+     *
+     * @param user      사용자
+     * @param challenge 챌린지
+     * @param score     점수
+     */
+    public void updateScore(User user, Challenge challenge, double score) {
+        String key = String.valueOf(challenge.getId());
+        String member = String.valueOf(user.getId());
+        rankingSystem.incrementScore(key, member, score);
+        rankingSystem.incrementScore(TOTAL_RANKING_KEY, member, score);
+    }
+
+
+    /**
+     * 신규 사용자의 전체 랭킹 점수를 초기화합니다.
+     * 전체 랭킹 점수 0점을 저장합니다.
+     *
+     * @param user 사용자
+     */
+    public void initUserRank(User user) {
+        String member = String.valueOf(user.getId());
+        rankingSystem.removeKeyAndMember(TOTAL_RANKING_KEY, member);
+        rankingSystem.incrementScore(TOTAL_RANKING_KEY, member, 0);
+    }
+
+    /**
+     * 챌린지 랭킹 점수를 초기화합니다.
+     * 챌린지 랭킹 점수 0점을 저장합니다.
+     *
+     * @param participation 참여 정보
+     */
+    public void initParticipationRank(Participation participation) {
+        String key = String.valueOf(participation.getChallenge().getId());
+        String member = String.valueOf(participation.getUser().getId());
+        rankingSystem.removeKeyAndMember(key, member);
+        rankingSystem.incrementScore(key, member, 0);
+    }
+
+    /**
+     * 계좌 초기화 시 사용자의 전체 랭킹 정보를 삭제합니다.
+     *
+     * @param user 사용자
+     */
+    public void resetUserRank(User user) {
+        String member = String.valueOf(user.getId());
+        rankingSystem.removeKeyAndMember(TOTAL_RANKING_KEY, member);
+    }
+
+    /**
+     * 챌린지 포기 시, 사용자의 챌린지 랭킹 정보를 삭제합니다.
+     * 삭제된 점수만큼 전체 랭킹 점수도 재조정됩니다.
+     *
+     * @param participation 참여 정보
+     */
+    public void resetParticipationRank(Participation participation) {
+        String key = String.valueOf(participation.getChallenge().getId());
+        String member = String.valueOf(participation.getUser().getId());
+        double score = rankingSystem.removeKeyAndMember(key, member).orElse(0.0);
+        rankingSystem.incrementScore(TOTAL_RANKING_KEY, member, -score);
+    }
+
 }

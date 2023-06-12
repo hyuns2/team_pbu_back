@@ -201,5 +201,10 @@ public class CodefDemoClient implements CodefClient {
         }
     }
 
+    @Override
+    public Map<String, Object> unlinkAccount(String connectedId, String code) {
+        return null;
+    }
+
 
 }

@@ -3,16 +3,11 @@ package projectbuildup.mivv.integrationtest.controller;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
-import projectbuildup.mivv.domain.remittance.dto.RemittanceDto;
-import projectbuildup.mivv.domain.saving_count.entity.SavingCount;
-import projectbuildup.mivv.domain.saving_count.repository.SavingCountRepository;
 import projectbuildup.mivv.integrationtest.setting.IntegrationTest;
 import projectbuildup.mivv.integrationtest.setting.WithAuthUser;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -22,8 +17,6 @@ public class RemittanceApiTest extends IntegrationTest {
     final static String STATUS_API = "/api/remittance/status";
     final static String DUMMY_RANKING_API = "/api/ref/ranking-data";
 
-    @Autowired
-    SavingCountRepository savingCountRepository;
 
     @Test
     @WithAuthUser(role = "USER", id = "1")

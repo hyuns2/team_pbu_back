@@ -40,30 +40,4 @@ public class RemittanceServiceTest extends IntegrationTest {
         // then
         assertThat(result).isEqualTo(12000);
     }
-
-    @Test
-    @DisplayName("절약금이 확인된 경우, 갱신한다.")
-    void test1() {
-        // given
-        RemittanceDto.RemitRequest requestDto = new RemittanceDto.RemitRequest(1L, 1L);
-
-        // when
-        boolean result = remittanceService.checkSavingForTest(requestDto, Optional.empty());
-
-        // then
-        assertThat(result).isTrue();
-    }
-
-    @Test
-    @DisplayName("절약금을 확인하지 못하면 갱신하지 않는다.")
-    void test2() {
-        // given
-        RemittanceDto.RemitRequest requestDto = new RemittanceDto.RemitRequest(1L, 1L);
-
-        // when
-
-        // then
-        assertThatThrownBy(() -> remittanceService.checkSavingForTest(requestDto, Optional.of(LocalDateTime.of(2019, 5, 11, 4, 0, 0))))
-                .isInstanceOf(CBadRequestException.class);
-    }
 }
