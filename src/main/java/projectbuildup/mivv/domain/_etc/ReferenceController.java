@@ -40,9 +40,11 @@ public class ReferenceController {
         ZSetOperations<String, String> operations = redisTemplate.opsForZSet();
         final String CHALLENGE_1_KEY = "RANKING_1";
         final String CHALLENGE_2_KEY = "RANKING_2";
+        final String CHALLENGE_3_KEY = "RANKING_3";
         final String TOTAL_RANKING_KEY = "RANKING_TOTAL";
         redisTemplate.delete(CHALLENGE_1_KEY);
         redisTemplate.delete(CHALLENGE_2_KEY);
+        redisTemplate.delete(CHALLENGE_3_KEY);
         redisTemplate.delete(TOTAL_RANKING_KEY);
 
         operations.add(CHALLENGE_1_KEY, "9", 9.0001);
@@ -75,6 +77,8 @@ public class ReferenceController {
         operations.add(CHALLENGE_2_KEY, "1", 10.0001);
         operations.add(TOTAL_RANKING_KEY, "1", 10.0001);
 
+        operations.add(CHALLENGE_3_KEY, "1", 0);
+        operations.add(TOTAL_RANKING_KEY, "1", 0);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

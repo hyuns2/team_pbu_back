@@ -29,6 +29,8 @@ class AccountRepositoryTest {
         // given
         Map<OpenBanking, String> connectionMap = Map.of(OpenBanking.CODEF, "0123456789");
         Account account = Account.builder()
+                .accountNumbers("test")
+                .bankType(BankType.CITY)
                 .connectionMap(connectionMap)
                 .build();
 

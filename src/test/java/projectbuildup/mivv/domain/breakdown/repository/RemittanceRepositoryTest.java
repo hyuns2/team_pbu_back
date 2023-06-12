@@ -15,12 +15,14 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.auditing.AuditingHandler;
 import org.springframework.data.auditing.DateTimeProvider;
 import org.springframework.test.context.ActiveProfiles;
+import projectbuildup.mivv.domain.auth.repository.IdentityVerificationRepository;
 import projectbuildup.mivv.domain.remittance.entity.Remittance;
 import projectbuildup.mivv.domain.challenge.entity.Challenge;
 import projectbuildup.mivv.domain.challenge.repository.ChallengeRepository;
 import projectbuildup.mivv.domain.participation.entity.Participation;
 import projectbuildup.mivv.domain.participation.repository.ParticipationRepository;
 import projectbuildup.mivv.domain.remittance.repository.RemittanceRepository;
+import projectbuildup.mivv.domain.user.entity.IdentityVerification;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.domain.user.repository.UserRepository;
 import projectbuildup.mivv.global.config.JpaAuditingConfig;
@@ -51,7 +53,8 @@ class RemittanceRepositoryTest {
     UserRepository userRepository;
     @Autowired
     ParticipationRepository participationRepository;
-
+    @Autowired
+    IdentityVerificationRepository identityVerificationRepository;
     @MockBean
     private DateTimeProvider dateTimeProvider;
     @SpyBean
@@ -65,8 +68,9 @@ class RemittanceRepositoryTest {
         LocalDateTime createdDateTime = LocalDateTime.of(2023, 4, 6, 1, 1, 1);
 
         given(dateTimeProvider.getNow()).willReturn(Optional.of(createdDateTime));
-        User user = MockEntityFactory.mockUser(MockEntityFactory.mockIdentityVerification(), "유저");
-        userRepository.save(user);
+        IdentityVerification iv = MockEntityFactory.mockIdentityVerification();
+        identityVerificationRepository.save(iv);
+        User user = MockEntityFactory.mockUser(iv, "유저1");        userRepository.save(user);
         Challenge challenge = MockEntityFactory.mockChallenge(MockEntityFactory.mockImage(), "챌린지");
         challengeRepository.save(challenge);
         Participation participation = new Participation(user, challenge);
@@ -90,8 +94,9 @@ class RemittanceRepositoryTest {
     @DisplayName("사용자의 총 절약 금액을 조회한다.")
     void test2() {
         // given
-        User user = MockEntityFactory.mockUser(MockEntityFactory.mockIdentityVerification(), "유저");
-        userRepository.save(user);
+        IdentityVerification iv = MockEntityFactory.mockIdentityVerification();
+        identityVerificationRepository.save(iv);
+        User user = MockEntityFactory.mockUser(iv, "유저1");        userRepository.save(user);
         Challenge challenge = MockEntityFactory.mockChallenge(MockEntityFactory.mockImage(), "챌린지");
         Challenge saved = challengeRepository.save(challenge);
         log.info("{}", saved);
@@ -121,7 +126,9 @@ class RemittanceRepositoryTest {
     @DisplayName("현재 달에 절약한 금액의 총합을 조회한다.")
     void test3() {
         // given
-        User user = MockEntityFactory.mockUser(MockEntityFactory.mockIdentityVerification(), "유저1");
+        IdentityVerification iv = MockEntityFactory.mockIdentityVerification();
+        identityVerificationRepository.save(iv);
+        User user = MockEntityFactory.mockUser(iv, "유저1");
         userRepository.save(user);
         Challenge challenge = MockEntityFactory.mockChallenge(MockEntityFactory.mockImage(), "챌린지1");
         challengeRepository.save(challenge);
@@ -147,8 +154,9 @@ class RemittanceRepositoryTest {
     @DisplayName("현재 달에 절약한 금액이 없을 경우 0을 반환한다.")
     void test4() {
         // given
-        User user = MockEntityFactory.mockUser(MockEntityFactory.mockIdentityVerification(), "유저1");
-        userRepository.save(user);
+        IdentityVerification iv = MockEntityFactory.mockIdentityVerification();
+        identityVerificationRepository.save(iv);
+        User user = MockEntityFactory.mockUser(iv, "유저1");        userRepository.save(user);
         Challenge challenge = MockEntityFactory.mockChallenge(MockEntityFactory.mockImage(), "챌린지1");
         challengeRepository.save(challenge);
         Participation participation = new Participation(user, challenge);

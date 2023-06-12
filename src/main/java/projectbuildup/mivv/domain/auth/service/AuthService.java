@@ -6,17 +6,16 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import projectbuildup.mivv.domain.account.repository.AccountRepository;
 import projectbuildup.mivv.domain.account.service.AccountRegisterService;
 import projectbuildup.mivv.domain.archiving.repository.UserCardRepository;
 import projectbuildup.mivv.domain.auth.dto.AuthDto;
 import projectbuildup.mivv.domain.auth.repository.IdentityVerificationRepository;
 import projectbuildup.mivv.domain.auth.repository.TokenRepository;
+import projectbuildup.mivv.domain.challenge.service.RankingService;
 import projectbuildup.mivv.domain.couponIssuance.repository.CouponIssuanceRepository;
 import projectbuildup.mivv.domain.inquiry.repository.InquiryRepository;
 import projectbuildup.mivv.domain.likes.repository.LikesShortsRepository;
 import projectbuildup.mivv.domain.likes.repository.LikesWorthyConsumptionRepository;
-import projectbuildup.mivv.domain.participation.repository.ParticipationRepository;
 import projectbuildup.mivv.domain.user.entity.IdentityVerification;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.domain.user.repository.UserRepository;
@@ -37,12 +36,11 @@ public class AuthService {
     private final JwtValidator jwtValidator;
     private final TokenRepository tokenRepository;
     private final InquiryRepository inquiryRepository;
-    private final ParticipationRepository participationRepository;
     private final LikesShortsRepository likesShortsRepository;
     private final LikesWorthyConsumptionRepository likesWorthyConsumptionRepository;
     private final UserCardRepository userCardRepository;
     private final CouponIssuanceRepository couponIssuanceRepository;
-    private final AccountRepository accountRepository;
+    private final RankingService rankingService;
     private final AccountRegisterService accountRegisterService;
 
     /**

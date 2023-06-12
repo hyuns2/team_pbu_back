@@ -11,7 +11,10 @@ import projectbuildup.mivv.domain.account.entity.Account;
 import projectbuildup.mivv.domain.account.repository.AccountRepository;
 import projectbuildup.mivv.domain.account.service.accountsystem.AccountConnectionSystem;
 import projectbuildup.mivv.domain.auth.repository.IdentityVerificationRepository;
+import projectbuildup.mivv.domain.challenge.service.RankingService;
+import projectbuildup.mivv.domain.participation.entity.Participation;
 import projectbuildup.mivv.domain.participation.repository.ParticipationRepository;
+import projectbuildup.mivv.domain.participation.service.ParticipationService;
 import projectbuildup.mivv.domain.user.entity.IdentityVerification;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.domain.user.repository.UserRepository;
@@ -19,6 +22,8 @@ import projectbuildup.mivv.global.error.exception.CAccountExistException;
 import projectbuildup.mivv.global.error.exception.CNotOwnAccountException;
 import projectbuildup.mivv.global.error.exception.CResourceNotFoundException;
 import projectbuildup.mivv.global.error.exception.CUserNotFoundException;
+
+import java.util.List;
 
 @Service
 @Slf4j
@@ -29,10 +34,13 @@ public class AccountRegisterService {
     private final IdentityVerificationRepository identityVerificationRepository;
     private final AccountRepository accountRepository;
     private final ParticipationRepository participationRepository;
+    private final RankingService rankingService;
+    private final ParticipationService participationService;
 
 
     /**
      * 계좌를 등록합니다.
+     * 사용자의 랭킹 보드를 생성합니다.
      *
      * @param requestDto 계좌 정보, 아이디/비밀번호, 본인인증 코드
      */
@@ -45,6 +53,7 @@ public class AccountRegisterService {
         }
         Account account = accountConnectionSystem.createAccount(requestDto, user);
         accountRepository.save(account);
+        rankingService.initUserRank(user);
     }
 
     /**
@@ -63,13 +72,18 @@ public class AccountRegisterService {
         accountConnectionSystem.unlinkAccount(user);
         Account account = user.getAccount();
         accountRepository.delete(account);
+        rankingService.resetUserRank(user);
     }
 
     /**
-     * 챌린지 참여 정보 (송금액, 참여 횟수 등)를 삭제합니다.
+     * 챌린지 참여 정보 (송금액, 참여 횟수, 랭킹 정보)를 삭제합니다.
      */
     private void deleteParticipationInfo(User user) {
-        participationRepository.deleteAllByUser(user);
+        List<Participation> participations = participationRepository.findAll();
+        for (Participation participation : participations) {
+            rankingService.resetParticipationRank(participation);
+        }
+        participationRepository.deleteAll(participations);
     }
 
     /**

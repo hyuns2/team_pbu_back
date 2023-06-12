@@ -74,7 +74,7 @@ public class RankingService {
      */
     public Long getTotalRank(User user) {
         String member = String.valueOf(user.getId());
-        return rankingSystem.getUserRank(TOTAL_RANKING_KEY, member).orElse(null);
+        return rankingSystem.getUserRank(TOTAL_RANKING_KEY, member);
     }
 
     /**
@@ -142,9 +142,9 @@ public class RankingService {
         for (Participation participation : participations) {
             String key = String.valueOf(participation.getChallenge().getId());
             String member = String.valueOf(user.getId());
-            Long rank = rankingSystem.getRank(key, member);
             Challenge challenge = participation.getChallenge();
-            rankList.add(new RankDto.ShortResponse(challenge.getId(), challenge.getMainTitle(), rank));
+            Long challengeRank = rankingSystem.getParticipationRank(key, member);
+            rankList.add(new RankDto.ShortResponse(challenge.getId(), challenge.getMainTitle(), challengeRank));
         }
         return rankList;
     }
@@ -164,29 +164,53 @@ public class RankingService {
         rankingSystem.incrementScore(TOTAL_RANKING_KEY, member, score);
     }
 
+
     /**
-     * 사용자의 모든 랭킹 점수를 초기화합니다.
+     * 신규 사용자의 전체 랭킹 점수를 초기화합니다.
+     * 전체 랭킹 점수 0점을 저장합니다.
+     *
+     * @param user 사용자
+     */
+    public void initUserRank(User user) {
+        String member = String.valueOf(user.getId());
+        rankingSystem.removeKeyAndMember(TOTAL_RANKING_KEY, member);
+        rankingSystem.incrementScore(TOTAL_RANKING_KEY, member, 0);
+    }
+
+    /**
+     * 챌린지 랭킹 점수를 초기화합니다.
+     * 챌린지 랭킹 점수 0점을 저장합니다.
+     *
+     * @param participation 참여 정보
+     */
+    public void initParticipationRank(Participation participation) {
+        String key = String.valueOf(participation.getChallenge().getId());
+        String member = String.valueOf(participation.getUser().getId());
+        rankingSystem.removeKeyAndMember(key, member);
+        rankingSystem.incrementScore(key, member, 0);
+    }
+
+    /**
+     * 계좌 초기화 시 사용자의 전체 랭킹 정보를 삭제합니다.
      *
      * @param user 사용자
      */
     public void resetUserRank(User user) {
-        List<Participation> participations = participationRepository.findAllByUser(user);
-        for (Participation participation : participations) {
-            resetParticipationRank(user, participation.getChallenge());
-        }
+        String member = String.valueOf(user.getId());
+        rankingSystem.removeKeyAndMember(TOTAL_RANKING_KEY, member);
     }
 
     /**
-     * 해당 챌린지의 랭킹 점수를 초기화합니다.
-     * 초기화한 점수만큼 전체 랭킹 점수도 내려갑니다.
+     * 챌린지 포기 시, 사용자의 챌린지 랭킹 정보를 삭제합니다.
+     * 삭제된 점수만큼 전체 랭킹 점수도 재조정됩니다.
      *
-     * @param user      사용자
-     * @param challenge 챌린지
+     * @param participation 참여 정보
      */
-    public void resetParticipationRank(User user, Challenge challenge) {
-        String key = String.valueOf(challenge.getId());
-        String member = String.valueOf(user.getId());
-        double score = rankingSystem.initUserRank(key, member).orElse(0.0);
+    public void resetParticipationRank(Participation participation) {
+        String key = String.valueOf(participation.getChallenge().getId());
+        String member = String.valueOf(participation.getUser().getId());
+        double score = rankingSystem.removeKeyAndMember(key, member).orElse(0.0);
         rankingSystem.incrementScore(TOTAL_RANKING_KEY, member, -score);
     }
+
 }
