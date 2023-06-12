@@ -39,8 +39,7 @@ public class WorthyConsumptionDto {
         //Condition
         @NotNull
         private Integer maxIssuance;
-        @NotNull
-        private Long availablePrice;
+
         @NotNull(message = "가치소비의 협약 시작 날짜를 입력해주세요")
         @Schema(example = "2001-03-02")
         @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)

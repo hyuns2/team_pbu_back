@@ -16,9 +16,6 @@ public class Condition {
     @NonNull
     @Column(name = "max_issuance")
     private int maxIssuance;
-    @NonNull
-    @Column(name = "available_price")
-    private long availablePrice;
     @Enumerated(EnumType.STRING)
     @Column(name = "check_condition_type")
     private CheckConditionType checkConditionType;
@@ -31,13 +28,11 @@ public class Condition {
 
     public Condition(WorthyConsumptionDto.Request worthyConsumptionDto){
         this.maxIssuance= worthyConsumptionDto.getMaxIssuance();
-        this.availablePrice = worthyConsumptionDto.getAvailablePrice();
         this.conventionStartDate = worthyConsumptionDto.getConventionStartDate();
         this.conventionEndDate = worthyConsumptionDto.getConventionEndDate();
     }
     public void update(WorthyConsumptionDto.Request worthyConsumptionDto){
         this.maxIssuance= worthyConsumptionDto.getMaxIssuance();
-        this.availablePrice = worthyConsumptionDto.getAvailablePrice();
         this.conventionStartDate = worthyConsumptionDto.getConventionStartDate();
         this.conventionEndDate = worthyConsumptionDto.getConventionEndDate();
     }

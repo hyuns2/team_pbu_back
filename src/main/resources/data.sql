@@ -212,10 +212,10 @@ values (1, '2023-05-18', 1, 2, 0),
 -- <Worthy Consumption> --
 insert into worthy_consumption_condition(id, check_condition_type,
                                          convention_end_date, convention_start_date,
-                                         available_price, max_issuance)
-values (1, 'AVAILABLE', '2023-07-01', '2023-04-01', 10000, 5),
-       (2, 'AVAILABLE', '2023-07-01', '2023-04-01', 10000, 100),
-       (3, 'AVAILABLE', '2023-07-01', '2023-04-01', 10000, 100);
+                                         max_issuance)
+values (1, 'AVAILABLE', '2023-07-01', '2023-04-01', 5),
+       (2, 'AVAILABLE', '2023-07-01', '2023-04-01', 100),
+       (3, 'AVAILABLE', '2023-07-01', '2023-04-01', 100);
 
 insert into worthy_consumption_url(id, logo_path, video_thumb_nail_path, detail_background_image_path,
                                    detail_image_path, image_path,
@@ -280,43 +280,43 @@ values (1, 'SAVING', '이름1', '내용1', 'https://server.gasomann.com/resource
 
 -- <Coupon> --
 insert into coupon(id, created_time, modified_time, image_path, limit_end_date, limit_start_date, pin, title,
-                   worthy_consumption_id, issuable_start_date, issuable_end_date, coupon_type, issue_count_limit, how_to_use, price_tag)
+                   worthy_consumption_id, issuable_start_date, issuable_end_date, coupon_type, issue_count_limit, how_to_use, price_tag, available_price)
 values (1, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
         'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',
-        '2023-05-31', '2023-05-01', '123456', '레드짐 5월 할인권', 1, '2023-05-01', '2023-05-31', 'EVENT', true, '쓰는 방법', '1달 이용권'),
+        '2023-05-31', '2023-05-01', '123456', '레드짐 5월 할인권', 1, '2023-05-01', '2023-05-31', 'EVENT', true, '쓰는 방법', '1달 이용권', 10000),
        (2, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
         'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',
-        '2023-06-30', '2023-06-01', '123456', '레드짐 6월 할인권', 1, '2023-06-01', '2023-06-30', 'EVENT', true, '쓰는 방법', '1달 이용권'),
+        '2023-06-30', '2023-06-01', '123456', '레드짐 6월 할인권', 1, '2023-06-01', '2023-06-30', 'EVENT', true, '쓰는 방법', '1달 이용권', 10000),
        (3, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
         'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',
-        '2023-07-31', '2023-07-01', '123456', '레드짐 3월 할인권', 1, '2023-03-01', '2023-03-31', 'EVENT', true, '쓰는 방법', '1달 이용권'),
+        '2023-07-31', '2023-07-01', '123456', '레드짐 3월 할인권', 1, '2023-03-01', '2023-03-31', 'EVENT', true, '쓰는 방법', '1달 이용권', 10000),
        (4, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
         'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',
-        '2023-08-31', '2023-08-01', '123456', '레드짐 4월 할인권', 1, '2023-04-01', '2023-04-30', 'EVENT', true, '쓰는 방법', '1달 이용권'),
+        '2023-08-31', '2023-08-01', '123456', '레드짐 4월 할인권', 1, '2023-04-01', '2023-04-30', 'EVENT', true, '쓰는 방법', '1달 이용권', 10000),
        (5, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
         'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',
-        '2023-05-31', '2023-05-01', '123456', '옐로우 짐 5월 할인권', 2,'2023-05-01', '2023-05-31', 'EVENT', false, '쓰는 방법', '1달 이용권'),
+        '2023-05-31', '2023-05-01', '123456', '옐로우 짐 5월 할인권', 2,'2023-05-01', '2023-05-31', 'EVENT', false, '쓰는 방법', '1달 이용권', 10000),
        (6, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
         'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',
-        '2023-06-30', '2023-06-01', '123456', '옐로우 짐 6월 할인권', 2,'2023-06-01', '2023-06-30', 'EVENT', false, '쓰는 방법', '1달 이용권'),
+        '2023-06-30', '2023-06-01', '123456', '옐로우 짐 6월 할인권', 2,'2023-06-01', '2023-06-30', 'EVENT', false, '쓰는 방법', '1달 이용권', 10000),
        (7, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
         'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',
-        '2023-07-31', '2023-07-01', '123456', '옐로우 짐 7월 할인권', 2,'2023-07-01', '2023-07-31', 'ACHIEVEMENT_CONDITION', false, '쓰는 방법', '1달 이용권'),
+        '2023-07-31', '2023-07-01', '123456', '옐로우 짐 7월 할인권', 2,'2023-07-01', '2023-07-31', 'ACHIEVEMENT_CONDITION', false, '쓰는 방법', '1달 이용권', 10000),
        (8, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
         'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',
-        '2023-08-31', '2023-08-01', '123456', '옐로우 짐 8월 할인권', 2,'2023-08-01', '2023-08-31', 'ACHIEVEMENT_CONDITION', false, '쓰는 방법', '1달 이용권'),
+        '2023-08-31', '2023-08-01', '123456', '옐로우 짐 8월 할인권', 2,'2023-08-01', '2023-08-31', 'ACHIEVEMENT_CONDITION', false, '쓰는 방법', '1달 이용권', 10000),
        (9, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
         'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',
-        '2023-05-31', '2023-05-01', '123456', '블루짐 5월 할인권', 3,'2023-05-01', '2023-05-31', 'ACHIEVEMENT_CONDITION', false, '쓰는 방법', '1달 이용권'),
+        '2023-05-31', '2023-05-01', '123456', '블루짐 5월 할인권', 3,'2023-05-01', '2023-05-31', 'ACHIEVEMENT_CONDITION', false, '쓰는 방법', '1달 이용권', 10000),
        (10, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
         'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',
-        '2023-06-30', '2023-06-01', '123456', '블루짐 6월 할인권', 3,'2023-06-01', '2023-06-30', 'ACHIEVEMENT_CONDITION', false, '쓰는 방법', '1달 이용권'),
+        '2023-06-30', '2023-06-01', '123456', '블루짐 6월 할인권', 3,'2023-06-01', '2023-06-30', 'ACHIEVEMENT_CONDITION', false, '쓰는 방법', '1달 이용권', 10000),
        (11, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
         'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',
-        '2023-07-31', '2023-07-01', '123456', '블루짐 7월 할인권', 3,'2023-07-01', '2023-07-31', 'ACHIEVEMENT_CONDITION', true, '쓰는 방법', '1달 이용권'),
+        '2023-07-31', '2023-07-01', '123456', '블루짐 7월 할인권', 3,'2023-07-01', '2023-07-31', 'ACHIEVEMENT_CONDITION', true, '쓰는 방법', '1달 이용권', 10000),
        (12, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
         'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',
-        '2023-08-31', '2023-08-01', '123456', '블루짐 8월 할인권', 3,'2023-08-01', '2023-08-31', 'ACHIEVEMENT_CONDITION', true, '쓰는 방법', '1달 이용권');
+        '2023-08-31', '2023-08-01', '123456', '블루짐 8월 할인권', 3,'2023-08-01', '2023-08-31', 'ACHIEVEMENT_CONDITION', true, '쓰는 방법', '1달 이용권', 10000);
 
 insert into coupon_summary(coupon_id, coupon_summary)
 values (1, 'summary1'),

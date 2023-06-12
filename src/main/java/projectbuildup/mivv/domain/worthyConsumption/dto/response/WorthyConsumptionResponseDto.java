@@ -43,7 +43,7 @@ public class WorthyConsumptionResponseDto {
             this.originalPrice = worthyConsumption.getOriginalPrice();
             this.salePrice = worthyConsumption.getSalePrice();
             this.priceTag = coupon.getPriceTag();
-            this.availablePrice = worthyConsumption.getCondition().getAvailablePrice();
+            this.availablePrice = coupon.getAvailablePrice();
             this.maxIssuance = worthyConsumption.getCondition().getMaxIssuance();
             this.summary = coupon.getSummary();
             this.logoPath = worthyConsumption.getWorthyConsumptionUrl().getLogoPath();
