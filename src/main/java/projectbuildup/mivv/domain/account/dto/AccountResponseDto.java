@@ -7,10 +7,10 @@ import projectbuildup.mivv.domain.account.entity.BankType;
 @Getter
 public class AccountResponseDto {
     String accountNumbers;
-    String bankType;
+    BankType bankType;
 
     public AccountResponseDto(Account account){
         this.accountNumbers = account.getAccountNumbers();
-        this.bankType = account.getBankType().getDescription();
+        this.bankType = account.getBankType();
     }
 }

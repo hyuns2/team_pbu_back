@@ -74,7 +74,7 @@ public class RemittanceService {
         if (!participation.canRemit()) {
             throw new CBadRequestException("일일 절약 한도를 초과했습니다.");
         }
-        TransactionDetail transactionDetail = getRecentTransactionDetail(participation, requestDto.getStartTime());
+        TransactionDetail transactionDetail = getRecentTransactionDetail(participation, LocalDate.now().atStartOfDay());
         updateRemittance(transactionDetail.getAmount(), participation);
         return true;
     }
@@ -96,15 +96,6 @@ public class RemittanceService {
                 .orElseThrow(() -> new CBadRequestException("송금이 이루어지지 않았거나, 적합한 금액이 아닙니다."));
     }
 
-    private TransactionDetail getTransactionDetailForTest(Participation participation, LocalDateTime time) {
-        User user = participation.getUser();
-        if (!participation.canRemit()) {
-            throw new CBadRequestException("일일 절약 한도를 초과했습니다.");
-        }
-        return testAccountDetailsSystem.getDepositHistory(user, time.toLocalDate()).stream()
-                .max((o1, o2) -> o2.getTime().compareTo(o1.getTime()))
-                .orElseThrow(() -> new CBadRequestException("송금이 이루어지지 않았거나, 적합한 금액이 아닙니다."));
-    }
 
     /**
      * 송금액 조회에 성공할 경우, 실행되는 메서드입니다.
@@ -140,7 +131,7 @@ public class RemittanceService {
         YearMonth yearMonth = YearMonth.parse(yearMonthStr, DateTimeFormatter.ofPattern("yyyyMM"));
         LocalDateTime startTime = yearMonth.atDay(1).atStartOfDay();
         LocalDateTime endTime = yearMonth.atEndOfMonth().atTime(LocalTime.MAX);
-        return remittanceRepository.findByUserAndCreatedTimeBetween(user, startTime, endTime).stream()
+        return remittanceRepository.findByUserAndYearMonth(user, startTime, endTime).stream()
                 .map(RemittanceDto.DetailsResponse::new)
                 .toList();
     }
