@@ -269,9 +269,9 @@ values (1, 'SAVING', '이름1', '내용1', 'https://server.gasomann.com/resource
 -- <Coupon> --
 
 insert into coupon(id, created_time, modified_time, image_path, limit_end_date, limit_start_date, pin, title, worthy_consumption_id, issuable_start_date, issuable_end_date, coupon_type, issue_count_limit, how_to_use, price_tag, available_price)
-values (1, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873', 'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',  '2023-07-31', '2023-07-01', '230405', 'REDGYM 회원 할인권 (7월)', 1, '2023-06-15', '2023-07-15', 'EVENT', true, '카운터에서 트레이너에게 직접 쿠폰을 보여주세요.', '(1달회원권, VAT 포함)', 0),
-       (2, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873', 'https://server.gasomann.com/resources/static/images/coupons/coupon1.png', '2023-07-31', '2023-07-01', '230405', '스터디카페 TASS 할인권 (7월)', 2, '2023-06-15', '2023-07-15', 'EVENT', true, '키오스크에서 ''GASOMANN 할인'' 버튼을 눌러서 결제하세요!', '(29일 이용권, VAT 포함)', 0),
-       (3, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873', 'https://server.gasomann.com/resources/static/images/coupons/coupon1.png', '2023-07-31', '2023-07-01', '230405', 'Substory 7월 클래스 할인권', 3, '2023-06-15', '2023-07-15', 'EVENT', false, '원데이클래스 강의 구글폼 신청 시, ''GASOMANN 할인'' 항목을 선택하고, 클래스 당일 강사님께 쿠폰을 직접 보여주세요.', '(1회 클래스, VAT 포함)', 0);
+values (1, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873', 'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',  '2023-07-31', '2023-07-01', '230405', 'REDGYM 회원 할인권 (7월)', 1, '2023-06-10', '2023-07-15', 'EVENT', true, '카운터에서 트레이너에게 직접 쿠폰을 보여주세요.', '(1달회원권, VAT 포함)', 0),
+       (2, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873', 'https://server.gasomann.com/resources/static/images/coupons/coupon1.png', '2023-07-31', '2023-07-01', '230405', '스터디카페 TASS 할인권 (7월)', 2, '2023-06-10', '2023-07-15', 'EVENT', true, '키오스크에서 ''GASOMANN 할인'' 버튼을 눌러서 결제하세요!', '(29일 이용권, VAT 포함)', 0),
+       (3, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873', 'https://server.gasomann.com/resources/static/images/coupons/coupon1.png', '2023-07-31', '2023-07-01', '230405', 'Substory 7월 클래스 할인권', 3, '2023-06-10', '2023-07-15', 'EVENT', false, '원데이클래스 강의 구글폼 신청 시, ''GASOMANN 할인'' 항목을 선택하고, 클래스 당일 강사님께 쿠폰을 직접 보여주세요.', '(1회 클래스, VAT 포함)', 0);
 insert into coupon_summary(coupon_id, coupon_summary)
 values (1, '지금 바로 발급 가능합니다!'), (1, '양질의 트레이너가 기본 운동 지도를!'), (1, '쿠폰 발급 기한: 6/15 ~ 7/15'), (1, '7월 부터 쿠폰 사용 가능'),
     (2, '지금 바로 발급 가능합니다!'), (2, '쾌적한 환경에서, 편안하게 공부하세요'), (2, '쿠폰 발급 기한: 6/15 ~ 7/15'), (2, '7월 부터 쿠폰 사용 가능'),
