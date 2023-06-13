@@ -26,11 +26,10 @@ public class RemittanceDto {
         private Long userId;
         @Schema(hidden = true)
         private Long challengeId;
-//        @NotNull
-//        @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-//        @Schema(example = "2023-10-00T13:00:00")
-//        LocalDateTime startTime;
-        String startTime;
+        @NotNull
+        @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+        @Schema(example = "2023-10-00T13:00:00")
+        LocalDateTime startTime;
     }
 
 
