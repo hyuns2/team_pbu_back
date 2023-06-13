@@ -246,8 +246,8 @@ VALUES (3, 0, 24),
 -- <Worthy Consumption> --
 insert into worthy_consumption_condition(id, check_condition_type, convention_end_date, convention_start_date, max_issuance)
 values (1, 'AVAILABLE', '2023-12-31', '2023-06-01', 1),
-       (2, 'AVAILABLE',  '2023-01-31', '2023-06-01', 3),
-       (3, 'AVAILABLE', '2023-01-31', '2023-06-01', 1000);
+       (2, 'AVAILABLE',  '2024-01-31', '2023-06-01', 3),
+       (3, 'AVAILABLE', '2024-01-31', '2023-06-01', 1000);
 
 insert into worthy_consumption_url(id, logo_path, video_thumb_nail_path, detail_background_image_path, detail_image_path, image_path, place_image_path, video_path)
 values (1, 'https://server.gasomann.com/resources/static/images/values/valueLogo1.png',        'https://server.gasomann.com/resources/static/images/values/valueVideoThumbNail1.png',        'https://server.gasomann.com/resources/static/images/values/valueDetailBackground1.png',        'https://server.gasomann.com/resources/static/images/values/valueDetail1.png',        'https://server.gasomann.com/resources/static/images/values/valueBackground1.png',        'https://server.gasomann.com/resources/static/images/values/valueDetailMap1.png', 'https://server.gasomann.com/resources/static/videos/values/valuevideo1.mp4'),
@@ -261,7 +261,7 @@ values (1, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', '대구�
 
 insert into worthy_consumption_hashtags(worthy_consumption_id, hashtags)
 values (1, '오운완'), (1, '갓생'), (1, '헬린이'),
-       (2, '빡집중'), (2, '공부환경'),
+       (2, '빡집중'), (2, '공부환경'), (2, '시험기간'),
        (3, '원데이클래스'), (3, '가죽공예'), (3, '취미');
 
 insert into recommendation_reason(id, title, description, worthy_consumption_id)
@@ -269,7 +269,8 @@ values (1, '친절한 기본운동지도', '헬스장에 난생 처음가면 뭘
        (2, '좋은 시설과 많은 트레이너 수', '레드짐에 처음 가면 ''우와 많다!''라고 생각하시게 될거에요. 첫 번째는 운동 머신들이고, 두 번째는 항상 회원들을 도와주기 위해 대기하고 있는 트레이너분들이에요. 처음보는 머신이라고 걱정하지 마세요, 옆에 있는 트레이너분들이 친절하게 알려줄거니까요.', 1),
        (3, '공부에 집중할 수 있는 환경', '사람이 많은 도서관은 답답하고, 사람들이 많이 돌아다녀서 집중도 잘 안돼요. 그렇다고 카페에서 공부하기는 너무 시끄럽죠. 스터디카페 TASS에서는 도서관보다 쾌적한 공간에서 집중력을 유지하며 나만의 페이스로 공부할 수 있어요.', 2),
        (4, '깨끗한 내부공간, 편안한 휴게시설', '주변 환경이 깨끗해야 공부에 집중을 더 잘할 수 있는 것은 이미 잘 알려진 사실이에요. 스터디카페 TASS는 깨끗한 시설을 보유 하면서도, 편안한 휴게시설까지 가지고 있어요. 커피, 간식과 같은 다과류부터 충전기, 독서대와 같은 구비물품까지, TASS에서 이용하세요.', 2),
-       (5, '세상에 하나뿐인 나만의 작품', '고급스러운 가죽제품들은 부담스러운 가격에 디자인도 정해져있어 내 입맛에 맞는 제품을 찾기 어려워요. Substory 원데이클래스는 제공되는 기본 디자인에 참여자의 취향을 담아 체험할 수 있어요. Substory를 통해 고급스러우면서 실용적인 나만의 ''작품''을 만들어가세요.', 3);
+       (5, '세상에 하나뿐인 나만의 작품', '고급스러운 가죽제품들은 부담스러운 가격에 디자인도 정해져있어 내 입맛에 맞는 제품을 찾기 어려워요. Substory 원데이클래스는 제공되는 기본 디자인에 참여자의 취향을 담아 체험할 수 있어요. Substory를 통해 고급스러우면서 실용적인 나만의 ''작품''을 만들어가세요.', 3),
+       (6, '부담없는 새로운 경험', '매일매일 반복되는 일상에 새로움을 더하고 싶은 마음은 굴뚝같지만, 막상 시도하려면 시간이나 금액 부담이 크죠. Substory에서 짧은 시간 안에 합리적인 가격으로 새로운 경험과 내 손으로 만든 작품, 두 가지를 모두 가져가실 수 있어요.', 3);
 
 -- <Shorts> --
 
