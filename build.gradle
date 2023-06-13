@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.0.2'
 	id 'io.spring.dependency-management' version '1.1.0'
+//	id "org.flywaydb.flyway" version "9.8.1"
 }
 
 group = 'projectbuildup'
@@ -19,6 +20,9 @@ repositories {
 }
 
 dependencies {
+	//flyway
+	//implementation("org.flywaydb:flyway-mysql")
+
 	implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
 
 	//google guava
