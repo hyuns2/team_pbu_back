@@ -19,10 +19,10 @@ public class LikesShorts extends BaseTimeEntity {
     @Column(name = "id")
     private Long id;
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "fk_likeshorts_to_user"))
     private User user;
     @ManyToOne
-    @JoinColumn(name = "shorts_id")
+    @JoinColumn(name = "shorts_id", foreignKey = @ForeignKey(name = "fk_likeshorts_to_shorts"))
     private Shorts shorts;
     @Enumerated(EnumType.STRING)
     @Column(name = "likes_category")

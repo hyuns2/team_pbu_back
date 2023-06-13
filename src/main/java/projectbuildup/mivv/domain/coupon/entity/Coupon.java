@@ -22,7 +22,7 @@ public class Coupon extends BaseTimeEntity {
     @Column(name = "id")
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "worthy_consumption_id")
+    @JoinColumn(name = "worthy_consumption_id", foreignKey = @ForeignKey(name = "fk_coupon_to_wc"))
     @Setter
     private WorthyConsumption worthyConsumption;
     @Column(name = "title", nullable = false, length = 30)
@@ -41,9 +41,12 @@ public class Coupon extends BaseTimeEntity {
     private LocalDate limitStartDate;
     @Column(name = "limit_end_date", nullable = false)
     private LocalDate limitEndDate;
-    @ElementCollection
-    @NonNull
-    @Column(name = "coupon_summary")
+    @CollectionTable(
+            name = "coupon_summary",
+            joinColumns = @JoinColumn(name = "coupon_id", foreignKey = @ForeignKey(name = "fk_coupon_to_summary"))
+    )
+    @ElementCollection(fetch = FetchType.LAZY)
+    @Column(name = "summary")
     private List<String> summary = new ArrayList<>();
     @Enumerated(EnumType.STRING)
     @Column(name = "coupon_type")
@@ -53,9 +56,14 @@ public class Coupon extends BaseTimeEntity {
     @NonNull
     @Column(name = "how_to_use", nullable = false)
     private String howToUse;
+
+    @CollectionTable(
+            name = "coupon_caution",
+            joinColumns = @JoinColumn(name = "coupon_id", foreignKey = @ForeignKey(name = "fk_coupon_to_caution"))
+    )
     @ElementCollection
     @NonNull
-    @Column(name = "coupon_caution")
+    @Column(name = "caution")
     private List<String> caution;
     @NonNull
     @Column(name = "price_tag")

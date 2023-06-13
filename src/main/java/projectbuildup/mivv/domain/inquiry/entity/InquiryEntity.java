@@ -21,7 +21,7 @@ public class InquiryEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="user_id")
+    @JoinColumn(name="user_id", foreignKey = @ForeignKey(name = "fk_inquiry_to_user"))
     private User user;
 
     @Column(name = "title", nullable = false, length = 30)

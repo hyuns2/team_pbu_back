@@ -23,9 +23,13 @@ public class WorthyConsumption extends BaseTimeEntity {
     @NonNull @Column(name = "title")
     private String title;
 
-    @ElementCollection
     @NonNull
-    @Column(name = "worthy_consumption_hashtags")
+    @CollectionTable(
+            name = "worthy_consumption_hashtags",
+            joinColumns = @JoinColumn(name = "worthy_consumption_id", foreignKey = @ForeignKey(name = "fk_wc_to_hashtags"))
+    )
+    @Column(name = "hashtags", length = 30)
+    @ElementCollection(fetch = FetchType.LAZY)
     private List<String> hashtags = new ArrayList<>();
 
     @NonNull
@@ -35,6 +39,7 @@ public class WorthyConsumption extends BaseTimeEntity {
     @Column(name = "sale_price")
     private int salePrice;
     @Setter
+
     @OneToMany(mappedBy = "worthyConsumption", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RecommendationReason> recommendationReasons = new ArrayList<RecommendationReason>();
     @NonNull
@@ -45,12 +50,12 @@ public class WorthyConsumption extends BaseTimeEntity {
     private String availablePlaceDetail;
     @Nullable
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "worthy_consumption_url_id")
+    @JoinColumn(name = "worthy_consumption_url_id", foreignKey = @ForeignKey(name = "fk_wc_to_url"))
     private WorthyConsumptionUrl worthyConsumptionUrl;
 
     @Nullable
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "condition_id")
+    @JoinColumn(name = "condition_id", foreignKey = @ForeignKey(name = "fk_wc_to_condition"))
     private Condition condition;
 
     //@ElementCollection @Builder.Default
