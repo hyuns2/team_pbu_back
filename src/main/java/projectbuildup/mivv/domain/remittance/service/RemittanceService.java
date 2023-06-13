@@ -74,7 +74,7 @@ public class RemittanceService {
         if (!participation.canRemit()) {
             throw new CBadRequestException("일일 절약 한도를 초과했습니다.");
         }
-        TransactionDetail transactionDetail = getRecentTransactionDetail(participation, LocalDate.now().atStartOfDay());
+        TransactionDetail transactionDetail = getRecentTransactionDetail(participation, requestDto.getStartTime());
         updateRemittance(transactionDetail.getAmount(), participation);
         return true;
     }
@@ -96,34 +96,6 @@ public class RemittanceService {
                 .orElseThrow(() -> new CBadRequestException("송금이 이루어지지 않았거나, 적합한 금액이 아닙니다."));
     }
 
-    /**
-     * 테스트 뱅킹 클라이언트로 송금을 확인합니다.
-     * 송금 확인에 성공할 경우, 1000원이 갱신됩니다.
-     *
-     * @param requestDto 유저 아이디넘버, 챌린지 아이디넘버
-     * @param startTime  시작 시간
-     * @return
-     */
-    public boolean checkSavingForTest(RemittanceDto.RemitRequest requestDto, Optional<LocalDateTime> startTime) {
-        Challenge challenge = challengeRepository.findById(requestDto.getChallengeId()).orElseThrow(CResourceNotFoundException::new);
-        User user = userRepository.findById(requestDto.getUserId()).orElseThrow(CUserNotFoundException::new);
-        Participation participation = participationRepository.findByChallengeAndUser(challenge, user).orElseThrow(() -> new CBadRequestException("참여 중인 챌린지에만 송금할 수 있습니다."));
-        LocalDateTime time = startTime.orElse(LocalDateTime.of(2019, 5, 11, 3, 38, 0));
-        TransactionDetail transactionDetail = getTransactionDetailForTest(participation, time);
-        log.info("{}", transactionDetail);
-        updateRemittance(1000L, participation);
-        return true;
-    }
-
-    private TransactionDetail getTransactionDetailForTest(Participation participation, LocalDateTime time) {
-        User user = participation.getUser();
-        if (!participation.canRemit()) {
-            throw new CBadRequestException("일일 절약 한도를 초과했습니다.");
-        }
-        return testAccountDetailsSystem.getDepositHistory(user, time.toLocalDate()).stream()
-                .max((o1, o2) -> o2.getTime().compareTo(o1.getTime()))
-                .orElseThrow(() -> new CBadRequestException("송금이 이루어지지 않았거나, 적합한 금액이 아닙니다."));
-    }
 
     /**
      * 송금액 조회에 성공할 경우, 실행되는 메서드입니다.
@@ -159,7 +131,7 @@ public class RemittanceService {
         YearMonth yearMonth = YearMonth.parse(yearMonthStr, DateTimeFormatter.ofPattern("yyyyMM"));
         LocalDateTime startTime = yearMonth.atDay(1).atStartOfDay();
         LocalDateTime endTime = yearMonth.atEndOfMonth().atTime(LocalTime.MAX);
-        return remittanceRepository.findByUserAndCreatedTimeBetween(user, startTime, endTime).stream()
+        return remittanceRepository.findByUserAndYearMonth(user, startTime, endTime).stream()
                 .map(RemittanceDto.DetailsResponse::new)
                 .toList();
     }

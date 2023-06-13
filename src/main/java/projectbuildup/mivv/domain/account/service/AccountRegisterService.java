@@ -6,11 +6,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import projectbuildup.mivv.domain.account.dto.AccountCertifyTransferDto;
 import projectbuildup.mivv.domain.account.dto.AccountRegisterDto;
+import projectbuildup.mivv.domain.account.dto.AccountResponseDto;
 import projectbuildup.mivv.domain.account.entity.Account;
 import projectbuildup.mivv.domain.account.repository.AccountRepository;
-import projectbuildup.mivv.domain.account.service.accountsystem.AccountSystem;
+import projectbuildup.mivv.domain.account.service.accountsystem.AccountConnectionSystem;
 import projectbuildup.mivv.domain.auth.repository.IdentityVerificationRepository;
+import projectbuildup.mivv.domain.challenge.service.RankingService;
+import projectbuildup.mivv.domain.participation.entity.Participation;
 import projectbuildup.mivv.domain.participation.repository.ParticipationRepository;
+import projectbuildup.mivv.domain.participation.service.ParticipationService;
 import projectbuildup.mivv.domain.user.entity.IdentityVerification;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.domain.user.repository.UserRepository;
@@ -19,19 +23,24 @@ import projectbuildup.mivv.global.error.exception.CNotOwnAccountException;
 import projectbuildup.mivv.global.error.exception.CResourceNotFoundException;
 import projectbuildup.mivv.global.error.exception.CUserNotFoundException;
 
+import java.util.List;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class AccountRegisterService {
-    private final AccountSystem accountSystem;
+    private final AccountConnectionSystem accountConnectionSystem;
     private final UserRepository userRepository;
     private final IdentityVerificationRepository identityVerificationRepository;
     private final AccountRepository accountRepository;
     private final ParticipationRepository participationRepository;
+    private final RankingService rankingService;
+    private final ParticipationService participationService;
 
 
     /**
      * 계좌를 등록합니다.
+     * 사용자의 랭킹 보드를 생성합니다.
      *
      * @param requestDto 계좌 정보, 아이디/비밀번호, 본인인증 코드
      */
@@ -42,8 +51,9 @@ public class AccountRegisterService {
         if (user.getAccount() != null) {
             throw new CAccountExistException();
         }
-        Account account = accountSystem.createAccount(requestDto, user);
+        Account account = accountConnectionSystem.createAccount(requestDto, user);
         accountRepository.save(account);
+        rankingService.initUserRank(user);
     }
 
     /**
@@ -59,15 +69,20 @@ public class AccountRegisterService {
             throw new CResourceNotFoundException();
         }
         deleteParticipationInfo(user);
-        Account account = user.getAccount();
-        accountRepository.delete(account);
+        accountConnectionSystem.unlinkAccount(user);
+        accountRepository.delete(user.getAccount());
+        rankingService.resetUserRank(user);
     }
 
     /**
-     * 챌린지 참여 정보 (송금액, 참여 횟수 등)를 삭제합니다.
+     * 챌린지 참여 정보 (송금액, 참여 횟수, 랭킹 정보)를 삭제합니다.
      */
     private void deleteParticipationInfo(User user) {
-        participationRepository.deleteAllByUser(user);
+        List<Participation> participations = participationRepository.findAll();
+        for (Participation participation : participations) {
+            rankingService.resetParticipationRank(participation);
+        }
+        participationRepository.deleteAll(participations);
     }
 
     /**
@@ -77,7 +92,7 @@ public class AccountRegisterService {
      * @return true/false
      */
     public boolean checkAccountOwner(AccountCertifyTransferDto requestDto) {
-        String name = accountSystem.getAccountOwner(requestDto.getOrganizationCode(), requestDto.getAccountNumbers(), requestDto.getVerificationCode());
+        String name = accountConnectionSystem.getAccountOwner(requestDto.getOrganizationCode(), requestDto.getAccountNumbers(), requestDto.getVerificationCode());
         IdentityVerification identityVerification = identityVerificationRepository.findByCode(requestDto.getVerificationCode()).orElseThrow(CResourceNotFoundException::new);
         return identityVerification.getName().equals(name);
     }
@@ -91,9 +106,23 @@ public class AccountRegisterService {
      */
     public String certifyTransfer(AccountCertifyTransferDto requestDto) {
         if (checkAccountOwner(requestDto)) {
-            return accountSystem.certifyTransfer(requestDto.getOrganizationCode(), requestDto.getAccountNumbers());
+            return accountConnectionSystem.certifyTransfer(requestDto.getOrganizationCode(), requestDto.getAccountNumbers());
         }
         throw new CNotOwnAccountException();
+    }
+
+    /**
+     * 사용자의 계좌 정보를 반환합니다.
+     *
+     * @param userId 사용자 아이디넘버
+     * @return 계좌 정보
+     */
+    public AccountResponseDto getAccountInfo(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
+        if (user.getAccount() == null) {
+            throw new CResourceNotFoundException();
+        }
+        return new AccountResponseDto(user.getAccount());
     }
 
 }

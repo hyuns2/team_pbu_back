@@ -29,7 +29,6 @@ public class AuthDto {
         @Pattern(regexp = "\\d{6}")
         String password;
         @NotNull
-        @AssertTrue
         Boolean agreement;
     }
 

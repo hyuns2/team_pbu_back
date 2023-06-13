@@ -31,20 +31,15 @@ public class ChallengeDto {
         List<String> description;
 
         @Schema(description = "최대 송금액")
-        @Min(1000)
         private long maxSavingAmount;
         @Schema(description = "최소 송금액")
-        @Min(1000)
         private long minSavingAmount;
         @Schema(description = "하루 송금 횟수 제한")
-        @Min(1)
         private int limitedNumberOfTimes;
         @Schema(description = "시작일자", example = "yyyy-MM-dd")
-        @FutureOrPresent
         @DateTimeFormat(pattern = "yyyy-MM-dd")
         LocalDate startDate;
         @Schema(description = "종료일자", example = "yyyy-MM-dd")
-        @Future
         @DateTimeFormat(pattern = "yyyy-MM-dd")
         LocalDate endDate;
         @Schema(description = "이미지")
@@ -58,31 +53,38 @@ public class ChallengeDto {
     public static class UpdateRequest {
         @Schema(hidden = true)
         Long challengeId;
+
         @Schema(description = "큰제목")
         @NotBlank
         String mainTitle;
+
         @Schema(description = "제목")
         @NotBlank
         String subTitle;
+
         @Schema(description = "소개")
         @NotNull
         List<String> description;
 
         @Schema(description = "최대 송금액")
-        @Min(1000)
         private long maxSavingAmount;
 
         @Schema(description = "최소 송금액")
-        @Min(1000)
         private long minSavingAmount;
 
         @Schema(description = "하루 송금 횟수 제한")
-        @Min(1)
         private long limitedNumberOfTimes;
 
         @Schema(description = "이미지")
         @NotNull
         MultipartFile imageFile;
+
+        @Schema(description = "시작일자", example = "yyyy-MM-dd")
+        @DateTimeFormat(pattern = "yyyy-MM-dd")
+        LocalDate startDate;
+        @Schema(description = "종료일자", example = "yyyy-MM-dd")
+        @DateTimeFormat(pattern = "yyyy-MM-dd")
+        LocalDate endDate;
 
         public void setChallengeId(Long challengeId) {
             this.challengeId = challengeId;
@@ -100,14 +102,15 @@ public class ChallengeDto {
         private String subTitle;
         private List<String> description;
         private long limitedNumberOfTimes;
-
         private long maxSavingAmount;
         private long minSavingAmount;
         private long numOfParticipation;
         private Image image;
         private long totalAmount;
+        private Long savingCountOfDay;
 
-        public Response(Challenge challenge, long totalAmount) {
+
+        public Response(Challenge challenge, long totalAmount, Long savingCountOfDay) {
             this.id = challenge.getId();
             this.startDate = challenge.getStartDate();
             this.endDate = challenge.getEndDate();
@@ -120,6 +123,7 @@ public class ChallengeDto {
             this.numOfParticipation = challenge.getParticipationList().size();
             this.image = challenge.getImage();
             this.totalAmount = totalAmount;
+            this.savingCountOfDay = savingCountOfDay;
         }
     }
 }

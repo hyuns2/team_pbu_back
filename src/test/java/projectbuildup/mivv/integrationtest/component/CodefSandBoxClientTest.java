@@ -43,7 +43,7 @@ public class CodefSandBoxClientTest {
         // given
 
         // when
-        Map<String, Object> dataField = codefSandBoxClient.createConnectedId(new AccountRegisterDto("004", "", "user_id", "user_password", ""));
+        Map<String, Object> dataField = codefSandBoxClient.createConnectedId(new AccountRegisterDto("004", "", "user_id", "user_password", "", ""));
         String result = (String) dataField.get("connectedId");
 
         // then

@@ -4,9 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import projectbuildup.mivv.domain.account.dto.AccountRegisterDto;
 import projectbuildup.mivv.global.error.exception.CCodefException;
-import projectbuildup.mivv.global.error.exception.CIllegalArgumentException;
 import projectbuildup.mivv.global.error.exception.CInternalServerException;
-import projectbuildup.mivv.global.error.exception.CWrongPasswordException;
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -26,6 +24,8 @@ public interface CodefClient {
     Map<String, Object> certifyTransfer(String organizationCode, String accountNumbers);
 
     Map<String, Object> holderAuthentication(String organizationCode, String accountNumbers, String birthDate);
+
+    Map<String, Object> unlinkAccount(String connectedId, String code);
 
     /**
      * 결과 JSON을 바탕으로 에러 코드를 확인하고, 정상 응답인 경우 data 필드를 리턴합니다.
@@ -47,7 +47,6 @@ public interface CodefClient {
             throw new CInternalServerException();
         }
     }
-
 
 
 }

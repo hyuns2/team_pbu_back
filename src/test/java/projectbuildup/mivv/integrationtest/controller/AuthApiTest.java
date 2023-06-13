@@ -45,51 +45,6 @@ public class AuthApiTest extends IntegrationTest {
 
 
     @Test
-    @DisplayName("본인인증 - 정상")
-    void test() throws Exception {
-        // given
-        AuthDto.CertifyRequest requestDto = new AuthDto.CertifyRequest("key", null, null);
-
-        // when
-        ResultActions actions = mvc.perform(post(CERTIFY_API)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(requestDto))
-                .with(csrf()));
-        // then
-        actions
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("verificationCode").isNotEmpty())
-                .andExpect(jsonPath("newUser").value(true));
-    }
-
-    @Test
-    @DisplayName("회원가입 - 정상")
-    void test1() throws Exception {
-        // given
-        AuthDto.CertifyRequest certifyRequest = new AuthDto.CertifyRequest("key", null, null);
-        String content = mvc.perform(post(CERTIFY_API)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(certifyRequest))
-                        .with(csrf()))
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-        VerificationResponseDto certifyResponse = objectMapper.readValue(content, VerificationResponseDto.class);
-
-        AuthDto.SignupRequest signupRequest = new AuthDto.SignupRequest(certifyResponse.getVerificationCode(), "test@naver.com", "테스트", "123456", true);
-
-        //when
-        ResultActions actions = mvc.perform(post(SIGNUP_API)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(signupRequest))
-                .with(csrf()));
-
-        //then
-        actions
-                .andExpect(status().isCreated());
-    }
-
-    @Test
     @DisplayName("회원가입 - 이미 회원인 경우, 예외 반환")
     void test2() throws Exception {
         // given

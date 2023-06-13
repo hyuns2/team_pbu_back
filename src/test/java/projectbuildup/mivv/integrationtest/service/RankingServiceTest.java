@@ -1,4 +1,4 @@
-package projectbuildup.mivv.domain.challenge.service;
+package projectbuildup.mivv.integrationtest.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;

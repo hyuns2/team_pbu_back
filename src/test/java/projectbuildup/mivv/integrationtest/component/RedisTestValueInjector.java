@@ -1,4 +1,4 @@
-package projectbuildup.mivv.domain.challenge.service;
+package projectbuildup.mivv.integrationtest.component;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
+import projectbuildup.mivv.domain.challenge.service.RankingService;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

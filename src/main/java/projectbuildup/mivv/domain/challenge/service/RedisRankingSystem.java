@@ -26,12 +26,26 @@ public class RedisRankingSystem {
     }
 
     /**
-     * 해당 챌린지 랭킹을 초기화합니다.
+     * 해당 랭킹 보드를 삭제합니다.
      *
      * @param key key
      */
-    public void initZero(String key) {
+    public void deleteKey(String key) {
         redisTemplate.delete(PREFIX + key);
+    }
+
+    /**
+     * 사용자의 랭킹 정보를 삭제합니다.
+     *
+     * @param key key
+     */
+    public Optional<Double> removeKeyAndMember(String key, String member) {
+        Double score = operations.score(PREFIX + key, member);
+        if (score == null){
+            return Optional.empty();
+        }
+        operations.remove(PREFIX + key, member);
+        return Optional.of(score);
     }
 
     /**
@@ -52,7 +66,10 @@ public class RedisRankingSystem {
      * @return 1등
      */
     public RankDto.Unit getTheFirst(String key) {
-        ZSetOperations.TypedTuple<String> tuple = Objects.requireNonNull(operations.popMax(PREFIX + key));
+        ZSetOperations.TypedTuple<String> tuple = operations.popMax(PREFIX + key);
+        if (tuple == null) {
+            return null;
+        }
         String member = Objects.requireNonNull(tuple.getValue());
         Double score = Objects.requireNonNull(tuple.getScore());
         operations.add(PREFIX + key, member, score);
@@ -80,10 +97,9 @@ public class RedisRankingSystem {
      */
     public List<RankDto.Unit> getNearbyRanking(String key, String member) {
         List<RankDto.Unit> result = new ArrayList<>();
-
-        List<String> totalUserRanking = Objects.requireNonNull(operations.reverseRange(PREFIX + key, 0, -1)).stream()
-                .toList();
-        long currentRank = getUserRank(key, member) - NEARBY_SIZE;
+        List<String> totalUserRanking = Objects.requireNonNull(operations.reverseRange(PREFIX + key, 0, -1)).stream().toList();
+        long userRank = getUserRank(key, member);
+        long currentRank = userRank - NEARBY_SIZE;
         int targetIdx = totalUserRanking.indexOf(member);
         for (int i = targetIdx - NEARBY_SIZE; i <= targetIdx + NEARBY_SIZE; i++) {
             long finalCurrentRank = currentRank++;
@@ -118,11 +134,7 @@ public class RedisRankingSystem {
      * @param member member
      * @return 등수
      */
-    public Long getRank(String key, String member) {
-        Long rank = operations.reverseRank(PREFIX + key, member);
-        if (rank == null) {
-            return null;
-        }
-        return rank + 1;
+    public Long getParticipationRank(String key, String member) {
+        return Objects.requireNonNull(operations.reverseRank(PREFIX + key, member)) + 1;
     }
 }

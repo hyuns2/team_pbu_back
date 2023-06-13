@@ -41,16 +41,6 @@ public class RemittanceController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @Operation(summary = "절약 확인[테스트용]", description = "계좌 내역 조회를 생략하고, 절약금 1000원을 추가합니다.")
-    @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
-    @PreAuthorize("hasRole('USER')")
-    @PostMapping("/remittance/test/challenges/{challengeId}")
-    public ResponseEntity<Void> remitForTest(@PathVariable Long challengeId, @AuthenticationPrincipal User user) {
-        RemittanceDto.RemitRequest requestDto = new RemittanceDto.RemitRequest(user.getId(), challengeId, "");
-        remittanceService.checkSavingForTest(requestDto, Optional.empty());
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
     @Operation(summary = "절약 내역 조회", description = "조회할 연월을 yyyyMM 형식으로 입력받아 해당 달에 기록된 절약 내역을 조회합니다.")
     @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('USER')")

@@ -1,8 +1,14 @@
 package projectbuildup.mivv.integrationtest.controller;
 
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.test.web.servlet.ResultActions;
+import projectbuildup.mivv.domain.challenge.service.RankingService;
 import projectbuildup.mivv.integrationtest.setting.IntegrationTest;
 import projectbuildup.mivv.integrationtest.setting.WithAuthUser;
 
@@ -14,7 +20,59 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class RankingApiTest extends IntegrationTest {
     final static String CHALLENGE_RANKING_API = "/api/ranking/challenge/{challengeId}";
     final static String WHOLE_RANKING_API = "/api/ranking";
+    @Autowired
+    private StringRedisTemplate redisTemplate;
+    static ZSetOperations<String, String> operations;
 
+    @BeforeEach
+    void beforeEach() {
+        operations = redisTemplate.opsForZSet();
+    }
+
+
+    @BeforeEach()
+    void redisInit() {
+        final String CHALLENGE_1_KEY = "RANKING_1";
+        final String CHALLENGE_2_KEY = "RANKING_2";
+        final String CHALLENGE_3_KEY = "RANKING_3";
+        final String TOTAL_RANKING_KEY = "RANKING_TOTAL";
+        redisTemplate.delete(CHALLENGE_1_KEY);
+        redisTemplate.delete(CHALLENGE_2_KEY);
+        redisTemplate.delete(TOTAL_RANKING_KEY);
+
+        operations.add(CHALLENGE_1_KEY, "9", 9.0001);
+        operations.add(TOTAL_RANKING_KEY, "9", 9.0001);
+
+        operations.add(CHALLENGE_1_KEY, "8", 8.0001);
+        operations.add(TOTAL_RANKING_KEY, "8", 8.0001);
+
+        operations.add(CHALLENGE_1_KEY, "7", 7.0001);
+        operations.add(TOTAL_RANKING_KEY, "7", 7.0001);
+
+        operations.add(CHALLENGE_1_KEY, "6", 6.0001);
+        operations.add(TOTAL_RANKING_KEY, "6", 6.0001);
+
+        operations.add(CHALLENGE_1_KEY, "5", 5.0001);
+        operations.add(TOTAL_RANKING_KEY, "5", 5.0001);
+
+        operations.add(CHALLENGE_1_KEY, "4", 4.0001);
+        operations.add(TOTAL_RANKING_KEY, "4", 4.0001);
+
+        operations.add(CHALLENGE_1_KEY, "3", 3.0001);
+        operations.add(TOTAL_RANKING_KEY, "3", 3.0001);
+
+        operations.add(CHALLENGE_1_KEY, "2", 2.0001);
+        operations.add(TOTAL_RANKING_KEY, "2", 2.0001);
+
+        operations.add(CHALLENGE_1_KEY, "1", 6.0003);
+        operations.add(TOTAL_RANKING_KEY, "1", 6.0003);
+
+        operations.add(CHALLENGE_2_KEY, "1", 10.0001);
+        operations.add(TOTAL_RANKING_KEY, "1", 10.0001);
+
+        operations.add(CHALLENGE_3_KEY, "1", 0);
+        operations.add(TOTAL_RANKING_KEY, "1", 0);
+    }
 
     @Test
     @WithAuthUser(role = "USER", id = "1")
@@ -90,6 +148,22 @@ public class RankingApiTest extends IntegrationTest {
         // given
         // when
         ResultActions actions = mvc.perform(get(WHOLE_RANKING_API));
+
+        // then
+        actions.andExpect(status().isOk())
+                .andExpect(jsonPath("upper[0].rank").value(7))
+                .andExpect(jsonPath("upper[1].rank").value(8))
+                .andExpect(jsonPath("me.rank").value(9))
+                .andExpect(jsonPath("lower").isEmpty());
+    }
+
+    @Test
+    @WithAuthUser(role = "USER", id = "1")
+    @DisplayName("챌린지 랭킹 조회 - 아직 아무도 송금을 안한 경우")
+    void test5() throws Exception {
+        // given
+        // when
+        ResultActions actions = mvc.perform(get(CHALLENGE_RANKING_API, "3"));
 
         // then
         actions.andExpect(status().isOk())

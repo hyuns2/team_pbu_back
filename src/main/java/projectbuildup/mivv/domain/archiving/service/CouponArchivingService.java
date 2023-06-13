@@ -1,6 +1,7 @@
 package projectbuildup.mivv.domain.archiving.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import projectbuildup.mivv.domain.archiving.dto.ArchivingDto;
@@ -30,6 +31,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class CouponArchivingService {
@@ -135,13 +137,15 @@ public class CouponArchivingService {
     }
 
     private int checkHowSuccessive(User user) {
-        int howSuccessive = 0;
+        int howSuccessive = 1;
 
         List<LocalDateTime> createdTimesByUserId = couponIssuanceRepo.findCreatedTimeByUserId(user);
         LocalDateTime before = LocalDateTime.now();
         for (LocalDateTime element : createdTimesByUserId) {
-            if (isNotLastCouponAssignedInThisMonth(createdTimesByUserId, element))
+            if (isNotLastCouponAssignedInThisMonth(createdTimesByUserId, element)) {
+                howSuccessive = 0;
                 break;
+            }
 
             long diffMonths = ChronoUnit.MONTHS.between(before, element);
             diffMonths = Math.abs(diffMonths);
@@ -173,15 +177,22 @@ public class CouponArchivingService {
         List<CouponConditionCardEntity> cardsToCheck = allCards;
 
         for (CouponConditionCardEntity element : cardsToCheck) {
-            if (isUnsatisfiedWithCondition(element, whatNumber, howSuccessive))
+            if (isUnsatisfiedHowSuccessive(element, howSuccessive))
+                continue;
+
+            if (isUnsatisfiedWhatNumber(element, whatNumber))
                 continue;
 
             userCardRepo.save(new UserCardEntity(user, element, LocalDate.now()));
         }
     }
 
-    private boolean isUnsatisfiedWithCondition(CouponConditionCardEntity element, int whatNumber, int howSuccessive) {
-        return (element.getWhatNumber() != whatNumber && element.getHowSuccessive() > howSuccessive);
+    private boolean isUnsatisfiedHowSuccessive(CouponConditionCardEntity element, int howSuccessive) {
+        return (element.getHowSuccessive() > howSuccessive);
+    }
+
+    private boolean isUnsatisfiedWhatNumber(CouponConditionCardEntity element, int whatNumber) {
+        return (element.getWhatNumber() != 0 && element.getWhatNumber() != whatNumber);
     }
 
 }

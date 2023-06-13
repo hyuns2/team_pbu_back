@@ -15,8 +15,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import projectbuildup.mivv.domain.user.dto.PasswordChangeDto;
+import projectbuildup.mivv.domain.account.entity.UserState;
+import projectbuildup.mivv.domain.user.dto.PasswordDto;
 import projectbuildup.mivv.domain.user.dto.ProfileDto;
+import projectbuildup.mivv.domain.user.dto.UserStateRequestDto;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.domain.user.service.PasswordChanger;
 import projectbuildup.mivv.domain.user.service.UserService;
@@ -35,37 +37,17 @@ import java.io.IOException;
 public class UserController {
     private final PasswordChanger passwordChanger;
     private final UserService userService;
-    private final static String PASSWORD_CHANGE_APP_SCHEMA = "/change";
-    public static final String LOCATION = "location";
 
-
-    @Operation(summary = "비밀번호 재설정 링크 전송", description = "회원의 이메일 주소로 비밀번호 재설정 링크가 담긴 메일을 전송합니다.")
-    @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
-    @PreAuthorize("hasRole('USER')")
+    @Operation(summary = "비밀번호 재설정", description = "회원의 이메일 주소로 비밀번호 재설정 코드를 전송합니다.")
     @PostMapping("/password/change")
-    public ResponseEntity<Void> changePassword(@AuthenticationPrincipal User user) {
-        passwordChanger.sendChangeLink(user);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @Operation(hidden = true, summary = "비밀번호 재설정 링크 확인", description = "사용자가 재설정 링크를 클릭 시, 실행되는 API입니다. 링크의 유효성을 확인하고, 비밀번호 재설정 화면으로 리다이렉트시킵니다.")
-    @PreAuthorize("permitAll()")
-    @GetMapping("/password/change")
-    public ResponseEntity<Void> confirmChangeLink(@RequestParam("userId") Long userId, @RequestParam("sn") String serialNumber, HttpServletRequest request) {
-        passwordChanger.confirmChangeLink(userId, serialNumber);
-        DeviceType deviceType = DeviceFinder.findUserDevice(request);
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(LOCATION, deviceType.getSchemaRoot() + PASSWORD_CHANGE_APP_SCHEMA);
-        log.info("비밀번호 재설정 링크 확인 완료");
-        return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
+    public ResponseEntity<PasswordDto.Response> changePassword(@RequestBody PasswordDto.SendRequest requestDto) {
+        PasswordDto.Response response = passwordChanger.sendMail(requestDto);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @Operation(summary = "비밀번호 변경", description = "사용자의 비밀번호를 변경합니다.")
-    @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
-    @PreAuthorize("hasRole('USER')")
     @PatchMapping("/password/change")
-    public ResponseEntity<Void> changePassword(@RequestBody @Valid PasswordChangeDto requestDto, @AuthenticationPrincipal User user) {
-        requestDto.setUserId(user.getId());
+    public ResponseEntity<Void> changePassword(@RequestBody @Valid PasswordDto.ChangeRequest requestDto) {
         passwordChanger.changePassword(requestDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -86,5 +68,12 @@ public class UserController {
     public ResponseEntity<Void> updateProfile(@Valid @ModelAttribute("updateRequest") ProfileDto.UpdateRequest requestDto, @AuthenticationPrincipal User user) throws IOException {
         userService.updateProfile(user.getId(), requestDto);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Operation(summary = "사용자 상태 조회", description = "SIGNUPED / REGISTERED / NEW 중 하나를 리턴합니다. ")
+    @PostMapping(value = "/state")
+    public ResponseEntity<UserState> getUserState(@RequestBody UserStateRequestDto requestDto) {
+        UserState userState = userService.getUserState(requestDto.getVerificationCode());
+        return new ResponseEntity<>(userState, HttpStatus.OK);
     }
 }

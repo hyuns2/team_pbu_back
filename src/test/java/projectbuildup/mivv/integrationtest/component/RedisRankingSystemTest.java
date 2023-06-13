@@ -1,4 +1,4 @@
-package projectbuildup.mivv.domain.challenge.service;
+package projectbuildup.mivv.integrationtest.component;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
