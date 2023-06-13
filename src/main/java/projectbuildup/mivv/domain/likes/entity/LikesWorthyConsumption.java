@@ -19,10 +19,10 @@ public class LikesWorthyConsumption extends BaseTimeEntity {
     @Column(name = "id")
     private Long id;
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "fk_likewc_to_user"))
     private User user;
     @ManyToOne
-    @JoinColumn(name = "worthy_consumption_id")
+    @JoinColumn(name = "worthy_consumption_id", foreignKey = @ForeignKey(name = "fk_likewc_to_wc"))
     private WorthyConsumption worthyConsumption;
     @Enumerated(EnumType.STRING)
     @Column(name = "likes_category")
