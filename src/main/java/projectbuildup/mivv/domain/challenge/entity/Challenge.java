@@ -71,6 +71,8 @@ public class Challenge extends BaseTimeEntity {
         this.maxSavingAmount = requestDto.getMaxSavingAmount();
         this.minSavingAmount = requestDto.getMinSavingAmount();
         this.limitedNumberOfTimes = requestDto.getLimitedNumberOfTimes();
+        this.startDate = requestDto.getStartDate();
+        this.endDate = requestDto.getEndDate();
     }
 
     public void updateImage(Image image) {
@@ -89,9 +91,5 @@ public class Challenge extends BaseTimeEntity {
                 .startDate(requestDto.getStartDate())
                 .endDate(requestDto.getEndDate())
                 .build();
-    }
-
-    public boolean canRemit(Long amount) {
-        return this.minSavingAmount <= amount && amount <= this.maxSavingAmount;
     }
 }
