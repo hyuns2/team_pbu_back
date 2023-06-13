@@ -1,6 +1,7 @@
 package projectbuildup.mivv.domain.account.service.accountdetails;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import projectbuildup.mivv.domain.account.entity.Account;
@@ -13,6 +14,7 @@ import java.time.LocalDate;
 import java.util.*;
 
 @Component
+@Slf4j
 @RequiredArgsConstructor
 public class CodefAccountDetailsSystem implements AccountDetailsSystem {
     @Qualifier("codefDemoClient")
@@ -62,6 +64,7 @@ public class CodefAccountDetailsSystem implements AccountDetailsSystem {
         for (Map<String, Object> elem : transactionList) {
             getTransactionDetail(elem, amountField).ifPresent(returnList::add);
         }
+        log.info("정 세 벽 목 록 : {}", returnList);
         return returnList;
     }
 

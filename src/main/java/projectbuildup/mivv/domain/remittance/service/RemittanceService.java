@@ -75,6 +75,7 @@ public class RemittanceService {
             throw new CBadRequestException("일일 절약 한도를 초과했습니다.");
         }
         TransactionDetail transactionDetail = getRecentTransactionDetail(participation, requestDto.getStartTime());
+        log.info("정 세 벽2 : {}", transactionDetail);
         updateRemittance(transactionDetail.getAmount(), participation);
         return true;
     }
@@ -84,12 +85,13 @@ public class RemittanceService {
      * 조건에 만족하는 기록을 조회할 수 없으면 예외가 발생합니다.
      *
      * @param participation 참여
-     * @param startTime          조회 시작 일자
+     * @param startTime     조회 시작 일자
      * @return 송금 기록
      */
     private TransactionDetail getRecentTransactionDetail(Participation participation, LocalDateTime startTime) {
         User user = participation.getUser();
         Challenge challenge = participation.getChallenge();
+        log.info("정 세 벽 1 : {}", startTime);
         return accountDetailsSystem.getDepositHistory(user, startTime.toLocalDate()).stream()
                 .filter(t -> t.isValid(challenge, startTime))
                 .max((o1, o2) -> o2.getTime().compareTo(o1.getTime()))
