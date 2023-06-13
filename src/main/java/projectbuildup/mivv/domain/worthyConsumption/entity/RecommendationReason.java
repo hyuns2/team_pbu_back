@@ -18,7 +18,7 @@ public class RecommendationReason {
     @Column(name = "description")
     private String description;
     @Setter
-    @JoinColumn(name = "worthy_consumption_id")
+    @JoinColumn(name = "worthy_consumption_id", foreignKey = @ForeignKey(name = "fk_reason_to_wc"))
     @ManyToOne(fetch = FetchType.LAZY)
     private WorthyConsumption worthyConsumption;
 

@@ -6,8 +6,8 @@ import projectbuildup.mivv.domain.remittance.entity.Remittance;
 
 @Component
 public class RankScoreCalculator {
-    private final static double AMOUNT_FACTOR = 1000;
-    private final static double COUNT_FACTOR = 0.0001;
+    private final static double AMOUNT_FACTOR = 1;
+    private final static double COUNT_FACTOR = 1;
 
     /**
      * 랭킹 점수를 계산합니다.

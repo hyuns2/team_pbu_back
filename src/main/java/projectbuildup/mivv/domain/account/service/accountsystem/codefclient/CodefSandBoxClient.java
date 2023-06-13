@@ -205,4 +205,9 @@ public class CodefSandBoxClient implements CodefClient {
             throw new CInternalServerException();
         }
     }
+
+    @Override
+    public Map<String, Object> unlinkAccount(String connectedId, String code) {
+        return null;
+    }
 }

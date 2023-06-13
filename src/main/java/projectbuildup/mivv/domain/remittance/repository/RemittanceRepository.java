@@ -9,7 +9,6 @@ import projectbuildup.mivv.domain.user.entity.User;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 public interface RemittanceRepository extends JpaRepository<Remittance, Long> {
 
@@ -25,8 +24,8 @@ public interface RemittanceRepository extends JpaRepository<Remittance, Long> {
     @Query("select coalesce(count(r), 0) from Remittance r where r.participation.user = ?1 and r.amount > 0 and r.modifiedTime between ?2 and ?3 and r.deletedAt IS NULL")
     Integer findCountSumBetweenTerm(User user, LocalDateTime settingDate, LocalDateTime nowDate);
 
-    @Query("select r from Remittance r inner join Participation  p on r.participation = p inner join User  u on p.user = u  where u = :user and r.createdTime between :startTime and :endTime and r.deletedAt IS NULL")
-    List<Remittance> findByUserAndCreatedTimeBetween(@Param("user") User user, @Param("startTime") LocalDateTime startTime, @Param("endTime") LocalDateTime endTime);
+    @Query("select r from Remittance r inner join Participation  p on r.participation = p inner join User  u on p.user = u  where u = :user and r.createdTime between :startTime and :endTime and r.deletedAt IS NULL order by r.createdTime DESC ")
+    List<Remittance> findByUserAndYearMonth(@Param("user") User user, @Param("startTime") LocalDateTime startTime, @Param("endTime") LocalDateTime endTime);
 
 
     @Query("select r from Remittance r inner join Participation  p on r.participation = p inner join User  u on p.user = u  where u = :user and r.amount > 0 and r.createdTime between :startTime and :endTime and r.deletedAt IS NULL")

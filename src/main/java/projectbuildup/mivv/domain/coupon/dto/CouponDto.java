@@ -56,6 +56,8 @@ public class CouponDto {
         private List<String> caution;
         @NotNull
         private String priceTag;
+        @NotNull
+        private Long availablePrice;
     }
     @Getter
     @AllArgsConstructor
@@ -79,6 +81,8 @@ public class CouponDto {
         String howToUse;
         List<String> caution;
         List<String> summary;
+        @NotNull
+        private Long availablePrice;
 
         public Response(Coupon coupon){
             this.id = coupon.getId();
@@ -98,6 +102,7 @@ public class CouponDto {
             this.howToUse = coupon.getHowToUse();
             this.caution = coupon.getCaution();
             this.summary = coupon.getSummary();
+            this.availablePrice = coupon.getAvailablePrice();
         }
     }
 }

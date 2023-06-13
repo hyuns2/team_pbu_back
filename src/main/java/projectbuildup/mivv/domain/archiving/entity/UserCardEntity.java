@@ -18,11 +18,11 @@ public class UserCardEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "fk_usercard_to_user"))
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "card_id")
+    @JoinColumn(name = "card_id", foreignKey = @ForeignKey(name = "fk_usercard_to_card"))
     private CardEntity cardEntity;
 
     @Column(name = "date", nullable = false)

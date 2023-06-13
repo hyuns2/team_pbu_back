@@ -21,10 +21,10 @@ public class CouponIssuance extends BaseTimeEntity {
     @Column(name = "id")
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "fk_issuance_to_user"))
     private User user;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "coupon_id")
+    @JoinColumn(name = "coupon_id", foreignKey = @ForeignKey(name = "fk_issuance_to_coupon"))
     private Coupon coupon;
     @Column(name = "created")
     private boolean created = false;
