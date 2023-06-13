@@ -244,70 +244,33 @@ VALUES (3, 0, 24),
 
 
 -- <Worthy Consumption> --
-insert into worthy_consumption_condition(id, check_condition_type,
-                                         convention_end_date, convention_start_date,
-                                         max_issuance)
-values (1, 'AVAILABLE', '2023-07-01', '2023-04-01', 5),
-       (2, 'AVAILABLE', '2023-07-01', '2023-04-01', 100),
-       (3, 'AVAILABLE', '2023-07-01', '2023-04-01', 100);
+insert into worthy_consumption_condition(id, check_condition_type, convention_end_date, convention_start_date, max_issuance)
+values (1, 'AVAILABLE', '2023-12-31', '2023-06-01', 1),
+       (2, 'AVAILABLE',  '2023-01-31', '2023-06-01', 3),
+       (3, 'AVAILABLE', '2023-01-31', '2023-06-01', 1000);
 
-insert into worthy_consumption_url(id, logo_path, video_thumb_nail_path, detail_background_image_path,
-                                   detail_image_path, image_path,
-                                   place_image_path, video_path)
-values (1, 'https://server.gasomann.com/resources/static/images/values/valueLogo1.png',
-        'https://server.gasomann.com/resources/static/images/values/valueVideoThumbNail1.png',
-        'https://server.gasomann.com/resources/static/images/values/valueDetailBackground1.png',
-        'https://server.gasomann.com/resources/static/images/values/valueDetail1.png',
-        'https://server.gasomann.com/resources/static/images/values/valueBackground1.png',
-        'https://server.gasomann.com/resources/static/images/values/valueDetailMap1.png',
-        'https://server.gasomann.com/resources/static/videos/values/valuevideo1.mp4'),
-       (2, 'https://server.gasomann.com/resources/static/images/values/valueLogo1.png',
-        'https://server.gasomann.com/resources/static/images/values/valueVideoThumbNail1.png',
-        'https://server.gasomann.com/resources/static/images/values/valueDetailBackground1.png',
-        'https://server.gasomann.com/resources/static/images/values/valueDetail1.png',
-        'https://server.gasomann.com/resources/static/images/values/valueBackground1.png',
-        'https://server.gasomann.com/resources/static/images/values/valueDetailMap1.png',
-        'https://server.gasomann.com/resources/static/videos/values/valuevideo1.mp4'),
-       (3, 'https://server.gasomann.com/resources/static/images/values/valueLogo1.png',
-        'https://server.gasomann.com/resources/static/images/values/valueVideoThumbNail1.png',
-        'https://server.gasomann.com/resources/static/images/values/valueDetailBackground1.png',
-        'https://server.gasomann.com/resources/static/images/values/valueDetail1.png',
-        'https://server.gasomann.com/resources/static/images/values/valueBackground1.png',
-        'https://server.gasomann.com/resources/static/images/values/valueDetailMap1.png',
-        'https://server.gasomann.com/resources/static/videos/values/valuevideo1.mp4');
+insert into worthy_consumption_url(id, logo_path, video_thumb_nail_path, detail_background_image_path, detail_image_path, image_path, place_image_path, video_path)
+values (1, 'https://server.gasomann.com/resources/static/images/values/valueLogo1.png',        'https://server.gasomann.com/resources/static/images/values/valueVideoThumbNail1.png',        'https://server.gasomann.com/resources/static/images/values/valueDetailBackground1.png',        'https://server.gasomann.com/resources/static/images/values/valueDetail1.png',        'https://server.gasomann.com/resources/static/images/values/valueBackground1.png',        'https://server.gasomann.com/resources/static/images/values/valueDetailMap1.png', 'https://server.gasomann.com/resources/static/videos/values/valuevideo1.mp4'),
+       (2, 'https://server.gasomann.com/resources/static/images/values/valueLogo1.png',        'https://server.gasomann.com/resources/static/images/values/valueVideoThumbNail1.png',        'https://server.gasomann.com/resources/static/images/values/valueDetailBackground1.png',        'https://server.gasomann.com/resources/static/images/values/valueDetail1.png',        'https://server.gasomann.com/resources/static/images/values/valueBackground1.png',        'https://server.gasomann.com/resources/static/images/values/valueDetailMap1.png', 'https://server.gasomann.com/resources/static/videos/values/valuevideo1.mp4'),
+       (3, 'https://server.gasomann.com/resources/static/images/values/valueLogo1.png',        'https://server.gasomann.com/resources/static/images/values/valueVideoThumbNail1.png',        'https://server.gasomann.com/resources/static/images/values/valueDetailBackground1.png',        'https://server.gasomann.com/resources/static/images/values/valueDetail1.png',        'https://server.gasomann.com/resources/static/images/values/valueBackground1.png',        'https://server.gasomann.com/resources/static/images/values/valueDetailMap1.png', 'https://server.gasomann.com/resources/static/videos/values/valuevideo1.mp4');
 
-insert into worthy_consumption(id, created_time, modified_time, available_place, available_place_detail,
-                               original_price, sale_price, title, condition_id, worthy_consumption_url_id)
-values (1, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', '대구 전 지역', '상세지역', 11000, 1000,
-        '레드 짐', 1, 1),
-       (2, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', '대구 전 지역', '상세지역', 22000, 2000,
-        '옐로우 짐', 2, 2),
-       (3, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', '대구 전 지역', '상세지역', 33000, 3000,
-        '블루 짐', 3, 3);
+insert into worthy_consumption(id, created_time, modified_time, available_place, available_place_detail, original_price, sale_price, title, condition_id, worthy_consumption_url_id)
+values (1, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', '대구광역시 북구, 수성구', '(복현오거리점, 시지점, 범어점)', 99000, 55000, 'REDGYM', 1, 1),
+       (2, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', '대구광역시 북구, 중구', '(경북대점, 침산점, 동성로점)', 120000, 78000, '스터디카페 TASS', 2, 2),
+       (3, '2023-04-01 11:31:14.982873', '2023-04-01 11:31:14.982873', '대구광역시 북구', '(신청시 구글폼으로 장소 안내)', 55000, 33000, 'Substory', 3, 3);
 
 insert into worthy_consumption_hashtags(worthy_consumption_id, hashtags)
-values (1, 'hashtags1'),
-       (1, 'hashtags1'),
-       (1, 'hashtags1'),
-       (2, 'hashtags2'),
-       (2, 'hashtags2'),
-       (2, 'hashtags2'),
-       (3, 'hashtags3'),
-       (3, 'hashtags3'),
-       (3, 'hashtags3');
-
-
+values (1, '오운완'), (1, '갓생'), (1, '헬린이'),
+       (2, '빡집중'), (2, '공부환경'),
+       (3, '원데이클래스'), (3, '가죽공예'), (3, '취미');
 
 insert into recommendation_reason(id, title, description, worthy_consumption_id)
-values (1, 'title1', 'description1', 1),
-       (2, 'title2', 'description2', 1),
-       (3, 'title3', 'description3', 1),
-       (4, 'title1', 'description1', 2),
-       (5, 'title2', 'description2', 2),
-       (6, 'title3', 'description3', 2),
-       (7, 'title1', 'description1', 3),
-       (8, 'title2', 'description2', 3),
-       (9, 'title3', 'description3', 3);
+values (1, '친절한 기본운동지도', '헬스장에 난생 처음가면 뭘 해야할지 모르고 런닝머신만 타고 오는 경우도 있어요. 그런데 레드짐에서는 그럴 일이 없어요. 트레이너분들이 먼저 회원들에게 다가가서 필요한 운동지도가 있는지 물어봐주시거든요.', 1),
+       (2, '좋은 시설과 많은 트레이너 수', '레드짐에 처음 가면 ''우와 많다!''라고 생각하시게 될거에요. 첫 번째는 운동 머신들이고, 두 번째는 항상 회원들을 도와주기 위해 대기하고 있는 트레이너분들이에요. 처음보는 머신이라고 걱정하지 마세요, 옆에 있는 트레이너분들이 친절하게 알려줄거니까요.', 1),
+       (3, '공부에 집중할 수 있는 환경', '사람이 많은 도서관은 답답하고, 사람들이 많이 돌아다녀서 집중도 잘 안돼요. 그렇다고 카페에서 공부하기는 너무 시끄럽죠. 스터디카페 TASS에서는 도서관보다 쾌적한 공간에서 집중력을 유지하며 나만의 페이스로 공부할 수 있어요.', 2),
+       (4, '깨끗한 내부공간, 편안한 휴게시설', '주변 환경이 깨끗해야 공부에 집중을 더 잘할 수 있는 것은 이미 잘 알려진 사실이에요. 스터디카페 TASS는 깨끗한 시설을 보유 하면서도, 편안한 휴게시설까지 가지고 있어요. 커피, 간식과 같은 다과류부터 충전기, 독서대와 같은 구비물품까지, TASS에서 이용하세요.', 2),
+       (5, '세상에 하나뿐인 나만의 작품', '고급스러운 가죽제품들은 부담스러운 가격에 디자인도 정해져있어 내 입맛에 맞는 제품을 찾기 어려워요. Substory 원데이클래스는 제공되는 기본 디자인에 참여자의 취향을 담아 체험할 수 있어요. Substory를 통해 고급스러우면서 실용적인 나만의 ''작품''을 만들어가세요.', 3);
+
 -- <Shorts> --
 
 insert into shorts(id, category, uploader_name, content, image_path, video_path)
@@ -319,133 +282,21 @@ values (1, 'SAVING', '이름1', '내용1', 'https://server.gasomann.com/resource
         'https://server.gasomann.com/resources/static/videos/shorts/shortVideo3.mp4');
 
 -- <Coupon> --
-insert into coupon(id, created_time, modified_time, image_path, limit_end_date, limit_start_date, pin, title,
-                   worthy_consumption_id, issuable_start_date, issuable_end_date, coupon_type, issue_count_limit,
-                   how_to_use, price_tag, available_price)
-values (1, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
-        'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',
-        '2023-05-31', '2023-05-01', '123456', '레드짐 5월 할인권', 1, '2023-05-01', '2023-05-31', 'EVENT', true, '쓰는 방법',
-        '1달 이용권', 10000),
-       (2, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
-        'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',
-        '2023-06-30', '2023-06-01', '123456', '레드짐 6월 할인권', 1, '2023-06-01', '2023-06-30', 'EVENT', true, '쓰는 방법',
-        '1달 이용권', 10000),
-       (3, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
-        'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',
-        '2023-07-31', '2023-07-01', '123456', '레드짐 3월 할인권', 1, '2023-03-01', '2023-03-31', 'EVENT', true, '쓰는 방법',
-        '1달 이용권', 10000),
-       (4, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
-        'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',
-        '2023-08-31', '2023-08-01', '123456', '레드짐 4월 할인권', 1, '2023-04-01', '2023-04-30', 'EVENT', true, '쓰는 방법',
-        '1달 이용권', 10000),
-       (5, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
-        'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',
-        '2023-05-31', '2023-05-01', '123456', '옐로우 짐 5월 할인권', 2, '2023-05-01', '2023-05-31', 'EVENT', false, '쓰는 방법',
-        '1달 이용권', 10000),
-       (6, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
-        'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',
-        '2023-06-30', '2023-06-01', '123456', '옐로우 짐 6월 할인권', 2, '2023-06-01', '2023-06-30', 'EVENT', false, '쓰는 방법',
-        '1달 이용권', 10000),
-       (7, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
-        'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',
-        '2023-07-31', '2023-07-01', '123456', '옐로우 짐 7월 할인권', 2, '2023-07-01', '2023-07-31', 'ACHIEVEMENT_CONDITION',
-        false, '쓰는 방법', '1달 이용권', 10000),
-       (8, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
-        'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',
-        '2023-08-31', '2023-08-01', '123456', '옐로우 짐 8월 할인권', 2, '2023-08-01', '2023-08-31', 'ACHIEVEMENT_CONDITION',
-        false, '쓰는 방법', '1달 이용권', 10000),
-       (9, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
-        'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',
-        '2023-05-31', '2023-05-01', '123456', '블루짐 5월 할인권', 3, '2023-05-01', '2023-05-31', 'ACHIEVEMENT_CONDITION',
-        false, '쓰는 방법', '1달 이용권', 10000),
-       (10, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
-        'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',
-        '2023-06-30', '2023-06-01', '123456', '블루짐 6월 할인권', 3, '2023-06-01', '2023-06-30', 'ACHIEVEMENT_CONDITION',
-        false, '쓰는 방법', '1달 이용권', 10000),
-       (11, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
-        'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',
-        '2023-07-31', '2023-07-01', '123456', '블루짐 7월 할인권', 3, '2023-07-01', '2023-07-31', 'ACHIEVEMENT_CONDITION',
-        true, '쓰는 방법', '1달 이용권', 10000),
-       (12, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873',
-        'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',
-        '2023-08-31', '2023-08-01', '123456', '블루짐 8월 할인권', 3, '2023-08-01', '2023-08-31', 'ACHIEVEMENT_CONDITION',
-        true, '쓰는 방법', '1달 이용권', 10000);
 
+insert into coupon(id, created_time, modified_time, image_path, limit_end_date, limit_start_date, pin, title, worthy_consumption_id, issuable_start_date, issuable_end_date, coupon_type, issue_count_limit, how_to_use, price_tag, available_price)
+values (1, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873', 'https://server.gasomann.com/resources/static/images/coupons/coupon1.png',  '2023-07-31', '2023-07-01', '230405', 'REDGYM 회원 할인권 (7월)', 1, '2023-06-10', '2023-07-15', 'EVENT', true, '카운터에서 트레이너에게 직접 쿠폰을 보여주세요.', '(1달회원권, VAT 포함)', 0),
+       (2, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873', 'https://server.gasomann.com/resources/static/images/coupons/coupon1.png', '2023-07-31', '2023-07-01', '230405', '스터디카페 TASS 할인권 (7월)', 2, '2023-06-10', '2023-07-15', 'EVENT', true, '키오스크에서 ''GASOMANN 할인'' 버튼을 눌러서 결제하세요!', '(29일 이용권, VAT 포함)', 0),
+       (3, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873', 'https://server.gasomann.com/resources/static/images/coupons/coupon1.png', '2023-07-31', '2023-07-01', '230405', 'Substory 7월 클래스 할인권', 3, '2023-06-10', '2023-07-15', 'EVENT', false, '원데이클래스 강의 구글폼 신청 시, ''GASOMANN 할인'' 항목을 선택하고, 클래스 당일 강사님께 쿠폰을 직접 보여주세요.', '(1회 클래스, VAT 포함)', 0);
 insert into coupon_summary(coupon_id, summary)
-values (1, 'summary1'),
-       (1, 'summary1'),
-       (1, 'summary1'),
-       (2, 'summary2'),
-       (2, 'summary2'),
-       (2, 'summary2'),
-       (3, 'summary3'),
-       (3, 'summary3'),
-       (3, 'summary3'),
-       (4, 'summary4'),
-       (4, 'summary4'),
-       (4, 'summary4'),
-       (5, 'summary5'),
-       (5, 'summary5'),
-       (5, 'summary5'),
-       (6, 'summary6'),
-       (6, 'summary6'),
-       (6, 'summary6'),
-       (7, 'summary7'),
-       (7, 'summary7'),
-       (7, 'summary7'),
-       (8, 'summary8'),
-       (8, 'summary8'),
-       (8, 'summary8'),
-       (9, 'summary9'),
-       (9, 'summary9'),
-       (9, 'summary9'),
-       (10, 'summary10'),
-       (10, 'summary10'),
-       (10, 'summary10'),
-       (11, 'summary11'),
-       (11, 'summary11'),
-       (11, 'summary11'),
-       (12, 'summary12'),
-       (12, 'summary12'),
-       (12, 'summary12');
+values (1, '지금 바로 발급 가능합니다!'), (1, '양질의 트레이너가 기본 운동 지도를!'), (1, '쿠폰 발급 기한: 6/15 ~ 7/15'), (1, '7월 부터 쿠폰 사용 가능'),
+       (2, '지금 바로 발급 가능합니다!'), (2, '쾌적한 환경에서, 편안하게 공부하세요'), (2, '쿠폰 발급 기한: 6/15 ~ 7/15'), (2, '7월 부터 쿠폰 사용 가능'),
+       (3, '지금 바로 발급 가능합니다!'), (3, '비싼 명품 대신, 나만의 카드지갑 만들기'), (3, '쿠폰 발급 기한: 6/15 ~ 7/15'), (3, '7월 부터 쿠폰 사용 가능');
 
 insert into coupon_caution(coupon_id, caution)
-values (1, 'caution1'),
-       (1, 'caution1'),
-       (1, 'caution1'),
-       (2, 'caution2'),
-       (2, 'caution2'),
-       (2, 'caution2'),
-       (3, 'caution3'),
-       (3, 'caution3'),
-       (3, 'caution3'),
-       (4, 'caution4'),
-       (4, 'caution4'),
-       (4, 'caution4'),
-       (5, 'caution5'),
-       (5, 'caution5'),
-       (5, 'caution5'),
-       (6, 'caution6'),
-       (6, 'caution6'),
-       (6, 'caution6'),
-       (7, 'caution7'),
-       (7, 'caution7'),
-       (7, 'caution7'),
-       (8, 'caution8'),
-       (8, 'caution8'),
-       (8, 'caution8'),
-       (9, 'caution9'),
-       (9, 'caution9'),
-       (9, 'caution9'),
-       (10, 'caution10'),
-       (10, 'caution10'),
-       (10, 'caution10'),
-       (11, 'caution11'),
-       (11, 'caution11'),
-       (11, 'caution11'),
-       (12, 'caution12'),
-       (12, 'caution12'),
-       (12, 'caution12');
+values (1, '정상적으로 쿠폰을 발급하지 않고 할인 가격으로 결제하게 되면, 결제 취소 및 그에 상응하는 법적 조치를 취할 수 있습니다.'), (1, '쿠폰으로 결제한 회원권의 경우, 환불이 불가합니다.'),
+       (2, '정상적으로 쿠폰을 발급하지 않고 할인 가격으로 결제하게 되면, 결제 취소 및 그에 상응하는 법적 조치를 취할 수 있습니다.'), (2, '스터디룸 이용을 원하실 경우, 이용권 결제 후 관리자에게 연락하시면 됩니다.'), (2, '쿠폰으로 결제한 회원권의 경우, 환불이 불가합니다.'),
+       (3, '쿠폰으로 결제한 회원권의 경우, 환불이 불가합니다');
+
 
 insert into coupon_issuance(id, created_time, modified_time, created, used, coupon_id, user_id)
 values (1, '2023-03-08 11:31:14.982873', '2023-03-08 11:31:14.982873', 1, 0, 1, 1),
