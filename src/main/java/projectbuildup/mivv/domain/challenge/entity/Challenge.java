@@ -92,8 +92,4 @@ public class Challenge extends BaseTimeEntity {
                 .endDate(requestDto.getEndDate())
                 .build();
     }
-
-    public boolean canRemit(Long amount) {
-        return this.minSavingAmount <= amount && amount <= this.maxSavingAmount;
-    }
 }
