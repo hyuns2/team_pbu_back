@@ -70,8 +70,7 @@ public class AccountRegisterService {
         }
         deleteParticipationInfo(user);
         accountConnectionSystem.unlinkAccount(user);
-        Account account = user.getAccount();
-        accountRepository.delete(account);
+        accountRepository.delete(user.getAccount());
         rankingService.resetUserRank(user);
     }
 

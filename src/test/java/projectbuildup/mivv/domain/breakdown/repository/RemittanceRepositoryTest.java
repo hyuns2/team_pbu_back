@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -25,6 +24,7 @@ import projectbuildup.mivv.domain.remittance.repository.RemittanceRepository;
 import projectbuildup.mivv.domain.user.entity.IdentityVerification;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.domain.user.repository.UserRepository;
+import projectbuildup.mivv.global.common.BaseTimeEntity;
 import projectbuildup.mivv.global.config.JpaAuditingConfig;
 import projectbuildup.mivv.integrationtest.setting.MockEntityFactory;
 
@@ -32,9 +32,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.YearMonth;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
+import static java.lang.Thread.sleep;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
@@ -82,7 +84,7 @@ class RemittanceRepositoryTest {
         LocalDateTime endDate = LocalDate.of(2030, 4, 7).atTime(LocalTime.MAX);
 
         // when
-        List<Remittance> result = remittanceRepository.findByUserAndCreatedTimeBetween(user, startDate, endDate);
+        List<Remittance> result = remittanceRepository.findByUserAndYearMonth(user, startDate, endDate);
 
         // then
         log.info("saved_time:{}", saved.getCreatedTime());
