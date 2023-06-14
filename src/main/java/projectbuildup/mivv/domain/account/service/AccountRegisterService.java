@@ -78,7 +78,7 @@ public class AccountRegisterService {
      * 챌린지 참여 정보 (송금액, 참여 횟수, 랭킹 정보)를 삭제합니다.
      */
     private void deleteParticipationInfo(User user) {
-        List<Participation> participations = participationRepository.findAll();
+        List<Participation> participations = participationRepository.findAllByUser(user);
         for (Participation participation : participations) {
             rankingService.resetParticipationRank(participation);
         }
