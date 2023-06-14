@@ -33,8 +33,8 @@ public class CodefAccountDetailsSystem implements AccountDetailsSystem {
      * @return [입금액, 날짜, 시간]로 이루어진 목록
      */
     @Override
-    public List<TransactionDetail> getDepositHistory(User user, LocalDate startDate) {
-        return getHistory(user, startDate, IN_AMOUNT_FIELD);
+    public List<TransactionDetail> getDepositHistory(User user, LocalDate startDate, LocalDate endDate) {
+        return getHistory(user, startDate, endDate, IN_AMOUNT_FIELD);
     }
 
     /**
@@ -45,8 +45,8 @@ public class CodefAccountDetailsSystem implements AccountDetailsSystem {
      * @return [출금액, 날짜, 시간]로 이루어진 목록
      */
     @Override
-    public List<TransactionDetail> getWithdrawHistory(User user, LocalDate startDate) {
-        return getHistory(user, startDate, OUT_AMOUNT_FIELD);
+    public List<TransactionDetail> getWithdrawHistory(User user, LocalDate startDate, LocalDate endDate) {
+        return getHistory(user, startDate, endDate, OUT_AMOUNT_FIELD);
     }
 
     /**
@@ -58,23 +58,22 @@ public class CodefAccountDetailsSystem implements AccountDetailsSystem {
      * @param amountField 입금/출금 선택
      * @return [금액, 날짜, 시간]로 이루어진 목록
      */
-    private List<TransactionDetail> getHistory(User user, LocalDate startDate, String amountField) {
+    private List<TransactionDetail> getHistory(User user, LocalDate startDate, LocalDate endDate, String amountField) {
         List<TransactionDetail> returnList = new ArrayList<>();
-        List<Map<String, Object>> transactionList = getTransactionList(user, startDate);
+        List<Map<String, Object>> transactionList = getTransactionList(user, startDate, endDate);
         for (Map<String, Object> elem : transactionList) {
             getTransactionDetail(elem, amountField).ifPresent(returnList::add);
         }
-        log.info("정 세 벽 목 록 : {}", returnList);
         return returnList;
     }
 
 
-    private List<Map<String, Object>> getTransactionList(User user, LocalDate startDate) {
+    private List<Map<String, Object>> getTransactionList(User user, LocalDate startDate, LocalDate endDate) {
         Account account = user.getAccount();
         String connectedId = account.getConnectionMap().get(OpenBanking.CODEF);
         String bankCode = account.getBankType().getCode();
         String accountNumbers = account.getAccountNumbers();
-        Map<String, Object> dataMap = codefClient.getTransactionList(connectedId, bankCode, accountNumbers, startDate);
+        Map<String, Object> dataMap = codefClient.getTransactionList(connectedId, bankCode, accountNumbers, startDate, endDate);
         return (List<Map<String, Object>>) dataMap.get(HISTORY_FIELD);
     }
 

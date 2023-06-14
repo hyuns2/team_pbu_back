@@ -77,7 +77,7 @@ class RemittanceRepositoryTest {
         challengeRepository.save(challenge);
         Participation participation = new Participation(user, challenge);
         participationRepository.save(participation);
-        Remittance remittance = new Remittance(10000L, participation);
+        Remittance remittance = new Remittance(participation, 10000L);
         Remittance saved = remittanceRepository.save(remittance);
 
         LocalDateTime startDate = LocalDate.of(2022, 4, 5).atStartOfDay();
@@ -106,10 +106,10 @@ class RemittanceRepositoryTest {
         log.info("{}", found);
         Participation participation = new Participation(user, challenge);
         participationRepository.save(participation);
-        Remittance remittance1 = new Remittance(1000L, participation);
-        Remittance remittance2 = new Remittance(2000L, participation);
-        Remittance remittance3 = new Remittance(-500L, participation);
-        Remittance remittance4 = new Remittance(3000L, participation);
+        Remittance remittance1 = new Remittance(participation, 1000L);
+        Remittance remittance2 = new Remittance(participation, 2000L);
+        Remittance remittance3 = new Remittance(participation, -500L);
+        Remittance remittance4 = new Remittance(participation, 3000L);
         remittanceRepository.save(remittance1);
         remittanceRepository.save(remittance2);
         remittanceRepository.save(remittance3);
@@ -136,10 +136,10 @@ class RemittanceRepositoryTest {
         challengeRepository.save(challenge);
         Participation participation = new Participation(user, challenge);
         participationRepository.save(participation);
-        Remittance remittance1 = new Remittance(1000L, participation);
-        Remittance remittance2 = new Remittance(2000L, participation);
-        Remittance remittance3 = new Remittance(3000L, participation);
-        Remittance remittance4 = new Remittance(4000L, participation);
+        Remittance remittance1 = new Remittance(participation, 1000L);
+        Remittance remittance2 = new Remittance(participation, 2000L);
+        Remittance remittance3 = new Remittance(participation, 3000L);
+        Remittance remittance4 = new Remittance(participation, 4000L);
         remittanceRepository.saveAll(List.of(remittance1, remittance2, remittance3, remittance4));
 
         // when

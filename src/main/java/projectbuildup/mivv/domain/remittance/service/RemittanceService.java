@@ -91,8 +91,7 @@ public class RemittanceService {
     private TransactionDetail getRecentTransactionDetail(Participation participation, LocalDateTime startTime) {
         User user = participation.getUser();
         Challenge challenge = participation.getChallenge();
-        log.info("정 세 벽 1 : {}", startTime);
-        return accountDetailsSystem.getDepositHistory(user, startTime.toLocalDate()).stream()
+        return accountDetailsSystem.getDepositHistory(user, startTime.toLocalDate(), LocalDate.now()).stream()
                 .filter(t -> t.isValid(challenge, startTime))
                 .max((o1, o2) -> o2.getTime().compareTo(o1.getTime()))
                 .orElseThrow(() -> new CBadRequestException("송금이 이루어지지 않았거나, 적합한 금액이 아닙니다."));
@@ -112,11 +111,11 @@ public class RemittanceService {
      */
     @Transactional
     private void updateRemittance(long amount, Participation participation) {
-        Remittance remittance = Remittance.newDeposit(amount, participation);
+        Remittance remittance = Remittance.newDeposit(participation, amount);
         remittanceRepository.save(remittance);
         participation.addCount();
         double score = rankScoreCalculator.calculate(remittance);
-        rankingService.updateScore(participation.getUser(), participation.getChallenge(), score);
+        rankingService.updateScore(participation, score);
         remittanceArchivingService.assignRemittanceConditionCards(participation.getUser());
     }
 

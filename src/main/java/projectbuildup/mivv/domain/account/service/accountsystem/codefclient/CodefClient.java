@@ -19,7 +19,7 @@ public interface CodefClient {
 
     Map<String, Object> getOwnAccounts(String bankType, String connectedId);
 
-    Map<String, Object> getTransactionList(String connectedId, String bankCode, String accountNumbers, LocalDate startDate);
+    Map<String, Object> getTransactionList(String connectedId, String bankCode, String accountNumbers, LocalDate startDate, LocalDate endDate);
 
     Map<String, Object> certifyTransfer(String organizationCode, String accountNumbers);
 
