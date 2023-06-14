@@ -1,5 +1,6 @@
 package projectbuildup.mivv.domain.archiving.service;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.stereotype.Service;
@@ -11,8 +12,10 @@ import projectbuildup.mivv.domain.archiving.entity.CardType;
 import projectbuildup.mivv.domain.archiving.entity.UserCardEntity;
 import projectbuildup.mivv.domain.archiving.repository.CardRepository;
 import projectbuildup.mivv.domain.archiving.repository.UserCardRepository;
+import projectbuildup.mivv.domain.user.entity.IdentityVerification;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.domain.user.repository.UserRepository;
+import projectbuildup.mivv.global.common.fileStore.ExcelReturner;
 import projectbuildup.mivv.global.common.fileStore.FileUploader;
 import projectbuildup.mivv.global.common.fileStore.File;
 import projectbuildup.mivv.global.common.imageStore.ImageType;
@@ -27,6 +30,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -140,10 +144,9 @@ public class GeneralArchivingService {
      * @throws IOException
      * @throws CCardNotFoundException 카드 찾기 실패시
      * @throws CInvalidCellException 엑셀의 셀이 유효하지 않을시
-     * @throws CUserNotFoundException 유저 찾기 실패시
      */
     @Transactional
-    public void assignGeneralConditionCards(final ArchivingDto.AssignGeneralCardsRequestDto dto) throws IOException {
+    public void assignGeneralConditionCards(final ArchivingDto.AssignGeneralCardsRequestDto dto, final HttpServletResponse response) throws IOException {
         Optional<CardEntity> targetCard = cardRepo.findById(dto.getId());
         if (targetCard.isEmpty()) {
             throw new CCardNotFoundException();
@@ -153,15 +156,17 @@ public class GeneralArchivingService {
         }
 
         CardEntity cardEntity = targetCard.get();
-        checkAndAssignGeneralConditionCards(dto.getFile(), cardEntity);
+        checkAndAssignGeneralConditionCards(dto.getFile(), cardEntity, response);
     }
 
-    private void checkAndAssignGeneralConditionCards(MultipartFile dtoFile, CardEntity cardEntity) throws IOException {
+    private void checkAndAssignGeneralConditionCards(MultipartFile dtoFile, CardEntity cardEntity, HttpServletResponse response) throws IOException {
         File file = fileUploader.storeExcelFile(dtoFile);
         InputStream inputStream = new FileInputStream(file.getFilePath());
 
         Workbook workBook = WorkbookFactory.create(inputStream);
         Sheet sheet = workBook.getSheetAt(0);
+
+        List<User> notFoundUsers = new ArrayList<>();
 
         int totalRow = sheet.getPhysicalNumberOfRows();
         for (int rowIndex = 0; rowIndex < totalRow; rowIndex++) {
@@ -172,8 +177,10 @@ public class GeneralArchivingService {
 
             List<String> result = checkRowData(row, rowIndex);
 
-            assignGeneralConditionCards(cardEntity, result.get(0), result.get(1));
+            assignGeneralConditionCards(cardEntity, result.get(0), result.get(1), notFoundUsers);
         }
+
+        ExcelReturner.writeExcel(response, notFoundUsers, LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
     }
 
     private List<String> checkRowData(Row row, int rowIndex) {
@@ -198,14 +205,19 @@ public class GeneralArchivingService {
         return result;
     }
 
-    private void assignGeneralConditionCards(CardEntity cardEntity, String name, String mobile) {
+    private void assignGeneralConditionCards(CardEntity cardEntity, String name, String mobile, List<User> notFoundUsers) {
         Optional<User> targetUser = userRepo.findByNameAndMobile(name, mobile);
         if (targetUser.isEmpty()) {
-            throw new CUserNotFoundException();
+            IdentityVerification identityVerification = new IdentityVerification();
+            identityVerification.setNameAndMobile(name, mobile);
+            User notFoundUser = new User();
+            notFoundUser.setIdentityVerification(identityVerification);
+            notFoundUsers.add(notFoundUser);
         }
-
-        User userEntity = targetUser.get();
-        userCardRepo.save(new UserCardEntity(userEntity, cardEntity, LocalDate.now()));
+        else {
+            User userEntity = targetUser.get();
+            userCardRepo.save(new UserCardEntity(userEntity, cardEntity, LocalDate.now()));
+        }
     }
 
 

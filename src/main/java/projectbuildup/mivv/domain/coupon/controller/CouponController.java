@@ -63,20 +63,12 @@ public class CouponController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @Operation(summary = "쿠폰을 발급받은 유저정보를 쿠폰별로 조회합니다.", description = "관리자가 쿠폰 Id를 입력하면, 해당 쿠폰을 발급받은 유저 정보를 엑셀파일로 반환합니다.")
+    @Operation(summary = "쿠폰을 발급받은 유저정보를 쿠폰과 월별로 조회합니다.", description = "관리자가 쿠폰 Id와 연도, 월을 입력하면, 해당 쿠폰을 발급받은 유저 정보를 엑셀파일로 반환합니다.")
     @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/admin/excel/{couponId}")
-    public void retrieveExcelByCoupon(@AuthenticationPrincipal User user, HttpServletResponse response, @PathVariable("couponId") Long couponId) throws IOException {
-        couponService.retrieveExcelByCoupon(response, couponId);
-    }
-
-    @Operation(summary = "쿠폰을 발급받은 유저정보를 월별로 조회합니다.", description = "관리자가 쿠폰 Id와 연도, 월을 입력하면, 해당 쿠폰을 발급받은 유저 정보를 엑셀파일로 반환합니다.")
-    @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/admin/excel/{year}/{month}")
-    public void retrieveExcelByCouponDate(@AuthenticationPrincipal User user, HttpServletResponse response, @PathVariable("year") int year, @PathVariable("month") int month) throws IOException {
-        couponService.retrieveExcelByCouponDate(response, year, month);
+    // @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/admin/excel/{couponId}/{year}/{month}")
+    public void retrieveExcelByCoupon(@AuthenticationPrincipal User user, HttpServletResponse response, @PathVariable("couponId") Long couponId, @PathVariable("year") int year, @PathVariable("month") int month) throws IOException {
+        couponService.retrieveExcelByCouponTypeAndDate(response, couponId, year, month);
     }
 
 }
