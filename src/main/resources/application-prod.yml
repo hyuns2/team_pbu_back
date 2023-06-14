@@ -69,7 +69,7 @@ logging:
     name: "/logs/app/current.log"
 
 api:
-  password-change: http://localhost:8080/api/password/change
+
 
 path:
   files: /resources/static/files

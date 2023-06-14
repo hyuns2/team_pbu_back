@@ -619,12 +619,6 @@ public class KISA_SEED_CBC {
 
 
     public static byte[] SEED_CBC_Decrypt(byte[] pbszUserKey, byte[] pbszIV, byte[] message, int message_offset, int message_length) {
-        log.info("pbszUserKey: {} ", pbszUserKey);
-        log.info("pbszIV: {} ", pbszIV);
-        log.info("message: {} ", message);
-        log.info("message_offset: {} ", message_offset);
-        log.info("message_length: {} ", message_length);
-
         KISA_SEED_INFO info = new KISA_SEED_INFO();
         int[] outbuf;
         int[] data;

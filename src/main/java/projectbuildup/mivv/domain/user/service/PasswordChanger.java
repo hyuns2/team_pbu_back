@@ -17,7 +17,6 @@ import projectbuildup.mivv.global.error.exception.CUserNotFoundException;
 @Service
 @RequiredArgsConstructor
 public class PasswordChanger {
-    private final PasswordChangeLinkGenerator passwordChangeLinkGenerator;
     private final UserRepository userRepository;
     private final EmailSender emailSender;
     private final IdentityVerificationRepository identityVerificationRepository;
