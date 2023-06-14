@@ -56,7 +56,7 @@ path:
   files: /resources/static/files
   images: /resources/static/images
   videos: /resources/static/videos
-  ipUrl: https://server.gasomann.com
+  ipUrl: http://3.37.5.91:8080
 
 jwt:
   expiration:
