@@ -18,6 +18,7 @@ import projectbuildup.mivv.domain.user.repository.UserRepository;
 import projectbuildup.mivv.domain.worthyConsumption.entity.CheckConditionType;
 import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumption;
 import projectbuildup.mivv.domain.worthyConsumption.repository.WorthyConsumptionRepository;
+import projectbuildup.mivv.global.common.fileStore.ExcelReturner;
 import projectbuildup.mivv.global.common.imageStore.Image;
 import projectbuildup.mivv.global.common.imageStore.ImageType;
 import projectbuildup.mivv.global.common.imageStore.ImageUploader;
@@ -29,6 +30,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -86,45 +88,14 @@ public class CouponService {
         couponRepository.delete(coupon);
     }
 
-    private void writeExcel(HttpServletResponse response, List<User> userList) throws IOException {
-        Workbook workbook = new XSSFWorkbook();
-        Sheet sheet = workbook.createSheet();
+    public void retrieveExcelByCouponTypeAndDate(final HttpServletResponse response, final Long couponId, final int year, final int month) throws IOException {
 
-        int rowIndex = 0;
-
-        Row headerRow = sheet.createRow(rowIndex++);
-        Cell header0 = headerRow.createCell(0);
-        header0.setCellValue("이름");
-        Cell header1 = headerRow.createCell(1);
-        header1.setCellValue("전화번호");
-
-        for (User user: userList) {
-            Row bodyRow = sheet.createRow(rowIndex++);
-            Cell bodyCell0 = bodyRow.createCell(0);
-            bodyCell0.setCellValue(user.getIdentityVerification().getName());
-            Cell bodyCell1 = bodyRow.createCell(1);
-            bodyCell1.setCellValue(user.getIdentityVerification().getMobile());
-        }
-
-        response.setContentType("ms-vnd/excel");
-        response.setHeader("Content-Disposition", "attachment;filename=" + LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + ".xlsx");
-
-        workbook.write(response.getOutputStream());
-        workbook.close();
-    }
-
-    public void retrieveExcelByCoupon(final HttpServletResponse response, final Long couponId) throws IOException {
-
-        if (couponRepository.findById(couponId).isEmpty()) {
+        Optional<Coupon> target = couponRepository.findById(couponId);
+        if (target.isEmpty()) {
             throw new CCouponNotFoundException();
         }
+        String couponTitle = target.get().getTitle();
 
-        List<User> userList = couponIssuanceRepository.findUsersByCouponId(couponId);
-        writeExcel(response, userList);
-
-    }
-
-    public void retrieveExcelByCouponDate(final HttpServletResponse response, final int year, final int month) throws IOException {
         LocalDate startTemp = LocalDate.of(year, month, 1);
         LocalDate endTemp = startTemp.withDayOfMonth(startTemp.lengthOfMonth());
 
@@ -135,7 +106,8 @@ public class CouponService {
             throw new CInvalidDateTimeException();
         }
 
-        List<User> userList = couponIssuanceRepository.findUsersByCouponDate(start, end);
-        writeExcel(response, userList);
+        List<User> userList = couponIssuanceRepository.findUsersByCouponIdAndDate(couponId, start, end);
+        ExcelReturner.writeExcel(response, userList, year + "-" + month + "/" + couponTitle);
+
     }
 }

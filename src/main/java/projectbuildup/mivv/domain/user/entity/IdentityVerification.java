@@ -43,6 +43,11 @@ public class IdentityVerification extends BaseTimeEntity {
     @OneToOne(mappedBy = "identityVerification", fetch = FetchType.LAZY)
     User user;
 
+    public void setNameAndMobile(String name, String mobile) {
+        this.name = name;
+        this.mobile = mobile;
+    }
+
     public static IdentityVerification generateDummyVerification(){
         String dummyCode = RandomStringUtils.randomAlphabetic(16);
         return IdentityVerification.builder()

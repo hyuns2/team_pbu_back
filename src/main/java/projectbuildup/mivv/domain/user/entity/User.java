@@ -74,6 +74,10 @@ public class User extends BaseTimeEntity implements UserDetails {
     @Builder.Default
     private List<String> roles = new ArrayList<>();
 
+    public void setIdentityVerification(IdentityVerification identityVerification) {
+        this.identityVerification = identityVerification;
+    }
+
     public static User of(AuthDto.SignupRequest requestDto, String encodedPassword, IdentityVerification identityVerification) {
         return User.builder()
                 .email(requestDto.getEmail())
