@@ -52,10 +52,6 @@ public class RemittanceService {
     @Qualifier("codefAccountDetailsSystem")
     AccountDetailsSystem accountDetailsSystem;
 
-    @Autowired
-    @Qualifier("testAccountDetailsSystem")
-    AccountDetailsSystem testAccountDetailsSystem;
-
 
     /**
      * 사용자의 계좌 내역을 조회하여 송금액을 갱신합니다.
