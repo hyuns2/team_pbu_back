@@ -2,6 +2,7 @@ package projectbuildup.mivv.domain.user.service;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import projectbuildup.mivv.domain.auth.repository.IdentityVerificationRepository;
 import projectbuildup.mivv.domain.email.entity.Email;
@@ -19,6 +20,7 @@ import projectbuildup.mivv.global.error.exception.CUserNotFoundException;
 public class PasswordChanger {
     private final UserRepository userRepository;
     private final EmailSender emailSender;
+    private final PasswordEncoder passwordEncoder;
     private final IdentityVerificationRepository identityVerificationRepository;
 
     /**
@@ -44,7 +46,7 @@ public class PasswordChanger {
     public void changePassword(PasswordDto.ChangeRequest requestDto) {
         IdentityVerification identityVerification = identityVerificationRepository.findByCode(requestDto.getVerificationCode()).orElseThrow(CResourceNotFoundException::new);
         User user = identityVerification.getUser();
-        user.changePassword(requestDto.getPassword());
+        user.changePassword(passwordEncoder.encode(requestDto.getPassword()));
         userRepository.save(user);
     }
 }

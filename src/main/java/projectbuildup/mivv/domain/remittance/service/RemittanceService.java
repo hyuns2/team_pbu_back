@@ -52,10 +52,6 @@ public class RemittanceService {
     @Qualifier("codefAccountDetailsSystem")
     AccountDetailsSystem accountDetailsSystem;
 
-    @Autowired
-    @Qualifier("testAccountDetailsSystem")
-    AccountDetailsSystem testAccountDetailsSystem;
-
 
     /**
      * 사용자의 계좌 내역을 조회하여 송금액을 갱신합니다.
@@ -75,7 +71,6 @@ public class RemittanceService {
             throw new CBadRequestException("일일 절약 한도를 초과했습니다.");
         }
         TransactionDetail transactionDetail = getRecentTransactionDetail(participation, requestDto.getStartTime());
-        log.info("정 세 벽2 : {}", transactionDetail);
         updateRemittance(transactionDetail.getAmount(), participation);
         return true;
     }
@@ -111,9 +106,9 @@ public class RemittanceService {
      */
     @Transactional
     private void updateRemittance(long amount, Participation participation) {
+        participation.addCount();
         Remittance remittance = Remittance.newDeposit(participation, amount);
         remittanceRepository.save(remittance);
-        participation.addCount();
         double score = rankScoreCalculator.calculate(remittance);
         rankingService.updateScore(participation, score);
         remittanceArchivingService.assignRemittanceConditionCards(participation.getUser());
