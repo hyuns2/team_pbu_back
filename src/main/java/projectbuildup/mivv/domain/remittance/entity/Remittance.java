@@ -34,7 +34,7 @@ public class Remittance extends BaseTimeEntity {
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
-    public Remittance(long amount, Participation participation) {
+    public Remittance(Participation participation, long amount) {
         this.amount = amount;
         this.title = participation.getChallenge().getMainTitle();
         this.participation = participation;
@@ -46,14 +46,14 @@ public class Remittance extends BaseTimeEntity {
         this.participation = participation;
     }
 
-    public static Remittance newDeposit(long amount, Participation participation) {
+    public static Remittance newDeposit(Participation participation, long amount) {
         if (amount < 0) {
             throw new CBadRequestException("입금액은 음수일 수 없습니다.");
         }
-        return new Remittance(amount, participation);
+        return new Remittance(participation, amount);
     }
 
-    public static Remittance newWithdrawal(long amount, Participation participation) {
+    public static Remittance newWithdrawal(Participation participation, long amount) {
         if (amount > 0) {
             throw new CBadRequestException("출금액은 양수일 수 없습니다.");
         }

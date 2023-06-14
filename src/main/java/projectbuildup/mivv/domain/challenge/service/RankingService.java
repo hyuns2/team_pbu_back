@@ -154,13 +154,12 @@ public class RankingService {
     /**
      * 전체 랭킹 및 챌린지 랭킹의 점수를 갱신합니다.
      *
-     * @param user      사용자
-     * @param challenge 챌린지
+     * @param participation 참여 정보
      * @param score     점수
      */
-    public void updateScore(User user, Challenge challenge, double score) {
-        String key = String.valueOf(challenge.getId());
-        String member = String.valueOf(user.getId());
+    public void updateScore(Participation participation, double score) {
+        String key = String.valueOf(participation.getChallenge().getId());
+        String member = String.valueOf(participation.getUser().getId());
         rankingSystem.incrementScore(key, member, score);
         rankingSystem.incrementScore(TOTAL_RANKING_KEY, member, score);
     }

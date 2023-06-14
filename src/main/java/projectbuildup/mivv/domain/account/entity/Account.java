@@ -7,6 +7,7 @@ import org.hibernate.annotations.Columns;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import projectbuildup.mivv.domain.user.entity.User;
+import projectbuildup.mivv.global.common.BaseTimeEntity;
 import projectbuildup.mivv.global.error.exception.CInternalServerException;
 
 import java.time.LocalDateTime;
@@ -20,7 +21,7 @@ import java.util.Map;
 @Builder
 @ToString
 @Table(name = "account")
-public class Account {
+public class Account extends BaseTimeEntity {
 
     @Id
     @Column(name = "id")

@@ -139,9 +139,8 @@ public class CodefApiClient implements CodefClient {
      * @return 응답값의 data 필드
      */
     @Override
-    public Map<String, Object> getTransactionList(String connectedId, String bankCode, String accountNumbers, LocalDate startDate) {
+    public Map<String, Object> getTransactionList(String connectedId, String bankCode, String accountNumbers, LocalDate startDate, LocalDate endDate) {
         String CODEF_TRANSACTION_LIST_API = "/v1/kr/bank/p/account/transaction-list";
-        LocalDate endDate = LocalDate.now();
         String startDateStr = startDate.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         String endDateStr = endDate.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         HashMap<String, Object> parameterMap = new HashMap<>();

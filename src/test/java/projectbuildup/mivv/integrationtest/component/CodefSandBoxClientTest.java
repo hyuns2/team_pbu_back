@@ -81,7 +81,7 @@ public class CodefSandBoxClientTest {
         //given
 
         // when
-        Map<String, Object> dataField = codefSandBoxClient.getTransactionList(CONNECTED_ID, "0004", "012345678", LocalDate.now());
+        Map<String, Object> dataField = codefSandBoxClient.getTransactionList(CONNECTED_ID, "0004", "012345678", LocalDate.now(),  LocalDate.now());
         List<HashMap<String, Object>> listMap = (List<HashMap<String, Object>>) dataField.get("resTrHistoryList");
         /*
             listMap = [
