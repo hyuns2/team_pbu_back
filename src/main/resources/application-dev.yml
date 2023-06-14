@@ -16,14 +16,9 @@ spring:
         enable_lazy_load_no_trans: true
         format_sql: true
         hbm2ddl:
-          auto: create
-    defer-datasource-initialization: true #더미데이터 용
+          auto: validate
+    defer-datasource-initialization: false #더미데이터 용
     show-sql: true
-  sql: #더미데이터 용
-    init:
-      mode: always
-      data-locations: classpath:data.sql
-      encoding: UTF-8
   data:
     redis:
       host: localhost
@@ -40,7 +35,12 @@ spring:
           timeout: 5000 # Socket Read Timeout 시간(ms) (기본값 : 무한대)
           starttls:
             enable: true # StartTLS 활성화 여부 (기본값 : false)
-
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    url: jdbc:mariadb://localhost:3306/mivv_new_dev?validationQuery="select 1"&useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=UTF-8&serverTimezone=UTC&useLegacyDatetimeCode=false
+    user: root
+    password: pbuback!
 springdoc:
   use-fqn: true # 정규화된 스키마명 사용 설정
   api-docs:
