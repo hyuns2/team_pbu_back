@@ -93,6 +93,7 @@ public class Challenge extends BaseTimeEntity {
                 .image(image)
                 .startDate(requestDto.getStartDate())
                 .endDate(requestDto.getEndDate())
+                .closed(false)
                 .build();
     }
 

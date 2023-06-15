@@ -53,6 +53,7 @@ public class Participation extends BaseTimeEntity {
         this.user = user;
         this.challenge = challenge;
         this.savingCountOfDay = 0L;
+        this.closed = false;
     }
 
     public boolean canRemit() {
