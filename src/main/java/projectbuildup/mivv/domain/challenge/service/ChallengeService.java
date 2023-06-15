@@ -48,13 +48,14 @@ public class ChallengeService {
 
     /**
      * 전체 챌린지를 조회합니다.
+     * 종료된 챌린지는 제외합니다.
      *
      * @param pageParam 페이지네이션
      * @return 전체 챌린지 목록
      */
     public PagingDto<ChallengeDto.Response> getAllChallenges(PageParam pageParam) {
         Pageable pageable = pageParam.toPageable();
-        Page<Challenge> pages = challengeRepository.findAll(pageable);
+        Page<Challenge> pages = challengeRepository.findAllByClosedFalse(pageable);
         return this.challengesToResponseDto(pages.getNumber(), pages.getTotalPages(), pages.getContent());
     }
 
@@ -130,7 +131,7 @@ public class ChallengeService {
     @Transactional
     public void deleteChallenge(Long challengeId) {
         Challenge challenge = challengeRepository.findById(challengeId).orElseThrow(CResourceNotFoundException::new);
-        if (challenge.isClosed()){
+        if (challenge.isClosed()) {
             throw new CBadRequestException("종료된 챌린지는 삭제할 수 없습니다.");
         }
         challengeRepository.deleteById(challengeId);
