@@ -13,13 +13,9 @@ import projectbuildup.mivv.domain.challenge.repository.ChallengeRepository;
 import projectbuildup.mivv.domain.challenge.service.RankingService;
 import projectbuildup.mivv.domain.participation.entity.Participation;
 import projectbuildup.mivv.domain.participation.repository.ParticipationRepository;
-import projectbuildup.mivv.domain.remittance.repository.RemittanceRepository;
-import projectbuildup.mivv.domain.remittance.service.RemittanceService;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.domain.user.repository.UserRepository;
 import projectbuildup.mivv.global.error.exception.CBadRequestException;
-import projectbuildup.mivv.global.error.exception.CResourceNotFoundException;
-import projectbuildup.mivv.global.error.exception.CUserNotFoundException;
 import projectbuildup.mivv.integrationtest.setting.MockEntityFactory;
 
 import java.util.Optional;
@@ -29,7 +25,7 @@ import static org.mockito.BDDMockito.given;
 
 @ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class)
-class ParticipationServiceTest {
+class ParticipationServiceMockTest {
     @InjectMocks
     ParticipationService participationService;
 
