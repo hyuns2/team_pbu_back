@@ -92,4 +92,12 @@ public class Challenge extends BaseTimeEntity {
                 .endDate(requestDto.getEndDate())
                 .build();
     }
+
+    /**
+     * 챌린지와 참여를 종료시킵니다.
+     * 종료된 챌린지와 참여 정보는 삭제할 수 없습니다.
+     */
+    public void close() {
+        // this.closed = true
+    }
 }

@@ -64,4 +64,8 @@ public class Participation extends BaseTimeEntity {
     public void initialize() {
         this.savingCountOfDay = 0;
     }
+
+    public void close(){
+        // this.closed = true
+    }
 }
