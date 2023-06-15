@@ -36,4 +36,4 @@ out/
 ### VS Code ###
 .vscode/
 src/main/resources/application-local.yml
-src/main/resources/db/migration/R1__init.sql
+src/main/resources/db/migration/R__seed.sql

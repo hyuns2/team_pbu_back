@@ -1,5 +1,6 @@
 package projectbuildup.mivv.global.batch;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -20,11 +21,11 @@ public class ChallengeDueDateCatcher {
     private static final long FIXED_ONE_DAY = 1000L * 60 * 60 * 24;
     private static final long FIXED_TEN_YEAR = 1000L * 60 * 60 * 24 * 365 * 10;
     private static final long FIXED_ONE_MINUTE = 1000L * 60;
-    private static final String CRON_DAYBREAK = "30 59 23 * * *";
+    private static final String CRON_MIDNIGHT = "30 59 23 * * *";
     private final ChallengeRepository challengeRepository;
     private final ParticipationRepository participationRepository;
 
-    @Scheduled(cron = CRON_DAYBREAK)
+    @Scheduled(cron = CRON_MIDNIGHT)
     private void updateClosedChallenges() {
         log.info("종료 챌린지 찾기 시작");
         LocalDate today = LocalDate.now();
