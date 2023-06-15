@@ -32,12 +32,15 @@ public class ChallengeDueDateCatcher {
                 .filter(c -> c.getEndDate().isEqual(today))
                 .toList();
         for (Challenge challenge : closedChallenges) {
-            List<Participation> participations = challenge.getParticipationList();
-            participations.forEach(Participation::close);
-            challenge.close();
-            participationRepository.saveAll(participations);
+            close(challenge);
         }
         challengeRepository.saveAll(closedChallenges);
         log.info("종료 챌린지 찾기 끝");
+    }
+
+    private void close(Challenge challenge) {
+        List<Participation> participations = challenge.getParticipationList();
+        participations.forEach(Participation::close);
+        challenge.close();
     }
 }
