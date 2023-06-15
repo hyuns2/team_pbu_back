@@ -47,6 +47,7 @@ public class MockEntityFactory {
                 .image(image)
                 .startDate(LocalDate.of(2023, 5, 1))
                 .endDate(LocalDate.of(2024, 5, 1))
+                .closed(false)
                 .build();
     }
 }

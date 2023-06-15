@@ -21,7 +21,7 @@ public interface ParticipationRepository extends JpaRepository<Participation, Lo
     List<Participation> findAllByChallenge(Challenge challenge);
     List<Participation> findAllByUser(User user);
 
-    Page<Participation> findAllByUser(User user, Pageable pageable);
+    Page<Participation> findAllByUserAndClosedFalse(User user, Pageable pageable);
 
 
     void deleteAllByUser(User user);

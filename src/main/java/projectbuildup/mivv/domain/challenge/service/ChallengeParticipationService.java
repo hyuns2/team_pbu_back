@@ -25,6 +25,7 @@ public class ChallengeParticipationService {
 
     /**
      * 참여 중인 챌린지 목록을 조회합니다.
+     * 종료된 챌린지는 제외합니다.
      *
      * @param userId 회원 아이디넘버
      * @return 참여 중인 챌린지 목록
@@ -32,7 +33,7 @@ public class ChallengeParticipationService {
     public PagingDto<ChallengeDto.Response> getOngoingChallenges(Long userId, PageParam pageParam) {
         Pageable pageable = pageParam.toPageable();
         User user = userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
-        Page<Participation> pages = participationRepository.findAllByUser(user, pageable);
+        Page<Participation> pages = participationRepository.findAllByUserAndClosedFalse(user, pageable);
         return challengeService.participationsToResponseDto(pages.getNumber(), pages.getTotalPages(), pages.getContent());
     }
 
