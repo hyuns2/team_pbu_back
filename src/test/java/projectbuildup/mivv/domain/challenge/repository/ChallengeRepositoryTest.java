@@ -67,8 +67,12 @@ class ChallengeRepositoryTest {
         participationRepository.save(participation2);
 
         // when
-        List<Challenge> foundAsc = challengeRepository.findOngoingChallenge(user, PageRequest.of(0,10, Sort.by(Sort.Direction.ASC, "mainTitle"))).getContent();
-        List<Challenge> foundDesc = challengeRepository.findOngoingChallenge(user, PageRequest.of(0,10, Sort.by(Sort.Direction.DESC, "mainTitle"))).getContent();
+        List<Challenge> foundAsc = participationRepository.findAllByUserAndClosedFalse(user, PageRequest.of(0, 10, Sort.by(Sort.Direction.ASC, "mainTitle"))).getContent().stream()
+                .map(Participation::getChallenge)
+                .toList();
+        List<Challenge> foundDesc = participationRepository.findAllByUserAndClosedFalse(user, PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "mainTitle"))).getContent().stream()
+                .map(Participation::getChallenge)
+                .toList();
 
         // then
         log.info("{}",foundAsc);

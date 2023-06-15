@@ -40,7 +40,7 @@ public class ChallengeCrudController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @Operation(summary = "챌린지 전체 조회", description = "")
+    @Operation(summary = "진행중인 챌린지 전체 조회", description = "")
     @PreAuthorize("permitAll()")
     @GetMapping("/challenges")
     public ResponseEntity<PagingDto<ChallengeDto.Response>> getChallenges(@ParameterObject @Valid ChallengePageParam pageParam) {

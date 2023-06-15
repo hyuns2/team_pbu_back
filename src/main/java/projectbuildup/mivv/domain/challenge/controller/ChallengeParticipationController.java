@@ -47,8 +47,16 @@ public class ChallengeParticipationController {
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/challenges/joinable")
     public ResponseEntity<PagingDto<ChallengeDto.Response>> getJoinableChallenges(@ParameterObject @Valid ChallengePageParam pageParam, @AuthenticationPrincipal User user){
-        log.info("{}", pageParam);
         PagingDto<ChallengeDto.Response> responseDto = challengeParticipationService.getJoinableChallenges(user.getId(), pageParam);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+
+    @Operation(summary="참여 종료된 챌린지 목록 조회", description="사용자가 참여했던 챌린지 중, 종료된 것을 조회합니다.")
+    @Parameter(name = Header.ACCESS_TOKEN, description="액세스토큰", required=true, in= ParameterIn.HEADER, example= ExampleValue.JWT.ACCESS)
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/challenges/closed")
+    public ResponseEntity<PagingDto<ChallengeDto.Response>> getClosedChallenges(@ParameterObject @Valid ChallengePageParam pageParam, @AuthenticationPrincipal User user){
+        PagingDto<ChallengeDto.Response> responseDto = challengeParticipationService.getClosedChallenges(user.getId(), pageParam);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 }

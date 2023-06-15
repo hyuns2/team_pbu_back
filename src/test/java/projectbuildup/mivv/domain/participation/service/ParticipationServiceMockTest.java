@@ -68,25 +68,27 @@ class ParticipationServiceMockTest {
         // when
 
         // then
-        Assertions.assertThatThrownBy(() -> participationService.joinChallenge(1L, 1L)).isInstanceOf(CBadRequestException.class);
+        Assertions.assertThatThrownBy(() -> participationService.joinChallenge(1L, 1L))
+                .isInstanceOf(CBadRequestException.class)
+                .hasMessage("이미 참여한 챌린지입니다.");
     }
 
     @Test
-    @DisplayName("종료된 챌린지에는 참여할 수 없다.")
+    @DisplayName("참여 중이 아니라도, 종료된 챌린지에는 참여할 수 없다.")
     void test2() {
         // given
         User user = MockEntityFactory.mockUser(MockEntityFactory.mockIdentityVerification(), "테스트 유저");
         Challenge challenge = MockEntityFactory.mockChallenge(MockEntityFactory.mockImage(), "테스트 챌린지");
-        Participation participation = new Participation(user, challenge);
-        participation.close();
+        challenge.close();
         given(userRepository.findById(any())).willReturn(Optional.of(user));
         given(challengeRepository.findById(any())).willReturn(Optional.of(challenge));
-        given(participationRepository.findByChallengeAndUser(challenge, user)).willReturn(Optional.of(participation));
 
         // when
 
         // then
-        Assertions.assertThatThrownBy(() -> participationService.joinChallenge(1L, 1L)).isInstanceOf(CBadRequestException.class);
+        Assertions.assertThatThrownBy(() -> participationService.joinChallenge(1L, 1L))
+                .isInstanceOf(CBadRequestException.class)
+                .hasMessage("종료된 챌린지에는 참여할 수 없습니다.");
     }
 
     @Test
@@ -120,25 +122,30 @@ class ParticipationServiceMockTest {
         // when
 
         // then
-        Assertions.assertThatThrownBy(() -> participationService.giveUpChallenge(1L, 1L)).isInstanceOf(CBadRequestException.class);
+        Assertions.assertThatThrownBy(() -> participationService.giveUpChallenge(1L, 1L))
+                .isInstanceOf(CBadRequestException.class)
+                .hasMessage("참여 중인 챌린지가 아닙니다.");
     }
 
     @Test
-    @DisplayName("참여했지만, 종료된 챌린지는 포기할 수 없다.")
+    @DisplayName("참여했더라도, 종료된 챌린지는 포기할 수 없다.")
     void test5() {
         // given
         User user = MockEntityFactory.mockUser(MockEntityFactory.mockIdentityVerification(), "테스트 유저");
         Challenge challenge = MockEntityFactory.mockChallenge(MockEntityFactory.mockImage(), "테스트 챌린지");
         Participation participation = new Participation(user, challenge);
+        challenge.close();
         participation.close();
 
         given(userRepository.findById(any())).willReturn(Optional.of(user));
         given(challengeRepository.findById(any())).willReturn(Optional.of(challenge));
-        given(participationRepository.findByChallengeAndUserAndClosedFalse(challenge, user)).willReturn(Optional.empty());
+        given(participationRepository.findByChallengeAndUserAndClosedFalse(challenge, user)).willReturn(Optional.of(participation));
 
         // when
 
         // then
-        Assertions.assertThatThrownBy(() -> participationService.giveUpChallenge(1L, 1L)).isInstanceOf(CBadRequestException.class);
+        Assertions.assertThatThrownBy(() -> participationService.giveUpChallenge(1L, 1L))
+                .isInstanceOf(CBadRequestException.class)
+                .hasMessage("종료된 챌린지는 포기할 수 없습니다.");
     }
 }

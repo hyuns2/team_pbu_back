@@ -37,6 +37,9 @@ public class ParticipationService {
     public void joinChallenge(Long challengeId, Long userId) {
         User user = userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
         Challenge challenge = challengeRepository.findById(challengeId).orElseThrow(CResourceNotFoundException::new);
+        if (challenge.isClosed()){
+            throw new CBadRequestException("종료된 챌린지에는 참여할 수 없습니다.");
+        }
         if (participationRepository.findByChallengeAndUser(challenge, user).isPresent()) {
             throw new CBadRequestException("이미 참여한 챌린지입니다.");
         }
@@ -58,6 +61,9 @@ public class ParticipationService {
         User user = userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
         Challenge challenge = challengeRepository.findById(challengeId).orElseThrow(CResourceNotFoundException::new);
         Participation participation = participationRepository.findByChallengeAndUserAndClosedFalse(challenge, user).orElseThrow(() -> new CBadRequestException("참여 중인 챌린지가 아닙니다."));
+        if (participation.isClosed()){
+            throw new CBadRequestException("종료된 챌린지는 포기할 수 없습니다.");
+        }
         rankingService.resetParticipationRank(participation);
         participationRepository.delete(participation);
     }
