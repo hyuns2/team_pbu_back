@@ -7,7 +7,7 @@ import org.springframework.data.domain.Sort;
 public enum PageSortType {
     CHALLENGE_TITLE("mainTitle"),
     CHALLENGE_END_TIME("endDate"),
-    CHALLENGE_AMOUNT("remittanceOnceLimit"),
+    CHALLENGE_MIN_SAVING_AMOUNT("minSavingAmount"),
     CREATED_TIME("createdTime"),
     ID("id"),
     EMPTY(null);
