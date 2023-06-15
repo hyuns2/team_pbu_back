@@ -68,9 +68,8 @@ public class RemittanceService {
     public boolean checkSaving(RemittanceDto.RemitRequest requestDto) {
         Challenge challenge = challengeRepository.findById(requestDto.getChallengeId()).orElseThrow(CResourceNotFoundException::new);
         User user = userRepository.findById(requestDto.getUserId()).orElseThrow(CUserNotFoundException::new);
-        Participation participation = participationRepository.findByChallengeAndUser(challenge, user)
+        Participation participation = participationRepository.findByChallengeAndUserAndClosedFalse(challenge, user)
                 .orElseThrow(() -> new CBadRequestException("참여 중인 챌린지에만 송금할 수 있습니다."));
-
         if (!participation.canRemit()) {
             throw new CBadRequestException("일일 절약 한도를 초과했습니다.");
         }

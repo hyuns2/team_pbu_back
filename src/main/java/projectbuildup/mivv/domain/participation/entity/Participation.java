@@ -43,6 +43,9 @@ public class Participation extends BaseTimeEntity {
     @OneToMany(mappedBy = "participation", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Remittance> remittanceList;
 
+    @Column(name = "closed")
+    private boolean closed;
+
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
@@ -50,6 +53,7 @@ public class Participation extends BaseTimeEntity {
         this.user = user;
         this.challenge = challenge;
         this.savingCountOfDay = 0L;
+        this.closed = false;
     }
 
     public boolean canRemit() {
@@ -63,5 +67,9 @@ public class Participation extends BaseTimeEntity {
 
     public void initialize() {
         this.savingCountOfDay = 0;
+    }
+
+    public void close(){
+        this.closed = true;
     }
 }

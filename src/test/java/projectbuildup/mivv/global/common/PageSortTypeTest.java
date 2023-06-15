@@ -12,7 +12,6 @@ import org.springframework.data.domain.Sort;
 import projectbuildup.mivv.domain.challenge.repository.ChallengeRepository;
 import projectbuildup.mivv.global.common.pagination.ChallengePageParam;
 import projectbuildup.mivv.global.common.pagination.PageParam;
-import projectbuildup.mivv.global.common.pagination.PageSortGroup;
 import projectbuildup.mivv.global.common.pagination.PageSortType;
 import projectbuildup.mivv.global.config.JpaAuditingConfig;
 
@@ -33,7 +32,7 @@ class PageSortTypeTest {
         PageParam pageRequest = ChallengePageParam.builder()
                 .pageSize(1)
                 .pageNumber(0)
-                .sortField(PageSortType.CHALLENGE_AMOUNT)
+                .sortField(PageSortType.CHALLENGE_MIN_SAVING_AMOUNT)
                 .direction(Sort.Direction.ASC)
                 .build();
 
@@ -53,7 +52,7 @@ class PageSortTypeTest {
         PageParam pageRequest = ChallengePageParam.builder()
                 .pageSize(1)
                 .pageNumber(0)
-                .sortField(PageSortType.CHALLENGE_AMOUNT)
+                .sortField(PageSortType.CHALLENGE_MIN_SAVING_AMOUNT)
                 .direction(Sort.Direction.ASC)
                 .build();
 

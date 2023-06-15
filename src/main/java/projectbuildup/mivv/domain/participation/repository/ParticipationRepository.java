@@ -14,6 +14,7 @@ import java.util.Optional;
 
 public interface ParticipationRepository extends JpaRepository<Participation, Long> {
     Optional<Participation> findByChallengeAndUser(Challenge challenge, User user);
+    Optional<Participation> findByChallengeAndUserAndClosedFalse(Challenge challenge, User user);
 
     void deleteByChallengeAndUser(Challenge challenge, User user);
 

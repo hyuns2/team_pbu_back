@@ -58,7 +58,8 @@ public class ChallengeCrudController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @Operation(summary = "챌린지 삭제", description = "")
+    @Operation(summary = "챌린지 삭제", description = "종료된 챌린지는 삭제할 수 없습니다.")
+    @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/challenges/{challengeId}")
     public ResponseEntity<HttpStatus> deleteChallenge(@PathVariable Long challengeId) {

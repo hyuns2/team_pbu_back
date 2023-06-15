@@ -18,6 +18,7 @@ import projectbuildup.mivv.global.common.imageStore.ImageType;
 import projectbuildup.mivv.global.common.imageStore.ImageUploader;
 import projectbuildup.mivv.global.common.pagination.PageParam;
 import projectbuildup.mivv.global.common.pagination.PagingDto;
+import projectbuildup.mivv.global.error.exception.CBadRequestException;
 import projectbuildup.mivv.global.error.exception.CResourceNotFoundException;
 
 import java.io.IOException;
@@ -128,6 +129,10 @@ public class ChallengeService {
      */
     @Transactional
     public void deleteChallenge(Long challengeId) {
+        Challenge challenge = challengeRepository.findById(challengeId).orElseThrow(CResourceNotFoundException::new);
+        if (challenge.isClosed()){
+            throw new CBadRequestException("종료된 챌린지는 삭제할 수 없습니다.");
+        }
         challengeRepository.deleteById(challengeId);
     }
 }
