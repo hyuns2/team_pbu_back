@@ -52,7 +52,7 @@ public class WorthyConsumptionService {
      * 가치소비를 생성하는 로직입니다.
      * @param
      */
-    public void createWorthyConsumption(WorthyConsumptionDto.Request worthyConsumptionDto) throws IOException {
+    public WorthyConsumptionResponseDto.CheckResponse createWorthyConsumption(WorthyConsumptionDto.Request worthyConsumptionDto) throws IOException {
         log.info("확인1");
         Image logo = imageUploader.upload(worthyConsumptionDto.getLogo(),ImageType.VALUE);
         Image videoThumbNail = imageUploader.upload(worthyConsumptionDto.getVideoThumbNail(),ImageType.VALUE);
@@ -69,6 +69,7 @@ public class WorthyConsumptionService {
 
 
         worthyConsumptionRepository.save(worthyConsumption);
+        return new WorthyConsumptionResponseDto.CheckResponse(worthyConsumption);
     }
     public void createWorthyConsumptionRR(WorthyConsumptionDto.RecommendationReasonDto dto, Long worthyConsumptionId){
         WorthyConsumption worthyConsumption = worthyConsumptionRepository.findById(worthyConsumptionId).orElseThrow();

@@ -42,10 +42,10 @@ public class WorthyConsumptionController {
     @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<HttpStatus> createWorthyConsumption(@Valid @ModelAttribute("createWorthyConsumptions") WorthyConsumptionDto.Request worthyConsumptionDto) throws IOException {
+    public ResponseEntity<WorthyConsumptionResponseDto.CheckResponse> createWorthyConsumption(@Valid @ModelAttribute("createWorthyConsumptions") WorthyConsumptionDto.Request worthyConsumptionDto) throws IOException {
         log.info("확인");
-        worthyConsumptionService.createWorthyConsumption(worthyConsumptionDto);
-            return new ResponseEntity<>(HttpStatus.CREATED);
+        WorthyConsumptionResponseDto.CheckResponse checkResponseDto  = worthyConsumptionService.createWorthyConsumption(worthyConsumptionDto);
+            return new ResponseEntity<>(checkResponseDto, HttpStatus.CREATED);
     }
     @Operation(summary = "가치소비 추천이유 생성", description = "가치소비 추천이유를 등록합니다.")
     @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)

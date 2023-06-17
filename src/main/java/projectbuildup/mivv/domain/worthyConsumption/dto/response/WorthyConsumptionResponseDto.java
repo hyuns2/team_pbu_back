@@ -18,6 +18,17 @@ import java.util.stream.Collectors;
 public class WorthyConsumptionResponseDto {
     @NoArgsConstructor @AllArgsConstructor
     @Getter @Setter
+    public static class CheckResponse{
+        private Long id;
+        private String title;
+
+        public CheckResponse(WorthyConsumption worthyConsumption){
+            this.id = worthyConsumption.getId();
+            this.title = worthyConsumption.getTitle();
+        }
+    }
+    @NoArgsConstructor @AllArgsConstructor
+    @Getter @Setter
     public static class ReadSummaryResponse {
         private Long id;
         private String title;
