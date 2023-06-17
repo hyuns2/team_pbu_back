@@ -215,7 +215,7 @@ public class WorthyConsumptionService {
         return couponList.get(0).getId();
     }
     public boolean checkCouponDate(Coupon coupon){
-        if(coupon.getIssuableStartDate().isBefore(LocalDate.now())&&coupon.getIssuableEndDate().isAfter(LocalDate.now()))
+        if(coupon.getIssuableStartDate().isBefore(LocalDate.now().plusDays(1))&&coupon.getIssuableEndDate().isAfter(LocalDate.now()))
             return true;
         return false;
     }
