@@ -153,7 +153,7 @@ public class WorthyConsumptionController {
     @Operation(summary = "가치소비의 쿠폰 등록", description = "가치소비의 쿠폰을 등록합니다.")
     @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping(value = "/{worthyConsumptionId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/{worthyConsumptionId}/coupon", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<HttpStatus> createCoupon(@PathVariable(name = "worthyConsumptionId") Long worthyConsumptionId, @Valid @ModelAttribute("createCoupons") CouponDto.Request couponDto) throws IOException {
         couponService.createCoupon(worthyConsumptionId, couponDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
