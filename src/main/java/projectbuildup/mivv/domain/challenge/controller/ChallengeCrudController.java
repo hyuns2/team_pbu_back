@@ -51,7 +51,7 @@ public class ChallengeCrudController {
     @Operation(summary = "챌린지 정보 수정", description = "")
     @Parameter(name = Header.ACCESS_TOKEN, description = "어세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping(value = "/challenges/{challengeId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/challenges/{challengeId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<HttpStatus> updateChallenge(@PathVariable Long challengeId, @Valid @ModelAttribute ChallengeDto.UpdateRequest requestDto) throws IOException {
         requestDto.setChallengeId(challengeId);
         challengeService.updateChallenge(requestDto);
