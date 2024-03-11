@@ -34,7 +34,7 @@ import java.util.Optional;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class CouponArchivingService {
+public class CouponCardArchivingService {
 
     private final CardRepository cardRepo;
     private final UserCardRepository userCardRepo;

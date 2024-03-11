@@ -3,7 +3,7 @@ package projectbuildup.mivv.domain.couponIssuance.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import projectbuildup.mivv.domain.archiving.service.CouponArchivingService;
+import projectbuildup.mivv.domain.archiving.service.CouponCardArchivingService;
 import projectbuildup.mivv.domain.coupon.dto.CouponDto;
 import projectbuildup.mivv.domain.coupon.entity.Coupon;
 import projectbuildup.mivv.domain.coupon.entity.CouponType;
@@ -12,7 +12,6 @@ import projectbuildup.mivv.domain.couponIssuance.dto.CouponIssuanceDto;
 import projectbuildup.mivv.domain.couponIssuance.entity.CouponIssuance;
 import projectbuildup.mivv.domain.couponIssuance.repository.CouponIssuanceRepository;
 import projectbuildup.mivv.domain.remittance.repository.RemittanceRepository;
-import projectbuildup.mivv.domain.remittance.service.RemittanceService;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.domain.user.repository.UserRepository;
 import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumption;
@@ -22,8 +21,6 @@ import projectbuildup.mivv.global.error.exception.CCouponNotFoundException;
 import projectbuildup.mivv.global.error.exception.CUserNotFoundException;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,7 +34,7 @@ public class CouponIssuanceService {
     private final RemittanceRepository remittanceRepository;
     private final WorthyConsumptionService worthyConsumptionService;
 
-    private final CouponArchivingService couponArchivingService;
+    private final CouponCardArchivingService couponCardArchivingService;
     /*
      * 발급받을때 고려할 사항
      * 1. 먼저 유저가 유효한 유저인지 판단 (유저가 진짜 유저인가) : O
@@ -65,7 +62,7 @@ public class CouponIssuanceService {
         isAchievedLastAmount(user, coupon);
         issue(user, coupon);
         
-        couponArchivingService.assignCouponConditionsCard(user, coupon.getId());
+        couponCardArchivingService.assignCouponConditionsCard(user, coupon.getId());
     }
 
     /**

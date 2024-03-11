@@ -23,7 +23,6 @@ import projectbuildup.mivv.global.common.imageStore.ImageUploader;
 import projectbuildup.mivv.global.error.exception.CCardNotFoundException;
 import projectbuildup.mivv.global.error.exception.CCardTypeNotMatchException;
 import projectbuildup.mivv.global.error.exception.CInvalidCellException;
-import projectbuildup.mivv.global.error.exception.CUserNotFoundException;
 import projectbuildup.mivv.global.common.imageStore.Image;
 
 import java.io.FileInputStream;
@@ -38,7 +37,7 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
-public class GeneralArchivingService {
+public class GeneralCardArchivingService {
 
     private final CardRepository cardRepo;
     private final UserCardRepository userCardRepo;
@@ -227,7 +226,7 @@ public class GeneralArchivingService {
      * @param user 유저 정보
      * @return List<ArchivingDto.UserCardResponseDto> 유저카드들 정보 전체
      */
-    public List<ArchivingDto.UserCardResponseDto> retrieveUserNewCards(final User user) {
+    public List<ArchivingDto.UserCardResponseDto> retrieveNewUserCards(final User user) {
 
         List<UserCardEntity> result = userCardRepo.findUserNewCards(user);
 
@@ -241,7 +240,7 @@ public class GeneralArchivingService {
      * @param user 유저 정보
      */
     @Transactional
-    public void updateUserNewCards(final User user) {
+    public void updateCardToNew(final User user) {
 
         List<UserCardEntity> result = userCardRepo.findUserNewCards(user);
 
