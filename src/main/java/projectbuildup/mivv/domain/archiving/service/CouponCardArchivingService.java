@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import projectbuildup.mivv.domain.archiving.dto.ArchivingDto;
 import projectbuildup.mivv.domain.archiving.entity.CardEntity;
 import projectbuildup.mivv.domain.archiving.entity.CardType;
-import projectbuildup.mivv.domain.archiving.entity.CouponConditionCardEntity;
+import projectbuildup.mivv.domain.archiving.entity.CouponCardEntity;
 import projectbuildup.mivv.domain.archiving.entity.UserCardEntity;
 import projectbuildup.mivv.domain.archiving.repository.CardRepository;
 import projectbuildup.mivv.domain.archiving.repository.UserCardRepository;
@@ -54,7 +54,7 @@ public class CouponCardArchivingService {
         }
 
         Image image = imageUploader.upload(dto.getImage(), ImageType.CARD);
-        CouponConditionCardEntity entity = ArchivingDto.createOrUpdateCouponCardRequestDto.toEntity(dto, image.getImagePath());
+        CouponCardEntity entity = ArchivingDto.createOrUpdateCouponCardRequestDto.toEntity(dto, image.getImagePath());
         cardRepo.save(entity);
     }
 
@@ -83,7 +83,7 @@ public class CouponCardArchivingService {
             throw new CCardTypeNotMatchException();
         }
 
-        CouponConditionCardEntity result = (CouponConditionCardEntity) target.get();
+        CouponCardEntity result = (CouponCardEntity) target.get();
         Image image = imageUploader.upload(dto.getImage(), ImageType.CARD);
         result.updateCard(dto, image.getImagePath());
     }
@@ -156,14 +156,14 @@ public class CouponCardArchivingService {
 
     private void assignCards(User user, int whatNumber, int howSuccessive) {
         List<UserCardEntity> alreadyExistings = userCardRepo.findUserCardEntitiesByUser(user);
-        List<CouponConditionCardEntity> allCards = (List<CouponConditionCardEntity>)cardRepo.findAllByType(CardType.COUPON);
+        List<CouponCardEntity> allCards = (List<CouponCardEntity>)cardRepo.findAllByType(CardType.COUPON);
         for (UserCardEntity element : alreadyExistings) {
             allCards.remove(element.getCardEntity());
         }
 
-        List<CouponConditionCardEntity> checkedcards = allCards;
+        List<CouponCardEntity> checkedcards = allCards;
 
-        for (CouponConditionCardEntity element : checkedcards) {
+        for (CouponCardEntity element : checkedcards) {
             if (UnSatisfiedHowSuccessive(element, howSuccessive))
                 continue;
 
@@ -174,11 +174,11 @@ public class CouponCardArchivingService {
         }
     }
 
-    private boolean UnSatisfiedHowSuccessive(CouponConditionCardEntity element, int howSuccessive) {
+    private boolean UnSatisfiedHowSuccessive(CouponCardEntity element, int howSuccessive) {
         return (element.getHowSuccessive() > howSuccessive);
     }
 
-    private boolean UnsatisfiedWhatNumber(CouponConditionCardEntity element, int whatNumber) {
+    private boolean UnsatisfiedWhatNumber(CouponCardEntity element, int whatNumber) {
         return (element.getWhatNumber() != 0 && element.getWhatNumber() != whatNumber);
     }
 

@@ -72,7 +72,7 @@ public class SavingCardArchivingService {
         if (target.isEmpty()) {
             throw new CCardNotFoundException();
         }
-        if (!target.get().getType().equals(CardType.Saving)) {
+        if (!target.get().getType().equals(CardType.SAVING)) {
             throw new CCardTypeNotMatchException();
         }
 
@@ -89,7 +89,7 @@ public class SavingCardArchivingService {
     @Transactional
     public void assignSavingCards(final User user) {
         List<UserCardEntity> alreadyExistings = userCardRepo.findUserCardEntitiesByUser(user);
-        List<SavingCardEntity> allCards = (List<SavingCardEntity>)cardRepo.findAllByType(CardType.Saving);
+        List<SavingCardEntity> allCards = (List<SavingCardEntity>)cardRepo.findAllByType(CardType.SAVING);
 
         for (UserCardEntity element: alreadyExistings) {
             allCards.remove(element.getCardEntity());

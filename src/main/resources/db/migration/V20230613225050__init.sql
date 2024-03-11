@@ -74,7 +74,7 @@ create table if not exists notification
 )
     auto_increment = 5;
 
-create table if not exists remittance_card
+create table if not exists saving_card
 (
     charge int    not null,
     count  int    not null,

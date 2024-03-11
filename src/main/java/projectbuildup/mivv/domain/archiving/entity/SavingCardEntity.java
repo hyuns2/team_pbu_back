@@ -11,8 +11,8 @@ import java.util.stream.Collectors;
 @SuperBuilder
 @Getter
 @Entity
-@DiscriminatorValue("RemittanceCondition")
-@Table(name = "remittance_card")
+@DiscriminatorValue("SavingCondition")
+@Table(name = "saving_card")
 public class SavingCardEntity extends CardEntity {
 
     @Column(name = "charge", nullable = false)
@@ -25,7 +25,7 @@ public class SavingCardEntity extends CardEntity {
     protected Integer term;
 
     public void updateCard(ArchivingDto.createOrUpdateSavingCardRequestDto dto, String imagePath) {
-        this.type = CardType.Saving;
+        this.type = CardType.SAVING;
         this.title = dto.getTitle();
         this.subTitle = dto.getSubTitle();
         this.sentences = dto.getSentences().stream()

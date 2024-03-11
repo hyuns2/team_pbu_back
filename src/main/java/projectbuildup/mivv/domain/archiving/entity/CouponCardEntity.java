@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import projectbuildup.mivv.domain.archiving.dto.ArchivingDto;
 
-import java.io.IOException;
-import java.util.Collections;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -17,7 +15,7 @@ import java.util.stream.Collectors;
 @Entity
 @DiscriminatorValue("CouponCondition")
 @Table(name = "coupon_card")
-public class CouponConditionCardEntity extends CardEntity {
+public class CouponCardEntity extends CardEntity {
 
     @Column(name = "what_number", nullable = false)
     protected Integer whatNumber;

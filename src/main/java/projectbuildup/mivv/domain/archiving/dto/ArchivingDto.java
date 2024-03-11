@@ -102,9 +102,9 @@ public class ArchivingDto {
         @Schema(description = "몇개월 연속 쿠폰 발급자에게 카드를 부여할건가")
         private Integer howSuccessive;
 
-        public static CouponConditionCardEntity toEntity(final createOrUpdateCouponCardRequestDto dto, String imagePath) throws IOException {
+        public static CouponCardEntity toEntity(final createOrUpdateCouponCardRequestDto dto, String imagePath) throws IOException {
 
-            return CouponConditionCardEntity.builder()
+            return CouponCardEntity.builder()
                     .type(CardType.COUPON)
                     .title(dto.getTitle())
                     .subTitle(dto.getSubTitle())

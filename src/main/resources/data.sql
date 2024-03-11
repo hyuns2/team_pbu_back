@@ -1,61 +1,61 @@
 -- <IdentityVerification> --
 insert into identity_verification (id, birth_date, code, mobile, name, created_time, modified_time) -- 비밀번호 모두 123456으로 동일 --
-values (1, '19990101', 'abcxxxxxabc', '01012345671', '김철수', '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873'),
-       (2, '19990101', 'defxxxxxdef', '01012345672', '홍길동', '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873'),
-       (3, '19990101', 'ghixxxxxghi', '01099998883', '박지원', '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873'),
-       (4, '19990101', 'jklxxxxxjkl', '01012345674', '최현수', '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873'),
-       (5, '19990101', 'mnoxxxxxmno', '01012345675', '이민우', '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873'),
-       (6, '19990101', 'pqrxxxxxpqr', '01012345676', '정형식', '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873'),
-       (7, '19990101', 'stuxxxxxstu', '01011112227', '이재우', '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873'),
-       (8, '19990101', 'vwxxxxxxvwx', '01012345678', '배주현', '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873'),
-       (9, '19990101', 'yzaxxxxxyza', '01012345679', '김다은', '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873');
+values (1, '19990101', 'abcxxxxxabc', '01012345671', 'aaa', '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873'),
+       (2, '19990101', 'defxxxxxdef', '01012345672', 'bbb', '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873'),
+       (3, '19990101', 'ghixxxxxghi', '01099998883', 'ccc', '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873'),
+       (4, '19990101', 'jklxxxxxjkl', '01012345674', 'ddd', '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873'),
+       (5, '19990101', 'mnoxxxxxmno', '01012345675', 'eee', '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873'),
+       (6, '19990101', 'pqrxxxxxpqr', '01012345676', 'fff', '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873'),
+       (7, '19990101', 'stuxxxxxstu', '01011112227', 'ggg', '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873'),
+       (8, '19990101', 'vwxxxxxxvwx', '01012345678', 'hhh', '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873'),
+       (9, '19990101', 'yzaxxxxxyza', '01012345679', 'iii', '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873');
 
 
 -- <User> --
 insert into user (id, created_time, modified_time, agreement, email, nickname, password, store_image_name,
                   original_image_name, image_path,
                   identity_verification_id, deleted_at)
-values (1, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'test01@naver.com', '철수',
+values (1, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'test01@naver.com', 'aa',
         '{bcrypt}$2a$10$yQZvUKRebIw8NcO8bRsuiewJib4zZQ5Pi.GTbodIjDHK5h3icbzrO', 'default_user_profile.png',
         'default_user_profile.png',
         'https://server.gasomann.com/resources/static/images/profiles/default_user_profile.png', 1, null),
-       (2, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'test02@naver.com', '길동',
+       (2, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'test02@naver.com', 'bb',
         '{bcrypt}$2a$10$yQZvUKRebIw8NcO8bRsuiewJib4zZQ5Pi.GTbodIjDHK5h3icbzrO', 'default_user_profile.png',
         'default_user_profile.png',
         'https://server.gasomann.com/resources/static/images/profiles/default_user_profile.png', 2, null),
-       (3, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'test03@naver.com', '지원',
+       (3, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'test03@naver.com', 'cc',
         '{bcrypt}$2a$10$yQZvUKRebIw8NcO8bRsuiewJib4zZQ5Pi.GTbodIjDHK5h3icbzrO', 'default_user_profile.png',
         'default_user_profile.png',
         'https://server.gasomann.com/resources/static/images/profiles/default_user_profile.png', 3, null),
-       (4, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'test04@naver.com', '현수',
+       (4, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'test04@naver.com', 'dd',
         '{bcrypt}$2a$10$yQZvUKRebIw8NcO8bRsuiewJib4zZQ5Pi.GTbodIjDHK5h3icbzrO', 'default_user_profile.png',
         'default_user_profile.png',
         'https://server.gasomann.com/resources/static/images/profiles/default_user_profile.png', 4, null),
-       (5, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'test05@naver.com', '민우',
+       (5, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'test05@naver.com', 'ee',
         '{bcrypt}$2a$10$yQZvUKRebIw8NcO8bRsuiewJib4zZQ5Pi.GTbodIjDHK5h3icbzrO', 'default_user_profile.png',
         'default_user_profile.png',
         'https://server.gasomann.com/resources/static/images/profiles/default_user_profile.png', 5, null),
-       (6, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'test06@naver.com', '형식',
+       (6, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'test06@naver.com', 'ff',
         '{bcrypt}$2a$10$yQZvUKRebIw8NcO8bRsuiewJib4zZQ5Pi.GTbodIjDHK5h3icbzrO', 'default_user_profile.png',
         'default_user_profile.png',
         'https://server.gasomann.com/resources/static/images/profiles/default_user_profile.png', 6, null),
-       (7, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'test07@naver.com', '재우',
+       (7, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'test07@naver.com', 'gg',
         '{bcrypt}$2a$10$yQZvUKRebIw8NcO8bRsuiewJib4zZQ5Pi.GTbodIjDHK5h3icbzrO', 'default_user_profile.png',
         'default_user_profile.png',
         'https://server.gasomann.com/resources/static/images/profiles/default_user_profile.png', 7, null),
-       (8, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'test08@naver.com', '주현',
+       (8, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'test08@naver.com', 'hh',
         '{bcrypt}$2a$10$yQZvUKRebIw8NcO8bRsuiewJib4zZQ5Pi.GTbodIjDHK5h3icbzrO', 'default_user_profile.png',
         'default_user_profile.png',
         'https://server.gasomann.com/resources/static/images/profiles/default_user_profile.png', 8, null),
-       (9, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'test09@naver.com', '다은',
+       (9, '2023-02-08 11:31:14.982873', '2023-02-08 11:31:14.982873', true, 'test09@naver.com', 'ii',
         '{bcrypt}$2a$10$yQZvUKRebIw8NcO8bRsuiewJib4zZQ5Pi.GTbodIjDHK5h3icbzrO', 'default_user_profile.png',
         'default_user_profile.png',
         'https://server.gasomann.com/resources/static/images/profiles/default_user_profile.png', 9, null);
 
 
 insert into user_roles (user_id, roles)
-values (1, 'ROLE_USER'),
-       (1, 'ROLE_ADMIN'),
+values (1, 'ROLE_ADMIN'),
+       (1, 'ROLE_USER'),
        (2, 'ROLE_USER'),
        (3, 'ROLE_USER'),
        (4, 'ROLE_USER'),
@@ -65,6 +65,63 @@ values (1, 'ROLE_USER'),
        (8, 'ROLE_USER'),
        (9, 'ROLE_USER');
 
+-- <Card> --
+INSERT INTO `card` (`d_type`, `id`, `image_path`, `sentences`, `sub_title`, `title`, `type`)
+VALUES ('GeneralCondition', 13,
+        'https://server.gasomann.com/resources/static/images/cards/b4125c05-d3ef-4e4d-8bf1-24107e3dacb7.png',
+        '경제적 자유를 위해 생각을 바꿔라., GASOMANN의 시작을 함께해준 당신에게', 'OO', '사전 예약', 'GENERAL'),
+       ('SavingCondition', 14,
+        'https://server.gasomann.com/resources/static/images/cards/11f3c4f7-3c9f-4040-a8ef-28e44afc7e68.png',
+        '경제적 자유를 위해 생각을 바꿔라., GASOMANN 챌린지에 처음으로 참여했어요!', 'OO', '절약 1회 달성', 'SAVING'),
+       ('SavingCondition', 15,
+        'https://server.gasomann.com/resources/static/images/cards/6220ceec-7278-49a0-bd6d-2349275e7031.png',
+        '경제적 자유를 위해 생각을 바꿔라., 챌린지를 통한 절약을 3회 달성했어요.', 'OO', '절약 3회 달성', 'SAVING'),
+       ('SavingCondition', 16,
+        'https://server.gasomann.com/resources/static/images/cards/2cb1b5ce-5e4f-4316-b9f3-378528a08713.png',
+        '경제적 자유를 위해 생각을 바꿔라., 챌린지를 통한 절약을 5회 달성했어요.', 'oo', '절약 5회 달성', 'SAVING'),
+       ('SavingCondition', 17,
+        'https://server.gasomann.com/resources/static/images/cards/2ad44bdd-3118-44f3-8160-634aee42bbd4.png',
+        '경제적 자유를 위해 생각을 바꿔라., 절약 챌린지를 벌써 10회나 달성했어요!', 'OO', '절약 10회 달성', 'SAVING'),
+       ('SavingCondition', 18,
+        'https://server.gasomann.com/resources/static/images/cards/0dfdb2f7-7ab5-4606-a916-76b0fc0326e0.png',
+        '경제적 자유를 위해 생각을 바꿔라., GASOMANN에서 만원 절약에 성공했어요!', 'oo', '절약 금액 1만원 달성', 'SAVING'),
+       ('SavingCondition', 19,
+        'https://server.gasomann.com/resources/static/images/cards/0d532a13-dee9-4007-9a34-f21b036bc2c9.png',
+        '경제적 자유를 위해 생각을 바꿔라., 이때까지 3만원 절약 했어요!', 'OO', '절약 금액 3만원 달성', 'SAVING'),
+       ('SavingCondition', 20,
+        'https://server.gasomann.com/resources/static/images/cards/94ff05da-57b9-4aef-903c-786b71ded8e1.png',
+        '경제적 자유를 위해 생각을 바꿔라., 5만원 절약 성공!', 'OO', '절약 금액 5만원 달성', 'SAVING'),
+       ('SavingCondition', 21,
+        'https://server.gasomann.com/resources/static/images/cards/62ac9aec-e9b3-4a64-b74a-5887371da572.png',
+        '경제적 자유를 위해 생각을 바꿔라., 10만원을 모아버리셨네요...!', 'ooo', '절약 금액 10만원 달성', 'SAVING'),
+       ('SavingCondition', 22,
+        'https://server.gasomann.com/resources/static/images/cards/87479278-d850-4e8c-8dd2-8fa2805e173b.png',
+        '경제적 자유를 위해 생각을 바꿔라., 하루에 챌린지에 3번이나 참여했어요!', 'OO', '하루 3회 절약 달성', 'SAVING'),
+       ('SavingCondition', 23,
+        'https://server.gasomann.com/resources/static/images/cards/ad725a6e-31e8-4709-852f-e197931832a1.png',
+        '경제적 자유를 위해 생각을 바꿔라., 일주일에 15번 참여했어요. 프로 절약러네요.', 'oo', '7일 간 15회 절약 달성', 'SAVING'),
+       ('CouponCondition', 24,
+        'https://server.gasomann.com/resources/static/images/cards/8107bb1f-9ccb-4971-996e-1b564c290218.png',
+        '경제적 자유를 위해 생각을 바꿔라., 3달 연속 목표 달성에 성공했어요!', 'OO', '3달 연속 쿠폰 발급', 'COUPON'),
+       ('CouponCondition', 25,
+        'https://server.gasomann.com/resources/static/images/cards/c4965b7a-b00d-41a6-aa53-aa9537105987.png',
+        '경제적 자유를 위해 생각을 바꿔라., 5달 연속 이라...당신 정말 대단하군요!', 'oo', '5달 연속 쿠폰 발급', 'COUPON');
+
+INSERT INTO `saving_card` (`charge`, `count`, `term`, `id`)
+VALUES (0, 1, 0, 14),
+       (0, 3, 0, 15),
+       (0, 5, 0, 16),
+       (0, 10, 0, 17),
+       (10000, 0, 0, 18),
+       (30000, 0, 0, 19),
+       (50000, 0, 0, 20),
+       (100000, 0, 0, 21),
+       (0, 3, 1, 22),
+       (0, 15, 7, 23);
+
+INSERT INTO `coupon_card` (`how_successive`, `what_number`, `id`)
+VALUES (3, 0, 24),
+       (5, 0, 25);
 
 -- <Account> --
 insert into account(id, account_numbers, bank_type, user_id)
@@ -122,22 +179,22 @@ VALUES (1, '2023-06-13 09:33:01.569808', '2023-06-13 09:33:01.569808', NULL, '20
 
 INSERT INTO challenge_description(challenge_id, description)
 VALUES (1, '그 술자리 진짜 가고 싶어서 가는거 맞아요? 아니면 후회할텐데…'),
-       (1, '내일의 숙취와 후회, 감당 가능한가요?'),
-       (1, '간맥의 뜻이 간한테 엿맥이는건가요?'),
-       (2, '배달말고 포장해서, 배달팁도 아끼고 건강도 챙기기'),
-       (2, '칼로리 높은 배달음식도 먹을텐데, 조금 걸어두는편이 좋지 않겠어요?'),
-       (3, '필요 없어도 습관적으로 커피를 소비하고 있지는 않나요?'),
-       (3, '불필요한 커피 소비 줄여 돈도 아끼고 건강도 챙기기'),
-       (3, '그거 물 마시면서도 할 수 있는데, 꼭 커피에 의존해야겠어요?'),
-       (4, '어이구? 저번달에 택시비로 얼마를 쓴거에요?'),
-       (4, '택시도 습관입니다.'),
-       (4, '택시타면 만원, 버스타면 천원'),
-       (4, '30분만 일찍 일어나면 버스 탈 수 있을텐데…'),
-       (5, '하루 만 보도 안걷는데 킥보드 타면 불법입니다. (뇌절죄 단속대상)'),
-       (5, '10분 산책은 좋아하면서, 10분 걷기 싫어서 킥보드를 탄다구요?'),
-       (5, '길바닥에 돈 뿌리지 말고, 조금만 빨리 나와봅시다.'),
-       (6, '참여하고 있는 챌린지 말고도, 어디든 낭비를 하고 있지 않겠어요?'),
-       (6, '냅다 아끼고, 목돈 마련하는 것도 좋은 방법이에요!');
+       (2, '내일의 숙취와 후회, 감당 가능한가요?'),
+       (3, '간맥의 뜻이 간한테 엿맥이는건가요?'),
+       (4, '배달말고 포장해서, 배달팁도 아끼고 건강도 챙기기'),
+       (5, '칼로리 높은 배달음식도 먹을텐데, 조금 걸어두는편이 좋지 않겠어요?'),
+       (6, '필요 없어도 습관적으로 커피를 소비하고 있지는 않나요?'),
+       (7, '불필요한 커피 소비 줄여 돈도 아끼고 건강도 챙기기'),
+       (8, '그거 물 마시면서도 할 수 있는데, 꼭 커피에 의존해야겠어요?'),
+       (9, '어이구? 저번달에 택시비로 얼마를 쓴거에요?'),
+       (10, '택시도 습관입니다.'),
+       (11, '택시타면 만원, 버스타면 천원'),
+       (12, '30분만 일찍 일어나면 버스 탈 수 있을텐데…'),
+       (13, '하루 만 보도 안걷는데 킥보드 타면 불법입니다. (뇌절죄 단속대상)'),
+       (14, '10분 산책은 좋아하면서, 10분 걷기 싫어서 킥보드를 탄다구요?'),
+       (15, '길바닥에 돈 뿌리지 말고, 조금만 빨리 나와봅시다.'),
+       (16, '참여하고 있는 챌린지 말고도, 어디든 낭비를 하고 있지 않겠어요?'),
+       (17, '냅다 아끼고, 목돈 마련하는 것도 좋은 방법이에요!');
 
 
 -- <Participation> --
@@ -167,12 +224,14 @@ values (1, '2023-04-11 11:31:14.982873', '2023-04-01 11:31:14.982873', '배달�
        (9, '2023-05-03 11:31:14.982873', '2023-04-01 11:31:14.982873', '배달팁 아끼기', 9000, 9, null),
        (10, '2023-05-03 11:31:14.982873', '2023-04-01 11:31:14.982873', '택시비 아끼기', 10000, 10, null);
 
+-- <Inquiry> --
 insert into inquiry(id, answer, content, time_stamp, title, user_id)
 values (1, '답변입니다.', '문의 내용입니다.', '2023-04-01 11:31:14.982873', '문의 샘플1', 1),
        (2, null, '문의 내용입니다.', '2023-04-01 11:31:14.982873', '문의 샘플2', 1),
        (3, null, '문의 내용입니다.', '2023-04-01 11:31:14.982873', '문의 샘플3', 2),
        (4, '답변입니다.', '문의 내용입니다.', '2023-04-01 11:31:14.982873', '문의 샘플4', 3);
 
+-- <Notification> --
 insert into notification(id, content, image_path, type, time_stamp, title)
 values (1, '이벤트내용', 'https://server.gasomann.com/resources/static/images/cards/card1.png', 'EVENT',
         '2023-05-24 11:00:14.982873', '이벤트1'),
@@ -182,66 +241,6 @@ values (1, '이벤트내용', 'https://server.gasomann.com/resources/static/imag
         '2023-05-24 11:00:14.982873', '공지사항1'),
        (4, '공지내용', 'https://server.gasomann.com/resources/static/images/cards/card1.png', 'NOTICE',
         '2023-05-24 11:00:14.982873', '공지사항2');
-
-INSERT INTO `card` (`d_type`, `id`, `image_path`, `sentences`, `sub_title`, `title`, `type`)
-VALUES ('GeneralCondition', 13,
-        'https://server.gasomann.com/resources/static/images/cards/b4125c05-d3ef-4e4d-8bf1-24107e3dacb7.png',
-        '경제적 자유를 위해 생각을 바꿔라., GASOMANN의 시작을 함께해준 당신에게', 'OO', '사전 예약', 'GENERAL'),
-       ('RemittanceCondition', 14,
-        'https://server.gasomann.com/resources/static/images/cards/11f3c4f7-3c9f-4040-a8ef-28e44afc7e68.png',
-        '경제적 자유를 위해 생각을 바꿔라., GASOMANN 챌린지에 처음으로 참여했어요!', 'OO', '절약 1회 달성', 'REMITTANCE'),
-       ('RemittanceCondition', 15,
-        'https://server.gasomann.com/resources/static/images/cards/6220ceec-7278-49a0-bd6d-2349275e7031.png',
-        '경제적 자유를 위해 생각을 바꿔라., 챌린지를 통한 절약을 3회 달성했어요.', 'OO', '절약 3회 달성', 'REMITTANCE'),
-       ('RemittanceCondition', 16,
-        'https://server.gasomann.com/resources/static/images/cards/2cb1b5ce-5e4f-4316-b9f3-378528a08713.png',
-        '경제적 자유를 위해 생각을 바꿔라., 챌린지를 통한 절약을 5회 달성했어요.', 'oo', '절약 5회 달성', 'REMITTANCE'),
-       ('RemittanceCondition', 17,
-        'https://server.gasomann.com/resources/static/images/cards/2ad44bdd-3118-44f3-8160-634aee42bbd4.png',
-        '경제적 자유를 위해 생각을 바꿔라., 절약 챌린지를 벌써 10회나 달성했어요!', 'OO', '절약 10회 달성', 'REMITTANCE'),
-       ('RemittanceCondition', 18,
-        'https://server.gasomann.com/resources/static/images/cards/0dfdb2f7-7ab5-4606-a916-76b0fc0326e0.png',
-        '경제적 자유를 위해 생각을 바꿔라., GASOMANN에서 만원 절약에 성공했어요!', 'oo', '절약 금액 1만원 달성', 'REMITTANCE'),
-       ('RemittanceCondition', 19,
-        'https://server.gasomann.com/resources/static/images/cards/0d532a13-dee9-4007-9a34-f21b036bc2c9.png',
-        '경제적 자유를 위해 생각을 바꿔라., 이때까지 3만원 절약 했어요!', 'OO', '절약 금액 3만원 달성', 'REMITTANCE'),
-       ('RemittanceCondition', 20,
-        'https://server.gasomann.com/resources/static/images/cards/94ff05da-57b9-4aef-903c-786b71ded8e1.png',
-        '경제적 자유를 위해 생각을 바꿔라., 5만원 절약 성공!', 'OO', '절약 금액 5만원 달성', 'REMITTANCE'),
-       ('RemittanceCondition', 21,
-        'https://server.gasomann.com/resources/static/images/cards/62ac9aec-e9b3-4a64-b74a-5887371da572.png',
-        '경제적 자유를 위해 생각을 바꿔라., 10만원을 모아버리셨네요...!', 'ooo', '절약 금액 10만원 달성', 'REMITTANCE'),
-       ('RemittanceCondition', 22,
-        'https://server.gasomann.com/resources/static/images/cards/87479278-d850-4e8c-8dd2-8fa2805e173b.png',
-        '경제적 자유를 위해 생각을 바꿔라., 하루에 챌린지에 3번이나 참여했어요!', 'OO', '하루 3회 절약 달성', 'REMITTANCE'),
-       ('RemittanceCondition', 23,
-        'https://server.gasomann.com/resources/static/images/cards/ad725a6e-31e8-4709-852f-e197931832a1.png',
-        '경제적 자유를 위해 생각을 바꿔라., 일주일에 15번 참여했어요. 프로 절약러네요.', 'oo', '7일 간 15회 절약 달성', 'REMITTANCE'),
-       ('CouponCondition', 24,
-        'https://server.gasomann.com/resources/static/images/cards/8107bb1f-9ccb-4971-996e-1b564c290218.png',
-        '경제적 자유를 위해 생각을 바꿔라., 3달 연속 목표 달성에 성공했어요!', 'OO', '3달 연속 쿠폰 발급', 'COUPON'),
-       ('CouponCondition', 25,
-        'https://server.gasomann.com/resources/static/images/cards/c4965b7a-b00d-41a6-aa53-aa9537105987.png',
-        '경제적 자유를 위해 생각을 바꿔라., 5달 연속 이라...당신 정말 대단하군요!', 'oo', '5달 연속 쿠폰 발급', 'COUPON');
-
-
-
-INSERT INTO `remittance_card` (`charge`, `count`, `term`, `id`)
-VALUES (0, 1, 0, 14),
-       (0, 3, 0, 15),
-       (0, 5, 0, 16),
-       (0, 10, 0, 17),
-       (10000, 0, 0, 18),
-       (30000, 0, 0, 19),
-       (50000, 0, 0, 20),
-       (100000, 0, 0, 21),
-       (0, 3, 1, 22),
-       (0, 15, 7, 23);
-
-INSERT INTO `coupon_card` (`how_successive`, `what_number`, `id`)
-VALUES (3, 0, 24),
-       (5, 0, 25);
-
 
 -- <Worthy Consumption> --
 insert into worthy_consumption_condition(id, check_condition_type, convention_end_date, convention_start_date, max_issuance)

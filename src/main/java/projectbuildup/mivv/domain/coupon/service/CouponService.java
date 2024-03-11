@@ -3,11 +3,6 @@ package projectbuildup.mivv.domain.coupon.service;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 import projectbuildup.mivv.domain.coupon.dto.CouponDto;
 import projectbuildup.mivv.domain.coupon.entity.Coupon;
@@ -18,7 +13,7 @@ import projectbuildup.mivv.domain.user.repository.UserRepository;
 import projectbuildup.mivv.domain.worthyConsumption.entity.CheckConditionType;
 import projectbuildup.mivv.domain.worthyConsumption.entity.WorthyConsumption;
 import projectbuildup.mivv.domain.worthyConsumption.repository.WorthyConsumptionRepository;
-import projectbuildup.mivv.global.common.fileStore.ExcelReturner;
+import projectbuildup.mivv.global.common.fileStore.ExcelManager;
 import projectbuildup.mivv.global.common.imageStore.Image;
 import projectbuildup.mivv.global.common.imageStore.ImageType;
 import projectbuildup.mivv.global.common.imageStore.ImageUploader;
@@ -42,6 +37,7 @@ public class CouponService {
     private final CouponIssuanceRepository couponIssuanceRepository;
 
     private final ImageUploader imageUploader;
+    private final ExcelManager excelManager;
 
     /**
      * 가치소비에서 쿠폰을 생성하는 로직입니다.
@@ -107,7 +103,7 @@ public class CouponService {
         }
 
         List<User> userList = couponIssuanceRepository.findUsersByCouponIdAndDate(couponId, start, end);
-        ExcelReturner.writeExcel(response, userList, year + "-" + month + "/" + couponTitle);
+        excelManager.writeExcel(response, userList, year + "-" + month + "/" + couponTitle);
 
     }
 }

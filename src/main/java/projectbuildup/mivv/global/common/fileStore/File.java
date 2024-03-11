@@ -8,10 +8,10 @@ import lombok.Data;
 public class File {
     // 사용자의 파일명
     private String originalFileName;
-    //서버의 파일명
+    // 서버의 파일명
     private String storeFilename;
-    //서버의 파일 경로
+    // 서버의 파일 경로
     private String filePath;
-    //파일 url 경로
+    // 파일 url 경로
     private String filePathWithUrl;
 }
