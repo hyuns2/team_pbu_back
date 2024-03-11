@@ -73,6 +73,54 @@ public class ArchivingDto {
 
     @AllArgsConstructor
     @Data
+    public static class createOrUpdateCouponCardRequestDto {
+
+        @NotBlank
+        @Length(min = 2, max = 30)
+        @Schema(description = "카드 제목")
+        private String title;
+
+        @NotBlank
+        @Length(min = 2, max = 30)
+        @Schema(description = "카드 부제목")
+        private String subTitle;
+
+        @NotNull
+        @Size(max = 2)
+        @Schema(description = "카드 명언")
+        private List<@NotBlank @Length(min = 2, max = 30) String> sentences;
+
+        @NotNull
+        @Schema(description = "카드 이미지 파일")
+        private MultipartFile image;
+
+        @NotNull
+        @Schema(description = "몇번째 쿠폰 발급자에게 카드를 부여할건가")
+        private Integer whatNumber;
+
+        @NotNull
+        @Schema(description = "몇개월 연속 쿠폰 발급자에게 카드를 부여할건가")
+        private Integer howSuccessive;
+
+        public static CouponConditionCardEntity toEntity(final createOrUpdateCouponCardRequestDto dto, String imagePath) throws IOException {
+
+            return CouponConditionCardEntity.builder()
+                    .type(CardType.COUPON)
+                    .title(dto.getTitle())
+                    .subTitle(dto.getSubTitle())
+                    .sentences(dto.getSentences().stream()
+                            .map(Object::toString)
+                            .collect(Collectors.joining(", ")))
+                    .imagePath(imagePath)
+                    .whatNumber(dto.getWhatNumber())
+                    .howSuccessive(dto.getHowSuccessive())
+                    .build();
+
+        }
+    }
+
+    @AllArgsConstructor
+    @Data
     public static class createOrUpdateGeneralCardRequestDto {
 
         @NotBlank
@@ -119,54 +167,6 @@ public class ArchivingDto {
         @NotNull
         @Schema(description = "첨부 엑셀파일")
         private MultipartFile file;
-    }
-
-    @AllArgsConstructor
-    @Data
-    public static class createOrUpdateCouponCardRequestDto {
-
-        @NotBlank
-        @Length(min = 2, max = 30)
-        @Schema(description = "카드 제목")
-        private String title;
-
-        @NotBlank
-        @Length(min = 2, max = 30)
-        @Schema(description = "카드 부제목")
-        private String subTitle;
-
-        @NotNull
-        @Size(max = 2)
-        @Schema(description = "카드 명언")
-        private List<@NotBlank @Length(min = 2, max = 30) String> sentences;
-
-        @NotNull
-        @Schema(description = "카드 이미지 파일")
-        private MultipartFile image;
-
-        @NotNull
-        @Schema(description = "몇번째 쿠폰 발급자에게 카드를 부여할건가")
-        private Integer whatNumber;
-
-        @NotNull
-        @Schema(description = "몇개월 연속 쿠폰 발급자에게 카드를 부여할건가")
-        private Integer howSuccessive;
-
-        public static CouponConditionCardEntity toEntity(final createOrUpdateCouponCardRequestDto dto, String imagePath) throws IOException {
-
-            return CouponConditionCardEntity.builder()
-                    .type(CardType.COUPON)
-                    .title(dto.getTitle())
-                    .subTitle(dto.getSubTitle())
-                    .sentences(dto.getSentences().stream()
-                            .map(Object::toString)
-                            .collect(Collectors.joining(", ")))
-                    .imagePath(imagePath)
-                    .whatNumber(dto.getWhatNumber())
-                    .howSuccessive(dto.getHowSuccessive())
-                    .build();
-
-        }
     }
 
     @AllArgsConstructor
@@ -232,7 +232,7 @@ public class ArchivingDto {
 
     @AllArgsConstructor
     @Data
-    public static class SimpleUserCardResponseDto {
+    public static class NewUserCardResponseDto {
 
         @Schema(description = "UserCard Id")
         private Long id;
@@ -243,7 +243,7 @@ public class ArchivingDto {
         @Schema(description = "신규 여부")
         private boolean isNew;
 
-        public SimpleUserCardResponseDto(final UserCardEntity entity) {
+        public NewUserCardResponseDto(final UserCardEntity entity) {
             this.id = entity.getId();
             this.date = entity.getDate();
             this.isNew = entity.isNew();
@@ -258,7 +258,7 @@ public class ArchivingDto {
         private CardResponseDto cardDto;
 
         @Schema(description = "유저카드 정보")
-        private SimpleUserCardResponseDto userCardDto;
+        private NewUserCardResponseDto userCardDto;
 
         public CardAndUserCardResponseDto(final CardEntity cardEntity) {
             this.cardDto = new CardResponseDto(cardEntity);
@@ -267,7 +267,7 @@ public class ArchivingDto {
 
         public CardAndUserCardResponseDto(final CardEntity cardEntity, final UserCardEntity userCardEntity) {
             this.cardDto = new CardResponseDto(cardEntity);
-            this.userCardDto = new SimpleUserCardResponseDto(userCardEntity);
+            this.userCardDto = new NewUserCardResponseDto(userCardEntity);
         }
 
     }

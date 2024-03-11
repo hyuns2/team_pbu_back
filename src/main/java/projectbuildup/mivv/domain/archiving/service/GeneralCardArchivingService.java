@@ -52,7 +52,7 @@ public class GeneralCardArchivingService {
      * @param dto 카드 제목, 부제목, 명언, 이미지파일
      * @throws IOException
      */
-    public void createGeneralConditionCard(final ArchivingDto.createOrUpdateGeneralCardRequestDto dto) throws IOException {
+    public void createGeneralCard(final ArchivingDto.createOrUpdateGeneralCardRequestDto dto) throws IOException {
 
         Image image = imageUploader.upload(dto.getImage(), ImageType.CARD);
 
@@ -70,7 +70,7 @@ public class GeneralCardArchivingService {
      * @throws CCardNotFoundException 카드 찾기 실패시
      */
     @Transactional
-    public void updateGeneralConditionCard(final Long id, final ArchivingDto.createOrUpdateGeneralCardRequestDto dto) throws IOException {
+    public void updateGeneralCard(final Long id, final ArchivingDto.createOrUpdateGeneralCardRequestDto dto) throws IOException {
 
         Optional<CardEntity> target = cardRepo.findById(id);
         if (target.isEmpty()) {
@@ -145,7 +145,7 @@ public class GeneralCardArchivingService {
      * @throws CInvalidCellException 엑셀의 셀이 유효하지 않을시
      */
     @Transactional
-    public void assignGeneralConditionCards(final ArchivingDto.AssignGeneralCardsRequestDto dto, final HttpServletResponse response) throws IOException {
+    public void assignGeneralCards(final ArchivingDto.AssignGeneralCardsRequestDto dto, final HttpServletResponse response) throws IOException {
         Optional<CardEntity> targetCard = cardRepo.findById(dto.getId());
         if (targetCard.isEmpty()) {
             throw new CCardNotFoundException();
@@ -176,7 +176,7 @@ public class GeneralCardArchivingService {
 
             List<String> result = checkRowData(row, rowIndex);
 
-            assignGeneralConditionCards(cardEntity, result.get(0), result.get(1), notFoundUsers);
+            assignGeneralCards(cardEntity, result.get(0), result.get(1), notFoundUsers);
         }
 
         ExcelReturner.writeExcel(response, notFoundUsers, LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
@@ -204,7 +204,7 @@ public class GeneralCardArchivingService {
         return result;
     }
 
-    private void assignGeneralConditionCards(CardEntity cardEntity, String name, String mobile, List<User> notFoundUsers) {
+    private void assignGeneralCards(CardEntity cardEntity, String name, String mobile, List<User> notFoundUsers) {
         Optional<User> targetUser = userRepo.findByNameAndMobile(name, mobile);
         if (targetUser.isEmpty()) {
             IdentityVerification identityVerification = new IdentityVerification();

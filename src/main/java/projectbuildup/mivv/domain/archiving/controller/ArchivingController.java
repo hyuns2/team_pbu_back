@@ -47,7 +47,7 @@ public class ArchivingController {
     @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping(value = "/admin/remittance-card/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> updateRemittanceConditionCard(@AuthenticationPrincipal User user, @PathVariable("id") Long id, @Valid @ModelAttribute("updateRemittanceCards") ArchivingDto.createOrUpdateSavingCardRequestDto dto) throws IOException {
+    public ResponseEntity<?> updateSavingCard(@AuthenticationPrincipal User user, @PathVariable("id") Long id, @Valid @ModelAttribute("updateRemittanceCards") ArchivingDto.createOrUpdateSavingCardRequestDto dto) throws IOException {
         savingCardArchivingService.updateSavingCard(id, dto);
 
         return new ResponseEntity<>(HttpStatus.OK);
@@ -57,8 +57,8 @@ public class ArchivingController {
     @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/admin/coupon-card", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> createCouponConditionCard(@AuthenticationPrincipal User user, @Valid @ModelAttribute("createCouponCards") ArchivingDto.createOrUpdateCouponCardRequestDto dto) throws IOException {
-        couponCardArchivingService.createCouponConditionCard(dto);
+    public ResponseEntity<?> createCouponCard(@AuthenticationPrincipal User user, @Valid @ModelAttribute("createCouponCards") ArchivingDto.createOrUpdateCouponCardRequestDto dto) throws IOException {
+        couponCardArchivingService.createCouponCard(dto);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -67,8 +67,8 @@ public class ArchivingController {
     @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping(value = "/admin/coupon-card/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> updateCouponConditionCard(@AuthenticationPrincipal User user, @PathVariable("id") Long id, @Valid @ModelAttribute("updateCouponCards") ArchivingDto.createOrUpdateCouponCardRequestDto dto) throws IOException {
-        couponCardArchivingService.updateCouponConditionCard(id, dto);
+    public ResponseEntity<?> updateCouponCard(@AuthenticationPrincipal User user, @PathVariable("id") Long id, @Valid @ModelAttribute("updateCouponCards") ArchivingDto.createOrUpdateCouponCardRequestDto dto) throws IOException {
+        couponCardArchivingService.updateCouponCard(id, dto);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -77,8 +77,8 @@ public class ArchivingController {
     @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/admin/general-card", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> createGeneralConditionCard(@AuthenticationPrincipal User user, @Valid @ModelAttribute("createGeneralCards") ArchivingDto.createOrUpdateGeneralCardRequestDto dto) throws IOException {
-        generalCardArchivingService.createGeneralConditionCard(dto);
+    public ResponseEntity<?> createGeneralCard(@AuthenticationPrincipal User user, @Valid @ModelAttribute("createGeneralCards") ArchivingDto.createOrUpdateGeneralCardRequestDto dto) throws IOException {
+        generalCardArchivingService.createGeneralCard(dto);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -87,8 +87,8 @@ public class ArchivingController {
     @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping(value = "/admin/general-card/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> updateGeneralConditionCard(@AuthenticationPrincipal User user, @PathVariable("id") Long id, @Valid @ModelAttribute(name="updateGeneralCards") ArchivingDto.createOrUpdateGeneralCardRequestDto dto) throws IOException {
-        generalCardArchivingService.updateGeneralConditionCard(id, dto);
+    public ResponseEntity<?> updateGeneralCard(@AuthenticationPrincipal User user, @PathVariable("id") Long id, @Valid @ModelAttribute(name="updateGeneralCards") ArchivingDto.createOrUpdateGeneralCardRequestDto dto) throws IOException {
+        generalCardArchivingService.updateGeneralCard(id, dto);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -98,7 +98,7 @@ public class ArchivingController {
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/assign/general-cards", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> assignGeneralConditionCards(@AuthenticationPrincipal User user, @ModelAttribute("assignGeneralCards") ArchivingDto.AssignGeneralCardsRequestDto dto, HttpServletResponse response) throws IOException {
-        generalCardArchivingService.assignGeneralConditionCards(dto, response);
+        generalCardArchivingService.assignGeneralCards(dto, response);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

@@ -49,7 +49,7 @@ public class CouponCardArchivingService {
      * @throws IOException
      * @throws CInvalidCardConditionException 카드 조건이 없을 시
      */
-    public void createCouponConditionCard(final ArchivingDto.createOrUpdateCouponCardRequestDto dto) throws IOException {
+    public void createCouponCard(final ArchivingDto.createOrUpdateCouponCardRequestDto dto) throws IOException {
 
         if (dontHaveAnyConditions(dto)) {
             throw new CInvalidCardConditionException();
@@ -76,7 +76,7 @@ public class CouponCardArchivingService {
      * @throws CCardNotFoundException 카드 찾기 실패시
      */
     @Transactional
-    public void updateCouponConditionCard(final Long id, final ArchivingDto.createOrUpdateCouponCardRequestDto dto) throws IOException {
+    public void updateCouponCard(final Long id, final ArchivingDto.createOrUpdateCouponCardRequestDto dto) throws IOException {
 
         if (dontHaveAnyConditions(dto)) {
             throw new CInvalidCardConditionException();
