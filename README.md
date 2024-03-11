@@ -1,1 +1,4 @@
-# MIVV_Backend_new
+# Development
+
+- 개발용 브랜치 입니다.
+- 프로젝트 종료 후의 리팩토링이 포함되어 있습니다.
