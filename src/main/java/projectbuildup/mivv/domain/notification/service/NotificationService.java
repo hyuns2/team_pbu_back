@@ -3,6 +3,7 @@ package projectbuildup.mivv.domain.notification.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import projectbuildup.mivv.domain.notification.dto.NotificationDto;
 import projectbuildup.mivv.domain.notification.entity.NotificationEntity;
 import projectbuildup.mivv.domain.notification.entity.NotificationType;
@@ -56,6 +57,7 @@ public class NotificationService {
      * @param id 알림 Id
      * @throws CNotificationNotFoundException 알림 찾기 실패시
      */
+    @Transactional
     public void deleteNotification(final Long id) {
         Optional<NotificationEntity> target = repo.findById(id);
         if (target.isEmpty()) {
