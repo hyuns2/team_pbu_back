@@ -11,9 +11,9 @@ import java.util.stream.Collectors;
 
 @Entity
 @Getter
-@Inheritance(strategy = InheritanceType.JOINED)
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "d_type")
 @DiscriminatorValue("GeneralCondition")
 @Table(name="card")

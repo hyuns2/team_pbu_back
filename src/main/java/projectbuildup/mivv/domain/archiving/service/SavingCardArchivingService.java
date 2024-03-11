@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import projectbuildup.mivv.domain.archiving.dto.ArchivingDto;
 import projectbuildup.mivv.domain.archiving.entity.CardEntity;
 import projectbuildup.mivv.domain.archiving.entity.CardType;
-import projectbuildup.mivv.domain.archiving.entity.RemittanceConditionCardEntity;
+import projectbuildup.mivv.domain.archiving.entity.SavingCardEntity;
 import projectbuildup.mivv.domain.archiving.entity.UserCardEntity;
 import projectbuildup.mivv.domain.archiving.repository.CardRepository;
 import projectbuildup.mivv.domain.archiving.repository.UserCardRepository;
@@ -27,7 +27,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
-public class RemittanceArchivingService {
+public class SavingCardArchivingService {
 
     private final CardRepository cardRepo;
     private final UserCardRepository userCardRepo;
@@ -39,24 +39,19 @@ public class RemittanceArchivingService {
      * 절약 카드 생성
      *
      * @param dto 카드 정보, 발급 조건
-     * @throws IOException
      * @throws CInvalidCardConditionException 카드 조건이 없을 시
      */
-    public void createRemittanceConditionCard(final ArchivingDto.createOrUpdateRemittanceCardRequestDto dto) throws IOException {
-
-        if (dontHaveAnyConditions(dto)) {
+    public void createSavingCard(final ArchivingDto.createOrUpdateSavingCardRequestDto dto) throws IOException {
+        if (NoAnyConditions(dto)) {
             throw new CInvalidCardConditionException();
         }
 
         Image image = imageUploader.upload(dto.getImage(), ImageType.CARD);
-
-        RemittanceConditionCardEntity entity = ArchivingDto.createOrUpdateRemittanceCardRequestDto.toEntity(dto, image.getImagePath());
-
+        SavingCardEntity entity = ArchivingDto.createOrUpdateSavingCardRequestDto.toEntity(dto, image.getImagePath());
         cardRepo.save(entity);
-
     }
 
-    private boolean dontHaveAnyConditions(ArchivingDto.createOrUpdateRemittanceCardRequestDto dto) {
+    private boolean NoAnyConditions(ArchivingDto.createOrUpdateSavingCardRequestDto dto) {
         return (dto.getCharge() == 0 && dto.getCount() == 0 && dto.getTerm() == 0);
     }
 
@@ -65,13 +60,11 @@ public class RemittanceArchivingService {
      *
      * @param id 카드 Id
      * @param dto 수정하려는 정보
-     * @throws IOException
      * @throws CCardNotFoundException 카드 찾기 실패시
      */
     @Transactional
-    public void updateRemittanceConditionCard(final Long id, final ArchivingDto.createOrUpdateRemittanceCardRequestDto dto) throws IOException {
-
-        if (dontHaveAnyConditions(dto)) {
+    public void updateSavingCard(final Long id, final ArchivingDto.createOrUpdateSavingCardRequestDto dto) throws IOException {
+        if (NoAnyConditions(dto)) {
             throw new CInvalidCardConditionException();
         }
 
@@ -79,14 +72,13 @@ public class RemittanceArchivingService {
         if (target.isEmpty()) {
             throw new CCardNotFoundException();
         }
-        if (!target.get().getType().equals(CardType.REMITTANCE)) {
+        if (!target.get().getType().equals(CardType.Saving)) {
             throw new CCardTypeNotMatchException();
         }
 
-        RemittanceConditionCardEntity result = (RemittanceConditionCardEntity) target.get();
+        SavingCardEntity result = (SavingCardEntity) target.get();
         Image image = imageUploader.upload(dto.getImage(), ImageType.CARD);
         result.updateCard(dto, image.getImagePath());
-
     }
 
     /**
@@ -95,38 +87,34 @@ public class RemittanceArchivingService {
      * @param user 유저 정보
      */
     @Transactional
-    public void assignRemittanceConditionCards(final User user) {
-
+    public void assignSavingCards(final User user) {
         List<UserCardEntity> alreadyExistings = userCardRepo.findUserCardEntitiesByUser(user);
-
-        List<RemittanceConditionCardEntity> allCards = (List<RemittanceConditionCardEntity>) cardRepo.findAllByType(CardType.REMITTANCE);
+        List<SavingCardEntity> allCards = (List<SavingCardEntity>)cardRepo.findAllByType(CardType.Saving);
 
         for (UserCardEntity element: alreadyExistings) {
             allCards.remove(element.getCardEntity());
         }
+        List<SavingCardEntity> checkedCards = allCards;
 
-        List<RemittanceConditionCardEntity> cardsToCheck = allCards;
-
-        checkAndAssignRemittanceConditionCards(user, cardsToCheck);
-
+        assignSavingCards(user, checkedCards);
     }
 
-    private void checkAndAssignRemittanceConditionCards(User user, List<RemittanceConditionCardEntity> cardsToCheck) {
-        for (RemittanceConditionCardEntity element: cardsToCheck) {
+    private void assignSavingCards(User user, List<SavingCardEntity> checkedCards) {
+        for (SavingCardEntity element: checkedCards) {
             Integer charge = element.getCharge();
             Integer count = element.getCount();
             Integer term = element.getTerm();
 
             if (term == 0) {
-                ifRemittanceConditionCardHasNotTerm(user, charge, count, element);
+                ifNoHaveTerm(user, charge, count, element);
             }
             else {
-                ifRemittanceConditionCardHasTerm(user, charge, count, term, element);
+                ifHaveTerm(user, charge, count, term, element);
             }
         }
     }
 
-    private void ifRemittanceConditionCardHasNotTerm(User user, Integer charge, Integer count, RemittanceConditionCardEntity element) {
+    private void ifNoHaveTerm(User user, Integer charge, Integer count, SavingCardEntity element) {
         Integer chargeSum = remittanceRepo.findChargeSum(user);
         Integer countSum = remittanceRepo.findCountSum(user);
 
@@ -135,7 +123,7 @@ public class RemittanceArchivingService {
         }
     }
 
-    private void ifRemittanceConditionCardHasTerm(User user, Integer charge, Integer count, Integer term, RemittanceConditionCardEntity element) {
+    private void ifHaveTerm(User user, Integer charge, Integer count, Integer term, SavingCardEntity element) {
         Integer chargeSum = remittanceRepo.findChargeSumBetweenTerm(user, LocalDateTime.now().minusDays(term), LocalDateTime.now());
         Integer countSum = remittanceRepo.findCountSumBetweenTerm(user, LocalDateTime.now().minusDays(term), LocalDateTime.now());
 

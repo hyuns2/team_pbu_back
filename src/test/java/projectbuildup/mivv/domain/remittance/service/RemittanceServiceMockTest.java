@@ -8,12 +8,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ActiveProfiles;
-import projectbuildup.mivv.domain.account.entity.TransactionDetail;
 import projectbuildup.mivv.domain.account.service.accountdetails.AccountDetailsSystem;
-import projectbuildup.mivv.domain.archiving.service.RemittanceArchivingService;
+import projectbuildup.mivv.domain.archiving.service.SavingCardArchivingService;
 import projectbuildup.mivv.domain.challenge.entity.Challenge;
 import projectbuildup.mivv.domain.challenge.repository.ChallengeRepository;
 import projectbuildup.mivv.domain.challenge.service.RankScoreCalculator;
@@ -25,8 +22,6 @@ import projectbuildup.mivv.domain.remittance.repository.RemittanceRepository;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.domain.user.repository.UserRepository;
 import projectbuildup.mivv.global.error.exception.CBadRequestException;
-import projectbuildup.mivv.global.error.exception.CResourceNotFoundException;
-import projectbuildup.mivv.global.error.exception.CUserNotFoundException;
 import projectbuildup.mivv.integrationtest.setting.MockEntityFactory;
 
 import java.time.LocalDate;
@@ -60,7 +55,7 @@ class RemittanceServiceMockTest {
     @Mock
     RankScoreCalculator rankScoreCalculator;
     @Mock
-    RemittanceArchivingService remittanceArchivingService;
+    SavingCardArchivingService savingCardArchivingService;
 
     @Mock
     AccountDetailsSystem accountDetailsSystem;

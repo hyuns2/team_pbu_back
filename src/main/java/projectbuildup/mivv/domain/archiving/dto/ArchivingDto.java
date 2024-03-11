@@ -20,7 +20,7 @@ public class ArchivingDto {
 
     @AllArgsConstructor
     @Data
-    public static class createOrUpdateRemittanceCardRequestDto {
+    public static class createOrUpdateSavingCardRequestDto {
 
         @NotBlank
         @Length(min = 2, max = 30)
@@ -53,10 +53,10 @@ public class ArchivingDto {
         @Schema(description = "발급조건 일수")
         private Integer term;
 
-        public static RemittanceConditionCardEntity toEntity(final createOrUpdateRemittanceCardRequestDto dto, String imagePath) throws IOException {
+        public static SavingCardEntity toEntity(final createOrUpdateSavingCardRequestDto dto, String imagePath) throws IOException {
 
-            return RemittanceConditionCardEntity.builder()
-                    .type(CardType.REMITTANCE)
+            return SavingCardEntity.builder()
+                    .type(CardType.Saving)
                     .title(dto.getTitle())
                     .subTitle(dto.getSubTitle())
                     .sentences(dto.getSentences().stream()
