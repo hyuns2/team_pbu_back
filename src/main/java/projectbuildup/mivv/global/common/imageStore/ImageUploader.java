@@ -20,10 +20,8 @@ public class ImageUploader {
 
     @Value("${path.images}")
     String STORE_PATH;
-
     @Value("${path.ipUrl}")
     String IP_ADDRESS;
-
     private static final String DELIMITER = "/";
 
     /**
@@ -31,9 +29,11 @@ public class ImageUploader {
      * STORE_PATH는 이미지가 저장될 상위 디렉토리를 지정합니다.
      * 저장되는 파일의 이름은 UUID 랜덤 문자열입니다.
      *
-     * @param multipartFile 멀티파트파일
+     * @param multipartFile 이미지 파일
      * @param imageType     이미지가 저장될 하위 디렉토리 (이미지 종류에 따라 분류)
      * @return 이미지 메타 정보
+     * @throws CBadRequestException 이미지 파일 손상
+     * @throws CInternalServerException 서버에 이미지 업로드 불가
      */
     public Image upload(MultipartFile multipartFile, ImageType imageType) {
         validate(multipartFile);
@@ -71,7 +71,6 @@ public class ImageUploader {
      * 저장된 이미지 파일을 삭제합니다.
      *
      * @param image 삭제할 이미지 정보
-     * @throws IOException
      */
     public boolean deleteIfExists(Image image) throws IOException {
         File file = new File(getRelativePath(image));
