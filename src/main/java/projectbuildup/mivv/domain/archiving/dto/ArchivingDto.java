@@ -56,7 +56,7 @@ public class ArchivingDto {
         public static SavingCardEntity toEntity(final createOrUpdateSavingCardRequestDto dto, String imagePath) throws IOException {
 
             return SavingCardEntity.builder()
-                    .type(CardType.Saving)
+                    .type(CardType.SAVING)
                     .title(dto.getTitle())
                     .subTitle(dto.getSubTitle())
                     .sentences(dto.getSentences().stream()

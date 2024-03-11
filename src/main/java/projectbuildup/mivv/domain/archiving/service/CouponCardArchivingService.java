@@ -46,24 +46,19 @@ public class CouponCardArchivingService {
      * 소비 카드 생성
      *
      * @param dto 소비 정보, 발급 조건
-     * @throws IOException
      * @throws CInvalidCardConditionException 카드 조건이 없을 시
      */
     public void createCouponCard(final ArchivingDto.createOrUpdateCouponCardRequestDto dto) throws IOException {
-
-        if (dontHaveAnyConditions(dto)) {
+        if (NoAnyConditions(dto)) {
             throw new CInvalidCardConditionException();
         }
 
         Image image = imageUploader.upload(dto.getImage(), ImageType.CARD);
-
         CouponConditionCardEntity entity = ArchivingDto.createOrUpdateCouponCardRequestDto.toEntity(dto, image.getImagePath());
-
         cardRepo.save(entity);
-
     }
 
-    private boolean dontHaveAnyConditions(ArchivingDto.createOrUpdateCouponCardRequestDto dto) {
+    private boolean NoAnyConditions(ArchivingDto.createOrUpdateCouponCardRequestDto dto) {
         return (dto.getWhatNumber() == 0 && dto.getHowSuccessive() == 0);
     }
 
@@ -72,13 +67,11 @@ public class CouponCardArchivingService {
      *
      * @param id 카드 Id
      * @param dto 수정하려는 정보
-     * @throws IOException
      * @throws CCardNotFoundException 카드 찾기 실패시
      */
     @Transactional
     public void updateCouponCard(final Long id, final ArchivingDto.createOrUpdateCouponCardRequestDto dto) throws IOException {
-
-        if (dontHaveAnyConditions(dto)) {
+        if (NoAnyConditions(dto)) {
             throw new CInvalidCardConditionException();
         }
 
@@ -93,7 +86,6 @@ public class CouponCardArchivingService {
         CouponConditionCardEntity result = (CouponConditionCardEntity) target.get();
         Image image = imageUploader.upload(dto.getImage(), ImageType.CARD);
         result.updateCard(dto, image.getImagePath());
-
     }
 
     /**
@@ -105,7 +97,6 @@ public class CouponCardArchivingService {
      */
     @Transactional
     public void assignCouponConditionsCard(final User user, final Long couponId) {
-
         Optional<Coupon> target = couponRepo.findById(couponId);
         if (target.isEmpty()) {
             throw new CCouponNotFoundException();
@@ -113,11 +104,9 @@ public class CouponCardArchivingService {
         Coupon coupon = target.get();
 
         int whatNumber = checkWhatNumber(user, coupon);
-
         int howSuccessive = checkHowSuccessive(user);
 
         assignCards(user, whatNumber, howSuccessive);
-
     }
 
     private int checkWhatNumber(User user, Coupon coupon) {
@@ -167,31 +156,29 @@ public class CouponCardArchivingService {
 
     private void assignCards(User user, int whatNumber, int howSuccessive) {
         List<UserCardEntity> alreadyExistings = userCardRepo.findUserCardEntitiesByUser(user);
-
-        List<CouponConditionCardEntity> allCards = (List<CouponConditionCardEntity>) cardRepo.findAllByType(CardType.COUPON);
-
+        List<CouponConditionCardEntity> allCards = (List<CouponConditionCardEntity>)cardRepo.findAllByType(CardType.COUPON);
         for (UserCardEntity element : alreadyExistings) {
             allCards.remove(element.getCardEntity());
         }
 
-        List<CouponConditionCardEntity> cardsToCheck = allCards;
+        List<CouponConditionCardEntity> checkedcards = allCards;
 
-        for (CouponConditionCardEntity element : cardsToCheck) {
-            if (isUnsatisfiedHowSuccessive(element, howSuccessive))
+        for (CouponConditionCardEntity element : checkedcards) {
+            if (UnSatisfiedHowSuccessive(element, howSuccessive))
                 continue;
 
-            if (isUnsatisfiedWhatNumber(element, whatNumber))
+            if (UnsatisfiedWhatNumber(element, whatNumber))
                 continue;
 
             userCardRepo.save(new UserCardEntity(user, element, LocalDate.now()));
         }
     }
 
-    private boolean isUnsatisfiedHowSuccessive(CouponConditionCardEntity element, int howSuccessive) {
+    private boolean UnSatisfiedHowSuccessive(CouponConditionCardEntity element, int howSuccessive) {
         return (element.getHowSuccessive() > howSuccessive);
     }
 
-    private boolean isUnsatisfiedWhatNumber(CouponConditionCardEntity element, int whatNumber) {
+    private boolean UnsatisfiedWhatNumber(CouponConditionCardEntity element, int whatNumber) {
         return (element.getWhatNumber() != 0 && element.getWhatNumber() != whatNumber);
     }
 
