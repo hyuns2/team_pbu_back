@@ -28,32 +28,26 @@ public class NotificationService {
      * 관리자가 이벤트 알림 생성
      *
      * @param dto 알림 제목, 내용, 로고
-     * @throws IOException
      */
     public void createEventNotification(final NotificationDto.NotificationRequestDto dto) throws IOException {
-
         Image image = imageUploader.upload(dto.getImage(), ImageType.NOTIFICATION);
 
         NotificationEntity entity = NotificationDto.NotificationRequestDto.toEntity(dto, image.getImagePath(), NotificationType.EVENT);
 
         repo.save(entity);
-
     }
 
     /**
      * 관리자가 공지 알림 생성
      *
      * @param dto 알림 제목, 내용, 로고
-     * @throws IOException
      */
     public void createNoticeNotification(final NotificationDto.NotificationRequestDto dto) throws IOException {
-
         Image image = imageUploader.upload(dto.getImage(), ImageType.NOTIFICATION);
 
         NotificationEntity entity = NotificationDto.NotificationRequestDto.toEntity(dto, image.getImagePath(), NotificationType.NOTICE);
 
         repo.save(entity);
-
     }
 
     /**
@@ -63,7 +57,6 @@ public class NotificationService {
      * @throws CNotificationNotFoundException 알림 찾기 실패시
      */
     public void deleteNotification(final Long id) {
-
         Optional<NotificationEntity> target = repo.findById(id);
         if (target.isEmpty()) {
             throw new CNotificationNotFoundException();
@@ -71,7 +64,6 @@ public class NotificationService {
 
         NotificationEntity result = target.get();
         repo.delete(result);
-
     }
 
     /**
