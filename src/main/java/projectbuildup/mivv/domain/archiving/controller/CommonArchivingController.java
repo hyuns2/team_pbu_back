@@ -12,7 +12,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import projectbuildup.mivv.domain.archiving.dto.ArchivingDto;
 import projectbuildup.mivv.domain.archiving.entity.CardType;
-import projectbuildup.mivv.domain.archiving.service.GeneralCardArchivingService;
+import projectbuildup.mivv.domain.archiving.service.CardArchivingService;
 import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.global.constant.ExampleValue;
 import projectbuildup.mivv.global.constant.Header;
@@ -24,14 +24,14 @@ import java.util.List;
 @Tag(name = "[Archiving_Common]", description = "아카이빙_공통처리와 관련된 API입니다.")
 @RequestMapping("/api/archiving")
 public class CommonArchivingController {
-    private final GeneralCardArchivingService generalCardArchivingService;
+    private final CardArchivingService cardArchivingService;
 
     @Operation(summary = "카드 삭제", description = "관리자가 카드를 삭제합니다.")
     @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/admin/card/{id}")
     public ResponseEntity<?> deleteCard(@AuthenticationPrincipal User user, @PathVariable("id") Long id) {
-        generalCardArchivingService.deleteCard(id);
+        cardArchivingService.deleteCard(id);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -41,7 +41,7 @@ public class CommonArchivingController {
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/admin/card/{id}")
     public ResponseEntity<?> retrieveCard(@AuthenticationPrincipal User user, @PathVariable("id") Long id) {
-        ArchivingDto.CardResponseDto responseDto = generalCardArchivingService.retrieveCard(id);
+        ArchivingDto.CardResponseDto responseDto = cardArchivingService.retrieveCard(id);
 
         return ResponseEntity.ok().body(responseDto);
     }
@@ -51,7 +51,7 @@ public class CommonArchivingController {
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/admin/cards")
     public ResponseEntity<?> retrieveCards(@AuthenticationPrincipal User user) {
-        List<ArchivingDto.CardResponseDto> responseDto = generalCardArchivingService.retrieveCards();
+        List<ArchivingDto.CardResponseDto> responseDto = cardArchivingService.retrieveCards();
 
         return ResponseEntity.ok().body(responseDto);
     }
@@ -61,7 +61,7 @@ public class CommonArchivingController {
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/new-cards")
     public ResponseEntity<?> retrieveNewUserCards(@AuthenticationPrincipal User user) {
-        List<ArchivingDto.UserCardResponseDto> responseDto = generalCardArchivingService.retrieveNewUserCards(user);
+        List<ArchivingDto.UserCardResponseDto> responseDto = cardArchivingService.retrieveNewUserCards(user);
 
         return ResponseEntity.ok().body(responseDto);
     }
@@ -70,8 +70,8 @@ public class CommonArchivingController {
     @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
     @PreAuthorize("hasRole('USER')")
     @PutMapping("/new-cards")
-    public ResponseEntity<?> updateCardToNew(@AuthenticationPrincipal User user) {
-        generalCardArchivingService.updateCardToNew(user);
+    public ResponseEntity<?> updateCardToNotNew(@AuthenticationPrincipal User user) {
+        cardArchivingService.updateCardToNotNew(user);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -81,7 +81,7 @@ public class CommonArchivingController {
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/cards/{card-type}")
     public ResponseEntity<?> retrieveUserCards(@AuthenticationPrincipal User user, @PathVariable(value="card-type")CardType cardType) {
-        List<ArchivingDto.CardAndUserCardResponseDto> responseDto = generalCardArchivingService.retrieveUserCards(user, cardType);
+        List<ArchivingDto.CardAndUserCardResponseDto> responseDto = cardArchivingService.retrieveUserCards(user, cardType);
 
         return ResponseEntity.ok().body(responseDto);
     }

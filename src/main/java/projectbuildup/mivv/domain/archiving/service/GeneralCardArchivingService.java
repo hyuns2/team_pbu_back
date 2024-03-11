@@ -33,7 +33,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -48,9 +47,8 @@ public class GeneralCardArchivingService {
 
     /**
      * 관리자가 일반 카드 생성
-     * 
+     *
      * @param dto 카드 제목, 부제목, 명언, 이미지파일
-     * @throws IOException
      */
     public void createGeneralCard(final ArchivingDto.createOrUpdateGeneralCardRequestDto dto) throws IOException {
 
@@ -66,7 +64,6 @@ public class GeneralCardArchivingService {
      *
      * @param id 일반 카드 Id
      * @param dto 카드 제목, 부제목, 명언, 이미지파일 중 수정항목
-     * @throws IOException
      * @throws CCardNotFoundException 카드 찾기 실패시
      */
     @Transactional
@@ -87,60 +84,9 @@ public class GeneralCardArchivingService {
     }
 
     /**
-     * 관리자가 카드 삭제
-     *
-     * @param id 카드 Id
-     * @throws CCardNotFoundException 카드 찾기 실패시
-     */
-    public void deleteCard(final Long id) {
-
-        Optional<CardEntity> target = cardRepo.findById(id);
-        if (target.isEmpty()) {
-            throw new CCardNotFoundException();
-        }
-
-        CardEntity result = target.get();
-        cardRepo.delete(result);
-
-    }
-
-    /**
-     * 카드 단건 조회
-     *
-     * @param id 카드 Id
-     * @return ArchivingDto.CardResponseDto 카드 정보 전체
-     * @throws CCardNotFoundException 카드 찾기 실패시
-     */
-    public ArchivingDto.CardResponseDto retrieveCard(final Long id) {
-
-        Optional<CardEntity> target = cardRepo.findById(id);
-        if (target.isEmpty()) {
-            throw new CCardNotFoundException();
-        }
-
-        CardEntity result = target.get();
-        return new ArchivingDto.CardResponseDto(result);
-
-    }
-
-    /**
-     * 카드 전체 조회
-     *
-     * @return List<ArchivingDto.CardResponseDto> 카드들의 정보 전체
-     */
-    public List<ArchivingDto.CardResponseDto> retrieveCards() {
-
-        List<CardEntity> result = cardRepo.findAll();
-
-        return result.stream().map(ArchivingDto.CardResponseDto::new).collect(Collectors.toList());
-
-    }
-
-    /**
      * 관리자가 일반 카드 할당
      *
      * @param dto 카드 Id, 엑셀파일
-     * @throws IOException
      * @throws CCardNotFoundException 카드 찾기 실패시
      * @throws CInvalidCellException 엑셀의 셀이 유효하지 않을시
      */
@@ -217,64 +163,6 @@ public class GeneralCardArchivingService {
             User userEntity = targetUser.get();
             userCardRepo.save(new UserCardEntity(userEntity, cardEntity, LocalDate.now()));
         }
-    }
-
-
-    /**
-     * 사용자의 새로 부여받은 카드들 조회
-     *
-     * @param user 유저 정보
-     * @return List<ArchivingDto.UserCardResponseDto> 유저카드들 정보 전체
-     */
-    public List<ArchivingDto.UserCardResponseDto> retrieveNewUserCards(final User user) {
-
-        List<UserCardEntity> result = userCardRepo.findUserNewCards(user);
-
-        return result.stream().map(ArchivingDto.UserCardResponseDto::new).collect(Collectors.toList());
-
-    }
-
-    /**
-     * 사용자의 뉴카드를 1에서 0으로
-     *
-     * @param user 유저 정보
-     */
-    @Transactional
-    public void updateCardToNew(final User user) {
-
-        List<UserCardEntity> result = userCardRepo.findUserNewCards(user);
-
-        for (UserCardEntity entity: result) {
-            entity.updateIsNew();
-        }
-
-    }
-
-    /**
-     * 사용자가 보유한 카드라면 그 정보까지 카드 전체 정보를 반환
-     *
-     * @param user 유저 정보
-     * @param cardType 카드 타입
-     * @return List<ArchivingDto.CardAndUserCardResponseDto> 카드와 사용자카드 정보 전체
-     */
-    public List<ArchivingDto.CardAndUserCardResponseDto> retrieveUserCards(final User user, final CardType cardType) {
-
-        List<Object[]> userGeneralCards = cardRepo.findUserGeneralCards(user, cardType);
-        List<ArchivingDto.CardAndUserCardResponseDto> dtos = new ArrayList<ArchivingDto.CardAndUserCardResponseDto>();
-
-        for (Object[] userGeneralCard: userGeneralCards) {
-            ArchivingDto.CardAndUserCardResponseDto dto;
-
-            if (userGeneralCard[1] == null)
-                dto = new ArchivingDto.CardAndUserCardResponseDto((CardEntity) userGeneralCard[0]);
-            else
-                dto = new ArchivingDto.CardAndUserCardResponseDto((CardEntity) userGeneralCard[0], (UserCardEntity) userGeneralCard[1]);
-
-            dtos.add(dto);
-        }
-
-        return dtos;
-
     }
 
 }
