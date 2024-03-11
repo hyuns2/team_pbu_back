@@ -26,6 +26,13 @@ public class ExcelManager {
     @Value("${path.ipUrl}")
     String ipUrl;
 
+    /**
+     * 엑셀을 서버에 저장하고, 그 객체를 반환
+     *
+     * @param multipartFile 파일 정보
+     * @return File 파일 객체
+     * @throws CIllegalFileExtensionException 엑셀이 아니면 발생
+     */
     public File storeExcelFile(MultipartFile multipartFile) throws IOException {
         if (multipartFile.isEmpty())
             throw new CFileNotInputException();
@@ -47,6 +54,13 @@ public class ExcelManager {
         return uploadFileName.substring(dotIndex + 1);
     }
 
+    /**
+     * 유저들의 정보를 엑셀에 담아서 반환
+     *
+     * @param response 응답 객체
+     * @param userList 유저 리스트
+     * @param fileName 반환할 엑셀의 이름
+     */
     public void writeExcel(HttpServletResponse response, List<User> userList, String fileName) throws IOException {
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet();
