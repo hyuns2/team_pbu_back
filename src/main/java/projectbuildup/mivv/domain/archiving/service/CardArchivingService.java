@@ -31,7 +31,6 @@ public class CardArchivingService {
      * @throws CCardNotFoundException 카드 찾기 실패시
      */
     public void deleteCard(final Long id) {
-
         Optional<CardEntity> target = cardRepo.findById(id);
         if (target.isEmpty()) {
             throw new CCardNotFoundException();
@@ -39,7 +38,6 @@ public class CardArchivingService {
 
         CardEntity result = target.get();
         cardRepo.delete(result);
-
     }
 
     /**
@@ -50,7 +48,6 @@ public class CardArchivingService {
      * @throws CCardNotFoundException 카드 찾기 실패시
      */
     public ArchivingDto.CardResponseDto retrieveCard(final Long id) {
-
         Optional<CardEntity> target = cardRepo.findById(id);
         if (target.isEmpty()) {
             throw new CCardNotFoundException();
@@ -58,7 +55,6 @@ public class CardArchivingService {
 
         CardEntity result = target.get();
         return new ArchivingDto.CardResponseDto(result);
-
     }
 
     /**
@@ -67,11 +63,9 @@ public class CardArchivingService {
      * @return List<ArchivingDto.CardResponseDto> 카드들의 정보 전체
      */
     public List<ArchivingDto.CardResponseDto> retrieveCards() {
-
         List<CardEntity> result = cardRepo.findAll();
 
         return result.stream().map(ArchivingDto.CardResponseDto::new).collect(Collectors.toList());
-
     }
 
     /**
@@ -93,13 +87,11 @@ public class CardArchivingService {
      */
     @Transactional
     public void updateCardToNotNew(final User user) {
-
         List<UserCardEntity> result = userCardRepo.findUserNewCards(user);
 
         for (UserCardEntity entity: result) {
             entity.updateIsNew();
         }
-
     }
 
     /**
@@ -110,23 +102,18 @@ public class CardArchivingService {
      * @return List<ArchivingDto.CardAndUserCardResponseDto> 카드와 사용자카드 정보 전체
      */
     public List<ArchivingDto.CardAndUserCardResponseDto> retrieveUserCards(final User user, final CardType cardType) {
-
-        List<Object[]> userGeneralCards = cardRepo.findUserGeneralCards(user, cardType);
+        List<UserCardEntity> userCards = cardRepo.findUserCards(user, cardType);
         List<ArchivingDto.CardAndUserCardResponseDto> dtos = new ArrayList<ArchivingDto.CardAndUserCardResponseDto>();
 
-        for (Object[] userGeneralCard: userGeneralCards) {
+        for (UserCardEntity userCard: userCards) {
             ArchivingDto.CardAndUserCardResponseDto dto;
 
-            if (userGeneralCard[1] == null)
-                dto = new ArchivingDto.CardAndUserCardResponseDto((CardEntity) userGeneralCard[0]);
-            else
-                dto = new ArchivingDto.CardAndUserCardResponseDto((CardEntity) userGeneralCard[0], (UserCardEntity) userGeneralCard[1]);
+            dto = new ArchivingDto.CardAndUserCardResponseDto(userCard.getCardEntity(), userCard);
 
             dtos.add(dto);
         }
 
         return dtos;
-
     }
 
 }
