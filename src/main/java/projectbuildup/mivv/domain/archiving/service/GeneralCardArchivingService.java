@@ -37,7 +37,7 @@ import java.util.Optional;
 @Service
 public class GeneralCardArchivingService {
 
-    private final CardRepository cardRepo;
+    private final CardRepository<CardEntity> cardRepo;
     private final UserCardRepository userCardRepo;
     private final UserRepository userRepo;
 
@@ -102,33 +102,29 @@ public class GeneralCardArchivingService {
     private void checkAndAssignGeneralCards(MultipartFile dtoFile, CardEntity cardEntity, HttpServletResponse response) throws IOException {
         File file = excelManager.storeExcelFile(dtoFile);
         InputStream inputStream = new FileInputStream(file.getFilePath());
-
         Workbook workBook = WorkbookFactory.create(inputStream);
         Sheet sheet = workBook.getSheetAt(0);
-
         List<User> notFoundUsers = new ArrayList<>();
 
         int totalRow = sheet.getPhysicalNumberOfRows();
         for (int rowIndex = 0; rowIndex < totalRow; rowIndex++) {
             Row row = sheet.getRow(rowIndex);
-
             if (row == null)
                 throw new CInvalidCellException((rowIndex+1) + "행의 문제");
 
-            List<String> result = checkRowData(row, rowIndex);
-
+            List<String> result = getRowData(row, rowIndex);
             assignCards(cardEntity, result.get(0), result.get(1), notFoundUsers);
         }
 
         excelManager.writeExcel(response, notFoundUsers, LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
     }
 
-    private List<String> checkRowData(Row row, int rowIndex) {
+    private List<String> getRowData(Row row, int rowIndex) {
         String name = null;
         String mobile = null;
+
         for (int cellIndex = 0; cellIndex < 2; cellIndex++) {
             Cell cell = row.getCell(cellIndex);
-
             if (cell == null || cell.getCellType() != CellType.STRING)
                 throw new CInvalidCellException((rowIndex+1) + "행의 문제");
 
@@ -141,7 +137,6 @@ public class GeneralCardArchivingService {
         List<String> result = new ArrayList<>(2);
         result.add(0, name);
         result.add(1, mobile);
-
         return result;
     }
 
