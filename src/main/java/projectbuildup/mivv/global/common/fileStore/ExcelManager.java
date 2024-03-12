@@ -71,9 +71,9 @@ public class ExcelManager {
     public void writeExcel(HttpServletResponse response, List<User> userList, String fileName) throws IOException {
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet();
-        int rowIndex = 0;
+        int rowIndex = 1;
 
-        createHeader(sheet, rowIndex);
+        createHeader(sheet);
         createBody(sheet, rowIndex, userList);
 
         response.setContentType("ms-vnd/excel");
@@ -83,8 +83,8 @@ public class ExcelManager {
         workbook.close();
     }
 
-    private void createHeader(Sheet sheet, int rowIndex) {
-        Row headerRow = sheet.createRow(rowIndex++);
+    private void createHeader(Sheet sheet) {
+        Row headerRow = sheet.createRow(0);
         Cell header0 = headerRow.createCell(0);
         header0.setCellValue("이름");
         Cell header1 = headerRow.createCell(1);
