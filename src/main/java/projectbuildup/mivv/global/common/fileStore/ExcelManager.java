@@ -34,14 +34,9 @@ public class ExcelManager {
      * @throws CIllegalFileExtensionException 엑셀이 아니면 발생
      */
     public File storeExcelFile(MultipartFile multipartFile) throws IOException {
-        if (multipartFile.isEmpty())
-            throw new CFileNotInputException();
-        String uploadFileName = multipartFile.getOriginalFilename();
+        String uploadFileName = getUploadFileName(multipartFile);
         String extension = checkExtension(uploadFileName);
 
-        if (!extension.equals("xls") && !extension.equals("xlsx")) {
-            throw new CIllegalFileExtensionException();
-        }
         String storeFileName = UUID.randomUUID() + "." + extension;
         String storeFullPath = STORE_PATH + "/excels/" + storeFileName;
 
@@ -49,7 +44,20 @@ public class ExcelManager {
         return new File(uploadFileName, storeFileName, storeFullPath, ipUrl + storeFullPath);
     }
 
+    private String getUploadFileName(MultipartFile multipartFile) {
+        if (multipartFile.isEmpty())
+            throw new CFileNotInputException();
+        return multipartFile.getOriginalFilename();
+    }
+
     private String checkExtension(String uploadFileName) {
+        String extension = getExtension(uploadFileName);
+        if (!extension.equals("xls") && !extension.equals("xlsx"))
+            throw new CIllegalFileExtensionException();
+        return extension;
+    }
+
+    private String getExtension(String uploadFileName) {
         int dotIndex = uploadFileName.lastIndexOf(".");
         return uploadFileName.substring(dotIndex + 1);
     }
@@ -64,15 +72,27 @@ public class ExcelManager {
     public void writeExcel(HttpServletResponse response, List<User> userList, String fileName) throws IOException {
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet();
-
         int rowIndex = 0;
 
+        createHeader(sheet, rowIndex);
+        createBody(sheet, rowIndex, userList);
+
+        response.setContentType("ms-vnd/excel");
+        response.setHeader("Content-Disposition", "attachment;filename=" + fileName + ".xlsx");
+
+        workbook.write(response.getOutputStream());
+        workbook.close();
+    }
+
+    private void createHeader(Sheet sheet, int rowIndex) {
         Row headerRow = sheet.createRow(rowIndex++);
         Cell header0 = headerRow.createCell(0);
         header0.setCellValue("이름");
         Cell header1 = headerRow.createCell(1);
         header1.setCellValue("전화번호");
+    }
 
+    private void createBody(Sheet sheet, int rowIndex, List<User> userList) {
         for (User user: userList) {
             Row bodyRow = sheet.createRow(rowIndex++);
             Cell bodyCell0 = bodyRow.createCell(0);
@@ -80,12 +100,6 @@ public class ExcelManager {
             Cell bodyCell1 = bodyRow.createCell(1);
             bodyCell1.setCellValue(user.getIdentityVerification().getMobile());
         }
-
-        response.setContentType("ms-vnd/excel");
-        response.setHeader("Content-Disposition", "attachment;filename=" + fileName + ".xlsx");
-
-        workbook.write(response.getOutputStream());
-        workbook.close();
     }
 
 }
