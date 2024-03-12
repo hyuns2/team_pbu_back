@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import projectbuildup.mivv.domain.archiving.dto.ArchivingDto;
-import projectbuildup.mivv.domain.archiving.entity.CardEntity;
 import projectbuildup.mivv.domain.archiving.entity.CardType;
 import projectbuildup.mivv.domain.archiving.entity.CouponCardEntity;
 import projectbuildup.mivv.domain.archiving.entity.UserCardEntity;
@@ -36,7 +35,7 @@ import java.util.Optional;
 @Service
 public class CouponCardArchivingService {
 
-    private final CardRepository cardRepo;
+    private final CardRepository<CouponCardEntity> cardRepo;
     private final UserCardRepository userCardRepo;
     private final CouponIssuanceRepository couponIssuanceRepo;
     private final CouponRepository couponRepo;
@@ -75,7 +74,7 @@ public class CouponCardArchivingService {
             throw new CInvalidCardConditionException();
         }
 
-        Optional<CardEntity> target = cardRepo.findById(id);
+        Optional<CouponCardEntity> target = cardRepo.findById(id);
         if (target.isEmpty()) {
             throw new CCardNotFoundException();
         }
@@ -83,7 +82,7 @@ public class CouponCardArchivingService {
             throw new CCardTypeNotMatchException();
         }
 
-        CouponCardEntity result = (CouponCardEntity) target.get();
+        CouponCardEntity result = target.get();
         Image image = imageUploader.upload(dto.getImage(), ImageType.CARD);
         result.updateCard(dto, image.getImagePath());
     }
@@ -113,10 +112,8 @@ public class CouponCardArchivingService {
         List<CouponIssuance> issuancesByCouponId = couponIssuanceRepo.findAllByCoupon(coupon);
         int whatNumber = 0;
         for (CouponIssuance element : issuancesByCouponId) {
-            if (isEqualUserId(element, user)) {
+            if (isEqualUserId(element, user))
                 whatNumber = issuancesByCouponId.indexOf(element) + 1;
-                break;
-            }
         }
         return whatNumber;
     }
@@ -126,52 +123,49 @@ public class CouponCardArchivingService {
     }
 
     private int checkHowSuccessive(User user) {
-        int howSuccessive = 1;
-
         List<LocalDateTime> createdTimesByUserId = couponIssuanceRepo.findCreatedTimeByUserId(user);
         LocalDateTime before = LocalDateTime.now();
+        int howSuccessive = 1;
+
         for (LocalDateTime element : createdTimesByUserId) {
-            if (isNotLastCouponAssignedInThisMonth(createdTimesByUserId, element)) {
-                howSuccessive = 0;
-                break;
-            }
+            if (isNotAssignedInThisMonth(createdTimesByUserId, element))
+                return 0;
 
-            long diffMonths = ChronoUnit.MONTHS.between(before, element);
-            diffMonths = Math.abs(diffMonths);
-
-            if (diffMonths == 1) {
+            long diffMonths = Math.abs(ChronoUnit.MONTHS.between(before, element));
+            if (diffMonths == 1)
                 howSuccessive++;
-            } else if (diffMonths > 1) {
+            else if (diffMonths > 1)
                 break;
-            }
 
             before = element;
         }
         return howSuccessive;
     }
 
-    private boolean isNotLastCouponAssignedInThisMonth(List<LocalDateTime> createdTimesByUserId, LocalDateTime element) {
+    private boolean isNotAssignedInThisMonth(List<LocalDateTime> createdTimesByUserId, LocalDateTime element) {
         return (createdTimesByUserId.indexOf(element) == 0 && Math.abs(ChronoUnit.MONTHS.between(LocalDateTime.now(), element)) > 0);
     }
 
     private void assignCards(User user, int whatNumber, int howSuccessive) {
-        List<UserCardEntity> alreadyExistings = userCardRepo.findUserCardEntitiesByUser(user);
-        List<CouponCardEntity> allCards = (List<CouponCardEntity>)cardRepo.findAllByType(CardType.COUPON);
-        for (UserCardEntity element : alreadyExistings) {
-            allCards.remove(element.getCardEntity());
-        }
-
-        List<CouponCardEntity> checkedcards = allCards;
+        List<CouponCardEntity> checkedcards = getCheckedCards(user);
 
         for (CouponCardEntity element : checkedcards) {
             if (UnSatisfiedHowSuccessive(element, howSuccessive))
                 continue;
-
             if (UnsatisfiedWhatNumber(element, whatNumber))
                 continue;
 
             userCardRepo.save(new UserCardEntity(user, element, LocalDate.now()));
         }
+    }
+
+    private List<CouponCardEntity> getCheckedCards(User user) {
+        List<UserCardEntity> alreadyExistings = userCardRepo.findUserCardEntitiesByUser(user);
+        List<CouponCardEntity> allCards = cardRepo.findAllByType(CardType.COUPON);
+        for (UserCardEntity element : alreadyExistings) {
+            allCards.remove(element.getCardEntity());
+        }
+        return allCards;
     }
 
     private boolean UnSatisfiedHowSuccessive(CouponCardEntity element, int howSuccessive) {

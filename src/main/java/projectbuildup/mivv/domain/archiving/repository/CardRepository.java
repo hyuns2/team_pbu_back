@@ -17,6 +17,6 @@ public interface CardRepository<T extends CardEntity> extends JpaRepository<T, L
     @Query("select u from UserCardEntity u left join CardEntity c on (c = u.cardEntity and u.user = ?1) where c.type = ?2")
     List<UserCardEntity> findUserCards(User user, CardType cardType);
 
-    List<CardEntity> findAllByType(CardType type);
+    List<T> findAllByType(CardType type);
 
 }
