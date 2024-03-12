@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 @Service
 public class CardArchivingService {
 
-    private final CardRepository cardRepo;
+    private final CardRepository<CardEntity> cardRepo;
     private final UserCardRepository userCardRepo;
 
     /**
@@ -32,9 +32,8 @@ public class CardArchivingService {
      */
     public void deleteCard(final Long id) {
         Optional<CardEntity> target = cardRepo.findById(id);
-        if (target.isEmpty()) {
+        if (target.isEmpty())
             throw new CCardNotFoundException();
-        }
 
         CardEntity result = target.get();
         cardRepo.delete(result);
@@ -49,9 +48,8 @@ public class CardArchivingService {
      */
     public ArchivingDto.CardResponseDto retrieveCard(final Long id) {
         Optional<CardEntity> target = cardRepo.findById(id);
-        if (target.isEmpty()) {
+        if (target.isEmpty())
             throw new CCardNotFoundException();
-        }
 
         CardEntity result = target.get();
         return new ArchivingDto.CardResponseDto(result);
@@ -89,9 +87,8 @@ public class CardArchivingService {
     public void updateCardToNotNew(final User user) {
         List<UserCardEntity> result = userCardRepo.findUserNewCards(user);
 
-        for (UserCardEntity entity: result) {
+        for (UserCardEntity entity: result)
             entity.updateIsNew();
-        }
     }
 
     /**
@@ -105,13 +102,8 @@ public class CardArchivingService {
         List<UserCardEntity> userCards = cardRepo.findUserCards(user, cardType);
         List<ArchivingDto.CardAndUserCardResponseDto> dtos = new ArrayList<ArchivingDto.CardAndUserCardResponseDto>();
 
-        for (UserCardEntity userCard: userCards) {
-            ArchivingDto.CardAndUserCardResponseDto dto;
-
-            dto = new ArchivingDto.CardAndUserCardResponseDto(userCard.getCardEntity(), userCard);
-
-            dtos.add(dto);
-        }
+        for (UserCardEntity userCard: userCards)
+            dtos.add(new ArchivingDto.CardAndUserCardResponseDto(userCard.getCardEntity(), userCard));
 
         return dtos;
     }
