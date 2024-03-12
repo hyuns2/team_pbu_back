@@ -95,7 +95,7 @@ public class CouponCardArchivingService {
      * @throws CCouponNotFoundException 쿠폰 찾기 실패시
      */
     @Transactional
-    public void assignCouponConditionsCard(final User user, final Long couponId) {
+    public void assignCouponCards(final User user, final Long couponId) {
         Optional<Coupon> target = couponRepo.findById(couponId);
         if (target.isEmpty()) {
             throw new CCouponNotFoundException();

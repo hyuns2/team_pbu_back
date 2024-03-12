@@ -62,7 +62,7 @@ public class CouponIssuanceService {
         isAchievedLastAmount(user, coupon);
         issue(user, coupon);
         
-        couponCardArchivingService.assignCouponConditionsCard(user, coupon.getId());
+        couponCardArchivingService.assignCouponCards(user, coupon.getId());
     }
 
     /**
