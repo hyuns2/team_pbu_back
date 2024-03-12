@@ -86,7 +86,7 @@ public class GeneralCardArchivingService {
      * @throws CInvalidCellException 엑셀의 셀이 유효하지 않을시
      */
     @Transactional
-    public void assignCards(final ArchivingDto.AssignGeneralCardsRequestDto dto, final HttpServletResponse response) throws IOException {
+    public void assignGeneralCards(final ArchivingDto.AssignGeneralCardsRequestDto dto, final HttpServletResponse response) throws IOException {
         Optional<CardEntity> targetCard = cardRepo.findById(dto.getId());
         if (targetCard.isEmpty()) {
             throw new CCardNotFoundException();

@@ -22,7 +22,6 @@ public class ExcelManager {
 
     @Value("${path.files}")
     String STORE_PATH;
-    
     @Value("${path.ipUrl}")
     String ipUrl;
 

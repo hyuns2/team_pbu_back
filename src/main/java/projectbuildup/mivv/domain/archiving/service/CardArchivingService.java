@@ -30,6 +30,7 @@ public class CardArchivingService {
      * @param id 카드 Id
      * @throws CCardNotFoundException 카드 찾기 실패시
      */
+    @Transactional
     public void deleteCard(final Long id) {
         Optional<CardEntity> target = cardRepo.findById(id);
         if (target.isEmpty())

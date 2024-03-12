@@ -98,7 +98,7 @@ public class ArchivingController {
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/assign/general-cards", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> assignGeneralConditionCards(@AuthenticationPrincipal User user, @ModelAttribute("assignGeneralCards") ArchivingDto.AssignGeneralCardsRequestDto dto, HttpServletResponse response) throws IOException {
-        generalCardArchivingService.assignCards(dto, response);
+        generalCardArchivingService.assignGeneralCards(dto, response);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

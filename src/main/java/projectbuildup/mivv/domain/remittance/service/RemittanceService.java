@@ -115,7 +115,7 @@ public class RemittanceService {
         participation.addCount();
         double score = rankScoreCalculator.calculate(remittance);
         rankingService.updateScore(participation, score);
-        savingCardArchivingService.assignCards(participation.getUser());
+        savingCardArchivingService.assignSavingCards(participation.getUser());
     }
 
 

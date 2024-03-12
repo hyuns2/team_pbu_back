@@ -85,7 +85,7 @@ public class SavingCardArchivingService {
      * @param user 유저 정보
      */
     @Transactional
-    public void assignCards(final User user) {
+    public void assignSavingCards(final User user) {
         List<SavingCardEntity> checkedCards = getCheckedCards(user);
 
         assignCards(user, checkedCards);
