@@ -40,9 +40,6 @@ public class CardEntity {
     @Column(name = "image_path", nullable = false, length = 5000)
     protected String imagePath;
 
-    @OneToMany(mappedBy = "cardEntity", cascade = CascadeType.ALL)
-    private List<UserCardEntity> userCards = new ArrayList<>();
-
     public void updateCard(ArchivingDto.createOrUpdateGeneralCardRequestDto dto, String imagePath) {
         this.type = CardType.GENERAL;
         this.title = dto.getTitle();

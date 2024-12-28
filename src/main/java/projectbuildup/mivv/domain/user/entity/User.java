@@ -13,6 +13,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import projectbuildup.mivv.domain.account.entity.Account;
+import projectbuildup.mivv.domain.archiving.entity.UserCardEntity;
 import projectbuildup.mivv.domain.auth.dto.AuthDto;
 import projectbuildup.mivv.global.common.BaseTimeEntity;
 import projectbuildup.mivv.global.common.imageStore.Image;
@@ -73,6 +74,9 @@ public class User extends BaseTimeEntity implements UserDetails {
     @ElementCollection(fetch = FetchType.LAZY)
     @Builder.Default
     private List<String> roles = new ArrayList<>();
+
+    @OneToMany(mappedBy = "cardEntity", cascade = CascadeType.ALL)
+    private List<UserCardEntity> userCards = new ArrayList<>();
 
     public void setIdentityVerification(IdentityVerification identityVerification) {
         this.identityVerification = identityVerification;

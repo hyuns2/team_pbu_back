@@ -6,9 +6,9 @@ import projectbuildup.mivv.domain.user.entity.User;
 
 import java.time.LocalDate;
 
-@NoArgsConstructor
-@Getter
 @Entity
+@Getter
+@NoArgsConstructor
 @Table(name = "user_card")
 public class UserCardEntity {
 
@@ -42,5 +42,4 @@ public class UserCardEntity {
     public void updateIsNew() {
         this.isNew = false;
     }
-
 }
