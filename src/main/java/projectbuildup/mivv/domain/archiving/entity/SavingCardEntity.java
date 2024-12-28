@@ -7,14 +7,12 @@ import projectbuildup.mivv.domain.archiving.dto.ArchivingDto;
 
 import java.util.stream.Collectors;
 
+@Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder
-@Getter
-@Entity
-@DiscriminatorValue("SavingCondition")
-@Table(name = "saving_card")
+@DiscriminatorValue("saving")
 public class SavingCardEntity extends CardEntity {
-
     @Column(name = "charge", nullable = false)
     protected Integer charge;
 

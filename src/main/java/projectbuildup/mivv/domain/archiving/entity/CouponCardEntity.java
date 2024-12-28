@@ -9,12 +9,11 @@ import projectbuildup.mivv.domain.archiving.dto.ArchivingDto;
 
 import java.util.stream.Collectors;
 
+@Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder
-@Getter
-@Entity
-@DiscriminatorValue("CouponCondition")
-@Table(name = "coupon_card")
+@DiscriminatorValue("coupon")
 public class CouponCardEntity extends CardEntity {
 
     @Column(name = "what_number", nullable = false)

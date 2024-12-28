@@ -11,11 +11,11 @@ import java.util.stream.Collectors;
 
 @Entity
 @Getter
-@SuperBuilder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "d_type")
-@DiscriminatorValue("GeneralCondition")
+@SuperBuilder
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "type")
+@DiscriminatorValue("general")
 @Table(name="card")
 public class CardEntity {
 
