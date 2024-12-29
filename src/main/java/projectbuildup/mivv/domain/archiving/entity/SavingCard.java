@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder
 @DiscriminatorValue("saving")
-public class SavingCardEntity extends CardEntity {
+public class SavingCard extends Card {
     @Column(name = "charge", nullable = false)
     protected Integer charge;
 
@@ -35,7 +35,7 @@ public class SavingCardEntity extends CardEntity {
         this.term = dto.getTerm();
     }
 
-    public boolean equals(SavingCardEntity savingCardEntity) {
+    public boolean equals(SavingCard savingCardEntity) {
         return this.id.equals(savingCardEntity.getId()) &&
                 this.type.equals(savingCardEntity.getType()) &&
                 this.title.equals(savingCardEntity.getTitle()) &&

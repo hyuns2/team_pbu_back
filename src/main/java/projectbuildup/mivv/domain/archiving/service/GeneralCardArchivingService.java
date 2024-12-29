@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import projectbuildup.mivv.domain.archiving.dto.ArchivingDto;
-import projectbuildup.mivv.domain.archiving.entity.CardEntity;
+import projectbuildup.mivv.domain.archiving.entity.Card;
 import projectbuildup.mivv.domain.archiving.entity.CardType;
-import projectbuildup.mivv.domain.archiving.entity.UserCardEntity;
+import projectbuildup.mivv.domain.archiving.entity.UserCard;
 import projectbuildup.mivv.domain.archiving.repository.CardRepository;
 import projectbuildup.mivv.domain.archiving.repository.UserCardRepository;
 import projectbuildup.mivv.domain.user.entity.IdentityVerification;
@@ -37,7 +37,7 @@ import java.util.Optional;
 @Service
 public class GeneralCardArchivingService {
 
-    private final CardRepository<CardEntity> cardRepo;
+    private final CardRepository<Card> cardRepo;
     private final UserCardRepository userCardRepo;
     private final UserRepository userRepo;
 
@@ -52,7 +52,7 @@ public class GeneralCardArchivingService {
     public void createGeneralCard(final ArchivingDto.createOrUpdateGeneralCardRequestDto dto) throws IOException {
         Image image = imageUploader.upload(dto.getImage(), ImageType.CARD);
 
-        CardEntity entity = ArchivingDto.createOrUpdateGeneralCardRequestDto.toEntity(dto, image.getImagePath());
+        Card entity = ArchivingDto.createOrUpdateGeneralCardRequestDto.toEntity(dto, image.getImagePath());
         cardRepo.save(entity);
     }
 
@@ -65,7 +65,7 @@ public class GeneralCardArchivingService {
      */
     @Transactional
     public void updateGeneralCard(final Long id, final ArchivingDto.createOrUpdateGeneralCardRequestDto dto) throws IOException {
-        Optional<CardEntity> target = cardRepo.findById(id);
+        Optional<Card> target = cardRepo.findById(id);
         if (target.isEmpty()) {
             throw new CCardNotFoundException();
         }
@@ -73,7 +73,7 @@ public class GeneralCardArchivingService {
             throw new CCardTypeNotMatchException();
         }
 
-        CardEntity result = target.get();
+        Card result = target.get();
         Image image = imageUploader.upload(dto.getImage(), ImageType.CARD);
         result.updateCard(dto, image.getImagePath());
     }
@@ -87,7 +87,7 @@ public class GeneralCardArchivingService {
      */
     @Transactional
     public void assignGeneralCards(final ArchivingDto.AssignGeneralCardsRequestDto dto, final HttpServletResponse response) throws IOException {
-        Optional<CardEntity> targetCard = cardRepo.findById(dto.getId());
+        Optional<Card> targetCard = cardRepo.findById(dto.getId());
         if (targetCard.isEmpty()) {
             throw new CCardNotFoundException();
         }
@@ -95,11 +95,11 @@ public class GeneralCardArchivingService {
             throw new CCardTypeNotMatchException();
         }
 
-        CardEntity cardEntity = targetCard.get();
-        checkAndAssignGeneralCards(dto.getFile(), cardEntity, response);
+        Card card = targetCard.get();
+        checkAndAssignGeneralCards(dto.getFile(), card, response);
     }
 
-    private void checkAndAssignGeneralCards(MultipartFile dtoFile, CardEntity cardEntity, HttpServletResponse response) throws IOException {
+    private void checkAndAssignGeneralCards(MultipartFile dtoFile, Card card, HttpServletResponse response) throws IOException {
         File file = excelManager.storeExcelFile(dtoFile);
         InputStream inputStream = new FileInputStream(file.getFilePath());
         Workbook workBook = WorkbookFactory.create(inputStream);
@@ -113,7 +113,7 @@ public class GeneralCardArchivingService {
                 throw new CInvalidCellException((rowIndex+1) + "행의 문제");
 
             List<String> result = getRowData(row, rowIndex);
-            assignCards(cardEntity, result.get(0), result.get(1), notFoundUsers);
+            assignCards(card, result.get(0), result.get(1), notFoundUsers);
         }
 
         excelManager.writeExcel(response, notFoundUsers, LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
@@ -140,7 +140,7 @@ public class GeneralCardArchivingService {
         return result;
     }
 
-    private void assignCards(CardEntity cardEntity, String name, String mobile, List<User> notFoundUsers) {
+    private void assignCards(Card card, String name, String mobile, List<User> notFoundUsers) {
         Optional<User> targetUser = userRepo.findByNameAndMobile(name, mobile);
         if (targetUser.isEmpty()) {
             IdentityVerification identityVerification = new IdentityVerification();
@@ -151,7 +151,7 @@ public class GeneralCardArchivingService {
         }
         else {
             User userEntity = targetUser.get();
-            userCardRepo.save(new UserCardEntity(userEntity, cardEntity, LocalDate.now()));
+            userCardRepo.save(new UserCard(userEntity, card, LocalDate.now()));
         }
     }
 

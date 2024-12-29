@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.AssertTrue;
-import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.annotations.*;
 import org.hibernate.validator.constraints.Length;
@@ -13,7 +11,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import projectbuildup.mivv.domain.account.entity.Account;
-import projectbuildup.mivv.domain.archiving.entity.UserCardEntity;
+import projectbuildup.mivv.domain.archiving.entity.UserCard;
 import projectbuildup.mivv.domain.auth.dto.AuthDto;
 import projectbuildup.mivv.global.common.BaseTimeEntity;
 import projectbuildup.mivv.global.common.imageStore.Image;
@@ -75,8 +73,8 @@ public class User extends BaseTimeEntity implements UserDetails {
     @Builder.Default
     private List<String> roles = new ArrayList<>();
 
-    @OneToMany(mappedBy = "cardEntity", cascade = CascadeType.ALL)
-    private List<UserCardEntity> userCards = new ArrayList<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<UserCard> userCards = new ArrayList<>();
 
     public void setIdentityVerification(IdentityVerification identityVerification) {
         this.identityVerification = identityVerification;

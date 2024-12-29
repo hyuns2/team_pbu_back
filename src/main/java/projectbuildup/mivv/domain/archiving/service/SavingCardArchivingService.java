@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import projectbuildup.mivv.domain.archiving.dto.ArchivingDto;
 import projectbuildup.mivv.domain.archiving.entity.CardType;
-import projectbuildup.mivv.domain.archiving.entity.SavingCardEntity;
-import projectbuildup.mivv.domain.archiving.entity.UserCardEntity;
+import projectbuildup.mivv.domain.archiving.entity.SavingCard;
+import projectbuildup.mivv.domain.archiving.entity.UserCard;
 import projectbuildup.mivv.domain.archiving.repository.CardRepository;
 import projectbuildup.mivv.domain.archiving.repository.UserCardRepository;
 import projectbuildup.mivv.domain.remittance.repository.RemittanceRepository;
@@ -28,7 +28,7 @@ import java.util.Optional;
 @Service
 public class SavingCardArchivingService {
 
-    private final CardRepository<SavingCardEntity> cardRepo;
+    private final CardRepository<SavingCard> cardRepo;
     private final UserCardRepository userCardRepo;
     private final RemittanceRepository remittanceRepo;
     private final ImageUploader imageUploader;
@@ -45,7 +45,7 @@ public class SavingCardArchivingService {
         }
 
         Image image = imageUploader.upload(dto.getImage(), ImageType.CARD);
-        SavingCardEntity entity = ArchivingDto.createOrUpdateSavingCardRequestDto.toEntity(dto, image.getImagePath());
+        SavingCard entity = ArchivingDto.createOrUpdateSavingCardRequestDto.toEntity(dto, image.getImagePath());
         cardRepo.save(entity);
     }
 
@@ -66,7 +66,7 @@ public class SavingCardArchivingService {
             throw new CInvalidCardConditionException();
         }
 
-        Optional<SavingCardEntity> target = cardRepo.findById(id);
+        Optional<SavingCard> target = cardRepo.findById(id);
         if (target.isEmpty()) {
             throw new CCardNotFoundException();
         }
@@ -74,7 +74,7 @@ public class SavingCardArchivingService {
             throw new CCardTypeNotMatchException();
         }
 
-        SavingCardEntity result = target.get();
+        SavingCard result = target.get();
         Image image = imageUploader.upload(dto.getImage(), ImageType.CARD);
         result.updateCard(dto, image.getImagePath());
     }
@@ -86,23 +86,23 @@ public class SavingCardArchivingService {
      */
     @Transactional
     public void assignSavingCards(final User user) {
-        List<SavingCardEntity> checkedCards = getCheckedCards(user);
+        List<SavingCard> checkedCards = getCheckedCards(user);
 
         assignCards(user, checkedCards);
     }
 
-    private List<SavingCardEntity> getCheckedCards(User user) {
-        List<UserCardEntity> alreadyExistings = userCardRepo.findUserCardEntitiesByUser(user);
-        List<SavingCardEntity> allCards = cardRepo.findAllByType(CardType.SAVING);
+    private List<SavingCard> getCheckedCards(User user) {
+        List<UserCard> alreadyExistings = userCardRepo.findUserCardEntitiesByUser(user);
+        List<SavingCard> allCards = cardRepo.findAllByType(CardType.SAVING);
 
-        for (UserCardEntity element: alreadyExistings) {
-            allCards.remove(element.getCardEntity());
+        for (UserCard element: alreadyExistings) {
+            allCards.remove(element.getCard());
         }
         return allCards;
     }
 
-    private void assignCards(User user, List<SavingCardEntity> checkedCards) {
-        for (SavingCardEntity element: checkedCards) {
+    private void assignCards(User user, List<SavingCard> checkedCards) {
+        for (SavingCard element: checkedCards) {
             Integer charge = element.getCharge();
             Integer count = element.getCount();
             Integer term = element.getTerm();
@@ -114,20 +114,20 @@ public class SavingCardArchivingService {
         }
     }
 
-    private void ifNoHaveTerm(User user, Integer charge, Integer count, SavingCardEntity element) {
+    private void ifNoHaveTerm(User user, Integer charge, Integer count, SavingCard element) {
         Integer chargeSum = remittanceRepo.findChargeSum(user);
         Integer countSum = remittanceRepo.findCountSum(user);
 
         if (chargeSum >= charge && countSum >= count)
-            userCardRepo.save(new UserCardEntity(user, element, LocalDate.now()));
+            userCardRepo.save(new UserCard(user, element, LocalDate.now()));
     }
 
-    private void ifHaveTerm(User user, Integer charge, Integer count, Integer term, SavingCardEntity element) {
+    private void ifHaveTerm(User user, Integer charge, Integer count, Integer term, SavingCard element) {
         Integer chargeSum = remittanceRepo.findChargeSumBetweenTerm(user, LocalDateTime.now().minusDays(term), LocalDateTime.now());
         Integer countSum = remittanceRepo.findCountSumBetweenTerm(user, LocalDateTime.now().minusDays(term), LocalDateTime.now());
 
         if (chargeSum >= charge && countSum >= count)
-            userCardRepo.save(new UserCardEntity(user, element, LocalDate.now()));
+            userCardRepo.save(new UserCard(user, element, LocalDate.now()));
     }
 
 }

@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder
 @DiscriminatorValue("coupon")
-public class CouponCardEntity extends CardEntity {
+public class CouponCard extends Card {
 
     @Column(name = "what_number", nullable = false)
     protected Integer whatNumber;

@@ -5,8 +5,6 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 import projectbuildup.mivv.domain.archiving.dto.ArchivingDto;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Entity
@@ -14,11 +12,8 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "type")
-@DiscriminatorValue("general")
-@Table(name="card")
-public class CardEntity {
-
+@DiscriminatorColumn(name = "d_type")
+public abstract class Card {
     @Column(name = "id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,5 +44,4 @@ public class CardEntity {
                 .collect(Collectors.joining(", "));
         this.imagePath = imagePath;
     }
-
 }

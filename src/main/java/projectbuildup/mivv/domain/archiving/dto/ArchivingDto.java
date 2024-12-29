@@ -53,9 +53,9 @@ public class ArchivingDto {
         @Schema(description = "발급조건 일수")
         private Integer term;
 
-        public static SavingCardEntity toEntity(final createOrUpdateSavingCardRequestDto dto, String imagePath) throws IOException {
+        public static SavingCard toEntity(final createOrUpdateSavingCardRequestDto dto, String imagePath) throws IOException {
 
-            return SavingCardEntity.builder()
+            return SavingCard.builder()
                     .type(CardType.SAVING)
                     .title(dto.getTitle())
                     .subTitle(dto.getSubTitle())
@@ -102,9 +102,9 @@ public class ArchivingDto {
         @Schema(description = "몇개월 연속 쿠폰 발급자에게 카드를 부여할건가")
         private Integer howSuccessive;
 
-        public static CouponCardEntity toEntity(final createOrUpdateCouponCardRequestDto dto, String imagePath) throws IOException {
+        public static CouponCard toEntity(final createOrUpdateCouponCardRequestDto dto, String imagePath) throws IOException {
 
-            return CouponCardEntity.builder()
+            return CouponCard.builder()
                     .type(CardType.COUPON)
                     .title(dto.getTitle())
                     .subTitle(dto.getSubTitle())
@@ -142,9 +142,8 @@ public class ArchivingDto {
         @Schema(description = "카드 이미지 파일")
         private MultipartFile image;
 
-        public static CardEntity toEntity(final createOrUpdateGeneralCardRequestDto dto, String imagePath) throws IOException {
-
-            return CardEntity.builder()
+        public static Card toEntity(final createOrUpdateGeneralCardRequestDto dto, String imagePath) throws IOException {
+            return GeneralCard.builder()
                     .type(CardType.GENERAL)
                     .title(dto.getTitle())
                     .subTitle(dto.getSubTitle())
@@ -191,7 +190,7 @@ public class ArchivingDto {
         @Schema(description = "카드 이미지 파일경로")
         private String imagePath;
 
-        public CardResponseDto(final CardEntity entity) {
+        public CardResponseDto(final Card entity) {
             String[] stringSentences = entity.getSentences().split(", ");
             List<String> listSentences = Arrays.stream(stringSentences).toList();
 
@@ -221,9 +220,9 @@ public class ArchivingDto {
         @Schema(description = "신규 여부")
         private boolean isNew;
 
-        public UserCardResponseDto(final UserCardEntity entity) {
+        public UserCardResponseDto(final UserCard entity) {
             this.id = entity.getId();
-            this.cardDto = new CardResponseDto(entity.getCardEntity());
+            this.cardDto = new CardResponseDto(entity.getCard());
             this.date = entity.getDate();
             this.isNew = entity.isNew();
         }
@@ -243,7 +242,7 @@ public class ArchivingDto {
         @Schema(description = "신규 여부")
         private boolean isNew;
 
-        public NewUserCardResponseDto(final UserCardEntity entity) {
+        public NewUserCardResponseDto(final UserCard entity) {
             this.id = entity.getId();
             this.date = entity.getDate();
             this.isNew = entity.isNew();
@@ -260,14 +259,14 @@ public class ArchivingDto {
         @Schema(description = "유저카드 정보")
         private NewUserCardResponseDto userCardDto;
 
-        public CardAndUserCardResponseDto(final CardEntity cardEntity) {
-            this.cardDto = new CardResponseDto(cardEntity);
+        public CardAndUserCardResponseDto(final Card card) {
+            this.cardDto = new CardResponseDto(card);
             this.userCardDto = null;
         }
 
-        public CardAndUserCardResponseDto(final CardEntity cardEntity, final UserCardEntity userCardEntity) {
-            this.cardDto = new CardResponseDto(cardEntity);
-            this.userCardDto = new NewUserCardResponseDto(userCardEntity);
+        public CardAndUserCardResponseDto(final Card card, final UserCard userCard) {
+            this.cardDto = new CardResponseDto(card);
+            this.userCardDto = new NewUserCardResponseDto(userCard);
         }
 
     }

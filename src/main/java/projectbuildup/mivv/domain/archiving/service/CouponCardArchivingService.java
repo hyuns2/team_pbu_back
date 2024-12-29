@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import projectbuildup.mivv.domain.archiving.dto.ArchivingDto;
 import projectbuildup.mivv.domain.archiving.entity.CardType;
-import projectbuildup.mivv.domain.archiving.entity.CouponCardEntity;
-import projectbuildup.mivv.domain.archiving.entity.UserCardEntity;
+import projectbuildup.mivv.domain.archiving.entity.CouponCard;
+import projectbuildup.mivv.domain.archiving.entity.UserCard;
 import projectbuildup.mivv.domain.archiving.repository.CardRepository;
 import projectbuildup.mivv.domain.archiving.repository.UserCardRepository;
 import projectbuildup.mivv.domain.coupon.entity.Coupon;
@@ -35,7 +35,7 @@ import java.util.Optional;
 @Service
 public class CouponCardArchivingService {
 
-    private final CardRepository<CouponCardEntity> cardRepo;
+    private final CardRepository<CouponCard> cardRepo;
     private final UserCardRepository userCardRepo;
     private final CouponIssuanceRepository couponIssuanceRepo;
     private final CouponRepository couponRepo;
@@ -53,7 +53,7 @@ public class CouponCardArchivingService {
         }
 
         Image image = imageUploader.upload(dto.getImage(), ImageType.CARD);
-        CouponCardEntity entity = ArchivingDto.createOrUpdateCouponCardRequestDto.toEntity(dto, image.getImagePath());
+        CouponCard entity = ArchivingDto.createOrUpdateCouponCardRequestDto.toEntity(dto, image.getImagePath());
         cardRepo.save(entity);
     }
 
@@ -74,7 +74,7 @@ public class CouponCardArchivingService {
             throw new CInvalidCardConditionException();
         }
 
-        Optional<CouponCardEntity> target = cardRepo.findById(id);
+        Optional<CouponCard> target = cardRepo.findById(id);
         if (target.isEmpty()) {
             throw new CCardNotFoundException();
         }
@@ -82,7 +82,7 @@ public class CouponCardArchivingService {
             throw new CCardTypeNotMatchException();
         }
 
-        CouponCardEntity result = target.get();
+        CouponCard result = target.get();
         Image image = imageUploader.upload(dto.getImage(), ImageType.CARD);
         result.updateCard(dto, image.getImagePath());
     }
@@ -147,32 +147,32 @@ public class CouponCardArchivingService {
     }
 
     private void assignCards(User user, int whatNumber, int howSuccessive) {
-        List<CouponCardEntity> checkedcards = getCheckedCards(user);
+        List<CouponCard> checkedcards = getCheckedCards(user);
 
-        for (CouponCardEntity element : checkedcards) {
+        for (CouponCard element : checkedcards) {
             if (UnSatisfiedHowSuccessive(element, howSuccessive))
                 continue;
             if (UnsatisfiedWhatNumber(element, whatNumber))
                 continue;
 
-            userCardRepo.save(new UserCardEntity(user, element, LocalDate.now()));
+            userCardRepo.save(new UserCard(user, element, LocalDate.now()));
         }
     }
 
-    private List<CouponCardEntity> getCheckedCards(User user) {
-        List<UserCardEntity> alreadyExistings = userCardRepo.findUserCardEntitiesByUser(user);
-        List<CouponCardEntity> allCards = cardRepo.findAllByType(CardType.COUPON);
-        for (UserCardEntity element : alreadyExistings) {
-            allCards.remove(element.getCardEntity());
+    private List<CouponCard> getCheckedCards(User user) {
+        List<UserCard> alreadyExistings = userCardRepo.findUserCardEntitiesByUser(user);
+        List<CouponCard> allCards = cardRepo.findAllByType(CardType.COUPON);
+        for (UserCard element : alreadyExistings) {
+            allCards.remove(element.getCard());
         }
         return allCards;
     }
 
-    private boolean UnSatisfiedHowSuccessive(CouponCardEntity element, int howSuccessive) {
+    private boolean UnSatisfiedHowSuccessive(CouponCard element, int howSuccessive) {
         return (element.getHowSuccessive() > howSuccessive);
     }
 
-    private boolean UnsatisfiedWhatNumber(CouponCardEntity element, int whatNumber) {
+    private boolean UnsatisfiedWhatNumber(CouponCard element, int whatNumber) {
         return (element.getWhatNumber() != 0 && element.getWhatNumber() != whatNumber);
     }
 

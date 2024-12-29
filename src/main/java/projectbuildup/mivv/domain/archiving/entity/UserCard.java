@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @Getter
 @NoArgsConstructor
 @Table(name = "user_card")
-public class UserCardEntity {
+public class UserCard {
 
     @Column(name = "id")
     @Id
@@ -23,7 +23,7 @@ public class UserCardEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "card_id", foreignKey = @ForeignKey(name = "fk_usercard_to_card"))
-    private CardEntity cardEntity;
+    private Card card;
 
     @Column(name = "date", nullable = false)
     @Temporal(value = TemporalType.DATE)
@@ -32,9 +32,9 @@ public class UserCardEntity {
     @Column(name = "is_new", nullable = false)
     private boolean isNew;
 
-    public UserCardEntity(User user, CardEntity cardEntity, LocalDate date) {
+    public UserCard(User user, Card card, LocalDate date) {
         this.user = user;
-        this.cardEntity = cardEntity;
+        this.card = card;
         this.date = date;
         this.isNew = true;
     }

@@ -4,9 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import projectbuildup.mivv.domain.archiving.dto.ArchivingDto;
-import projectbuildup.mivv.domain.archiving.entity.CardEntity;
+import projectbuildup.mivv.domain.archiving.entity.Card;
 import projectbuildup.mivv.domain.archiving.entity.CardType;
-import projectbuildup.mivv.domain.archiving.entity.UserCardEntity;
+import projectbuildup.mivv.domain.archiving.entity.UserCard;
 import projectbuildup.mivv.domain.archiving.repository.CardRepository;
 import projectbuildup.mivv.domain.archiving.repository.UserCardRepository;
 import projectbuildup.mivv.domain.user.entity.User;
@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 @Service
 public class CardArchivingService {
 
-    private final CardRepository<CardEntity> cardRepo;
+    private final CardRepository<Card> cardRepo;
     private final UserCardRepository userCardRepo;
 
     /**
@@ -32,11 +32,11 @@ public class CardArchivingService {
      */
     @Transactional
     public void deleteCard(final Long id) {
-        Optional<CardEntity> target = cardRepo.findById(id);
+        Optional<Card> target = cardRepo.findById(id);
         if (target.isEmpty())
             throw new CCardNotFoundException();
 
-        CardEntity result = target.get();
+        Card result = target.get();
         cardRepo.delete(result);
     }
 
@@ -48,11 +48,11 @@ public class CardArchivingService {
      * @throws CCardNotFoundException 카드 찾기 실패시
      */
     public ArchivingDto.CardResponseDto retrieveCard(final Long id) {
-        Optional<CardEntity> target = cardRepo.findById(id);
+        Optional<Card> target = cardRepo.findById(id);
         if (target.isEmpty())
             throw new CCardNotFoundException();
 
-        CardEntity result = target.get();
+        Card result = target.get();
         return new ArchivingDto.CardResponseDto(result);
     }
 
@@ -62,7 +62,7 @@ public class CardArchivingService {
      * @return List<ArchivingDto.CardResponseDto> 카드들의 정보 전체
      */
     public List<ArchivingDto.CardResponseDto> retrieveCards() {
-        List<CardEntity> result = cardRepo.findAll();
+        List<Card> result = cardRepo.findAll();
 
         return result.stream().map(ArchivingDto.CardResponseDto::new).collect(Collectors.toList());
     }
@@ -74,7 +74,7 @@ public class CardArchivingService {
      * @return List<ArchivingDto.UserCardResponseDto> 유저카드들 정보 전체
      */
     public List<ArchivingDto.UserCardResponseDto> retrieveNewUserCards(final User user) {
-        List<UserCardEntity> result = userCardRepo.findUserNewCards(user);
+        List<UserCard> result = userCardRepo.findUserNewCards(user);
 
         return result.stream().map(ArchivingDto.UserCardResponseDto::new).collect(Collectors.toList());
     }
@@ -86,9 +86,9 @@ public class CardArchivingService {
      */
     @Transactional
     public void updateCardToNotNew(final User user) {
-        List<UserCardEntity> result = userCardRepo.findUserNewCards(user);
+        List<UserCard> result = userCardRepo.findUserNewCards(user);
 
-        for (UserCardEntity entity: result)
+        for (UserCard entity: result)
             entity.updateIsNew();
     }
 
@@ -100,11 +100,11 @@ public class CardArchivingService {
      * @return List<ArchivingDto.CardAndUserCardResponseDto> 카드와 사용자카드 정보 전체
      */
     public List<ArchivingDto.CardAndUserCardResponseDto> retrieveUserCards(final User user, final CardType cardType) {
-        List<UserCardEntity> userCards = cardRepo.findUserCards(user, cardType);
+        List<UserCard> userCards = cardRepo.findUserCards(user, cardType);
         List<ArchivingDto.CardAndUserCardResponseDto> dtos = new ArrayList<ArchivingDto.CardAndUserCardResponseDto>();
 
-        for (UserCardEntity userCard: userCards)
-            dtos.add(new ArchivingDto.CardAndUserCardResponseDto(userCard.getCardEntity(), userCard));
+        for (UserCard userCard: userCards)
+            dtos.add(new ArchivingDto.CardAndUserCardResponseDto(userCard.getCard(), userCard));
 
         return dtos;
     }
