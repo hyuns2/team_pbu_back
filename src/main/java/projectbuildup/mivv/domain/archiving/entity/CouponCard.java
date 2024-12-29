@@ -5,8 +5,9 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import projectbuildup.mivv.domain.archiving.dto.ArchivingDto;
 
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Entity
@@ -22,16 +23,28 @@ public class CouponCard extends Card {
     @Column(name = "how_successive", nullable = false)
     protected Integer howSuccessive;
 
-    public void updateCard(ArchivingDto.createOrUpdateCouponCardRequestDto dto, String imagePath) {
-        this.type = CardType.COUPON;
-        this.title = dto.getTitle();
-        this.subTitle = dto.getSubTitle();
-        this.sentences = dto.getSentences().stream()
-                .map(Object::toString)
-                .collect(Collectors.joining(", "));
-        this.imagePath = imagePath;
-        this.whatNumber = dto.getWhatNumber();
-        this.howSuccessive = dto.getHowSuccessive();
+    public static CouponCard of(String title, String subTitle, List<String> sentences, String imagePath, Integer whatNumber, Integer howSuccessive) {
+        return CouponCard.builder()
+                .type(CardType.COUPON)
+                .title(title)
+                .subTitle(subTitle)
+                .sentences(sentences.stream()
+                        .map(Object::toString)
+                        .collect(Collectors.joining(", ")))
+                .imagePath(imagePath)
+                .whatNumber(whatNumber)
+                .howSuccessive(howSuccessive).build();
     }
 
+    public void update(String title, String subTitle, List<String> sentences, String imagePath, Integer whatNumber, Integer howSuccessive) {
+        this.title = title;
+        this.type = CardType.COUPON;
+        this.subTitle = subTitle;
+        this.sentences = sentences.stream()
+                .map(Objects::toString)
+                .collect(Collectors.joining(", "));
+        this.imagePath = imagePath;
+        this.whatNumber = whatNumber;
+        this.howSuccessive = howSuccessive;
+    }
 }

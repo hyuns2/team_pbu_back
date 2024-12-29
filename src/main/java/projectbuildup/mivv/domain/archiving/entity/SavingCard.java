@@ -3,8 +3,9 @@ package projectbuildup.mivv.domain.archiving.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import projectbuildup.mivv.domain.archiving.dto.ArchivingDto;
 
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Entity
@@ -22,29 +23,30 @@ public class SavingCard extends Card {
     @Column(name = "term", nullable = false)
     protected Integer term;
 
-    public void updateCard(ArchivingDto.createOrUpdateSavingCardRequestDto dto, String imagePath) {
+    public static SavingCard of(String title, String subTitle, List<String> sentences, String imagePath, Integer charge, Integer count, Integer term) {
+        return SavingCard.builder()
+                .title(title)
+                .type(CardType.SAVING)
+                .subTitle(subTitle)
+                .sentences(sentences.stream()
+                        .map(Object::toString)
+                        .collect(Collectors.joining(", ")))
+                .imagePath(imagePath)
+                .charge(charge)
+                .count(count)
+                .term(term).build();
+    }
+
+    public void update(String title, String subTitle, List<String> sentences, String imagePath, Integer charge, Integer count, Integer term) {
+        this.title = title;
         this.type = CardType.SAVING;
-        this.title = dto.getTitle();
-        this.subTitle = dto.getSubTitle();
-        this.sentences = dto.getSentences().stream()
-                .map(Object::toString)
+        this.subTitle = subTitle;
+        this.sentences = sentences.stream()
+                .map(Objects::toString)
                 .collect(Collectors.joining(", "));
         this.imagePath = imagePath;
-        this.charge = dto.getCharge();
-        this.count = dto.getCount();
-        this.term = dto.getTerm();
+        this.charge = charge;
+        this.count = count;
+        this.term = term;
     }
-
-    public boolean equals(SavingCard savingCardEntity) {
-        return this.id.equals(savingCardEntity.getId()) &&
-                this.type.equals(savingCardEntity.getType()) &&
-                this.title.equals(savingCardEntity.getTitle()) &&
-                this.subTitle.equals(savingCardEntity.getSubTitle()) &&
-                this.sentences.equals(savingCardEntity.getSentences()) &&
-                this.imagePath.equals(savingCardEntity.getImagePath()) &&
-                this.charge.equals(savingCardEntity.getCharge()) &&
-                this.count.equals(savingCardEntity.getCount()) &&
-                this.term.equals(savingCardEntity.getTerm());
-    }
-
 }

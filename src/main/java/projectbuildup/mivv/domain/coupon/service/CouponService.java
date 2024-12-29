@@ -24,7 +24,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Slf4j
@@ -103,7 +105,10 @@ public class CouponService {
         }
 
         List<User> userList = couponIssuanceRepository.findUsersByCouponIdAndDate(couponId, start, end);
-        excelManager.writeExcel(response, userList, year + "-" + month + "/" + couponTitle);
+        Map<String, String> userMap = new HashMap<>();
+        for (User user: userList)
+            userMap.put(user.getId().toString(), user.getUsername());
+        excelManager.writeExcel(response, userMap, year + "-" + month + "/" + couponTitle);
 
     }
 }

@@ -1,10 +1,7 @@
 package projectbuildup.mivv.global.common.fileStore;
 
 import jakarta.servlet.http.HttpServletResponse;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -13,8 +10,11 @@ import projectbuildup.mivv.domain.user.entity.User;
 import projectbuildup.mivv.global.error.exception.CFileNotInputException;
 import projectbuildup.mivv.global.error.exception.CIllegalFileExtensionException;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Component
@@ -26,13 +26,20 @@ public class ExcelManager {
     String ipUrl;
 
     /**
-     * 엑셀을 서버에 저장하고, 그 객체를 반환
+     * 엑셀을 서버에 저장하고, 첫번째 시트를 반환
      *
      * @param multipartFile 파일 정보
-     * @return File 파일 객체
+     * @return Sheet 엑셀의 첫번째 시트
      * @throws CIllegalFileExtensionException 엑셀이 아니면 발생
      */
-    public File storeExcelFile(MultipartFile multipartFile) throws IOException {
+    public Sheet storeExcelAndRetrieveFirstSheet(MultipartFile multipartFile) throws IOException {
+        File file = storeExcelFile(multipartFile);
+        InputStream inputStream = new FileInputStream(file.getFilePath());
+        Workbook workBook = WorkbookFactory.create(inputStream);
+        return workBook.getSheetAt(0);
+    }
+
+    private File storeExcelFile(MultipartFile multipartFile) throws IOException {
         String uploadFileName = getUploadFileName(multipartFile);
         String extension = checkExtension(uploadFileName);
 
@@ -65,16 +72,15 @@ public class ExcelManager {
      * 유저들의 정보를 엑셀에 담아서 반환
      *
      * @param response 응답 객체
-     * @param userList 유저 리스트
+     * @param stringMap 작성할 데이터맵
      * @param fileName 반환할 엑셀의 이름
      */
-    public void writeExcel(HttpServletResponse response, List<User> userList, String fileName) throws IOException {
+    public void writeExcel(HttpServletResponse response, Map<String, String> stringMap, String fileName) throws IOException {
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet();
-        int rowIndex = 1;
 
         createHeader(sheet);
-        createBody(sheet, rowIndex, userList);
+        createBody(sheet, stringMap);
 
         response.setContentType("ms-vnd/excel");
         response.setHeader("Content-Disposition", "attachment;filename=" + fileName + ".xlsx");
@@ -91,13 +97,15 @@ public class ExcelManager {
         header1.setCellValue("전화번호");
     }
 
-    private void createBody(Sheet sheet, int rowIndex, List<User> userList) {
-        for (User user: userList) {
+    private void createBody(Sheet sheet, Map<String, String> stringMap) {
+        int rowIndex = 1;
+        for (String key: stringMap.keySet()) {
             Row bodyRow = sheet.createRow(rowIndex++);
+
             Cell bodyCell0 = bodyRow.createCell(0);
-            bodyCell0.setCellValue(user.getIdentityVerification().getName());
+            bodyCell0.setCellValue(key);
             Cell bodyCell1 = bodyRow.createCell(1);
-            bodyCell1.setCellValue(user.getIdentityVerification().getMobile());
+            bodyCell1.setCellValue(stringMap.get(key));
         }
     }
 

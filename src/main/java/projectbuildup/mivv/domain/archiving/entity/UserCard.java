@@ -32,10 +32,11 @@ public class UserCard {
     @Column(name = "is_new", nullable = false)
     private boolean isNew;
 
-    public UserCard(User user, Card card, LocalDate date) {
+    @Builder
+    public UserCard(User user, Card card) {
         this.user = user;
         this.card = card;
-        this.date = date;
+        this.date = LocalDate.now();
         this.isNew = true;
     }
 

@@ -3,9 +3,6 @@ package projectbuildup.mivv.domain.archiving.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import projectbuildup.mivv.domain.archiving.dto.ArchivingDto;
-
-import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -34,14 +31,4 @@ public abstract class Card {
 
     @Column(name = "image_path", nullable = false, length = 5000)
     protected String imagePath;
-
-    public void updateCard(ArchivingDto.createOrUpdateGeneralCardRequestDto dto, String imagePath) {
-        this.type = CardType.GENERAL;
-        this.title = dto.getTitle();
-        this.subTitle = dto.getSubTitle();
-        this.sentences = dto.getSentences().stream()
-                .map(Object::toString)
-                .collect(Collectors.joining(", "));
-        this.imagePath = imagePath;
-    }
 }
