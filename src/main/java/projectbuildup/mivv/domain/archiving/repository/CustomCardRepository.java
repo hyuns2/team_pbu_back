@@ -10,4 +10,6 @@ import java.util.List;
 public interface CustomCardRepository {
     public List<Card> findCardByTypeCond(CardType cardType);
     public List<Tuple> findAllCardWithUserCardByTypeCond(User user, CardType cardType);
+
+    public List<Card> findNotHavingCardsByUserAndTypeCond(User user, CardType cardType);
 }

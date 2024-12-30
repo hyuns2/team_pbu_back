@@ -43,4 +43,10 @@ public class UserCard {
     public void updateIsNew() {
         this.isNew = false;
     }
+
+    public static UserCard of(User user, Card card) {
+        return UserCard.builder()
+                .user(user)
+                .card(card).build();
+    }
 }

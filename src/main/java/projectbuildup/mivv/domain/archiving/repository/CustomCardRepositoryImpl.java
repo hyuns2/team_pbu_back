@@ -36,6 +36,16 @@ public class CustomCardRepositoryImpl implements CustomCardRepository {
                 .fetch();
     }
 
+    @Override
+    public List<Card> findNotHavingCardsByUserAndTypeCond(User user, CardType cardType) {
+        return queryFactory
+                .selectFrom(card)
+                .leftJoin(card, userCard.card).fetchJoin()
+                    .on(userCard.user.eq(user))
+                .where(cardTypeEq(cardType), userCard.user.isNull())
+                .fetch();
+    }
+
     private BooleanExpression cardTypeEq(CardType cardType) {
         return cardType != null ? card.type.eq(cardType) : null;
     }

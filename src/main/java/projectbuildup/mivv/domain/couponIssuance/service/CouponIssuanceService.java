@@ -3,6 +3,7 @@ package projectbuildup.mivv.domain.couponIssuance.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import projectbuildup.mivv.domain.archiving.service.ArchivingService;
 import projectbuildup.mivv.domain.coupon.dto.CouponDto;
 import projectbuildup.mivv.domain.coupon.entity.Coupon;
 import projectbuildup.mivv.domain.coupon.entity.CouponType;
@@ -33,7 +34,7 @@ public class CouponIssuanceService {
     private final RemittanceRepository remittanceRepository;
     private final WorthyConsumptionService worthyConsumptionService;
 
-//    private final archivingService couponCardArchivingService;
+    private final ArchivingService archivingService;
     /*
      * 발급받을때 고려할 사항
      * 1. 먼저 유저가 유효한 유저인지 판단 (유저가 진짜 유저인가) : O
@@ -61,7 +62,7 @@ public class CouponIssuanceService {
         isAchievedLastAmount(user, coupon);
         issue(user, coupon);
         
-//        archivingService.assignCouponCards(user, coupon.getId());
+        archivingService.assignCouponCards(user, coupon);
     }
 
     /**
