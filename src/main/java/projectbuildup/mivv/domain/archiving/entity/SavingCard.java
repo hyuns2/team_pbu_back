@@ -14,13 +14,13 @@ import java.util.stream.Collectors;
 @SuperBuilder
 @DiscriminatorValue("saving")
 public class SavingCard extends Card {
-    @Column(name = "charge", nullable = false)
+    @Column(name = "charge")
     protected Integer charge;
 
-    @Column(name = "count", nullable = false)
+    @Column(name = "count")
     protected Integer count;
 
-    @Column(name = "term", nullable = false)
+    @Column(name = "term")
     protected Integer term;
 
     public static SavingCard of(String title, String subTitle, List<String> sentences, String imagePath, Integer charge, Integer count, Integer term) {

@@ -17,10 +17,10 @@ import java.util.stream.Collectors;
 @DiscriminatorValue("coupon")
 public class CouponCard extends Card {
 
-    @Column(name = "what_number", nullable = false)
+    @Column(name = "what_number")
     protected Integer whatNumber;
 
-    @Column(name = "how_successive", nullable = false)
+    @Column(name = "how_successive")
     protected Integer howSuccessive;
 
     public static CouponCard of(String title, String subTitle, List<String> sentences, String imagePath, Integer whatNumber, Integer howSuccessive) {

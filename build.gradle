@@ -20,8 +20,8 @@ repositories {
 }
 
 dependencies {
-	//flyway
-	 implementation("org.flywaydb:flyway-mysql")
+//	//flyway
+//	 implementation("org.flywaydb:flyway-mysql")
 
 
 
