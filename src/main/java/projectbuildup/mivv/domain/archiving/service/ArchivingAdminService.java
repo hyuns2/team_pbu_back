@@ -219,9 +219,10 @@ public class ArchivingAdminService {
         if (user.isEmpty())
             return false;
 
-        userCardRepository.save(UserCard.builder()
-                .user(user.get())
-                .card(card).build());
+        if (userCardRepository.findByUserIdAndCardId(user.get().getId(), card.getId()).isEmpty())
+            userCardRepository.save(UserCard.builder()
+                    .user(user.get())
+                    .card(card).build());
         return true;
     }
 }

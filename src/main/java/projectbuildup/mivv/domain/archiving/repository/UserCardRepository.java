@@ -7,10 +7,13 @@ import projectbuildup.mivv.domain.archiving.entity.UserCard;
 import projectbuildup.mivv.domain.user.entity.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserCardRepository extends JpaRepository<UserCard, Long> {
     @Query("select u from UserCard u where u.user = ?1 and u.isNew = true")
     List<UserCard> findUserNewCards(User user);
 
     void deleteAllByUser(User user);
+
+    Optional<UserCard> findByUserIdAndCardId(Long userId, Long cardId);
 }
