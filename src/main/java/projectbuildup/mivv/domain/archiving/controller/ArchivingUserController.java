@@ -28,7 +28,7 @@ public class ArchivingUserController {
 
     @Operation(summary = "사용자의 신규 카드 조회", description = "사용자가 보유한 신규 카드 전체를 조회합니다.")
     @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/new-cards")
     public ResponseEntity<?> retrieveNewCards(@AuthenticationPrincipal User user) {
         List<ArchivingResponse.UserCardDto> responseDto = archivingUserService.retrieveNewCards(user);
@@ -38,7 +38,7 @@ public class ArchivingUserController {
 
     @Operation(summary = "사용자 카드의 신규 여부 갱신", description = "사용자가 보유한 신규 카드를 신규가 아닌 카드로 갱신합니다.")
     @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     @PatchMapping("/new-cards")
     public ResponseEntity<?> updateCardToNotNew(@AuthenticationPrincipal User user) {
         archivingUserService.updateCardToNotNew(user);
@@ -48,7 +48,7 @@ public class ArchivingUserController {
 
     @Operation(summary = "사용자의 전체 및 조건별 카드 조회", description = "조건을 선택해, 사용자가 보유한 해당하는 카드들을 조회합니다. (null 입력시, 전체조회)")
     @Parameter(name = Header.ACCESS_TOKEN, description = "액세스토큰", required = true, in = ParameterIn.HEADER, example = ExampleValue.JWT.ACCESS)
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/cards")
     public ResponseEntity<?> retrieveUserCards(@AuthenticationPrincipal User user, @RequestParam CardType cardType) {
         List<ArchivingResponse.AllCardSummaryAndUserCardDto> responseDto = archivingUserService.retrieveUserCards(user, cardType);
