@@ -28,9 +28,7 @@ public class CouponCard extends Card {
                 .type(CardType.COUPON)
                 .title(title)
                 .subTitle(subTitle)
-                .sentences(sentences.stream()
-                        .map(Object::toString)
-                        .collect(Collectors.joining(", ")))
+                .sentences(sentences)
                 .imagePath(imagePath)
                 .whatNumber(whatNumber)
                 .howSuccessive(howSuccessive).build();
@@ -40,9 +38,7 @@ public class CouponCard extends Card {
         this.title = title;
         this.type = CardType.COUPON;
         this.subTitle = subTitle;
-        this.sentences = sentences.stream()
-                .map(Objects::toString)
-                .collect(Collectors.joining(", "));
+        this.sentences = sentences;
         this.imagePath = imagePath;
         this.whatNumber = whatNumber;
         this.howSuccessive = howSuccessive;

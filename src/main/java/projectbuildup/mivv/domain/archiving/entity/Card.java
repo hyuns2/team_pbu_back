@@ -3,6 +3,10 @@ package projectbuildup.mivv.domain.archiving.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import projectbuildup.mivv.domain.archiving.entity.converter.ListToStringConverter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -26,8 +30,9 @@ public abstract class Card {
     @Column(name = "sub_title", nullable = false, length = 30)
     protected String subTitle;
 
+    @Convert(converter = ListToStringConverter.class)
     @Column(name = "sentences", nullable = false, length = 300)
-    protected String sentences;
+    protected List<String> sentences = new ArrayList<>();
 
     @Column(name = "image_path", nullable = false, length = 5000)
     protected String imagePath;

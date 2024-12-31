@@ -28,9 +28,7 @@ public class SavingCard extends Card {
                 .title(title)
                 .type(CardType.SAVING)
                 .subTitle(subTitle)
-                .sentences(sentences.stream()
-                        .map(Object::toString)
-                        .collect(Collectors.joining(", ")))
+                .sentences(sentences)
                 .imagePath(imagePath)
                 .charge(charge)
                 .count(count)
@@ -41,9 +39,7 @@ public class SavingCard extends Card {
         this.title = title;
         this.type = CardType.SAVING;
         this.subTitle = subTitle;
-        this.sentences = sentences.stream()
-                .map(Objects::toString)
-                .collect(Collectors.joining(", "));
+        this.sentences = sentences;
         this.imagePath = imagePath;
         this.charge = charge;
         this.count = count;

@@ -22,9 +22,7 @@ public class GeneralCard extends Card {
                 .type(CardType.GENERAL)
                 .title(title)
                 .subTitle(subTitle)
-                .sentences(sentences.stream()
-                        .map(Object::toString)
-                        .collect(Collectors.joining(", ")))
+                .sentences(sentences)
                 .imagePath(imagePath).build();
     }
 
@@ -32,9 +30,7 @@ public class GeneralCard extends Card {
         this.title = title;
         this.type = CardType.GENERAL;
         this.subTitle = subTitle;
-        this.sentences = sentences.stream()
-                .map(Objects::toString)
-                .collect(Collectors.joining(", "));
+        this.sentences = sentences;
         this.imagePath = imagePath;
     }
 }

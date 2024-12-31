@@ -40,7 +40,7 @@ public class ArchivingResponse {
                     .type(card.getType().toString())
                     .title(card.getTitle())
                     .subTitle(card.getSubTitle())
-                    .sentences(Arrays.stream(card.getSentences().split(", ")).toList())
+                    .sentences(card.getSentences())
                     .imagePath(card.getImagePath()).build();
         }
     }
@@ -64,7 +64,7 @@ public class ArchivingResponse {
                     .type(card.getType().toString())
                     .title(card.getTitle())
                     .subTitle(card.getSubTitle())
-                    .sentences(Arrays.stream(card.getSentences().split(", ")).toList())
+                    .sentences(card.getSentences())
                     .imagePath(card.getImagePath())
                     .charge(card.getCharge())
                     .count(card.getCount())
@@ -88,7 +88,7 @@ public class ArchivingResponse {
                     .type(card.getType().toString())
                     .title(card.getTitle())
                     .subTitle(card.getSubTitle())
-                    .sentences(Arrays.stream(card.getSentences().split(", ")).toList())
+                    .sentences(card.getSentences())
                     .imagePath(card.getImagePath())
                     .whatNumber(card.getWhatNumber())
                     .howSuccessive(card.getHowSuccessive()).build();
@@ -105,7 +105,7 @@ public class ArchivingResponse {
                     .type(card.getType().toString())
                     .title(card.getTitle())
                     .subTitle(card.getSubTitle())
-                    .sentences(Arrays.stream(card.getSentences().split(", ")).toList())
+                    .sentences(card.getSentences())
                     .imagePath(card.getImagePath()).build();
         }
     }
