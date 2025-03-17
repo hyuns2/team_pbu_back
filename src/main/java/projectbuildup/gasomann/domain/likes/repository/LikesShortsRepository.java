@@ -1,0 +1,23 @@
+package projectbuildup.gasomann.domain.likes.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+import projectbuildup.gasomann.domain.likes.entity.LikesCategory;
+import projectbuildup.gasomann.domain.likes.entity.LikesShorts;
+import projectbuildup.gasomann.domain.shorts.entity.Shorts;
+import projectbuildup.gasomann.domain.user.entity.User;
+
+import java.util.List;
+import java.util.Optional;
+
+@Repository
+public interface LikesShortsRepository extends JpaRepository<LikesShorts, Long> {
+    @Transactional
+    void deleteLikesShortsByUserAndShorts(User user, Shorts shorts);
+    List<LikesShorts> findAllByUser(User user);
+    Optional<LikesShorts> findByUserAndShorts(User user, Shorts shorts);
+    List<LikesShorts> findAllByUserAndLikesCategory(User user, LikesCategory likesCategory);
+
+    void deleteAllByUser(User user);
+}
